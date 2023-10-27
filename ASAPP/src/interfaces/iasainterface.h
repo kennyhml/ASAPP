@@ -2,7 +2,7 @@
 
 namespace asa
 {
-	class ASAInterface
+	class IASAInterface
 	{
 	public:
 		virtual bool IsOpen() = 0;
