@@ -99,6 +99,15 @@
     <ClInclude Include="src\items\consumableitem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\structures\iasastructure.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structures\container.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structures\craftingstation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />

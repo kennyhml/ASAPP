@@ -176,6 +176,9 @@
     <ClInclude Include="src\items\iasaitem.h" />
     <ClInclude Include="src\items\placeableitem.h" />
     <ClInclude Include="src\items\recipe.h" />
+    <ClInclude Include="src\structures\container.h" />
+    <ClInclude Include="src\structures\craftingstation.h" />
+    <ClInclude Include="src\structures\iasastructure.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
