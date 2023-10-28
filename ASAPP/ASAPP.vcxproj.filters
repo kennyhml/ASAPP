@@ -18,7 +18,7 @@
     <ClInclude Include="src\interfaces\iasainterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\screen.h">
+    <ClInclude Include="src\game\window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\interfaces\inventory.h">
@@ -115,6 +115,9 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\window.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

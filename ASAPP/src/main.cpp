@@ -1,11 +1,11 @@
 #pragma once
-#include "items/iasaitem.h"
+#include "game/window.h"
 #include <iostream>
+
 
 int main()
 {
-
-	auto t = new asa::IASAItem();
+	asa::window::SetHandleTo("ArkAscended", 60, true);
 
 	return 0;
 }
