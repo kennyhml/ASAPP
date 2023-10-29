@@ -79,7 +79,7 @@ namespace asa::window
 				   r.y, r.width, r.height);
 	}
 
-	bool SetFocusedWindow();
+	bool SetForeground();
 	void SetMousePos(int x, int y);
 
 }

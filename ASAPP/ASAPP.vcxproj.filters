@@ -111,6 +111,9 @@
     <ClInclude Include="src\game\globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\controls.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
@@ -123,6 +126,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\game\settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\controls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

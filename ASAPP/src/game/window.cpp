@@ -192,7 +192,7 @@ cv::Mat window::Screenshot(const Rect& region)
 	return result;
 }
 
-bool window::SetFocusedWindow()
+bool window::SetForeground()
 {
 	if (!hWnd) {
 		std::cout << "[!] Cant focus window, get the hWnd first." << std::endl;
