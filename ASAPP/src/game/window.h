@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 
+
 namespace asa::window
 {
 	inline HWND hWnd;

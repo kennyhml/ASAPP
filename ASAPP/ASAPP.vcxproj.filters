@@ -108,6 +108,9 @@
     <ClInclude Include="src\structures\craftingstation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\game\globals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
@@ -117,6 +120,9 @@
       <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="src\game\window.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\game\settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
