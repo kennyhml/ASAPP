@@ -18,11 +18,6 @@ namespace asa::settings
 		{
 			ActionMapping(std::string name) : name(name)
 			{
-				// make sure we delete the previous obj
-				if (inputMap.find(name) != inputMap.end()) {
-					delete inputMap[name];
-				}
-
 				inputMap[name] = this;
 			};
 

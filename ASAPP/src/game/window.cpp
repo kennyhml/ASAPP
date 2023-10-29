@@ -191,3 +191,19 @@ cv::Mat window::Screenshot(const Rect& region)
 
 	return result;
 }
+
+bool window::SetFocusedWindow()
+{
+	if (!hWnd) {
+		std::cout << "[!] Cant focus window, get the hWnd first." << std::endl;
+		return false;
+	}
+	return SetForegroundWindow(hWnd) != NULL;
+}
+
+void window::SetMousePos(int x, int y)
+{
+	// do some checks here later that x and y is actually within the boudaries
+	// of the game
+	SetCursorPos(x, y);
+}

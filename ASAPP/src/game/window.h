@@ -11,7 +11,7 @@
 
 namespace asa::window
 {
-	inline HWND hWnd;
+	inline HWND hWnd = NULL;
 
 	struct Point
 	{
@@ -78,4 +78,8 @@ namespace asa::window
 		return os << std::format("Rect(x={}, y={}, width={}, height={})", r.x,
 				   r.y, r.width, r.height);
 	}
+
+	bool SetFocusedWindow();
+	void SetMousePos(int x, int y);
+
 }

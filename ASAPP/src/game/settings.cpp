@@ -11,7 +11,8 @@ std::ostream& settings::actionMappings::operator<<(
 {
 	return os << std::format("ActionMapping(name={}, shift={}, "
 							 "ctrl={}, alt={}, cmd={}, key={})",
-			   m.actionName, m.shift, m.ctrl, m.alt, m.cmd, m.key);
+			   m.name, int(m.shift), int(m.ctrl), int(m.alt), int(m.cmd),
+			   m.key);
 }
 
 static bool ParseActionMapping(std::istringstream& stream, bool verbose)
