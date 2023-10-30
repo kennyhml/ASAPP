@@ -1,9 +1,8 @@
 #include "controls.h"
-#include <Windows.h>
 
 using namespace asa;
 
-int controls::GetMouseFlag(MouseButton button, bool down)
+int constexpr controls::GetMouseFlag(MouseButton button, bool down)
 {
 	switch (button) {
 
@@ -54,4 +53,56 @@ void controls::MousePress(MouseButton button, float durationMs)
 	MouseDown(button);
 	Sleep(durationMs);
 	MouseUp(button);
+}
+
+controls::KeyboardMapping controls::GetKeyboardMapping()
+{
+	KeyboardMapping mapping{ { "Tab", VK_TAB }, { "F1", VK_F1 },
+		{ "F2", VK_F2 }, { "F3", VK_F3 }, { "F4", VK_F4 }, { "F5", VK_F5 },
+		{ "F6", VK_F6 }, { "F7", VK_F7 }, { "F8", VK_F8 }, { "F9", VK_F9 },
+		{ "F10", VK_F10 }, { "Delete", VK_DELETE }, { "Home", VK_HOME },
+		{ "End", VK_END }, { "BackSpace", VK_BACK }, { "Enter", VK_RETURN },
+		{ "Period", VK_OEM_PERIOD }, { "NumPadZero", VK_NUMPAD0 },
+		{ "NumPadOne", VK_NUMPAD1 }, { "NumPadTwo", VK_NUMPAD2 },
+		{ "NumPadThree", VK_NUMPAD3 }, { "NumPadFour", VK_NUMPAD4 },
+		{ "NumPadFive", VK_NUMPAD5 }, { "NumPadSix", VK_NUMPAD6 },
+		{ "NumPadSeven", VK_NUMPAD7 }, { "NumPadEight", VK_NUMPAD8 },
+		{ "NumPadNine", VK_NUMPAD9 } };
+
+	for (int i = 32; i < 128; i++) {
+		char c = static_cast<char>(i);
+		std::string character(1, c);
+		mapping[character] = VkKeyScanA(i);
+	}
+	return mapping;
+}
+
+void controls::KeyDown(std::string key)
+{
+	int vk = mapping[key];
+
+	INPUT input{ 0 };
+	input.type = INPUT_KEYBOARD;
+	input.ki.wVk = vk;
+
+	SendInput(1, &input, sizeof(INPUT));
+}
+
+void controls::KeyUp(std::string key)
+{
+	int vk = mapping[key];
+
+	INPUT input{ 0 };
+	input.type = INPUT_KEYBOARD;
+	input.ki.wVk = vk;
+	input.ki.dwFlags = KEYEVENTF_KEYUP;
+
+	SendInput(1, &input, sizeof(INPUT));
+}
+
+void controls::KeyPress(std::string key, float durationMs)
+{
+	KeyDown(key);
+	Sleep(durationMs);
+	KeyUp(key);
 }

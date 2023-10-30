@@ -13,7 +13,7 @@ int main()
 		"F:\\SteamLibrary\\steamapps\\common\\ARK Survival Ascended");
 	asa::window::SetHandleTo("ArkAscended", 60, true);
 
-	Sleep(5000);
-	asa::controls::MousePress(asa::controls::MouseButton::MOUSE5);
+	Sleep(2000);
+	asa::controls::KeyPress("F");
 	return 0;
 }
