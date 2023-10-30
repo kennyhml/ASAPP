@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <any>
 #include <filesystem>
 #include <iostream>
 #include <string>
@@ -11,7 +12,7 @@ namespace asa::settings
 	bool OpenFile(
 		bool verbose, std::filesystem::path path, std::ifstream& fileOut);
 
-	namespace actionMappings
+	inline namespace actionMappings
 	{
 		struct ActionMapping;
 		inline std::unordered_map<std::string, ActionMapping*> inputMap{};
@@ -64,21 +65,37 @@ namespace asa::settings
 		bool LoadActionMappings(bool verbose = true);
 	}
 
-	namespace gameUserSettings
+	inline namespace gameUserSettings
 	{
+		inline std::unordered_map<std::string, std::any> settingValueMap{};
+
+		template <typename Type> struct UserSetting
+		{
+			UserSetting(std::string name) : name(name)
+			{
+				settingValueMap[name] = Type(0);
+			};
+
+			std::string name;
+
+			Type get()
+			{
+				return std::any_cast<Type>(settingValueMap[this->name]);
+			}
+		};
+
 		const auto userSettingsRelPath = std::filesystem::path(
 			R"(ShooterGame\Saved\Config\Windows\GameUserSettings.ini)");
 
 		bool LoadGameUserSettings(bool verbose = true);
 
-		inline float UIScaling{ 0 };
-		inline float UIQuickbarScaling{ 0 };
-		inline float CameraShakeScale{ 0 };
-		inline float FOVMultiplier{ 0 };
+		inline UserSetting<float> uiScale("UIScaling");
+		inline UserSetting<float> hotbarScale("UIQuickbarScaling");
+		inline UserSetting<float> cameraShake("CameraShakeScale");
+		inline UserSetting<float> fov("FOVMultiplier");
 
-		inline bool bFirstPersonRiding{ false };
-		inline bool bThirdPersonPlayer{ false };
-		inline bool bShowStatusNotificationMessages{ false };
-
+		inline UserSetting<bool> firstPersonRiding("bFirstPersonRiding");
+		inline UserSetting<bool> thirdPerson("bThirdPersonPlayer");
+		inline UserSetting<bool> showNotifs("bShowStatusNotificationMessages");
 	}
 }

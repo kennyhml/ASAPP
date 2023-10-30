@@ -16,5 +16,7 @@ int main()
 	asa::window::SetHandleTo("ArkAscended", 60, true);
 	asa::settings::gameUserSettings::LoadGameUserSettings();
 
+	std::cout << asa::settings::thirdPerson.get();
+
 	return 0;
 }

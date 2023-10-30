@@ -60,13 +60,41 @@ static bool ParseKeyValue(
 	return true;
 }
 
-static bool ParseUserSetting(std::istringstream& stream, bool verbose)
+static std::any ConvertSettingValue(std::string key, std::string value)
 {
-
-	VERBOSE_LOG(stream.str());
-	return true;
+	if (key == "LastJoinedSessionPerCategory") {
+		return value;
+	}
+	else if (value.find(".") != std::string::npos) {
+		return std::stof(value);
+	}
+	else if (value == "True" || value == "False") {
+		return value == "True";
+	}
+	else {
+		return std::stoi(value);
+	}
 }
 
+static bool ParseUserSetting(std::istringstream& stream, bool verbose)
+{
+	auto& map = settings::gameUserSettings::settingValueMap;
+	VERBOSE_LOG(stream.str());
+
+	std::string key;
+	std::string value;
+
+	if (!ParseKeyValue(stream.str(), key, value)) {
+		return false;
+	}
+
+	if (map.find(key) == map.end()) {
+		return false;
+	}
+
+	map[key] = ConvertSettingValue(key, value);
+	return true;
+}
 
 static bool ParseActionMapping(std::istringstream& stream, bool verbose)
 {
