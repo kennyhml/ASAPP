@@ -14,11 +14,13 @@ namespace asa::controls
 
 	void MouseDown(MouseButton button);
 	void MouseUp(MouseButton button);
-	void MousePress(MouseButton button);
+	void MousePress(MouseButton button, float durationMs = 50);
+	int GetMouseFlag(MouseButton button, bool down);
 
 	void KeyDown(std::string key);
 	void KeyUp(std::string key);
 	void KeyPress(std::string key);
-
 	int GetScanCode(std::string key);
+
+
 }
