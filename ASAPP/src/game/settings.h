@@ -8,6 +8,8 @@
 namespace asa::settings
 {
 	bool Load();
+	bool OpenFile(
+		bool verbose, std::filesystem::path path, std::ifstream& fileOut);
 
 	namespace actionMappings
 	{
@@ -64,7 +66,10 @@ namespace asa::settings
 
 	namespace gameUserSettings
 	{
-		bool LoadGameUserSettings();
+		const auto userSettingsRelPath = std::filesystem::path(
+			R"(ShooterGame\Saved\Config\Windows\GameUserSettings.ini)");
+
+		bool LoadGameUserSettings(bool verbose = true);
 
 		inline float UIScaling{ 0 };
 		inline float UIQuickbarScaling{ 0 };
@@ -74,5 +79,6 @@ namespace asa::settings
 		inline bool bFirstPersonRiding{ false };
 		inline bool bThirdPersonPlayer{ false };
 		inline bool bShowStatusNotificationMessages{ false };
+
 	}
 }

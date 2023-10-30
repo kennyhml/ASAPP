@@ -6,6 +6,27 @@
 
 using namespace asa;
 
+#define VERBOSE_LOG(log)                                                       \
+	if (verbose) {                                                             \
+		std::cout << log << std::endl;                                         \
+	}
+
+bool settings::OpenFile(
+	bool verbose, std::filesystem::path path, std::ifstream& fileOut)
+{
+	if (!std::filesystem::exists(path)) {
+		std::cout << std::format("[!] Path '{}' was not found.", path.string());
+		return false;
+	}
+
+	fileOut.open(path.c_str());
+	if (!fileOut.is_open()) {
+		std::cout << std::format("[!] Failed to open '{}'", path.string())
+				  << std::endl;
+		return false;
+	}
+}
+
 std::ostream& settings::actionMappings::operator<<(
 	std::ostream& os, const settings::actionMappings::ActionMapping& m)
 {
@@ -14,6 +35,38 @@ std::ostream& settings::actionMappings::operator<<(
 			   m.name, int(m.shift), int(m.ctrl), int(m.alt), int(m.cmd),
 			   m.key);
 }
+
+static bool ParseKeyValue(
+	std::string token, std::string& keyOut, std::string& valueOut)
+{
+	size_t eq = token.find('=');
+	if (eq == std::string::npos) {
+		return false;
+	}
+
+	keyOut = token.substr(0, eq);
+	// Parse out the value, example: ActionName="AccessInventory"
+	// Exclude  = and " characters from the key  ---------------
+	if (keyOut == "ActionName") {
+		valueOut = token.substr(eq + 2, token.length() - (keyOut.length() + 3));
+	}
+	// Parse out the ending parantheses, example: Key=F)
+	else if (keyOut == "Key") {
+		valueOut = token.substr(eq + 1, token.length() - keyOut.length() - 2);
+	}
+	else {
+		valueOut = token.substr(eq + 1);
+	}
+	return true;
+}
+
+static bool ParseUserSetting(std::istringstream& stream, bool verbose)
+{
+
+	VERBOSE_LOG(stream.str());
+	return true;
+}
+
 
 static bool ParseActionMapping(std::istringstream& stream, bool verbose)
 {
@@ -32,26 +85,10 @@ static bool ParseActionMapping(std::istringstream& stream, bool verbose)
 	settings::actionMappings::ActionMapping* mapping = nullptr;
 
 	for (const std::string& token : tokens) {
-		size_t eq = token.find('=');
-		if (eq == std::string::npos) {
-			continue;
-		}
-
-		std::string key = token.substr(0, eq);
-
+		std::string key;
 		std::string value;
-
-		// Parse out the value, example: ActionName="AccessInventory"
-		// Exclude  = and " characters from the key  ---------------
-		if (key == "ActionName") {
-			value = token.substr(eq + 2, token.length() - (key.length() + 3));
-		}
-		// Parse out the ending parantheses, example: Key=F)
-		else if (key == "Key") {
-			value = token.substr(eq + 1, token.length() - key.length() - 2);
-		}
-		else {
-			value = token.substr(eq + 1);
+		if (!ParseKeyValue(token, key, value)) {
+			continue;
 		}
 
 		if (key == "ActionName") {
@@ -84,43 +121,57 @@ static bool ParseActionMapping(std::istringstream& stream, bool verbose)
 			mapping->key = value;
 		}
 	}
-	if (verbose) {
-		std::cout << "\t[-] Parsed " << *mapping << std::endl;
-	}
+	VERBOSE_LOG("\t[-] Parsed " << *mapping)
 	return true;
 }
 
 bool settings::actionMappings::LoadActionMappings(bool verbose)
 {
-	auto path = globals::gameBaseDirectory / inputsRelPath;
-	if (!std::filesystem::exists(path)) {
-		std::cout << std::format("[!] Path '{}' was not found.", path.string());
+	std::ifstream file;
+	if (!OpenFile(verbose, globals::gameBaseDirectory / inputsRelPath, file)) {
 		return false;
 	}
 
-	std::ifstream inFile(path.c_str());
-	if (!inFile.is_open()) {
-		std::cout << std::format("[!] Failed to open '{}'", path.string())
-				  << std::endl;
+	VERBOSE_LOG("[+] Parsing Input.ini...");
+	for (std::string line; std::getline(file, line);) {
+		if (line.find("ActionMappings=") != std::string::npos) {
+			std::istringstream ss(line);
+			ParseActionMapping(ss, verbose);
+		}
+	}
+	VERBOSE_LOG("[+] Input.ini parsed, mappings mapped.")
+}
+
+bool settings::gameUserSettings::LoadGameUserSettings(bool verbose)
+{
+	std::ifstream file;
+	auto path = globals::gameBaseDirectory / userSettingsRelPath;
+
+	if (!OpenFile(verbose, path, file)) {
 		return false;
 	}
 
-	if (verbose) {
-		std::cout << "[+] Parsing Input.ini..." << std::endl;
-	}
+	VERBOSE_LOG("[+] Parsing GameUserSettings.ini...")
+	bool sectionFound = false;
 
-	for (std::string line; std::getline(inFile, line);) {
+	for (std::string line; std::getline(file, line);) {
 
-		// we only care about the action mappings
-		if (line.find("ActionMappings=") == std::string::npos) {
+		bool sectionStart = line.find("ShooterGame") != std::string::npos;
+		if (line.find("ServerSettings") != std::string::npos) {
+			break;
+		}
+
+		if (!sectionFound && !sectionStart) {
+			continue;
+		}
+
+		if (sectionStart) {
+			sectionFound = true;
 			continue;
 		}
 
 		std::istringstream ss(line);
-		ParseActionMapping(ss, verbose);
+		ParseUserSetting(ss, verbose);
 	}
-
-	if (verbose) {
-		std::cout << "[+] Input.ini parsed, mappings mapped." << std::endl;
-	}
+	VERBOSE_LOG("[+] GameUserSettings.ini parsed.")
 }
