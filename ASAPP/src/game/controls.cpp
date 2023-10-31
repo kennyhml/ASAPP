@@ -2,6 +2,12 @@
 
 using namespace asa;
 
+const float controls::GetLRFactor() { return 3.2 / asa::settings::sensX.get(); }
+
+const float controls::GetUDFactor() { return 3.2 / asa::settings::sensY.get(); }
+
+const float controls::GetFovFactor() { return 1.25 / asa::settings::fov.get(); }
+
 int constexpr controls::GetMouseFlag(MouseButton button, bool down)
 {
 	switch (button) {
@@ -53,6 +59,33 @@ void controls::MousePress(MouseButton button, float durationMs)
 	MouseDown(button);
 	Sleep(durationMs);
 	MouseUp(button);
+}
+
+void controls::TurnDegrees(int x, int y)
+{
+	if (x > 360 || x < -360) {
+		x %= 360;
+	}
+	if (y > 90 || y < -90) {
+		y %= 90;
+	}
+
+	TurnPosition(x * pixelsPerDegree, y * pixelsPerDegree);
+}
+
+void controls::TurnPosition(int x, int y)
+{
+	LPPOINT pos{ 0 };
+	GetCursorPos(pos);
+
+	INPUT input{ 0 };
+	input.type = INPUT_MOUSE;
+
+	input.mi.dx = x * GetLRFactor() * GetFovFactor();
+	input.mi.dy = y * GetUDFactor() * GetFovFactor();
+	input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
+
+	SendInput(1, &input, sizeof(INPUT));
 }
 
 controls::KeyboardMapping controls::GetKeyboardMapping()

@@ -207,3 +207,4 @@ void window::SetMousePos(int x, int y)
 	// of the game
 	SetCursorPos(x, y);
 }
+

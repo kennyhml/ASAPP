@@ -93,6 +93,8 @@ namespace asa::settings
 		inline UserSetting<float> hotbarScale("UIQuickbarScaling");
 		inline UserSetting<float> cameraShake("CameraShakeScale");
 		inline UserSetting<float> fov("FOVMultiplier");
+		inline UserSetting<float> sensX("LookLeftRightSensitivity");
+		inline UserSetting<float> sensY("LookUpDownSensitivity");
 
 		inline UserSetting<bool> firstPersonRiding("bFirstPersonRiding");
 		inline UserSetting<bool> thirdPerson("bThirdPersonPlayer");

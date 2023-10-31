@@ -1,4 +1,5 @@
 #pragma once
+#include "settings.h"
 #include <Windows.h>
 #include <string>
 #include <unordered_map>
@@ -6,7 +7,6 @@
 namespace asa::controls
 {
 	using KeyboardMapping = std::unordered_map<std::string, int>;
-
 	enum MouseButton
 	{
 		LEFT,
@@ -16,10 +16,17 @@ namespace asa::controls
 		MOUSE5,
 	};
 
+	const float pixelsPerDegree = 129.f / 90.f;
+	const float GetLRFactor();
+	const float GetUDFactor();
+	const float GetFovFactor();
+	int constexpr GetMouseFlag(MouseButton button, bool down);
+
 	void MouseDown(MouseButton button);
 	void MouseUp(MouseButton button);
 	void MousePress(MouseButton button, float durationMs = 50);
-	int constexpr GetMouseFlag(MouseButton button, bool down);
+	void TurnDegrees(int x, int y);
+	void TurnPosition(int x, int y);
 
 	KeyboardMapping GetKeyboardMapping();
 	inline KeyboardMapping mapping = GetKeyboardMapping();
