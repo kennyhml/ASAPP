@@ -27,6 +27,7 @@ namespace asa::controls
 	void MousePress(MouseButton button, float durationMs = 50);
 	void TurnDegrees(int x, int y);
 	void TurnPosition(int x, int y);
+	void TurnTo(int x, int y);
 
 	KeyboardMapping GetKeyboardMapping();
 	inline KeyboardMapping mapping = GetKeyboardMapping();

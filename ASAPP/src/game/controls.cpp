@@ -63,10 +63,10 @@ void controls::MousePress(MouseButton button, float durationMs)
 
 void controls::TurnDegrees(int x, int y)
 {
-	if (x > 360 || x < -360) {
+	if (x >= 360 || x <= -360) {
 		x %= 360;
 	}
-	if (y > 90 || y < -90) {
+	if (y >= 90 || y <= -90) {
 		y %= 90;
 	}
 
@@ -75,9 +75,6 @@ void controls::TurnDegrees(int x, int y)
 
 void controls::TurnPosition(int x, int y)
 {
-	LPPOINT pos{ 0 };
-	GetCursorPos(pos);
-
 	INPUT input{ 0 };
 	input.type = INPUT_MOUSE;
 
@@ -85,6 +82,17 @@ void controls::TurnPosition(int x, int y)
 	input.mi.dy = y * GetUDFactor() * GetFovFactor();
 	input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
 
+	SendInput(1, &input, sizeof(INPUT));
+}
+
+void controls::TurnTo(int x, int y)
+{
+	INPUT input{ 0 };
+	input.type = INPUT_MOUSE;
+
+	input.mi.dx = (x - GetSystemMetrics(SM_CXSCREEN) / 2);
+	input.mi.dy = (y - GetSystemMetrics(SM_CYSCREEN) / 2);
+	input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
 	SendInput(1, &input, sizeof(INPUT));
 }
 
