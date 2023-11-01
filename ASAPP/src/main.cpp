@@ -5,7 +5,7 @@
 #include "game/window.h"
 #include <iostream>
 
-
+#include "interfaces/interfacemanager.h"
 int main()
 {
 
@@ -16,6 +16,12 @@ int main()
 	asa::settings::LoadGameUserSettings();
 
 
-	asa::controls::TurnTo(153, 584);
+
+	asa::ASAInterfaceManager inter = asa::ASAInterfaceManager();
+
+	while (true) {
+		std::cout << inter.IsOpen() << std::endl;
+	}
+
 	return 0;
 }

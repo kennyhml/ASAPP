@@ -3,7 +3,7 @@
 
 namespace asa
 {
-	class ASAInventory : IASAInterface
+	class Inventory : IASAInterface
 	{
 	};
 

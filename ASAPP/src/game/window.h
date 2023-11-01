@@ -40,6 +40,8 @@ namespace asa::window
 		{
 			return Point(x + width, y + height);
 		}
+
+		const Point GetRandLocation(int padding) const;
 	};
 
 	std::optional<Rect> LocateTemplate(

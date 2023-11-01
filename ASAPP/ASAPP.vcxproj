@@ -162,6 +162,7 @@
     <ClCompile Include="src\game\controls.cpp" />
     <ClCompile Include="src\game\settings.cpp" />
     <ClCompile Include="src\game\window.cpp" />
+    <ClCompile Include="src\interfaces\interfacemanager.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClInclude Include="src\entities\basedino.h" />
     <ClInclude Include="src\entities\iasaentity.h" />
