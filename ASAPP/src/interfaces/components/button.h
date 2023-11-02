@@ -5,8 +5,6 @@ namespace asa
 {
 	struct ASAButton : IASAInterfaceComponent
 	{
-		using IASAInterfaceComponent::IASAInterfaceComponent;
-
 		ASAButton(window::Rect area, int padding = 2)
 			: borderPadding(padding), IASAInterfaceComponent(area){};
 

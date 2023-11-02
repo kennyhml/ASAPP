@@ -89,10 +89,13 @@ void controls::TurnTo(int x, int y)
 {
 	INPUT input{ 0 };
 	input.type = INPUT_MOUSE;
+	int moveX = (x - GetSystemMetrics(SM_CXSCREEN) / 2);
+	int moveY = (y - GetSystemMetrics(SM_CYSCREEN) / 2);
 
-	input.mi.dx = (x - GetSystemMetrics(SM_CXSCREEN) / 2);
-	input.mi.dy = (y - GetSystemMetrics(SM_CYSCREEN) / 2);
+	input.mi.dx = moveX;
+	input.mi.dy = moveY;
 	input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
+
 	SendInput(1, &input, sizeof(INPUT));
 }
 

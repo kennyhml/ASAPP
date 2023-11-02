@@ -5,7 +5,9 @@
 #include "game/window.h"
 #include <iostream>
 
+#include "interfaces/baseinventory.h"
 #include "interfaces/interfacemanager.h"
+
 int main()
 {
 
@@ -15,12 +17,11 @@ int main()
 	asa::window::SetForeground();
 	asa::settings::LoadGameUserSettings();
 
+	auto inv = asa::BaseInventory(true);
 
-
-	asa::ASAInterfaceManager inter = asa::ASAInterfaceManager();
 
 	while (true) {
-		std::cout << inter.IsOpen() << std::endl;
+		std::cout << inv.IsOpen() << std::endl;
 	}
 
 	return 0;

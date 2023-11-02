@@ -163,6 +163,7 @@
     <ClCompile Include="src\game\settings.cpp" />
     <ClCompile Include="src\game\window.cpp" />
     <ClCompile Include="src\interfaces\interfacemanager.cpp" />
+    <ClCompile Include="src\interfaces\baseinventory.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClInclude Include="src\entities\basedino.h" />
     <ClInclude Include="src\entities\iasaentity.h" />
@@ -185,7 +186,7 @@
     <ClInclude Include="src\interfaces\components\playerinfo.h" />
     <ClInclude Include="src\interfaces\iasainterface.h" />
     <ClInclude Include="src\interfaces\interfacemanager.h" />
-    <ClInclude Include="src\interfaces\inventory.h" />
+    <ClInclude Include="src\interfaces\baseinventory.h" />
     <ClInclude Include="src\interfaces\components\entityinfo.h" />
     <ClInclude Include="src\interfaces\components\iasainterfacecomponent.h" />
     <ClInclude Include="src\interfaces\components\searchbar.h" />

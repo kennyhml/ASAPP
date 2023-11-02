@@ -21,7 +21,7 @@
     <ClInclude Include="src\game\window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\inventory.h">
+    <ClInclude Include="src\interfaces\baseinventory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\interfaces\interfacemanager.h">
@@ -132,6 +132,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\interfaces\interfacemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\interfaces\baseinventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
