@@ -14,6 +14,7 @@ void asa::ASASearchBar::Press() const
 
 void asa::ASASearchBar::SearchFor(std::string term)
 {
+	this->isSearching = true;
 	if (!OpenClipboard(nullptr)) {
 		std::cout << "[!] Failed to open clipboard." << std::endl;
 		return;
@@ -34,7 +35,22 @@ void asa::ASASearchBar::SearchFor(std::string term)
 	CloseClipboard();
 	GlobalFree(hClipboardData);
 
-	controls::KeyDown("ctrl");
-	controls::KeyPress("v");
-	controls::KeyUp("ctrl");
+	controls::KeyCombinationPress("Ctrl", "v");
+	controls::KeyPress("Esc");
+
+	this->isSearching = false;
+	this->lastSearchedTerm = term;
+	this->isTextEntered = true;
+}
+
+void asa::ASASearchBar::DeleteSearch()
+{
+	this->Press();
+
+	controls::KeyCombinationPress("Ctrl", "a");
+	controls::KeyPress("Delete");
+	Sleep(100);
+	controls::KeyPress("Esc");
+
+	this->SetTextCleared();
 }

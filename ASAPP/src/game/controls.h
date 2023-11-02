@@ -35,5 +35,6 @@ namespace asa::controls
 	void KeyDown(std::string key);
 	void KeyUp(std::string key);
 	void KeyPress(std::string key, float durationMs = 50);
+	void KeyCombinationPress(std::string holdKey, std::string pressKey);
 	int GetVirtualCode(std::string key);
 }

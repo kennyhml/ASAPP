@@ -21,5 +21,8 @@ int main()
 	inv.searchBar.Press();
 	inv.searchBar.SearchFor("Meow");
 
+	Sleep(2000);
+	inv.searchBar.DeleteSearch();
+
 	return 0;
 }
