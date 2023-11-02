@@ -137,5 +137,8 @@
     <ClCompile Include="src\interfaces\baseinventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\interfaces\components\searchbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

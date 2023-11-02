@@ -10,19 +10,16 @@
 
 int main()
 {
-
 	asa::globals::gameBaseDirectory = std::filesystem::path(
 		"F:\\SteamLibrary\\steamapps\\common\\ARK Survival Ascended");
 	asa::window::SetHandleTo("ArkAscended", 60, true);
 	asa::window::SetForeground();
 	asa::settings::LoadGameUserSettings();
 
-	auto inv = asa::BaseInventory(true);
+	auto inv = asa::BaseInventory(false);
 
-
-	while (true) {
-		std::cout << inv.IsOpen() << std::endl;
-	}
+	inv.searchBar.Press();
+	inv.searchBar.SearchFor("Meow");
 
 	return 0;
 }

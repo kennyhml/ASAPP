@@ -162,6 +162,7 @@
     <ClCompile Include="src\game\controls.cpp" />
     <ClCompile Include="src\game\settings.cpp" />
     <ClCompile Include="src\game\window.cpp" />
+    <ClCompile Include="src\interfaces\components\searchbar.cpp" />
     <ClCompile Include="src\interfaces\interfacemanager.cpp" />
     <ClCompile Include="src\interfaces\baseinventory.cpp" />
     <ClCompile Include="src\main.cpp" />

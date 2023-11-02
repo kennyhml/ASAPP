@@ -111,7 +111,7 @@ controls::KeyboardMapping controls::GetKeyboardMapping()
 		{ "NumPadThree", VK_NUMPAD3 }, { "NumPadFour", VK_NUMPAD4 },
 		{ "NumPadFive", VK_NUMPAD5 }, { "NumPadSix", VK_NUMPAD6 },
 		{ "NumPadSeven", VK_NUMPAD7 }, { "NumPadEight", VK_NUMPAD8 },
-		{ "NumPadNine", VK_NUMPAD9 } };
+		{ "NumPadNine", VK_NUMPAD9 }, { "ctrl", VK_CONTROL } };
 
 	for (int i = 32; i < 128; i++) {
 		char c = static_cast<char>(i);

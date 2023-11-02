@@ -1,6 +1,7 @@
 #include "window.h"
 #include <chrono>
 #include <iostream>
+#include <random>
 
 using namespace asa;
 
@@ -8,6 +9,23 @@ void window::Color::ToRange(int v, cv::Scalar& low, cv::Scalar& high) const
 {
 	low = cv::Scalar(max(0, r - v), max(0, g - v), max(0, b - v));
 	high = cv::Scalar(min(255, r + v), min(255, g + v), min(255, b + v));
+}
+
+const window::Point window::Rect::GetRandLocation(int padding) const
+{
+	const int xMin = padding;
+	const int xMax = this->width - padding;
+
+	const int yMin = padding;
+	const int yMax = this->height - padding;
+
+	std::random_device rd;
+	std::mt19937 gen(rd());
+
+	std::uniform_int_distribution<int> randXRange(xMin, xMax);
+	std::uniform_int_distribution<int> randYRange(yMin, yMax);
+
+	return Point{ this->x + randXRange(gen), this->y + randYRange(gen) };
 }
 
 std::optional<window::Rect> window::LocateTemplate(
@@ -207,4 +225,3 @@ void window::SetMousePos(int x, int y)
 	// of the game
 	SetCursorPos(x, y);
 }
-
