@@ -1,33 +1,31 @@
 #pragma once
 #include "../game/window.h"
 #include "components/button.h"
-#include "iasainterface.h"
+#include "iinterface.h"
 
-namespace asa
+namespace asa::interfaces
 {
-	class ASAInterfaceManager : IASAInterface
+	class InterfaceManager : IInterface
 	{
-		struct ASATabButton : ASAButton
+		struct TabButton : components::Button
 		{
-			ASATabButton(int x) : ASAButton(x, 53, 47, 48){};
+			TabButton(int x) : Button(x, 53, 47, 48){};
 
-			using ASAButton::ASAButton;
+			using Button::Button;
 			bool IsSelected() const;
 		};
 
 	public:
-		ASAButton closeButton{ 1784, 50, 32, 31 };
+		components::Button closeButton{ 1784, 50, 32, 31 };
 
-		ASATabButton inventoryTabButton{ 794 };
-		ASATabButton engramsTabButton{ 851 };
-		ASATabButton tribeTabButton{ 908 };
-		ASATabButton trackingTabButton{ 965 };
-		ASATabButton notesTabButton{ 1022 };
-		ASATabButton mapTabButton{ 1079 };
+		TabButton inventoryTabButton{ 794 };
+		TabButton engramsTabButton{ 851 };
+		TabButton tribeTabButton{ 908 };
+		TabButton trackingTabButton{ 965 };
+		TabButton notesTabButton{ 1022 };
+		TabButton mapTabButton{ 1079 };
 
-
-
-		IASAInterface* GetOpenInterface() const;
+		IInterface* GetOpenInterface() const;
 
 		bool IsOpen();
 	};

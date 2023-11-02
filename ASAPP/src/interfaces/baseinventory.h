@@ -1,13 +1,14 @@
 #pragma once
 #include "../game/window.h"
+#include "components/button.h"
 #include "components/combobox.h"
 #include "components/searchbar.h"
 
-#include "iasainterface.h"
+#include "iinterface.h"
 
-namespace asa
+namespace asa::interfaces
 {
-	class BaseInventory : IASAInterface
+	class BaseInventory : IInterface
 	{
 	public:
 		BaseInventory(bool isRemote) : isRemoteInventory(isRemote)
@@ -20,8 +21,9 @@ namespace asa
 			this->searchBar = { origin.x + 29, origin.y + 84, 172, 44 };
 		};
 
-		ASAComboBox itemFilter;
-		ASASearchBar searchBar;
+		components::ComboBox itemFilter;
+		components::SearchBar searchBar;
+		components::Button transferAllButton;
 
 		window::Rect GetArea() const;
 

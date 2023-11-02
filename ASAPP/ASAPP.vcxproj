@@ -187,11 +187,11 @@
     <ClInclude Include="src\interfaces\components\button.h" />
     <ClInclude Include="src\interfaces\components\dinoinfo.h" />
     <ClInclude Include="src\interfaces\components\playerinfo.h" />
-    <ClInclude Include="src\interfaces\iasainterface.h" />
+    <ClInclude Include="src\interfaces\iinterface.h" />
     <ClInclude Include="src\interfaces\interfacemanager.h" />
     <ClInclude Include="src\interfaces\baseinventory.h" />
     <ClInclude Include="src\interfaces\components\entityinfo.h" />
-    <ClInclude Include="src\interfaces\components\iasainterfacecomponent.h" />
+    <ClInclude Include="src\interfaces\components\iinterfacecomponent.h" />
     <ClInclude Include="src\interfaces\components\searchbar.h" />
     <ClInclude Include="src\items\consumableitem.h" />
     <ClInclude Include="src\items\equippableitem.h" />

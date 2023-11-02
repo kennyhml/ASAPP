@@ -2,7 +2,7 @@
 #include "../../game/controls.h"
 #include <Windows.h>
 
-void asa::ASASearchBar::Press() const
+void asa::interfaces::components::SearchBar::Press() const
 {
 	window::Point loc = this->area.GetRandLocation(2);
 
@@ -12,7 +12,7 @@ void asa::ASASearchBar::Press() const
 	Sleep(30);
 }
 
-void asa::ASASearchBar::SearchFor(std::string term)
+void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 {
 	this->isSearching = true;
 	if (!OpenClipboard(nullptr)) {
@@ -43,13 +43,14 @@ void asa::ASASearchBar::SearchFor(std::string term)
 	this->isTextEntered = true;
 }
 
-void asa::ASASearchBar::DeleteSearch()
+void asa::interfaces::components::SearchBar::DeleteSearch()
 {
 	this->Press();
 
 	controls::KeyCombinationPress("Ctrl", "a");
-	controls::KeyPress("Delete");
 	Sleep(100);
+	controls::KeyPress("Delete");
+	Sleep(300);
 	controls::KeyPress("Esc");
 
 	this->SetTextCleared();

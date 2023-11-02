@@ -1,12 +1,12 @@
 #pragma once
-#include "iasainterfacecomponent.h"
+#include "iinterfacecomponent.h"
 #include <string>
 
-namespace asa
+namespace asa::interfaces::components
 {
-	struct ASASearchBar : IASAInterfaceComponent
+	struct SearchBar : IInterfaceComponent
 	{
-		using IASAInterfaceComponent::IASAInterfaceComponent;
+		using IInterfaceComponent::IInterfaceComponent;
 
 		void Press() const;
 		void SearchFor(std::string term);

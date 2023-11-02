@@ -1,8 +1,8 @@
 #pragma once
 
-namespace asa
+namespace asa::interfaces
 {
-	class IASAInterface
+	class IInterface
 	{
 	public:
 		virtual bool IsOpen() = 0;

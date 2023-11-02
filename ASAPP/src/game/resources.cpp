@@ -38,8 +38,9 @@ bool asa::resources::Init()
 	std::cout << "[+] Initializing resources..." << std::endl;
 
 	if (!InitInterfaces()) {
-		return;
+		return false;
 	}
+	return true;
 }
 
 bool asa::resources::interfaces::InitInterfaces()

@@ -1,21 +1,12 @@
 #pragma once
-#include "iasainterfacecomponent.h"
+#include "iinterfacecomponent.h"
 
-namespace asa
+namespace asa::interfaces::components
 {
 
-	struct ASAComboBox : IASAInterfaceComponent
+	struct ComboBox : IInterfaceComponent
 	{
-		using IASAInterfaceComponent::IASAInterfaceComponent;
-
-
-
-
-
-
-
-
-
+		using IInterfaceComponent::IInterfaceComponent;
 	};
 
 

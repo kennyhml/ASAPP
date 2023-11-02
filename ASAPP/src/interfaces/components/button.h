@@ -1,16 +1,17 @@
 #pragma once
-#include "iasainterfacecomponent.h"
+#include "iinterfacecomponent.h"
 
-namespace asa
+namespace asa::interfaces::components
 {
-	struct ASAButton : IASAInterfaceComponent
+	struct Button : IInterfaceComponent
 	{
-		ASAButton(window::Rect area, int padding = 2)
-			: borderPadding(padding), IASAInterfaceComponent(area){};
+		Button() : Button(0, 0, 0, 0){};
+		Button(window::Rect area, int padding = 2)
+			: borderPadding(padding), IInterfaceComponent(area){};
 
-		ASAButton(int x, int y, int width, int height, int padding = 2)
+		Button(int x, int y, int width, int height, int padding = 2)
 			: borderPadding(padding),
-			  IASAInterfaceComponent(x, y, width, height){};
+			  IInterfaceComponent(x, y, width, height){};
 
 		int borderPadding;
 

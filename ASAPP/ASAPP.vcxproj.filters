@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\interfaces\iasainterface.h">
+    <ClInclude Include="src\interfaces\iinterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\game\window.h">
@@ -36,7 +36,7 @@
     <ClInclude Include="src\interfaces\components\entityinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\components\iasainterfacecomponent.h">
+    <ClInclude Include="src\interfaces\components\iinterfacecomponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\interfaces\components\searchbar.h">

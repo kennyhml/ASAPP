@@ -1,8 +1,6 @@
 #include "interfacemanager.h"
 
-
-
-bool asa::ASAInterfaceManager::IsOpen()
+bool asa::interfaces::InterfaceManager::IsOpen()
 {
 	window::Color xColor(169, 246, 254);
 	cv::Mat masked = window::GetMask(this->closeButton.area, xColor, 25);
@@ -10,7 +8,7 @@ bool asa::ASAInterfaceManager::IsOpen()
 	return cv::countNonZero(masked) > 20;
 }
 
-bool asa::ASAInterfaceManager::ASATabButton::IsSelected() const
+bool asa::interfaces::InterfaceManager::TabButton::IsSelected() const
 {
 	window::Color selectedColor(210, 229, 240);
 	auto masked = window::GetMask(this->area, selectedColor, 25);

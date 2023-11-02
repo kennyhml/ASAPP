@@ -155,6 +155,8 @@ void controls::KeyPress(std::string key, float durationMs)
 void controls::KeyCombinationPress(std::string holdKey, std::string pressKey)
 {
 	KeyDown(holdKey);
+	Sleep(20);
 	KeyPress(pressKey);
+	Sleep(20);
 	KeyUp(holdKey);
 }

@@ -16,7 +16,7 @@ int main()
 	asa::window::SetForeground();
 	asa::settings::LoadGameUserSettings();
 
-	auto inv = asa::BaseInventory(false);
+	auto inv = asa::interfaces::BaseInventory(false);
 
 	inv.searchBar.Press();
 	inv.searchBar.SearchFor("Meow");
