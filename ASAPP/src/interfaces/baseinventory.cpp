@@ -1,11 +1,11 @@
 #include "baseinventory.h"
+#include "../game/resources.h"
 
 bool asa::BaseInventory::IsOpen()
 {
-	auto img = cv::imread(
-		"src/assets/interfaces/cb_arrowdown.png", cv::IMREAD_COLOR);
 
-	return window::MatchTemplate(this->itemFilter.area, img);
+	return window::MatchTemplate(
+		this->itemFilter.area, resources::cb_arrowdown);
 }
 
 asa::window::Rect asa::BaseInventory::GetArea() const { return this->area; }

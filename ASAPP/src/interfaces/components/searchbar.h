@@ -11,8 +11,8 @@ namespace asa
 		void Press() const;
 		void SearchFor(std::string term);
 		void DeleteSearch();
-		void SetTextCleared() { this->isTextEntered = false; }
 
+		void SetTextCleared() { this->isTextEntered = false; }
 		bool GetLastSearchedTerm(std::string& termOut) const { return 1; };
 		bool IsSearching() const { return this->isSearching; }
 		bool TextIsEntered() const { return this->isTextEntered; }
