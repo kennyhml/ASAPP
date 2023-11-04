@@ -1,12 +1,11 @@
 #pragma once
 #include "game/controls.h"
 #include "game/globals.h"
+#include "game/resources.h"
 #include "game/settings.h"
 #include "game/window.h"
+#include "interfaces/localinventory.h"
 #include <iostream>
-
-#include "interfaces/baseinventory.h"
-#include "interfaces/interfacemanager.h"
 
 int main()
 {
@@ -15,13 +14,14 @@ int main()
 	asa::window::SetHandleTo("ArkAscended", 60, true);
 	asa::window::SetForeground();
 	asa::settings::LoadGameUserSettings();
+	asa::settings::LoadActionMappings();
 
-	auto inv = asa::interfaces::BaseInventory(true);
+	asa::resources::assetsDir = std::filesystem::path(
+		"C:\\dev\\ASAPP\\ASAPP\\src\\assets");
+	asa::resources::Init();
 
-	while (true) {
-
-		std::cout << inv.folderViewButton.IsToggled() << std::endl;
-	}
+	auto inv = asa::interfaces::LocalInventory();
+	inv.Open();
 
 	return 0;
 }

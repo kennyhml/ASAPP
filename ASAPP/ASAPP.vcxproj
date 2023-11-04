@@ -166,6 +166,7 @@
     <ClCompile Include="src\interfaces\components\searchbar.cpp" />
     <ClCompile Include="src\interfaces\interfacemanager.cpp" />
     <ClCompile Include="src\interfaces\baseinventory.cpp" />
+    <ClCompile Include="src\interfaces\localinventory.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClInclude Include="src\entities\basedino.h" />
     <ClInclude Include="src\entities\iasaentity.h" />

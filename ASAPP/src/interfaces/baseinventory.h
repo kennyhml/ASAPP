@@ -10,7 +10,7 @@ namespace asa::interfaces
 {
 	class BaseInventory : IInterface
 	{
-
+	protected:
 		struct ManagementButton : components::Button
 		{
 			ManagementButton() : Button(0, 0, 0, 0){};
@@ -42,6 +42,11 @@ namespace asa::interfaces
 			this->newFolderButton = ManagementButton(org.x + 361, org.y + 84);
 			this->autoStackButton = ManagementButton(org.x + 408, org.y + 84);
 			this->folderViewButton = ManagementButton(org.x + 481, org.y + 84);
+		};
+
+		enum Tab
+		{
+			INVENTORY,
 		};
 
 		components::ComboBox itemFilter;

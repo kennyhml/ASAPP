@@ -21,6 +21,10 @@ using namespace asa::interfaces;
 {
 	window::Color selectedColor(188, 244, 255);
 	auto masked = window::GetMask(this->area, selectedColor, 25);
+
+	cv::imshow("t", masked);
+	cv::waitKey(1);
+
 	return cv::countNonZero(masked) > 100;
 }
 
@@ -28,6 +32,10 @@ using namespace asa::interfaces;
 {
 	window::Color inactiveColor(80, 141, 155);
 	auto masked = window::GetMask(this->area, inactiveColor, 25);
+
+	cv::imshow("t", masked);
+	cv::waitKey(1);
+
 	return cv::countNonZero(masked) > 100 || this->IsSelected();
 }
 
