@@ -179,9 +179,14 @@
     <ClInclude Include="src\interfaces\engrams.h" />
     <ClInclude Include="src\interfaces\explorernotes.h" />
     <ClInclude Include="src\interfaces\interfaces.h" />
+    <ClInclude Include="src\interfaces\localinventory.h" />
+    <ClInclude Include="src\interfaces\mainmenu.h" />
     <ClInclude Include="src\interfaces\map.h" />
     <ClInclude Include="src\interfaces\menu.h" />
     <ClInclude Include="src\interfaces\minimap.h" />
+    <ClInclude Include="src\interfaces\modeselect.h" />
+    <ClInclude Include="src\interfaces\playerinventory.h" />
+    <ClInclude Include="src\interfaces\serverselect.h" />
     <ClInclude Include="src\interfaces\trackingtab.h" />
     <ClInclude Include="src\interfaces\tribemanager.h" />
     <ClInclude Include="src\interfaces\components\button.h" />

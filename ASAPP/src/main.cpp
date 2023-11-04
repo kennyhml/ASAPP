@@ -16,13 +16,12 @@ int main()
 	asa::window::SetForeground();
 	asa::settings::LoadGameUserSettings();
 
-	auto inv = asa::interfaces::BaseInventory(false);
+	auto inv = asa::interfaces::BaseInventory(true);
 
-	inv.searchBar.Press();
-	inv.searchBar.SearchFor("Meow");
+	while (true) {
 
-	Sleep(2000);
-	inv.searchBar.DeleteSearch();
+		std::cout << inv.folderViewButton.IsToggled() << std::endl;
+	}
 
 	return 0;
 }
