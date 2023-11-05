@@ -23,17 +23,6 @@ int main()
 
 	auto inv = asa::interfaces::LocalInventory();
 
-	try {
-		throw asa::interfaces::exceptions::InterfaceNotOpenedError(&inv);
-	}
-	catch (asa::interfaces::exceptions::InterfaceError& e) {
-
-		std::cout << e.what() << std::endl;
-	}
-
-
-
-	inv.Open();
 
 	return 0;
 }

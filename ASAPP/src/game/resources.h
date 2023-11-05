@@ -18,7 +18,19 @@ namespace asa::resources
 
 	inline namespace items
 	{
-
+		bool InitItems();
+		inline cv::Mat metal;
+		inline cv::Mat metal_ingot;
+		inline cv::Mat cementing_paste;
+		inline cv::Mat crystal;
+		inline cv::Mat fiber;
+		inline cv::Mat flint;
+		inline cv::Mat gunpowder;
+		inline cv::Mat obsidian;
+		inline cv::Mat polymer;
+		inline cv::Mat stone;
+		inline cv::Mat thatch;
+		inline cv::Mat wood;
 	}
 
 	inline namespace icons

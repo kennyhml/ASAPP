@@ -69,7 +69,7 @@
     <ClInclude Include="src\interfaces\components\combobox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\items\iasaitem.h">
+    <ClInclude Include="src\items\item.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\interfaces\interfaces.h">
@@ -88,15 +88,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\items\recipe.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\items\placeableitem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\items\equippableitem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\items\consumableitem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\structures\iasastructure.h">
@@ -174,6 +165,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\interfaces\exceptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\interfaces\components\button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

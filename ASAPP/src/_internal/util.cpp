@@ -16,3 +16,12 @@ bool internal::_util::Await(
 	}
 	return true;
 }
+
+bool internal::_util::Timedout(
+	std::chrono::system_clock::time_point& start, std::chrono::seconds timeout)
+{
+	auto now = std::chrono::system_clock::now();
+	auto timePassed = now - start;
+
+	return timePassed >= timeout;
+}

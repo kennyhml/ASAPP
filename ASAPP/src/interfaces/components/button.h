@@ -6,12 +6,8 @@ namespace asa::interfaces::components
 {
 	struct Button : IInterfaceComponent
 	{
-		using TimeStamp = std::chrono::time_point<std::chrono::system_clock,
-			std::chrono::seconds>;
-
-		inline static TimeStamp lastButtonPress =
-			std::chrono::time_point_cast<std::chrono::seconds>(
-				std::chrono::system_clock::now());
+		inline static std::chrono::system_clock::time_point lastButtonPress =
+			std::chrono::system_clock::now();
 
 		Button() : Button(0, 0, 0, 0){};
 		Button(window::Rect area, int padding = 2)
@@ -23,15 +19,8 @@ namespace asa::interfaces::components
 
 		int borderPadding;
 
-		std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds>
-			lastPress;
+		std::chrono::system_clock::time_point lastPressed;
 
-		virtual void Press()
-		{
-			this->lastPress =
-				std::chrono::time_point_cast<std::chrono::seconds>(
-					std::chrono::system_clock::now());
-			this->lastButtonPress = lastPress;
-		};
+		virtual void Press();
 	};
 }

@@ -1,9 +1,9 @@
 #pragma once
 #include "../game/window.h"
+#include "../items/item.h"
 #include "components/button.h"
 #include "components/combobox.h"
 #include "components/searchbar.h"
-
 #include "iinterface.h"
 
 namespace asa::interfaces
@@ -61,6 +61,7 @@ namespace asa::interfaces
 		window::Rect GetArea() const;
 
 		virtual bool IsOpen();
+		virtual bool HasItem(items::Item* item, bool searchFor = true);
 
 	private:
 		bool isRemoteInventory{ false };

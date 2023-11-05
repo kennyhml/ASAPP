@@ -163,6 +163,7 @@
     <ClCompile Include="src\game\resources.cpp" />
     <ClCompile Include="src\game\settings.cpp" />
     <ClCompile Include="src\game\window.cpp" />
+    <ClCompile Include="src\interfaces\components\button.cpp" />
     <ClCompile Include="src\interfaces\components\searchbar.cpp" />
     <ClCompile Include="src\interfaces\exceptions.cpp" />
     <ClCompile Include="src\interfaces\interfacemanager.cpp" />
@@ -202,10 +203,7 @@
     <ClInclude Include="src\interfaces\components\entityinfo.h" />
     <ClInclude Include="src\interfaces\components\iinterfacecomponent.h" />
     <ClInclude Include="src\interfaces\components\searchbar.h" />
-    <ClInclude Include="src\items\consumableitem.h" />
-    <ClInclude Include="src\items\equippableitem.h" />
-    <ClInclude Include="src\items\iasaitem.h" />
-    <ClInclude Include="src\items\placeableitem.h" />
+    <ClInclude Include="src\items\item.h" />
     <ClInclude Include="src\items\recipe.h" />
     <ClInclude Include="src\structures\container.h" />
     <ClInclude Include="src\structures\craftingstation.h" />

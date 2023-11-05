@@ -5,6 +5,10 @@
 
 using namespace asa::interfaces;
 
+exceptions::InterfaceError::InterfaceError(
+	IInterface* _interface, std::string message)
+	: message(std::format("Interface Error at {}: {}",
+		  internal::_util::GetName(*_interface), message)){};
 
 exceptions::InterfaceError::InterfaceError(IInterface* _interface)
 	: message(std::format(

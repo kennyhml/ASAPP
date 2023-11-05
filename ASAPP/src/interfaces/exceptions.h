@@ -11,6 +11,7 @@ namespace asa::interfaces::exceptions
 		std::string message;
 
 	public:
+		InterfaceError(IInterface* _interface, std::string message);
 		InterfaceError(IInterface* _interface);
 
 		const char* what();

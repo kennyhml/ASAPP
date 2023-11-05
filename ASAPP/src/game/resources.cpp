@@ -37,9 +37,10 @@ bool asa::resources::Init()
 
 	std::cout << "[+] Initializing resources..." << std::endl;
 
-	if (!InitInterfaces()) {
+	if (!InitInterfaces() || !InitItems()) {
 		return false;
 	}
+
 	return true;
 }
 
@@ -51,4 +52,26 @@ bool asa::resources::interfaces::InitInterfaces()
 	}
 
 	LOAD_RESOURCE(dir, cb_arrowdown);
+}
+
+bool asa::resources::items::InitItems()
+{
+	auto dir = assetsDir / "items";
+	if (!IsValidAssetsDir(dir)) {
+		return false;
+	}
+
+	LOAD_RESOURCE(dir, metal);
+	LOAD_RESOURCE(dir, metal_ingot);
+	LOAD_RESOURCE(dir, cementing_paste);
+	LOAD_RESOURCE(dir, crystal);
+	LOAD_RESOURCE(dir, fiber);
+	LOAD_RESOURCE(dir, flint);
+	LOAD_RESOURCE(dir, gunpowder);
+	LOAD_RESOURCE(dir, metal);
+	LOAD_RESOURCE(dir, obsidian);
+	LOAD_RESOURCE(dir, polymer);
+	LOAD_RESOURCE(dir, stone);
+	LOAD_RESOURCE(dir, thatch);
+	LOAD_RESOURCE(dir, wood);
 }

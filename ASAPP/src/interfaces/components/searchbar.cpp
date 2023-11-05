@@ -14,6 +14,7 @@ void asa::interfaces::components::SearchBar::Press() const
 
 void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 {
+	this->Press();
 	this->isSearching = true;
 	if (!OpenClipboard(nullptr)) {
 		std::cout << "[!] Failed to open clipboard." << std::endl;

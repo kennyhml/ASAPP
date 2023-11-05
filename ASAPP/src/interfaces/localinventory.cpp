@@ -2,21 +2,20 @@
 #include "../_internal/util.h"
 #include "../game/controls.h"
 #include "../game/settings.h"
+#include "exceptions.h"
 
 void asa::interfaces::LocalInventory::Open()
 {
 	auto start = std::chrono::system_clock::now();
-
 	while (!this->IsOpen()) {
 		controls::KeyPress(settings::showMyInventory.key);
 		if (internal::_util::Await(
 				[this]() { return this->IsOpen(); }, std::chrono::seconds(5))) {
 			return;
 		}
-		auto now = std::chrono::system_clock::now();
-		if (std::chrono::duration_cast<std::chrono::seconds>(now - start)
-				.count() > 30) {
-			throw std::runtime_error("Failed to open interface!");
+
+		if (internal::_util::Timedout(start, std::chrono::seconds(30))) {
+			throw exceptions::InterfaceNotOpenedError(this);
 		}
 	}
 }
@@ -37,11 +36,17 @@ void asa::interfaces::LocalInventory::SwitchTo(Tab tab)
 	}
 	assert(button != nullptr);
 
-	int i = 0;
+	auto start = std::chrono::system_clock::now();
 	while (!button->IsSelected()) {
-		if (i % 25 == 0) {
-			button->Press();
+		button->Press();
+		if (internal::_util::Await([button]() { return button->IsSelected(); },
+				std::chrono::seconds(5))) {
+			return;
 		}
-		Sleep(20);
+
+		if (internal::_util::Timedout(start, std::chrono::seconds(30))) {
+			throw exceptions::InterfaceError(
+				this, "Failed to open tab " + std::to_string(tab));
+		}
 	}
 }

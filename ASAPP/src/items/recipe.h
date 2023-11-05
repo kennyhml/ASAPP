@@ -1,15 +1,15 @@
 #pragma once
-#include "iasaitem.h"
+#include "item.h"
 #include <unordered_map>
 
 struct Structure;
-struct IASAItem;
+struct Item;
 
-namespace asa
+namespace asa::items
 {
 	struct Recipe
 	{
 		Structure* craftIn = nullptr;
-		std::unordered_map<IASAItem*, uint16_t> requiredMaterials;
+		std::unordered_map<Item*, uint16_t> requiredMaterials;
 	};
 }
