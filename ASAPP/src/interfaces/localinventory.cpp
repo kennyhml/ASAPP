@@ -2,17 +2,20 @@
 #include "../game/controls.h"
 #include "../game/settings.h"
 
-bool asa::interfaces::LocalInventory::Open()
+void asa::interfaces::LocalInventory::Open()
 {
-	int i = 0;
+	auto start = std::chrono::system_clock::now();
+
 	while (!this->IsOpen()) {
-		if (i % 500 == 0) {
-			controls::KeyPress(settings::showMyInventory.key);
+		controls::KeyPress(settings::showMyInventory.key);
+		if (this->AwaitOpen(5)) {
+			return;
 		}
-		Sleep(20);
-		i++;
+		auto now = std::chrono::system_clock::now();
+		if (std::chrono::duration_cast<seconds>(now - start).count() > 30) {
+			throw std::runtime_error("Failed to open interface!");
+		}
 	}
-	return true;
 }
 
 void asa::interfaces::LocalInventory::SwitchTo(Tab tab)

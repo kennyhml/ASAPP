@@ -20,7 +20,7 @@ namespace asa::interfaces
 		InvTabButton cosmeticsTab{ 358, 120, 184, 46 };
 		InvTabButton craftingTab{ 542, 120, 183, 45 };
 
-		bool Open();
+		void Open();
 
 		void SwitchTo(Tab tab);
 	};

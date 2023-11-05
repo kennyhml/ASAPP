@@ -8,6 +8,7 @@ bool asa::interfaces::InterfaceManager::IsOpen()
 	return cv::countNonZero(masked) > 20;
 }
 
+
 bool asa::interfaces::InterfaceManager::TabButton::IsSelected() const
 {
 	window::Color selectedColor(210, 229, 240);

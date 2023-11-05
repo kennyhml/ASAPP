@@ -79,7 +79,6 @@ static std::any ConvertSettingValue(std::string key, std::string value)
 static bool ParseUserSetting(std::istringstream& stream, bool verbose)
 {
 	auto& map = settings::gameUserSettings::settingValueMap;
-	VERBOSE_LOG(stream.str());
 
 	std::string key;
 	std::string value;
@@ -93,6 +92,7 @@ static bool ParseUserSetting(std::istringstream& stream, bool verbose)
 	}
 
 	map[key] = ConvertSettingValue(key, value);
+	VERBOSE_LOG("\t[-] Parsed " << key << " (" << value << ")");
 	return true;
 }
 

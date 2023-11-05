@@ -28,6 +28,8 @@ namespace asa::interfaces
 			[[nodiscard]] bool Exists() const;
 		};
 
+		virtual bool AwaitOpen(float timeout);
+
 	public:
 		BaseInventory(bool isRemote) : isRemoteInventory(isRemote)
 		{
@@ -60,7 +62,7 @@ namespace asa::interfaces
 
 		window::Rect GetArea() const;
 
-		bool IsOpen();
+		virtual bool IsOpen();
 
 	private:
 		bool isRemoteInventory{ false };
