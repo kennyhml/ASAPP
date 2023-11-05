@@ -31,23 +31,6 @@ using namespace asa::interfaces;
 	return cv::countNonZero(masked) > 100 || this->IsSelected();
 }
 
-bool BaseInventory::AwaitOpen(float timeout)
-{
-	auto start = std::chrono::system_clock::now();
-
-	while (!this->IsOpen()) {
-		auto now = std::chrono::system_clock::now();
-		auto timePassed = std::chrono::duration_cast<ms>(now - start);
-
-		if (float(timePassed.count() / 1000) > timeout) {
-			return false;
-		}
-		Sleep(5);
-	}
-	return true;
-}
-
-
 bool BaseInventory::IsOpen()
 {
 	return window::MatchTemplate(

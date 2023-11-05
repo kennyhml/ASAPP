@@ -1,4 +1,5 @@
 #include "localinventory.h"
+#include "../_internal/util.h"
 #include "../game/controls.h"
 #include "../game/settings.h"
 
@@ -8,11 +9,13 @@ void asa::interfaces::LocalInventory::Open()
 
 	while (!this->IsOpen()) {
 		controls::KeyPress(settings::showMyInventory.key);
-		if (this->AwaitOpen(5)) {
+		if (internal::_util::Await(
+				[this]() { return this->IsOpen(); }, std::chrono::seconds(5))) {
 			return;
 		}
 		auto now = std::chrono::system_clock::now();
-		if (std::chrono::duration_cast<seconds>(now - start).count() > 30) {
+		if (std::chrono::duration_cast<std::chrono::seconds>(now - start)
+				.count() > 30) {
 			throw std::runtime_error("Failed to open interface!");
 		}
 	}

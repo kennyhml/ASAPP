@@ -8,7 +8,7 @@
 
 namespace asa::interfaces
 {
-	class BaseInventory : IInterface
+	class BaseInventory : public IInterface
 	{
 	protected:
 		struct ManagementButton : components::Button
@@ -27,8 +27,6 @@ namespace asa::interfaces
 			[[nodiscard]] bool IsSelected() const;
 			[[nodiscard]] bool Exists() const;
 		};
-
-		virtual bool AwaitOpen(float timeout);
 
 	public:
 		BaseInventory(bool isRemote) : isRemoteInventory(isRemote)

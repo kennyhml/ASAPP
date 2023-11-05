@@ -4,7 +4,7 @@
 namespace asa::interfaces
 {
 
-	class LocalInventory : BaseInventory
+	class LocalInventory : public BaseInventory
 	{
 	public:
 		LocalInventory() : BaseInventory(false){};

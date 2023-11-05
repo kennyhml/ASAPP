@@ -4,9 +4,9 @@
 #include "game/resources.h"
 #include "game/settings.h"
 #include "game/window.h"
+#include "interfaces/exceptions.h"
 #include "interfaces/localinventory.h"
 #include <iostream>
-
 int main()
 {
 	asa::globals::gameBaseDirectory = std::filesystem::path(
@@ -20,7 +20,19 @@ int main()
 		"C:\\dev\\ASAPP\\ASAPP\\src\\assets");
 	asa::resources::Init();
 
+
 	auto inv = asa::interfaces::LocalInventory();
+
+	try {
+		throw asa::interfaces::exceptions::InterfaceNotOpenedError(&inv);
+	}
+	catch (asa::interfaces::exceptions::InterfaceError& e) {
+
+		std::cout << e.what() << std::endl;
+	}
+
+
+
 	inv.Open();
 
 	return 0;

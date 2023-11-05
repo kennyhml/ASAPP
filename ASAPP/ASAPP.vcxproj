@@ -164,10 +164,12 @@
     <ClCompile Include="src\game\settings.cpp" />
     <ClCompile Include="src\game\window.cpp" />
     <ClCompile Include="src\interfaces\components\searchbar.cpp" />
+    <ClCompile Include="src\interfaces\exceptions.cpp" />
     <ClCompile Include="src\interfaces\interfacemanager.cpp" />
     <ClCompile Include="src\interfaces\baseinventory.cpp" />
     <ClCompile Include="src\interfaces\localinventory.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\_internal\util.cpp" />
     <ClInclude Include="src\entities\basedino.h" />
     <ClInclude Include="src\entities\iasaentity.h" />
     <ClInclude Include="src\entities\baseplayer.h" />
@@ -178,6 +180,7 @@
     <ClInclude Include="src\game\settings.h" />
     <ClInclude Include="src\interfaces\components\combobox.h" />
     <ClInclude Include="src\interfaces\engrams.h" />
+    <ClInclude Include="src\interfaces\exceptions.h" />
     <ClInclude Include="src\interfaces\explorernotes.h" />
     <ClInclude Include="src\interfaces\interfaces.h" />
     <ClInclude Include="src\interfaces\localinventory.h" />
@@ -207,6 +210,7 @@
     <ClInclude Include="src\structures\container.h" />
     <ClInclude Include="src\structures\craftingstation.h" />
     <ClInclude Include="src\structures\iasastructure.h" />
+    <ClInclude Include="src\_internal\util.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
