@@ -219,9 +219,10 @@ bool window::SetForeground()
 	return SetForegroundWindow(hWnd) != NULL;
 }
 
-void window::SetMousePos(int x, int y)
+void window::SetMousePos(const Point& location)
 {
-	// do some checks here later that x and y is actually within the boudaries
-	// of the game
-	SetCursorPos(x, y);
+	SetCursorPos(location.x, location.y);
 }
+
+
+void window::SetMousePos(int x, int y) { SetCursorPos(x, y); }

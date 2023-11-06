@@ -82,5 +82,6 @@ namespace asa::window
 	}
 
 	bool SetForeground();
+	void SetMousePos(const Point& location);
 	void SetMousePos(int x, int y);
 }

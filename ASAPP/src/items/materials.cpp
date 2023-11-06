@@ -3,7 +3,7 @@
 
 bool asa::items::materials::InitMaterials()
 {
-	LoadMat(metal, "Metal", asa::resources::metal, nullptr, 1.0f, 300);
+	LoadMat(metal, "Metal", asa::resources::metal, nullptr, 1.0f, 300, true);
 	LoadMat(metalIngot, "Metal Ingot", asa::resources::metal_ingot, nullptr,
 		1.0f, 300);
 	LoadMat(cementingPaste, "Cementing Paste", asa::resources::cementing_paste,
@@ -13,22 +13,25 @@ bool asa::items::materials::InitMaterials()
 	LoadMat(
 		gunpowder, "Gunpowder", asa::resources::gunpowder, nullptr, 0.1f, 100);
 	LoadMat(obsidian, "Obsidian", asa::resources::obsidian, nullptr, 1.f, 100);
-	LoadMat(polymer, "Polymer", asa::resources::polymer, nullptr, 0.25f, 100);
-	LoadMat(stone, "Stone", asa::resources::stone, nullptr, 0.5f, 100);
-	LoadMat(thatch, "Thatch", asa::resources::thatch, nullptr, 0.02f, 100);
-	LoadMat(wood, "Wood", asa::resources::wood, nullptr, 0.5f, 100);
+	LoadMat(
+		polymer, "Polymer", asa::resources::polymer, nullptr, 0.25f, 100, true);
+	LoadMat(stone, "Stone", asa::resources::stone, nullptr, 0.5f, 100, true);
+	LoadMat(thatch, "Thatch", asa::resources::thatch, nullptr, 0.02f, 100),
+		true;
+	LoadMat(wood, "Wood", asa::resources::wood, nullptr, 0.5f, 100, true);
 
 
 	return true;
 }
 
 void asa::items::materials::LoadMat(Item*& item, std::string name, cv::Mat icon,
-	Recipe* recipe, float weight, int stackSize, bool hotbarable, bool spoils)
+	Recipe* recipe, float weight, int stackSize, bool hotbarable, bool spoils,
+	bool ambigious)
 {
 	if (item) {
 		delete item;
 	}
 
 	item = new Item{ name, icon, Item::RESOURCE, recipe, weight, stackSize,
-		hotbarable, spoils, false, false };
+		hotbarable, spoils, false, false, ambigious };
 }

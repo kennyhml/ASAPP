@@ -72,6 +72,13 @@ namespace asa::interfaces
 		virtual bool CountStacks(
 			items::Item* item, int& stacksOut, bool search = false);
 
+		virtual bool SlotHasItem(int index, items::Item* item);
+
+
+		virtual void Popcorn(items::Item* item);
+		virtual void Popcorn(items::Item* item, int stacks);
+		virtual void Popcorn(items::Item* item, int stacks, int& stacksDropped);
+
 
 	private:
 		bool isRemoteInventory{ false };

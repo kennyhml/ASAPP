@@ -1,4 +1,5 @@
 #include "baseinventory.h"
+#include "../game/controls.h"
 #include "../game/resources.h"
 
 using namespace asa::interfaces;
@@ -44,6 +45,12 @@ bool BaseInventory::Has(items::Item* item, bool search)
 		Sleep(100);
 	}
 
+	// if an items query isnt ambigious, i.e when we enter the item name
+	// ONLY the item can show up, just check the first slot for efficiency.
+	if (search && !item->ambiguousQuery) {
+		return this->SlotHasItem(0, item);
+	}
+
 	return window::MatchTemplate(this->itemArea, item->icon);
 }
 
@@ -71,7 +78,6 @@ void BaseInventory::SetArea(const window::Point& origin)
 	this->area = { origin.x, origin.y, 600, 832 };
 }
 
-
 void BaseInventory::InitSlots(const window::Point& origin)
 {
 	int x = origin.x + 31;
@@ -83,4 +89,41 @@ void BaseInventory::InitSlots(const window::Point& origin)
 				x + (j * 93), y + (i * 93), 86, 87);
 		}
 	}
+}
+
+bool BaseInventory::SlotHasItem(int index, items::Item* item)
+{
+	return window::MatchTemplate(this->slots[index], item->icon);
+}
+
+void BaseInventory::Popcorn(items::Item* item)
+{
+	int tmp{ 0 };
+	this->Popcorn(item, -1, tmp);
+}
+
+void BaseInventory::Popcorn(items::Item* item, int stacks)
+{
+	int tmp{ 0 };
+	this->Popcorn(item, stacks, tmp);
+}
+
+void BaseInventory::Popcorn(items::Item* item, int stacks, int& stacksDropped)
+{
+	int dropped = 0;
+
+	this->searchBar.SearchFor(item->name);
+
+	while (this->SlotHasItem(0, item) && (dropped < stacks || stacks == -1)) {
+
+		for (int i = 0; i < 4; i++) {
+			window::SetMousePos(this->slots[i].GetRandLocation(5));
+			Sleep(20);
+			controls::KeyPress(settings::actionMappings::dropItem.key);
+			Sleep(100);
+			dropped++;
+		}
+	}
+
+	stacksDropped = dropped;
 }

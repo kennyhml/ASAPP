@@ -6,7 +6,7 @@ namespace asa::items::materials
 	bool InitMaterials();
 	void LoadMat(Item*& item, std::string name, cv::Mat icon, Recipe* recipe,
 		float weight, int stackSize, bool hotbarable = false,
-		bool spoils = false);
+		bool spoils = false, bool ambigous = true);
 
 	inline Item* metal = nullptr;
 	inline Item* metalIngot = nullptr;

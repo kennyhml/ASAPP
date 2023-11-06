@@ -34,6 +34,7 @@ namespace asa::items
 		bool hasSpoilTimer;
 		bool hasDurability;
 		bool requiresEngram;
+		bool ambiguousQuery;
 	};
 
 }

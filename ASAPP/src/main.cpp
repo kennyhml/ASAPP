@@ -26,15 +26,7 @@ int main()
 	auto inv = asa::interfaces::LocalInventory();
 
 
-	for (auto slot : inv.slots) {
-
-		auto img = asa::window::Screenshot(slot);
-
-		cv::imshow("t", img);
-		cv::waitKey(0);
-	}
-
-
+	inv.Popcorn(asa::items::materials::metalIngot);
 
 	return 0;
 }
