@@ -52,6 +52,7 @@ bool asa::resources::interfaces::InitInterfaces()
 	}
 
 	LOAD_RESOURCE(dir, cb_arrowdown);
+	return true;
 }
 
 bool asa::resources::items::InitItems()
@@ -74,4 +75,5 @@ bool asa::resources::items::InitItems()
 	LOAD_RESOURCE(dir, stone);
 	LOAD_RESOURCE(dir, thatch);
 	LOAD_RESOURCE(dir, wood);
+	return true;
 }

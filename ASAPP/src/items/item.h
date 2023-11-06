@@ -35,4 +35,5 @@ namespace asa::items
 		bool hasDurability;
 		bool requiresEngram;
 	};
+
 }

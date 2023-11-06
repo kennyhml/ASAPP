@@ -5,6 +5,7 @@
 #include "components/combobox.h"
 #include "components/searchbar.h"
 #include "iinterface.h"
+#include <array>
 
 namespace asa::interfaces
 {
@@ -42,6 +43,8 @@ namespace asa::interfaces
 			this->newFolderButton = ManagementButton(org.x + 361, org.y + 84);
 			this->autoStackButton = ManagementButton(org.x + 408, org.y + 84);
 			this->folderViewButton = ManagementButton(org.x + 481, org.y + 84);
+			this->itemArea = { org.x + 28, org.y + 145, 563, 600 };
+			this->InitSlots(org);
 		};
 
 		enum Tab
@@ -58,16 +61,24 @@ namespace asa::interfaces
 		ManagementButton autoStackButton;
 		ManagementButton folderViewButton;
 
+		window::Rect itemArea;
+
+		std::array<window::Rect, 36> slots;
+
 		window::Rect GetArea() const;
 
 		virtual bool IsOpen();
-		virtual bool HasItem(items::Item* item, bool searchFor = true);
+		virtual bool Has(items::Item* item, bool search = false);
+		virtual bool CountStacks(
+			items::Item* item, int& stacksOut, bool search = false);
+
 
 	private:
 		bool isRemoteInventory{ false };
 		window::Rect area;
 
 		void SetArea(const window::Point& origin);
+		void InitSlots(const window::Point& origin);
 	};
 
 }
