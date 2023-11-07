@@ -26,6 +26,7 @@ namespace asa::resources
 		inline cv::Mat fiber;
 		inline cv::Mat flint;
 		inline cv::Mat gunpowder;
+		inline cv::Mat sparkpowder;
 		inline cv::Mat obsidian;
 		inline cv::Mat polymer;
 		inline cv::Mat stone;

@@ -5,8 +5,8 @@ namespace asa::items::materials
 {
 	bool InitMaterials();
 	void LoadMat(Item*& item, std::string name, cv::Mat icon, Recipe* recipe,
-		float weight, int stackSize, bool hotbarable = false,
-		bool spoils = false, bool ambigous = true);
+		float weight, int stackSize, bool ambigious = false,
+		bool hotbarable = false, bool spoils = false);
 
 	inline Item* metal = nullptr;
 	inline Item* metalIngot = nullptr;
@@ -14,6 +14,7 @@ namespace asa::items::materials
 	inline Item* fiber = nullptr;
 	inline Item* flint = nullptr;
 	inline Item* gunpowder = nullptr;
+	inline Item* sparkpowder = nullptr;
 	inline Item* obsidian = nullptr;
 	inline Item* polymer = nullptr;
 	inline Item* stone = nullptr;

@@ -69,6 +69,7 @@ bool asa::resources::items::InitItems()
 	LOAD_RESOURCE(dir, fiber);
 	LOAD_RESOURCE(dir, flint);
 	LOAD_RESOURCE(dir, gunpowder);
+	LOAD_RESOURCE(dir, sparkpowder);
 	LOAD_RESOURCE(dir, metal);
 	LOAD_RESOURCE(dir, obsidian);
 	LOAD_RESOURCE(dir, polymer);

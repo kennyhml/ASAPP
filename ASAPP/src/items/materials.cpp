@@ -19,14 +19,15 @@ bool asa::items::materials::InitMaterials()
 	LoadMat(thatch, "Thatch", asa::resources::thatch, nullptr, 0.02f, 100),
 		true;
 	LoadMat(wood, "Wood", asa::resources::wood, nullptr, 0.5f, 100, true);
-
+	LoadMat(sparkpowder, "Sparkpowder", asa::resources::sparkpowder, nullptr,
+		0.1f, 100);
 
 	return true;
 }
 
 void asa::items::materials::LoadMat(Item*& item, std::string name, cv::Mat icon,
-	Recipe* recipe, float weight, int stackSize, bool hotbarable, bool spoils,
-	bool ambigious)
+	Recipe* recipe, float weight, int stackSize, bool ambigious,
+	bool hotbarable, bool spoils)
 {
 	if (item) {
 		delete item;

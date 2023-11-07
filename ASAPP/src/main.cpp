@@ -1,4 +1,5 @@
 #pragma once
+#include "game/controls.h"
 #include "game/globals.h"
 #include "game/resources.h"
 #include "game/settings.h"
@@ -24,9 +25,13 @@ int main()
 
 
 	auto inv = asa::interfaces::LocalInventory();
+	auto dedi = asa::interfaces::BaseInventory(true);
 
 
-	inv.Popcorn(asa::items::materials::metalIngot);
+	while (!GetAsyncKeyState(VK_DELETE) & 0x1) {
+		asa::controls::KeyPress("t");
+		Sleep(3000);
+	}
 
 	return 0;
 }

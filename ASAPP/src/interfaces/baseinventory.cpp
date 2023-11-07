@@ -112,10 +112,11 @@ void BaseInventory::Popcorn(items::Item* item, int stacks, int& stacksDropped)
 {
 	int dropped = 0;
 
-	this->searchBar.SearchFor(item->name);
+	if (!this->searchBar.TextIsEntered()) {
+		this->searchBar.SearchFor(item->name);
+	}
 
 	while (this->SlotHasItem(0, item) && (dropped < stacks || stacks == -1)) {
-
 		for (int i = 0; i < 4; i++) {
 			window::SetMousePos(this->slots[i].GetRandLocation(5));
 			Sleep(20);
@@ -126,4 +127,15 @@ void BaseInventory::Popcorn(items::Item* item, int stacks, int& stacksDropped)
 	}
 
 	stacksDropped = dropped;
+}
+
+
+void BaseInventory::PopcornSlots(int slots)
+{
+	for (int slot = slots - 1; slot >= 0; slot--) {
+		window::SetMousePos(this->slots[slot].GetRandLocation(5));
+		Sleep(20);
+		controls::KeyPress(settings::actionMappings::dropItem.key);
+		Sleep(100);
+	}
 }

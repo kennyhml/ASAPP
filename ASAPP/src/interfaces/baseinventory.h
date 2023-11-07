@@ -78,7 +78,7 @@ namespace asa::interfaces
 		virtual void Popcorn(items::Item* item);
 		virtual void Popcorn(items::Item* item, int stacks);
 		virtual void Popcorn(items::Item* item, int stacks, int& stacksDropped);
-
+		virtual void PopcornSlots(int slots);
 
 	private:
 		bool isRemoteInventory{ false };
