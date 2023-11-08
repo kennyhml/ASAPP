@@ -28,10 +28,5 @@ int main()
 	auto dedi = asa::interfaces::BaseInventory(true);
 
 
-	while (!GetAsyncKeyState(VK_DELETE) & 0x1) {
-		asa::controls::KeyPress("t");
-		Sleep(3000);
-	}
-
 	return 0;
 }
