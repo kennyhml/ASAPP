@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
+    <None Include="src\itemdata.json" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
