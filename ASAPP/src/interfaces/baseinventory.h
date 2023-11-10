@@ -1,6 +1,6 @@
 #pragma once
 #include "../game/window.h"
-#include "../items/item.h"
+#include "../items/items.h"
 #include "components/button.h"
 #include "components/combobox.h"
 #include "components/searchbar.h"

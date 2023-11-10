@@ -169,7 +169,7 @@
     <ClCompile Include="src\interfaces\interfacemanager.cpp" />
     <ClCompile Include="src\interfaces\baseinventory.cpp" />
     <ClCompile Include="src\interfaces\localinventory.cpp" />
-    <ClCompile Include="src\items\materials.cpp" />
+    <ClCompile Include="src\items\items.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\_internal\util.cpp" />
     <ClInclude Include="src\entities\basedino.h" />
@@ -204,9 +204,8 @@
     <ClInclude Include="src\interfaces\components\entityinfo.h" />
     <ClInclude Include="src\interfaces\components\iinterfacecomponent.h" />
     <ClInclude Include="src\interfaces\components\searchbar.h" />
-    <ClInclude Include="src\items\item.h" />
+    <ClInclude Include="src\items\items.h" />
     <ClInclude Include="src\items\recipe.h" />
-    <ClInclude Include="src\items\materials.h" />
     <ClInclude Include="src\structures\container.h" />
     <ClInclude Include="src\structures\craftingstation.h" />
     <ClInclude Include="src\structures\iasastructure.h" />

@@ -5,8 +5,7 @@
 #include "game/settings.h"
 #include "game/window.h"
 #include "interfaces/localinventory.h"
-#include "items/materials.h"
-
+#include "items/items.h"
 int main()
 {
 	asa::globals::gameBaseDirectory = std::filesystem::path(
@@ -21,7 +20,7 @@ int main()
 		"C:\\dev\\ASAPP\\ASAPP\\src\\assets");
 	asa::resources::Init();
 
-	asa::items::materials::InitMaterials();
+	asa::items::Init();
 
 
 	auto inv = asa::interfaces::LocalInventory();

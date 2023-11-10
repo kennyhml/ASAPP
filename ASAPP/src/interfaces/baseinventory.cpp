@@ -47,7 +47,7 @@ bool BaseInventory::Has(items::Item* item, bool search)
 
 	// if an items query isnt ambigious, i.e when we enter the item name
 	// ONLY the item can show up, just check the first slot for efficiency.
-	if (search && !item->ambiguousQuery) {
+	if (search && !item->hasAmbigiousQuery) {
 		return this->SlotHasItem(0, item);
 	}
 

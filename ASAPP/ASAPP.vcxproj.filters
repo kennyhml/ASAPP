@@ -69,7 +69,7 @@
     <ClInclude Include="src\interfaces\components\combobox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\items\item.h">
+    <ClInclude Include="src\items\items.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\interfaces\interfaces.h">
@@ -129,9 +129,6 @@
     <ClInclude Include="src\interfaces\exceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\items\materials.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
@@ -174,7 +171,7 @@
     <ClCompile Include="src\interfaces\components\button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\items\materials.cpp">
+    <ClCompile Include="src\items\items.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
