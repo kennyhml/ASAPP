@@ -32,6 +32,24 @@ using namespace asa::interfaces;
 	return cv::countNonZero(masked) > 100 || this->IsSelected();
 }
 
+[[nodiscard]] bool BaseInventory::Slot::HasItem() const
+{
+	auto roi = window::Rect(this->x + 46, this->y + 69, 42, 14);
+	window::Color weightTextCol(175, 241, 255);
+
+	cv::Mat masked = window::GetMask(roi, weightTextCol, 25);
+	return cv::countNonZero(masked) > 10;
+}
+
+[[nodiscard]] bool BaseInventory::Slot::HasItem(items::Item* item) const
+{
+	if (!item) {
+		return this->HasItem();
+	}
+	return window::MatchTemplate(*this, item->icon);
+}
+
+
 bool BaseInventory::IsOpen()
 {
 	return window::MatchTemplate(
@@ -48,7 +66,7 @@ bool BaseInventory::Has(items::Item* item, bool search)
 	// if an items query isnt ambigious, i.e when we enter the item name
 	// ONLY the item can show up, just check the first slot for efficiency.
 	if (search && !item->hasAmbigiousQuery) {
-		return this->SlotHasItem(0, item);
+		return this->slots[0].HasItem(item);
 	}
 
 	return window::MatchTemplate(this->itemArea, item->icon);
@@ -85,16 +103,11 @@ void BaseInventory::InitSlots(const window::Point& origin)
 
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {
-			this->slots[(i * 6) + j] = window::Rect(
-				x + (j * 93), y + (i * 93), 86, 87);
+			this->slots[(i * 6) + j] = Slot(x + (j * 93), y + (i * 93));
 		}
 	}
 }
 
-bool BaseInventory::SlotHasItem(int index, items::Item* item)
-{
-	return window::MatchTemplate(this->slots[index], item->icon);
-}
 
 void BaseInventory::Popcorn(items::Item* item)
 {
@@ -116,7 +129,7 @@ void BaseInventory::Popcorn(items::Item* item, int stacks, int& stacksDropped)
 		this->searchBar.SearchFor(item->name);
 	}
 
-	while (this->SlotHasItem(0, item) && (dropped < stacks || stacks == -1)) {
+	while (this->slots[0].HasItem(item) && (dropped < stacks || stacks == -1)) {
 		for (int i = 0; i < 4; i++) {
 			window::SetMousePos(this->slots[i].GetRandLocation(5));
 			Sleep(20);
@@ -138,4 +151,11 @@ void BaseInventory::PopcornSlots(int slots)
 		controls::KeyPress(settings::actionMappings::dropItem.key);
 		Sleep(100);
 	}
+}
+
+void BaseInventory::DropAll()
+{
+	this->dropAllButton.Press();
+	this->searchBar.SetTextCleared();
+	Sleep(200);
 }

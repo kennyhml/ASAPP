@@ -24,7 +24,7 @@ namespace asa::controls
 
 	void MouseDown(MouseButton button);
 	void MouseUp(MouseButton button);
-	void MousePress(MouseButton button, float durationMs = 50);
+	void MousePress(MouseButton button, float durationMs = 150.f);
 	void TurnDegrees(int x, int y);
 	void TurnPosition(int x, int y);
 	void TurnTo(int x, int y);

@@ -8,11 +8,12 @@
 #include "items/items.h"
 int main()
 {
+
 	asa::globals::gameBaseDirectory = std::filesystem::path(
 		"F:\\SteamLibrary\\steamapps\\common\\ARK Survival Ascended");
 
 	asa::window::SetHandleTo("ArkAscended", 60, true);
-	asa::window::SetForeground();
+	// asa::window::SetForeground();
 	asa::settings::LoadGameUserSettings();
 	asa::settings::LoadActionMappings();
 
@@ -21,11 +22,6 @@ int main()
 	asa::resources::Init();
 
 	asa::items::Init();
-
-
-	auto inv = asa::interfaces::LocalInventory();
-	auto dedi = asa::interfaces::BaseInventory(true);
-
 
 	return 0;
 }

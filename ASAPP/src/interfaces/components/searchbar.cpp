@@ -4,7 +4,7 @@
 
 void asa::interfaces::components::SearchBar::Press() const
 {
-	window::Point loc = this->area.GetRandLocation(2);
+	window::Point loc = this->area.GetRandLocation(5);
 
 	window::SetMousePos(loc.x, loc.y);
 	Sleep(30);

@@ -29,6 +29,16 @@ namespace asa::interfaces
 			[[nodiscard]] bool Exists() const;
 		};
 
+		struct Slot : window::Rect
+		{
+
+			Slot() : Rect{ 0, 0, 86, 87 } {};
+			Slot(int x, int y) : Rect{ x, y, 86, 87 } {};
+
+			[[nodiscard]] bool HasItem() const;
+			[[nodiscard]] bool HasItem(items::Item* item) const;
+		};
+
 	public:
 		BaseInventory(bool isRemote) : isRemoteInventory(isRemote)
 		{
@@ -63,7 +73,7 @@ namespace asa::interfaces
 
 		window::Rect itemArea;
 
-		std::array<window::Rect, 36> slots;
+		std::array<Slot, 36> slots;
 
 		window::Rect GetArea() const;
 
@@ -72,13 +82,12 @@ namespace asa::interfaces
 		virtual bool CountStacks(
 			items::Item* item, int& stacksOut, bool search = false);
 
-		virtual bool SlotHasItem(int index, items::Item* item);
-
-
 		virtual void Popcorn(items::Item* item);
 		virtual void Popcorn(items::Item* item, int stacks);
 		virtual void Popcorn(items::Item* item, int stacks, int& stacksDropped);
 		virtual void PopcornSlots(int slots);
+
+		virtual void DropAll();
 
 	private:
 		bool isRemoteInventory{ false };
