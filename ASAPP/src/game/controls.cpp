@@ -101,18 +101,18 @@ void controls::TurnTo(int x, int y)
 
 controls::KeyboardMapping controls::GetKeyboardMapping()
 {
-	KeyboardMapping mapping{ { "Tab", VK_TAB }, { "F1", VK_F1 },
-		{ "F2", VK_F2 }, { "F3", VK_F3 }, { "F4", VK_F4 }, { "F5", VK_F5 },
-		{ "F6", VK_F6 }, { "F7", VK_F7 }, { "F8", VK_F8 }, { "F9", VK_F9 },
-		{ "F10", VK_F10 }, { "Delete", VK_DELETE }, { "Home", VK_HOME },
-		{ "End", VK_END }, { "BackSpace", VK_BACK }, { "Enter", VK_RETURN },
-		{ "Period", VK_OEM_PERIOD }, { "NumPadZero", VK_NUMPAD0 },
-		{ "NumPadOne", VK_NUMPAD1 }, { "NumPadTwo", VK_NUMPAD2 },
-		{ "NumPadThree", VK_NUMPAD3 }, { "NumPadFour", VK_NUMPAD4 },
-		{ "NumPadFive", VK_NUMPAD5 }, { "NumPadSix", VK_NUMPAD6 },
-		{ "NumPadSeven", VK_NUMPAD7 }, { "NumPadEight", VK_NUMPAD8 },
-		{ "NumPadNine", VK_NUMPAD9 }, { "Ctrl", VK_CONTROL },
-		{ "Esc", VK_ESCAPE } };
+	KeyboardMapping mapping{ { "tab", VK_TAB }, { "f1", VK_F1 },
+		{ "f2", VK_F2 }, { "f3", VK_F3 }, { "f4", VK_F4 }, { "f5", VK_F5 },
+		{ "f6", VK_F6 }, { "f7", VK_F7 }, { "f8", VK_F8 }, { "f9", VK_F9 },
+		{ "f10", VK_F10 }, { "delete", VK_DELETE }, { "home", VK_HOME },
+		{ "end", VK_END }, { "backspace", VK_BACK }, { "enter", VK_RETURN },
+		{ "period", VK_OEM_PERIOD }, { "numpadzero", VK_NUMPAD0 },
+		{ "numpadone", VK_NUMPAD1 }, { "numpadtwo", VK_NUMPAD2 },
+		{ "numpadthree", VK_NUMPAD3 }, { "numpadfour", VK_NUMPAD4 },
+		{ "numpadfive", VK_NUMPAD5 }, { "numpadsix", VK_NUMPAD6 },
+		{ "numpadseven", VK_NUMPAD7 }, { "numpadeight", VK_NUMPAD8 },
+		{ "NumPadnine", VK_NUMPAD9 }, { "ctrl", VK_CONTROL },
+		{ "esc", VK_ESCAPE }, { "space ", VK_SPACE } };
 
 	for (int i = 32; i < 128; i++) {
 		char c = static_cast<char>(i);
@@ -124,22 +124,18 @@ controls::KeyboardMapping controls::GetKeyboardMapping()
 
 void controls::KeyDown(std::string key)
 {
-	int vk = mapping[key];
-
 	INPUT input{ 0 };
 	input.type = INPUT_KEYBOARD;
-	input.ki.wVk = vk;
+	input.ki.wVk = controls::GetVirtualCode(key);
 
 	SendInput(1, &input, sizeof(INPUT));
 }
 
 void controls::KeyUp(std::string key)
 {
-	int vk = mapping[key];
-
 	INPUT input{ 0 };
 	input.type = INPUT_KEYBOARD;
-	input.ki.wVk = vk;
+	input.ki.wVk = controls::GetVirtualCode(key);
 	input.ki.dwFlags = KEYEVENTF_KEYUP;
 
 	SendInput(1, &input, sizeof(INPUT));
@@ -159,4 +155,12 @@ void controls::KeyCombinationPress(std::string holdKey, std::string pressKey)
 	KeyPress(pressKey);
 	Sleep(20);
 	KeyUp(holdKey);
+}
+
+int controls::GetVirtualCode(std::string key)
+{
+	std::transform(key.begin(), key.end(), key.begin(),
+		[](unsigned char c) { return std::tolower(c); });
+
+	return mapping[key];
 }

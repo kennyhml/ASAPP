@@ -23,5 +23,7 @@ int main()
 
 	asa::items::Init();
 
+	asa::window::PostKeyPress("F");
+
 	return 0;
 }

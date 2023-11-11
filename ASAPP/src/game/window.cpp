@@ -1,4 +1,5 @@
 #include "window.h"
+#include "controls.h"
 #include <chrono>
 #include <iostream>
 #include <random>
@@ -226,3 +227,20 @@ void window::SetMousePos(const Point& location)
 
 
 void window::SetMousePos(int x, int y) { SetCursorPos(x, y); }
+
+void window::PostKeyDown(std::string key)
+{
+	PostMessage(hWnd, WM_KEYDOWN, controls::GetVirtualCode(key), NULL);
+}
+
+void window::PostKeyUp(std::string key)
+{
+	PostMessage(hWnd, WM_KEYUP, controls::GetVirtualCode(key), NULL);
+}
+
+void window::PostKeyPress(std::string key, float durationMs)
+{
+	PostKeyDown(key);
+	Sleep(durationMs);
+	PostKeyUp(key);
+}
