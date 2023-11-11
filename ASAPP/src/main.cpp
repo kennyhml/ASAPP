@@ -23,7 +23,7 @@ int main()
 
 	asa::items::Init();
 
-	asa::window::PostKeyPress("F");
+	asa::window::PostKeyPress("Tab", 2000);
 
 	return 0;
 }

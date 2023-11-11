@@ -89,4 +89,9 @@ namespace asa::window
 	void PostKeyDown(std::string key);
 	void PostKeyUp(std::string key);
 	void PostKeyPress(std::string key, float durationMs = 50);
+
+	void PostMouseDown(int button);
+	void PostMouseUp(int button);
+	void PostMousePress(int button, float durationMs = 150.f);
+
 }
