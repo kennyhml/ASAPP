@@ -22,8 +22,13 @@ int main()
 	asa::resources::Init();
 
 	asa::items::Init();
+	Sleep(2000);
 
-	asa::window::PostKeyPress("Tab", 2000);
+	POINT currentPos;
+	GetCursorPos(&currentPos);
+
+	LPARAM lParam = MAKELPARAM(500, 500);
+	PostMessage(asa::window::hWnd, WM_MOUSEMOVE, 0, lParam);
 
 	return 0;
 }

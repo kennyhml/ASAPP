@@ -63,12 +63,8 @@ void controls::MousePress(MouseButton button, float durationMs)
 
 void controls::TurnDegrees(int x, int y)
 {
-	if (x >= 360 || x <= -360) {
-		x %= 360;
-	}
-	if (y >= 90 || y <= -90) {
-		y %= 90;
-	}
+	x %= 360;
+	y %= 90;
 
 	TurnPosition(x * pixelsPerDegree, y * pixelsPerDegree);
 }
