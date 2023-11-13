@@ -226,31 +226,74 @@ void window::SetMousePos(const Point& location)
 	SetCursorPos(location.x, location.y);
 }
 
-
 void window::SetMousePos(int x, int y) { SetCursorPos(x, y); }
 
-void window::PostKeyDown(std::string key)
+void window::PostKeyDown(std::string key, ms delay)
 {
-	PostMessage(hWnd, WM_KEYDOWN, controls::GetVirtualKeyCode(key), NULL);
+	PostMessageW(hWnd, WM_KEYDOWN, controls::GetVirtualKeyCode(key), NULL);
+	std::this_thread::sleep_for(delay);
 }
 
-void window::PostKeyUp(std::string key)
+void window::PostKeyUp(std::string key, ms delay)
 {
-	PostMessage(hWnd, WM_KEYUP, controls::GetVirtualKeyCode(key), NULL);
+	PostMessageW(hWnd, WM_KEYUP, controls::GetVirtualKeyCode(key), NULL);
+	std::this_thread::sleep_for(delay);
 }
 
-void window::PostKeyPress(std::string key, float durationMs)
+void window::PostKeyPress(std::string key, ms delay)
 {
-	PostKeyDown(key);
-	Sleep(durationMs);
+	PostKeyDown(key, delay);
 	PostKeyUp(key);
 }
 
-void window::PostMouseDown(controls::MouseButton button) {}
-
-void window::PostMouseUp(controls::MouseButton button) {}
-
-void window::PostMousePress(
-	controls::MouseButton button, float durationMs = 150.f)
+void window::PostMouseDown(controls::MouseButton button, ms delay)
 {
+	using controls::MouseButton;
+	switch (button) {
+	case MouseButton::LEFT:
+		PostMessageW(hWnd, WM_LBUTTONDOWN, MK_LBUTTON, NULL);
+		break;
+	case MouseButton::RIGHT:
+		PostMessageW(hWnd, WM_RBUTTONDOWN, MK_RBUTTON, NULL);
+		break;
+	case MouseButton::MIDDLE:
+		PostMessageW(hWnd, WM_MBUTTONDOWN, MK_MBUTTON, NULL);
+		break;
+	case MouseButton::MOUSE4:
+		PostMessageW(hWnd, WM_XBUTTONDOWN, MK_XBUTTON1, NULL);
+		break;
+	case MouseButton::MOUSE5:
+		PostMessageW(hWnd, WM_XBUTTONDOWN, MK_XBUTTON2, NULL);
+		break;
+	}
+	std::this_thread::sleep_for(delay);
+}
+
+void window::PostMouseUp(controls::MouseButton button, ms delay)
+{
+	using controls::MouseButton;
+	switch (button) {
+	case MouseButton::LEFT:
+		PostMessageW(hWnd, WM_LBUTTONUP, MK_LBUTTON, NULL);
+		break;
+	case MouseButton::RIGHT:
+		PostMessageW(hWnd, WM_RBUTTONUP, MK_RBUTTON, NULL);
+		break;
+	case MouseButton::MIDDLE:
+		PostMessageW(hWnd, WM_MBUTTONUP, MK_MBUTTON, NULL);
+		break;
+	case MouseButton::MOUSE4:
+		PostMessageW(hWnd, WM_XBUTTONUP, MK_XBUTTON1, NULL);
+		break;
+	case MouseButton::MOUSE5:
+		PostMessageW(hWnd, WM_XBUTTONUP, MK_XBUTTON2, NULL);
+		break;
+	}
+	std::this_thread::sleep_for(delay);
+}
+
+void window::PostMousePress(controls::MouseButton button, ms delay)
+{
+	PostMouseDown(button, delay);
+	PostMouseUp(button);
 }
