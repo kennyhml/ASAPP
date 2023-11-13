@@ -24,11 +24,7 @@ int main()
 	asa::items::Init();
 	Sleep(2000);
 
-	POINT currentPos;
-	GetCursorPos(&currentPos);
-
-	LPARAM lParam = MAKELPARAM(500, 500);
-	PostMessage(asa::window::hWnd, WM_MOUSEMOVE, 0, lParam);
+	asa::window::PostKeyPress(asa::settings::actionMappings::toggleMap.key);
 
 	return 0;
 }

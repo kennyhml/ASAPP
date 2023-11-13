@@ -244,3 +244,19 @@ void window::PostKeyPress(std::string key, float durationMs)
 	Sleep(durationMs);
 	PostKeyUp(key);
 }
+
+void window::PostMouseDown(int button)
+{
+	PostMessage(hWnd, WM_X, controls::GetVirtualCode(key), NULL);
+}
+
+void window::PostMouseUp(int button)
+{
+
+}
+
+void window::PostMousePress(int button, float durationMs = 150.f)
+{
+
+}
+

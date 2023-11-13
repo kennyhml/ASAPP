@@ -1,17 +1,9 @@
 #include "controls.h"
+#include <algorithm>
 
-using namespace asa;
-
-const float controls::GetLRFactor() { return 3.2 / asa::settings::sensX.get(); }
-
-const float controls::GetUDFactor() { return 3.2 / asa::settings::sensY.get(); }
-
-const float controls::GetFovFactor() { return 1.25 / asa::settings::fov.get(); }
-
-int constexpr controls::GetMouseFlag(MouseButton button, bool down)
+int constexpr asa::controls::GetMouseFlag(MouseButton button, bool down)
 {
 	switch (button) {
-
 	case MouseButton::LEFT:
 		return down ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP;
 	case MouseButton::RIGHT:
@@ -22,80 +14,18 @@ int constexpr controls::GetMouseFlag(MouseButton button, bool down)
 	case MouseButton::MOUSE5:
 		return down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP;
 	}
-
 	return -1;
 }
 
-void controls::MouseDown(MouseButton button)
+int constexpr asa::controls::GetVirtualKeyCode(std::string key)
 {
-	INPUT input{ 0 };
-	input.type = INPUT_MOUSE;
+	std::transform(key.begin(), key.end(), key.begin(),
+		[](unsigned char c) { return std::tolower(c); });
 
-	input.mi.dwFlags = GetMouseFlag(button, true);
-
-	if (button == MOUSE4 || button == MOUSE5) {
-		input.mi.mouseData = button == MOUSE4 ? XBUTTON1 : XBUTTON2;
-	}
-
-	SendInput(1, &input, sizeof(INPUT));
+	return mapping[key];
 }
 
-void controls::MouseUp(MouseButton button)
-{
-	INPUT input{ 0 };
-	input.type = INPUT_MOUSE;
-
-	input.mi.dwFlags = GetMouseFlag(button, false);
-
-	if (button == MOUSE4 || button == MOUSE5) {
-		input.mi.mouseData = button == MOUSE4 ? XBUTTON1 : XBUTTON2;
-	}
-
-	SendInput(1, &input, sizeof(INPUT));
-}
-
-void controls::MousePress(MouseButton button, float durationMs)
-{
-	MouseDown(button);
-	Sleep(durationMs);
-	MouseUp(button);
-}
-
-void controls::TurnDegrees(int x, int y)
-{
-	x %= 360;
-	y %= 90;
-
-	TurnPosition(x * pixelsPerDegree, y * pixelsPerDegree);
-}
-
-void controls::TurnPosition(int x, int y)
-{
-	INPUT input{ 0 };
-	input.type = INPUT_MOUSE;
-
-	input.mi.dx = x * GetLRFactor() * GetFovFactor();
-	input.mi.dy = y * GetUDFactor() * GetFovFactor();
-	input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
-
-	SendInput(1, &input, sizeof(INPUT));
-}
-
-void controls::TurnTo(int x, int y)
-{
-	INPUT input{ 0 };
-	input.type = INPUT_MOUSE;
-	int moveX = (x - GetSystemMetrics(SM_CXSCREEN) / 2);
-	int moveY = (y - GetSystemMetrics(SM_CYSCREEN) / 2);
-
-	input.mi.dx = moveX;
-	input.mi.dy = moveY;
-	input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
-
-	SendInput(1, &input, sizeof(INPUT));
-}
-
-controls::KeyboardMapping controls::GetKeyboardMapping()
+asa::controls::KeyboardMapping asa::controls::GetKeyboardMapping()
 {
 	KeyboardMapping mapping{ { "tab", VK_TAB }, { "f1", VK_F1 },
 		{ "f2", VK_F2 }, { "f3", VK_F3 }, { "f4", VK_F4 }, { "f5", VK_F5 },
@@ -118,45 +48,167 @@ controls::KeyboardMapping controls::GetKeyboardMapping()
 	return mapping;
 }
 
-void controls::KeyDown(std::string key)
+const float asa::controls::GetLRFactor()
 {
-	INPUT input{ 0 };
-	input.type = INPUT_KEYBOARD;
-	input.ki.wVk = controls::GetVirtualCode(key);
-
-	SendInput(1, &input, sizeof(INPUT));
+	return 3.2 / asa::settings::sensX.get();
 }
 
-void controls::KeyUp(std::string key)
+const float asa::controls::GetUDFactor()
 {
-	INPUT input{ 0 };
-	input.type = INPUT_KEYBOARD;
-	input.ki.wVk = controls::GetVirtualCode(key);
-	input.ki.dwFlags = KEYEVENTF_KEYUP;
-
-	SendInput(1, &input, sizeof(INPUT));
+	return 3.2 / asa::settings::sensY.get();
 }
 
-void controls::KeyPress(std::string key, float durationMs)
+const float asa::controls::GetFovFactor()
+{
+	return 1.25 / asa::settings::fov.get();
+}
+
+
+bool asa::controls::IsMouseInput(const settings::ActionMapping& input)
+{
+	return input.key.find("Mouse") != std::string::npos;
+}
+
+bool asa::controls::IsKeyInput(const settings::ActionMapping& input)
+{
+	return !IsMouseInput(input);
+}
+
+void asa::controls::Down(const settings::ActionMapping& input, ms delay)
+{
+	IsMouseInput(input) ? MouseDown(stringToMouseButton[input.key], delay)
+						: KeyDown(input.key, delay);
+}
+
+void asa::controls::Release(const settings::ActionMapping& input, ms delay)
+{
+	IsMouseInput(input) ? MouseUp(stringToMouseButton[input.key], delay)
+						: KeyUp(input.key, delay);
+}
+
+void asa::controls::Press(const settings::ActionMapping& input, ms delay)
+{
+	IsMouseInput(input) ? MousePress(stringToMouseButton[input.key], delay)
+						: KeyPress(input.key, delay);
+}
+void asa::controls::MouseDown(MouseButton button, ms delay)
+{
+	INPUT input{ 0 };
+	input.type = INPUT_MOUSE;
+
+	input.mi.dwFlags = GetMouseFlag(button, true);
+
+	if (button == MouseButton::MOUSE4) {
+		input.mi.mouseData = XBUTTON1;
+	}
+	else if (button == MouseButton::MOUSE5) {
+		input.mi.mouseData = XBUTTON2;
+	}
+
+	SendInput(1, &input, sizeof(INPUT));
+	std::this_thread::sleep_for(delay);
+}
+
+void asa::controls::MouseUp(MouseButton button, ms delay)
+{
+	INPUT input{ 0 };
+	input.type = INPUT_MOUSE;
+
+	input.mi.dwFlags = GetMouseFlag(button, false);
+
+	if (button == MouseButton::MOUSE4) {
+		input.mi.mouseData = XBUTTON1;
+	}
+	else if (button == MouseButton::MOUSE5) {
+		input.mi.mouseData = XBUTTON2;
+	}
+
+	SendInput(1, &input, sizeof(INPUT));
+	std::this_thread::sleep_for(delay);
+}
+
+void asa::controls::MousePress(MouseButton button, ms delay)
+{
+	MouseDown(button);
+	std::this_thread::sleep_for(delay);
+	MouseUp(button);
+}
+
+void asa::controls::MouseCombinationPress(MouseButton button, std::string key)
 {
 	KeyDown(key);
-	Sleep(durationMs);
+	std::this_thread::sleep_for(ms(20));
+	MousePress(button);
+	std::this_thread::sleep_for(ms(20));
 	KeyUp(key);
 }
 
-void controls::KeyCombinationPress(std::string holdKey, std::string pressKey)
+void asa::controls::TurnDegrees(int x, int y)
 {
-	KeyDown(holdKey);
-	Sleep(20);
-	KeyPress(pressKey);
-	Sleep(20);
-	KeyUp(holdKey);
+	x %= 360;
+	y %= 90;
+
+	TurnPosition(x * pixelsPerDegree, y * pixelsPerDegree);
 }
 
-int controls::GetVirtualCode(std::string key)
+void asa::controls::TurnPosition(int x, int y)
 {
-	std::transform(key.begin(), key.end(), key.begin(),
-		[](unsigned char c) { return std::tolower(c); });
+	INPUT input{ 0 };
+	input.type = INPUT_MOUSE;
 
-	return mapping[key];
+	input.mi.dx = x * GetLRFactor() * GetFovFactor();
+	input.mi.dy = y * GetUDFactor() * GetFovFactor();
+	input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
+
+	SendInput(1, &input, sizeof(INPUT));
+}
+
+void asa::controls::TurnTo(int x, int y)
+{
+	INPUT input{ 0 };
+	input.type = INPUT_MOUSE;
+	int moveX = (x - GetSystemMetrics(SM_CXSCREEN) / 2);
+	int moveY = (y - GetSystemMetrics(SM_CYSCREEN) / 2);
+
+	input.mi.dx = moveX;
+	input.mi.dy = moveY;
+	input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
+
+	SendInput(1, &input, sizeof(INPUT));
+}
+
+void asa::controls::KeyDown(std::string key, ms delay)
+{
+	INPUT input{ 0 };
+	input.type = INPUT_KEYBOARD;
+	input.ki.wVk = GetVirtualKeyCode(key);
+
+	SendInput(1, &input, sizeof(INPUT));
+	std::this_thread::sleep_for(delay);
+}
+
+void asa::controls::KeyUp(std::string key, ms delay)
+{
+	INPUT input{ 0 };
+	input.type = INPUT_KEYBOARD;
+	input.ki.wVk = GetVirtualKeyCode(key);
+	input.ki.dwFlags = KEYEVENTF_KEYUP;
+
+	SendInput(1, &input, sizeof(INPUT));
+	std::this_thread::sleep_for(delay);
+}
+
+void asa::controls::KeyPress(std::string key, ms delay)
+{
+	KeyDown(key);
+	std::this_thread::sleep_for(delay);
+	KeyUp(key);
+}
+
+void asa::controls::KeyCombinationPress(
+	std::string holdKey, std::string pressKey)
+{
+	KeyDown(holdKey, ms(20));
+	KeyPress(pressKey, ms(20));
+	KeyUp(holdKey);
 }
