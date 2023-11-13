@@ -148,8 +148,16 @@ void window::SetHandleTo(std::string title, int timeout, bool verbose)
 		}
 	} while (!hWnd);
 
+	RECT rect;
+	GetWindowRect(hWnd, &rect);
+	width = rect.right - rect.left;
+	height = rect.bottom - rect.top;
+
 	if (firstGrab && verbose) {
-		std::cout << "\t[-] Set window handle: " << title << "!" << std::endl;
+		std::cout << std::format(
+						 "\t[-] Set window handle: {}! Width: {}, height: {}",
+						 title, width, height)
+				  << std::endl;
 	}
 }
 
@@ -228,22 +236,56 @@ void window::SetMousePos(const Point& location)
 
 void window::SetMousePos(int x, int y) { SetCursorPos(x, y); }
 
-void window::PostKeyDown(std::string key, ms delay)
+void window::PostDown(const settings::ActionMapping& input, ms delay)
+{
+	controls::IsMouseInput(input)
+		? PostMouseDown(controls::stringToMouseButton[input.key], delay)
+		: PostKeyDown(input.key, delay);
+}
+
+void window::PostUp(const settings::ActionMapping& input, ms delay)
+{
+	controls::IsMouseInput(input)
+		? PostMouseUp(controls::stringToMouseButton[input.key], delay)
+		: PostKeyUp(input.key, delay);
+}
+
+void window::PostPress(
+	const settings::ActionMapping& input, bool catchCursor, ms delay)
+{
+	if (controls::IsMouseInput(input)) {
+		PostMousePress(
+			controls::stringToMouseButton[input.key], catchCursor, delay);
+	}
+	else {
+		PostKeyPress(input.key, catchCursor, delay);
+	}
+}
+
+void window::PostKeyDown(const std::string& key, ms delay)
 {
 	PostMessageW(hWnd, WM_KEYDOWN, controls::GetVirtualKeyCode(key), NULL);
 	std::this_thread::sleep_for(delay);
 }
 
-void window::PostKeyUp(std::string key, ms delay)
+void window::PostKeyUp(const std::string& key, ms delay)
 {
 	PostMessageW(hWnd, WM_KEYUP, controls::GetVirtualKeyCode(key), NULL);
 	std::this_thread::sleep_for(delay);
 }
 
-void window::PostKeyPress(std::string key, ms delay)
+void window::PostKeyPress(const std::string& key, bool catchCursor, ms delay)
 {
+	POINT prevPos;
+	if (catchCursor) {
+		GetCursorPos(&prevPos);
+	}
 	PostKeyDown(key, delay);
 	PostKeyUp(key);
+
+	if (catchCursor) {
+		ResetCursor(prevPos);
+	}
 }
 
 void window::PostMouseDown(controls::MouseButton button, ms delay)
@@ -292,8 +334,31 @@ void window::PostMouseUp(controls::MouseButton button, ms delay)
 	std::this_thread::sleep_for(delay);
 }
 
-void window::PostMousePress(controls::MouseButton button, ms delay)
+void window::PostMousePress(
+	controls::MouseButton button, bool catchCursor, ms delay)
 {
+	POINT prevPos;
+	if (catchCursor) {
+		GetCursorPos(&prevPos);
+	}
+
 	PostMouseDown(button, delay);
 	PostMouseUp(button);
+
+	if (catchCursor) {
+		ResetCursor(prevPos);
+	}
+}
+
+
+void window::ResetCursor(POINT& previousPosition)
+{
+	POINT currPos;
+	GetCursorPos(&currPos);
+
+	while (currPos.x != width / 2 && currPos.y != height / 2) {
+		previousPosition = currPos;
+		GetCursorPos(&currPos);
+	}
+	SetCursorPos(previousPosition.x, previousPosition.y);
 }

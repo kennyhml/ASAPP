@@ -14,6 +14,8 @@ namespace asa::window
 	using ms = std::chrono::milliseconds;
 
 	inline HWND hWnd = NULL;
+	inline int width = NULL;
+	inline int height = NULL;
 
 	struct Point
 	{
@@ -88,12 +90,22 @@ namespace asa::window
 	void SetMousePos(const Point& location);
 	void SetMousePos(int x, int y);
 
-	void PostKeyDown(std::string key, ms delay = ms(10));
-	void PostKeyUp(std::string key, ms delay = ms(10));
-	void PostKeyPress(std::string key, ms delay = ms(100));
+	void PostDown(const settings::ActionMapping&, ms delay = ms(10));
+	void PostUp(const settings::ActionMapping&, ms delay = ms(10));
+	void PostPress(const settings::ActionMapping&, bool catchCursor = false,
+		ms delay = ms(100));
+
+	void PostKeyDown(const std::string& key, ms delay = ms(10));
+	void PostKeyUp(const std::string& key, ms delay = ms(10));
+	void PostKeyPress(
+		const std::string& key, bool catchCursor = false, ms delay = ms(100));
 
 	void PostMouseDown(controls::MouseButton button, ms delay = ms(10));
 	void PostMouseUp(controls::MouseButton button, ms delay = ms(10));
-	void PostMousePress(controls::MouseButton button, ms delay = ms(100));
+	void PostMousePress(controls::MouseButton button, bool catchCursor = false,
+		ms delay = ms(100));
+
+	void ResetCursor(POINT& previousPosition);
+
 
 }

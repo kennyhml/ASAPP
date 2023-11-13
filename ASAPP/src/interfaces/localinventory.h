@@ -21,6 +21,7 @@ namespace asa::interfaces
 		InvTabButton craftingTab{ 542, 120, 183, 45 };
 
 		void Open();
+		void Close();
 
 		void SwitchTo(Tab tab);
 	};

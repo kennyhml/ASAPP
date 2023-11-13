@@ -25,7 +25,15 @@ int main()
 	Sleep(2000);
 
 
-	asa::window::PostMousePress(asa::controls::MouseButton::LEFT);
+	auto inv = asa::interfaces::LocalInventory();
+
+
+	while (true) {
+		inv.Open();
+		Sleep(2000);
+		inv.Close();
+	}
+
 
 
 	return 0;
