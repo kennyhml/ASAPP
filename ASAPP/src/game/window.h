@@ -1,4 +1,5 @@
 #pragma once
+#include "controls.h"
 #include "opencv2/core.hpp"
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc.hpp"
@@ -7,7 +8,6 @@
 #include <optional>
 #include <string>
 #include <vector>
-
 
 namespace asa::window
 {
@@ -88,10 +88,10 @@ namespace asa::window
 
 	void PostKeyDown(std::string key);
 	void PostKeyUp(std::string key);
-	void PostKeyPress(std::string key, float durationMs = 50);
+	void PostKeyPress(std::string key, float durationMs);
 
-	void PostMouseDown(int button);
-	void PostMouseUp(int button);
-	void PostMousePress(int button, float durationMs = 150.f);
+	void PostMouseDown(controls::MouseButton button);
+	void PostMouseUp(controls::MouseButton button);
+	void PostMousePress(controls::MouseButton button, float durationMs);
 
 }

@@ -13,7 +13,7 @@ int main()
 		"F:\\SteamLibrary\\steamapps\\common\\ARK Survival Ascended");
 
 	asa::window::SetHandleTo("ArkAscended", 60, true);
-	// asa::window::SetForeground();
+	asa::window::SetForeground();
 	asa::settings::LoadGameUserSettings();
 	asa::settings::LoadActionMappings();
 
@@ -24,7 +24,9 @@ int main()
 	asa::items::Init();
 	Sleep(2000);
 
-	asa::window::PostKeyPress(asa::settings::actionMappings::toggleMap.key);
+
+	asa::controls::Press(asa::settings::fire);
+
 
 	return 0;
 }

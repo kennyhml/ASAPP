@@ -19,7 +19,7 @@ namespace asa::settings
 
 		struct ActionMapping
 		{
-			ActionMapping(std::string name) : name(name)
+			explicit ActionMapping(std::string name) : name(name)
 			{
 				inputMap[name] = this;
 			};

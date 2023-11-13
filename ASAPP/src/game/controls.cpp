@@ -17,7 +17,7 @@ int constexpr asa::controls::GetMouseFlag(MouseButton button, bool down)
 	return -1;
 }
 
-int constexpr asa::controls::GetVirtualKeyCode(std::string key)
+int asa::controls::GetVirtualKeyCode(std::string key)
 {
 	std::transform(key.begin(), key.end(), key.begin(),
 		[](unsigned char c) { return std::tolower(c); });

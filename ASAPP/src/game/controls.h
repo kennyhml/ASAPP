@@ -1,6 +1,5 @@
 #pragma once
 #include "settings.h"
-#include <Windows.h>
 #include <chrono>
 #include <string>
 
@@ -18,16 +17,17 @@ namespace asa::controls
 		MOUSE5,
 	};
 
-	auto stringToMouseButton = std::unordered_map<std::string, MouseButton>{
-		{ "LeftMouseButton", MouseButton::LEFT },
-		{ "RightMouseButton", MouseButton::RIGHT },
-		{ "MiddleMouseButton", MouseButton::MIDDLE },
-		{ "ThumbMouseButton", MouseButton::MOUSE4 },
-		{ "ThumbMouseButton2", MouseButton::MOUSE5 },
-	};
+	inline auto stringToMouseButton =
+		std::unordered_map<std::string, MouseButton>{
+			{ "LeftMouseButton", MouseButton::LEFT },
+			{ "RightMouseButton", MouseButton::RIGHT },
+			{ "MiddleMouseButton", MouseButton::MIDDLE },
+			{ "ThumbMouseButton", MouseButton::MOUSE4 },
+			{ "ThumbMouseButton2", MouseButton::MOUSE5 },
+		};
 
 	int constexpr GetMouseFlag(MouseButton button, bool down);
-	int constexpr GetVirtualKeyCode(std::string key);
+	int GetVirtualKeyCode(std::string key);
 
 	KeyboardMapping GetKeyboardMapping();
 

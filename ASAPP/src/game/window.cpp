@@ -1,5 +1,4 @@
 #include "window.h"
-#include "controls.h"
 #include <chrono>
 #include <iostream>
 #include <random>
@@ -8,8 +7,10 @@ using namespace asa;
 
 void window::Color::ToRange(int v, cv::Scalar& low, cv::Scalar& high) const
 {
-	low = cv::Scalar(max(0, r - v), max(0, g - v), max(0, b - v));
-	high = cv::Scalar(min(255, r + v), min(255, g + v), min(255, b + v));
+	low = cv::Scalar(
+		std::max(0, r - v), std::max(0, g - v), std::max(0, b - v));
+	high = cv::Scalar(
+		std::min(255, r + v), std::min(255, g + v), std::min(255, b + v));
 }
 
 const window::Point window::Rect::GetRandLocation(int padding) const
@@ -230,12 +231,12 @@ void window::SetMousePos(int x, int y) { SetCursorPos(x, y); }
 
 void window::PostKeyDown(std::string key)
 {
-	PostMessage(hWnd, WM_KEYDOWN, controls::GetVirtualCode(key), NULL);
+	PostMessage(hWnd, WM_KEYDOWN, controls::GetVirtualKeyCode(key), NULL);
 }
 
 void window::PostKeyUp(std::string key)
 {
-	PostMessage(hWnd, WM_KEYUP, controls::GetVirtualCode(key), NULL);
+	PostMessage(hWnd, WM_KEYUP, controls::GetVirtualKeyCode(key), NULL);
 }
 
 void window::PostKeyPress(std::string key, float durationMs)
@@ -245,18 +246,11 @@ void window::PostKeyPress(std::string key, float durationMs)
 	PostKeyUp(key);
 }
 
-void window::PostMouseDown(int button)
+void window::PostMouseDown(controls::MouseButton button) {}
+
+void window::PostMouseUp(controls::MouseButton button) {}
+
+void window::PostMousePress(
+	controls::MouseButton button, float durationMs = 150.f)
 {
-	PostMessage(hWnd, WM_X, controls::GetVirtualCode(key), NULL);
 }
-
-void window::PostMouseUp(int button)
-{
-
-}
-
-void window::PostMousePress(int button, float durationMs = 150.f)
-{
-
-}
-
