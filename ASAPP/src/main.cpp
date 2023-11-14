@@ -29,12 +29,9 @@ int main()
 
 
 	while (true) {
-		inv.Open();
-		Sleep(2000);
-		inv.Close();
+		asa::controls::Press(asa::settings::transferItem);
+		Sleep(500);
 	}
-
-
 
 	return 0;
 }

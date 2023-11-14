@@ -161,7 +161,7 @@ void window::SetHandleTo(std::string title, int timeout, bool verbose)
 	}
 }
 
-static BITMAPINFOHEADER& GetBitmapInfoHeader(
+static BITMAPINFOHEADER GetBitmapInfoHeader(
 	int width, int height, int bitCount, int compression)
 {
 	BITMAPINFOHEADER bi;
@@ -180,7 +180,7 @@ static BITMAPINFOHEADER& GetBitmapInfoHeader(
 	return bi;
 }
 
-static HBITMAP& GetBitmap(const window::Rect& region, HDC& memoryDeviceContext)
+static HBITMAP GetBitmap(const window::Rect& region, HDC& memoryDeviceContext)
 {
 	HDC deviceContext = GetDC(NULL);
 	memoryDeviceContext = CreateCompatibleDC(deviceContext);
@@ -349,7 +349,6 @@ void window::PostMousePress(
 		ResetCursor(prevPos);
 	}
 }
-
 
 void window::ResetCursor(POINT& previousPosition)
 {
