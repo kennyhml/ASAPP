@@ -192,7 +192,6 @@ static HBITMAP GetBitmap(const window::Rect& region, HDC& memoryDeviceContext)
 		deviceContext, region.x, region.y, SRCCOPY);
 
 	// Can release it now, avoids making another function take its
-	// reponsibility.
 	ReleaseDC(NULL, deviceContext);
 	return bitmap;
 }
