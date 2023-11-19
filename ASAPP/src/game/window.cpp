@@ -117,7 +117,7 @@ cv::Mat window::GetMask(
 	return mask;
 }
 
-void window::SetHandleTo(std::string title, int timeout, bool verbose)
+void window::GetHandle(int timeout, bool verbose)
 {
 	using seconds = std::chrono::seconds;
 
@@ -132,7 +132,7 @@ void window::SetHandleTo(std::string title, int timeout, bool verbose)
 		auto intervalPassed = std::chrono::duration_cast<seconds>(
 			now - intervalStart);
 
-		hWnd = FindWindowA("UnrealWindow", title.c_str());
+		hWnd = FindWindowA("UnrealWindow", "ArkAscended");
 
 		if (timePassed.count() > timeout && timeout != 0) {
 			if (verbose) {
@@ -142,7 +142,7 @@ void window::SetHandleTo(std::string title, int timeout, bool verbose)
 		}
 
 		if (verbose && ((!hWnd && intervalPassed.count() > 10) || !info)) {
-			std::cout << "[+] Trying to find '" << title << "'..." << std::endl;
+			std::cout << "[+] Trying to find the window..." << std::endl;
 			intervalStart = now;
 			info = true;
 		}
@@ -154,9 +154,9 @@ void window::SetHandleTo(std::string title, int timeout, bool verbose)
 	height = rect.bottom - rect.top;
 
 	if (firstGrab && verbose) {
-		std::cout << std::format("\t[-] Set window handle for {}: 0x{}! Width: "
+		std::cout << std::format("\t[-] Set window handle: 0x{}! Width: "
 								 "{}, height: {}",
-						 title, int(hWnd), width, height)
+						 int(hWnd), width, height)
 				  << std::endl;
 	}
 }

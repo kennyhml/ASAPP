@@ -66,7 +66,7 @@ namespace asa::window
 	cv::Mat GetMask(const cv::Mat& image, const Color& color, float variance);
 	cv::Mat GetMask(const Rect& region, const Color& color, float variance);
 
-	void SetHandleTo(std::string title, int timeout = 60, bool verbose = 0);
+	void GetHandle(int timeout = 60, bool verbose = 0);
 	cv::Mat Screenshot(const Rect& region);
 
 	inline std::ostream& operator<<(std::ostream& os, Point& point)
