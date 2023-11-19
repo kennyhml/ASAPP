@@ -132,7 +132,7 @@ void window::SetHandleTo(std::string title, int timeout, bool verbose)
 		auto intervalPassed = std::chrono::duration_cast<seconds>(
 			now - intervalStart);
 
-		hWnd = FindWindowA(NULL, title.c_str());
+		hWnd = FindWindowA("UnrealWindow", title.c_str());
 
 		if (timePassed.count() > timeout && timeout != 0) {
 			if (verbose) {
@@ -154,9 +154,9 @@ void window::SetHandleTo(std::string title, int timeout, bool verbose)
 	height = rect.bottom - rect.top;
 
 	if (firstGrab && verbose) {
-		std::cout << std::format(
-						 "\t[-] Set window handle: {}! Width: {}, height: {}",
-						 title, width, height)
+		std::cout << std::format("\t[-] Set window handle for {}: 0x{}! Width: "
+								 "{}, height: {}",
+						 title, int(hWnd), width, height)
 				  << std::endl;
 	}
 }
@@ -180,9 +180,10 @@ static BITMAPINFOHEADER GetBitmapInfoHeader(
 	return bi;
 }
 
-static HBITMAP GetBitmap(const window::Rect& region, HDC& memoryDeviceContext)
+static HBITMAP GetBitmap(const window::Rect& region, HDC& memoryDeviceContext,
+	HWND windowHandle = NULL)
 {
-	HDC deviceContext = GetDC(NULL);
+	HDC deviceContext = GetDC(windowHandle);
 	memoryDeviceContext = CreateCompatibleDC(deviceContext);
 	HBITMAP bitmap = CreateCompatibleBitmap(
 		deviceContext, region.width, region.height);
@@ -192,7 +193,7 @@ static HBITMAP GetBitmap(const window::Rect& region, HDC& memoryDeviceContext)
 		deviceContext, region.x, region.y, SRCCOPY);
 
 	// Can release it now, avoids making another function take its
-	ReleaseDC(NULL, deviceContext);
+	ReleaseDC(windowHandle, deviceContext);
 	return bitmap;
 }
 

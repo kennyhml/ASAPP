@@ -24,13 +24,10 @@ int main()
 	asa::items::Init();
 	Sleep(2000);
 
-
-	auto inv = asa::interfaces::LocalInventory();
-
-
 	while (true) {
-		asa::controls::Press(asa::settings::transferItem);
-		Sleep(500);
+
+		cv::imshow("output", asa::window::Screenshot({ 0, 0, 1920, 1080 }));
+		cv::waitKey(1);
 	}
 
 	return 0;
