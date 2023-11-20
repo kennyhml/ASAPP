@@ -228,12 +228,32 @@ bool window::SetForeground()
 	return SetForegroundWindow(hWnd) != NULL;
 }
 
+bool window::SetForegroundButHidden()
+{
+	return SetForeground() && SetWindowPos(hWnd, HWND_BOTTOM, 0, 0, 0, 0,
+								  SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+}
+
 void window::SetMousePos(const Point& location)
 {
 	SetCursorPos(location.x, location.y);
 }
 
 void window::SetMousePos(int x, int y) { SetCursorPos(x, y); }
+
+void window::ClickAt(
+	const Point& position, controls::MouseButton button, ms delay)
+{
+
+	if (!globals::useWindowInput) {
+		SetMousePos(position);
+		std::this_thread::sleep_for(delay);
+		controls::MousePress(button);
+	}
+	else {
+		window::PostMousePressAt(position, button);
+	}
+}
 
 void window::Down(const settings::ActionMapping& input, ms delay)
 {
@@ -384,6 +404,30 @@ void window::PostMousePress(
 	if (catchCursor) {
 		ResetCursor(prevPos);
 	}
+}
+
+void window::PostMousePressAt(
+	const Point& position, controls::MouseButton button)
+{
+	HWND previousFocus = GetForegroundWindow();
+	SetForegroundButHidden();
+	std::this_thread::sleep_for(ms(50));
+
+	LPARAM lParam = MAKELPARAM(position.x, position.y);
+	if (button == controls::MouseButton::LEFT) {
+		PostMessageW(hWnd, WM_LBUTTONDOWN, MK_LBUTTON, lParam);
+	}
+	else {
+		PostMessageW(hWnd, WM_RBUTTONDOWN, MK_RBUTTON, lParam);
+	}
+
+	if (button == controls::MouseButton::LEFT) {
+		PostMessageW(hWnd, WM_LBUTTONUP, MK_LBUTTON, lParam);
+	}
+	else {
+		PostMessageW(hWnd, WM_RBUTTONUP, MK_RBUTTON, lParam);
+	}
+	SetForegroundWindow(previousFocus);
 }
 
 void window::ResetCursor(POINT& previousPosition)

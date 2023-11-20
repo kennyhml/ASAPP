@@ -6,9 +6,8 @@ void components::Button::Press()
 {
 
 	auto loc = this->area.GetRandLocation(this->borderPadding);
-	window::SetMousePos(loc.x, loc.y);
-	Sleep(20);
-	controls::MousePress(controls::LEFT);
+
+	window::ClickAt(loc, controls::MouseButton::LEFT);
 
 	this->lastPressed = std::chrono::system_clock::now();
 	this->lastButtonPress = lastPressed;

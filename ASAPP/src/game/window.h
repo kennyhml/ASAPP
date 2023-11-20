@@ -86,9 +86,11 @@ namespace asa::window
 	}
 
 	bool SetForeground();
+	bool SetForegroundButHidden();
 
-	void SetMousePos(const Point& location);
+	void SetMousePos(const Point&);
 	void SetMousePos(int x, int y);
+	void ClickAt(const Point&, controls::MouseButton, ms delay = ms(50));
 
 	void Down(const settings::ActionMapping&, ms delay = ms(10));
 	void Up(const settings::ActionMapping&, ms delay = ms(10));
@@ -100,7 +102,6 @@ namespace asa::window
 	void Press(
 		const std::string& key, bool catchCursor = false, ms delay = ms(100));
 
-
 	void PostDown(const settings::ActionMapping&, ms delay = ms(10));
 	void PostUp(const settings::ActionMapping&, ms delay = ms(10));
 	void PostPress(const settings::ActionMapping&, bool catchCursor = false,
@@ -111,10 +112,11 @@ namespace asa::window
 	void PostKeyPress(
 		const std::string& key, bool catchCursor = false, ms delay = ms(100));
 
-	void PostMouseDown(controls::MouseButton button, ms delay = ms(10));
-	void PostMouseUp(controls::MouseButton button, ms delay = ms(10));
-	void PostMousePress(controls::MouseButton button, bool catchCursor = false,
-		ms delay = ms(100));
+	void PostMouseDown(controls::MouseButton, ms delay = ms(10));
+	void PostMouseUp(controls::MouseButton, ms delay = ms(10));
+	void PostMousePress(
+		controls::MouseButton, bool catchCursor = false, ms delay = ms(100));
+	void PostMousePressAt(const Point&, controls::MouseButton);
 
 	void ResetCursor(POINT& previousPosition);
 

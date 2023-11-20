@@ -26,12 +26,6 @@ int main()
 
 	auto inv = asa::interfaces::LocalInventory();
 
-	while (true) {
-		inv.Open();
-		Sleep(500);
-		inv.Close();
-	}
-
-
+	inv.SwitchTo(asa::interfaces::LocalInventory::CRAFTING);
 	return 0;
 }
