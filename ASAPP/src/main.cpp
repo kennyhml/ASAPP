@@ -12,7 +12,7 @@ int main()
 	asa::globals::gameBaseDirectory = std::filesystem::path(
 		"F:\\SteamLibrary\\steamapps\\common\\ARK Survival Ascended");
 
-	asa::window::SetHandleTo("ArkAscended", 60, true);
+	asa::window::GetHandle(60, true);
 	// asa::window::SetForeground();
 	asa::settings::LoadGameUserSettings();
 	asa::settings::LoadActionMappings();
@@ -26,7 +26,7 @@ int main()
 
 	while (true) {
 
-		cv::imshow("output", asa::window::Screenshot({ 0, 0, 1920, 1080 }));
+		cv::imshow("output", asa::window::Screenshot());
 		cv::waitKey(1);
 	}
 

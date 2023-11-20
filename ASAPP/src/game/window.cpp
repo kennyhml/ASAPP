@@ -154,9 +154,9 @@ void window::GetHandle(int timeout, bool verbose)
 	height = rect.bottom - rect.top;
 
 	if (firstGrab && verbose) {
-		std::cout << std::format("\t[-] Set window handle: 0x{}! Width: "
-								 "{}, height: {}",
-						 int(hWnd), width, height)
+		std::cout << std::format(
+						 "\t[-] Set window handle! Width: {}, height: {}",
+						 width, height)
 				  << std::endl;
 	}
 }
@@ -180,40 +180,38 @@ static BITMAPINFOHEADER GetBitmapInfoHeader(
 	return bi;
 }
 
-static HBITMAP GetBitmap(const window::Rect& region, HDC& memoryDeviceContext,
-	HWND windowHandle = NULL)
-{
-	HDC deviceContext = GetDC(windowHandle);
-	memoryDeviceContext = CreateCompatibleDC(deviceContext);
-	HBITMAP bitmap = CreateCompatibleBitmap(
-		deviceContext, region.width, region.height);
-
-	SelectObject(memoryDeviceContext, bitmap);
-	BitBlt(memoryDeviceContext, 0, 0, region.width, region.height,
-		deviceContext, region.x, region.y, SRCCOPY);
-
-	// Can release it now, avoids making another function take its
-	ReleaseDC(windowHandle, deviceContext);
-	return bitmap;
-}
-
 cv::Mat window::Screenshot(const Rect& region)
 {
-	HDC mDc;
-	HBITMAP bitmap = GetBitmap(region, mDc);
+	SetProcessDPIAware();
+
+	RECT rect;
+	GetWindowRect(hWnd, &rect);
+	int wWidth = rect.right - rect.left;
+	int wHeight = rect.bottom - rect.top;
+
+	int captureWidth = region.width ? region.width : wWidth;
+	int captureHeight = region.height ? region.height : wHeight;
+
+	HDC hwndDC = GetWindowDC(hWnd);
+	HDC mDc = CreateCompatibleDC(hwndDC);
+	HBITMAP bitmap = CreateCompatibleBitmap(hwndDC, wWidth, wHeight);
+
+	SelectObject(mDc, bitmap);
+	PrintWindow(hWnd, mDc, PW_RENDERFULLCONTENT);
+
 	BITMAPINFOHEADER bi = GetBitmapInfoHeader(
-		region.width, region.height, 32, BI_RGB);
+		captureWidth, captureHeight, 32, BI_RGB);
 
 	// copies the bitmap into the mat buffer
-	cv::Mat mat = cv::Mat(region.height, region.width, CV_8UC4);
-	GetDIBits(mDc, bitmap, 0, region.height, mat.data,
+	cv::Mat mat = cv::Mat(captureHeight, captureWidth, CV_8UC4);
+	GetDIBits(mDc, bitmap, 0, captureHeight, mat.data,
 		reinterpret_cast<BITMAPINFO*>(&bi), DIB_RGB_COLORS);
 
 	DeleteObject(bitmap);
 	DeleteDC(mDc);
+	ReleaseDC(hWnd, hwndDC);
 
-	// convert to RGB since RGBA is fucking useless, all our templates are gonna
-	// be in RGB
+	// convert to RGB since RGBA is useless
 	cv::Mat result;
 	cv::cvtColor(mat, result, cv::COLOR_RGBA2RGB);
 
