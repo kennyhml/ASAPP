@@ -24,11 +24,10 @@ int main()
 	asa::items::Init();
 	Sleep(2000);
 
-	while (true) {
 
-		cv::imshow("output", asa::window::Screenshot());
-		cv::waitKey(1);
-	}
+	auto inv = asa::interfaces::LocalInventory();
 
+	inv.Open();
+	std::cout << "Done" << std::endl;
 	return 0;
 }

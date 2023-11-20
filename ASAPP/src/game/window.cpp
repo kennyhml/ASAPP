@@ -189,9 +189,6 @@ cv::Mat window::Screenshot(const Rect& region)
 	int wWidth = rect.right - rect.left;
 	int wHeight = rect.bottom - rect.top;
 
-	int captureWidth = region.width ? region.width : wWidth;
-	int captureHeight = region.height ? region.height : wHeight;
-
 	HDC hwndDC = GetWindowDC(hWnd);
 	HDC mDc = CreateCompatibleDC(hwndDC);
 	HBITMAP bitmap = CreateCompatibleBitmap(hwndDC, wWidth, wHeight);
@@ -199,12 +196,11 @@ cv::Mat window::Screenshot(const Rect& region)
 	SelectObject(mDc, bitmap);
 	PrintWindow(hWnd, mDc, PW_RENDERFULLCONTENT);
 
-	BITMAPINFOHEADER bi = GetBitmapInfoHeader(
-		captureWidth, captureHeight, 32, BI_RGB);
+	BITMAPINFOHEADER bi = GetBitmapInfoHeader(wWidth, wHeight, 32, BI_RGB);
 
 	// copies the bitmap into the mat buffer
-	cv::Mat mat = cv::Mat(captureHeight, captureWidth, CV_8UC4);
-	GetDIBits(mDc, bitmap, 0, captureHeight, mat.data,
+	cv::Mat mat = cv::Mat(wHeight, wWidth, CV_8UC4);
+	GetDIBits(mDc, bitmap, 0, wHeight, mat.data,
 		reinterpret_cast<BITMAPINFO*>(&bi), DIB_RGB_COLORS);
 
 	DeleteObject(bitmap);
@@ -215,7 +211,11 @@ cv::Mat window::Screenshot(const Rect& region)
 	cv::Mat result;
 	cv::cvtColor(mat, result, cv::COLOR_RGBA2RGB);
 
-	return result;
+	if (!region.width && !region.height) {
+		return result;
+	}
+	return result(cv::Rect(region.x, region.y, region.width, region.height))
+		.clone();
 }
 
 bool window::SetForeground()
