@@ -1,8 +1,9 @@
 #include "window.h"
+#include "../_internal/util.h"
+#include "globals.h"
 #include <chrono>
 #include <iostream>
 #include <random>
-
 using namespace asa;
 
 void window::Color::ToRange(int v, cv::Scalar& low, cv::Scalar& high) const
@@ -234,6 +235,43 @@ void window::SetMousePos(const Point& location)
 
 void window::SetMousePos(int x, int y) { SetCursorPos(x, y); }
 
+void window::Down(const settings::ActionMapping& input, ms delay)
+{
+	globals::useWindowInput ? PostDown(input, delay)
+							: controls::Down(input, delay);
+}
+
+void window::Up(const settings::ActionMapping& input, ms delay)
+{
+	globals::useWindowInput ? PostUp(input, delay)
+							: controls::Release(input, delay);
+}
+
+void window::Press(
+	const settings::ActionMapping& input, bool catchCursor, ms delay)
+{
+	globals::useWindowInput ? PostPress(input, catchCursor, delay)
+							: controls::Press(input, delay);
+}
+
+void window::Down(const std::string& key, ms delay)
+{
+	globals::useWindowInput ? PostKeyDown(key, delay)
+							: controls::KeyDown(key, delay);
+}
+
+void window::Up(const std::string& key, ms delay)
+{
+	globals::useWindowInput ? PostKeyUp(key, delay)
+							: controls::KeyUp(key, delay);
+}
+
+void window::Press(const std::string& key, bool catchCursor, ms delay)
+{
+	globals::useWindowInput ? PostKeyPress(key, catchCursor, delay)
+							: controls::KeyPress(key, delay);
+}
+
 void window::PostDown(const settings::ActionMapping& input, ms delay)
 {
 	controls::IsMouseInput(input)
@@ -350,12 +388,16 @@ void window::PostMousePress(
 
 void window::ResetCursor(POINT& previousPosition)
 {
+	auto start = std::chrono::system_clock::now();
 	POINT currPos;
 	GetCursorPos(&currPos);
 
-	while (currPos.x != width / 2 && currPos.y != height / 2) {
-		previousPosition = currPos;
-		GetCursorPos(&currPos);
+	while (!_internal::_util::Timedout(start, ms(250))) {
+
+		while (currPos.x != width / 2 && currPos.y != height / 2) {
+			previousPosition = currPos;
+			GetCursorPos(&currPos);
+		}
+		SetCursorPos(previousPosition.x, previousPosition.y);
 	}
-	SetCursorPos(previousPosition.x, previousPosition.y);
 }

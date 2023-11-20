@@ -90,6 +90,17 @@ namespace asa::window
 	void SetMousePos(const Point& location);
 	void SetMousePos(int x, int y);
 
+	void Down(const settings::ActionMapping&, ms delay = ms(10));
+	void Up(const settings::ActionMapping&, ms delay = ms(10));
+	void Press(const settings::ActionMapping&, bool catchCursor = false,
+		ms delay = ms(100));
+
+	void Down(const std::string& key, ms delay = ms(10));
+	void Up(const std::string& key, ms delay = ms(10));
+	void Press(
+		const std::string& key, bool catchCursor = false, ms delay = ms(100));
+
+
 	void PostDown(const settings::ActionMapping&, ms delay = ms(10));
 	void PostUp(const settings::ActionMapping&, ms delay = ms(10));
 	void PostPress(const settings::ActionMapping&, bool catchCursor = false,

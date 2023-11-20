@@ -22,12 +22,16 @@ int main()
 	asa::resources::Init();
 
 	asa::items::Init();
-	Sleep(2000);
 
 
 	auto inv = asa::interfaces::LocalInventory();
 
-	inv.Open();
-	std::cout << "Done" << std::endl;
+	while (true) {
+		inv.Open();
+		Sleep(500);
+		inv.Close();
+	}
+
+
 	return 0;
 }

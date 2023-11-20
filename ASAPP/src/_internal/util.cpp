@@ -1,6 +1,6 @@
 #include "util.h"
 
-bool internal::_util::Await(
+bool _internal::_util::Await(
 	const std::function<bool()>& condition, std::chrono::milliseconds timeout)
 {
 	auto start_time = std::chrono::steady_clock::now();
@@ -17,11 +17,20 @@ bool internal::_util::Await(
 	return true;
 }
 
-bool internal::_util::Timedout(
-	std::chrono::system_clock::time_point& start, std::chrono::seconds timeout)
+bool _internal::_util::Timedout(
+	const std::chrono::system_clock::time_point& start,
+	const std::chrono::milliseconds timeout)
 {
 	auto now = std::chrono::system_clock::now();
 	auto timePassed = now - start;
 
 	return timePassed >= timeout;
+}
+
+bool _internal::_util::Timedout(
+	const std::chrono::system_clock::time_point& start,
+	const std::chrono::seconds timeout)
+{
+	return Timedout(
+		start, std::chrono::duration_cast<std::chrono::milliseconds>(timeout));
 }
