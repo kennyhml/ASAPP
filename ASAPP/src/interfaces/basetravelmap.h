@@ -30,5 +30,4 @@ namespace asa::interfaces
 		virtual void SelectResult(int index = 0);
 		virtual void GoTo(std::string destination) = 0;
 	};
-
 }

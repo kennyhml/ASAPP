@@ -192,5 +192,8 @@
     <ClCompile Include="src\interfaces\teleportmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\interfaces\travelmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

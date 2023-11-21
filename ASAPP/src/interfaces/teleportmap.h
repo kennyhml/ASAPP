@@ -4,7 +4,6 @@
 
 namespace asa::interfaces
 {
-
 	class TeleportMap : public BaseTravelMap
 	{
 		using BaseTravelMap::BaseTravelMap;
@@ -19,9 +18,4 @@ namespace asa::interfaces
 
 		virtual void GoTo(std::string destination);
 	};
-
-
-
-
-
 }

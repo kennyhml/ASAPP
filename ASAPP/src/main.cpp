@@ -7,7 +7,7 @@
 #include "interfaces/localinventory.h"
 #include "items/items.h"
 
-#include "interfaces/teleportmap.h"
+#include "interfaces/travelmap.h"
 #include <opencv2/core/utils/logger.hpp>
 
 int main()
@@ -29,7 +29,7 @@ int main()
 
 	asa::items::Init();
 
-	auto map = asa::interfaces::TeleportMap();
+	auto map = asa::interfaces::TravelMap();
 
 
 	map.GoTo("test");

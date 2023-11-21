@@ -1,8 +1,8 @@
-#include "teleportmap.h"
+#include "travelmap.h"
 #include "../_internal/util.h"
 #include "exceptions.h"
 
-void asa::interfaces::TeleportMap::Close()
+void asa::interfaces::TravelMap::Close()
 {
 	auto start = std::chrono::system_clock::now();
 	while (this->IsOpen()) {
@@ -18,24 +18,15 @@ void asa::interfaces::TeleportMap::Close()
 	}
 }
 
-void asa::interfaces::TeleportMap::SetSelectedAsDefault()
+void asa::interfaces::TravelMap::GoTo(std::string destination)
 {
-	while (!this->CanConfirmTarget()) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
-	}
-
-	this->setDefaultButton.Press();
-}
-
-void asa::interfaces::TeleportMap::GoTo(std::string destination)
-{
-	std::cout << "[+] Teleporting to '" << destination << "'..." << std::endl;
+	std::cout << "[+] Traveling to '" << destination << "'..." << std::endl;
 	this->searchbar.SearchFor(destination);
 	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 
 	this->SelectResult();
 
-	std::cout << "\t[-] Waiting for teleport to go off cooldown...";
+	std::cout << "\t[-] Waiting for fast travel to go off cooldown...";
 	while (!this->CanConfirmTarget()) {
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
@@ -45,7 +36,7 @@ void asa::interfaces::TeleportMap::GoTo(std::string destination)
 		this->confirmButton.Press();
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
-	std::cout << "\t[-] Teleported to '" << destination << "'." << std::endl;
+	std::cout << "\t[-] Traveled to '" << destination << "'." << std::endl;
 
 	this->searchbar.SetTextCleared();
 }
