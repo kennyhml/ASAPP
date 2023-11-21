@@ -45,6 +45,7 @@ namespace asa::interfaces
 		const bool HasEquipped(const items::Item*, Slot slot);
 
 		void UnequipItemAt(Slot slot);
+		void UnequipAllItems();
 
 		const items::Item* GetEquippedItem(Slot slot);
 	};

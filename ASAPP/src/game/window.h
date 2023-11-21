@@ -111,6 +111,7 @@ namespace asa::window
 	void PostKeyUp(const std::string& key, ms delay = ms(0));
 	void PostKeyPress(
 		const std::string& key, bool catchCursor = false, ms delay = ms(0));
+
 	void PostChar(char c);
 
 	void PostMouseDown(controls::MouseButton, ms delay = ms(10));

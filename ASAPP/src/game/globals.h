@@ -4,5 +4,5 @@
 namespace asa::globals
 {
 	inline std::filesystem::path gameBaseDirectory;
-	inline bool useWindowInput = true;
+	inline bool useWindowInput = false;
 }

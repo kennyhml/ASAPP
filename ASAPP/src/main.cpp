@@ -17,7 +17,7 @@ int main()
 		"F:\\SteamLibrary\\steamapps\\common\\ARK Survival Ascended");
 
 	asa::window::GetHandle(60, true);
-	// asa::window::SetForeground();
+	asa::window::SetForeground();
 	asa::settings::LoadGameUserSettings();
 	asa::settings::LoadActionMappings();
 
@@ -29,15 +29,5 @@ int main()
 
 	auto info = asa::interfaces::PlayerInfo();
 
-
-
-	while (true) {
-		for (int i = 0; i < 6; i++) {
-			std::cout << info.HasEquipped(nullptr,
-							 static_cast<asa::interfaces::PlayerInfo::Slot>(i))
-					  << std::endl;
-		}
-	}
-
-	return 0;
+	info.UnequipItemAt(info.HEAD);
 }
