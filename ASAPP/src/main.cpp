@@ -6,6 +6,9 @@
 #include "game/window.h"
 #include "interfaces/localinventory.h"
 #include "items/items.h"
+
+#include "interfaces/basetravelmap.h"
+
 int main()
 {
 
@@ -23,11 +26,11 @@ int main()
 
 	asa::items::Init();
 
-	auto dedi = asa::interfaces::BaseInventory(true);
+	auto map = asa::interfaces::BaseTravelMap();
 
-	dedi.searchBar.SearchFor("Hi hi hi");
-	Sleep(300);
-	dedi.searchBar.DeleteSearch();
+
+	map.SelectResult(0);
+
 
 	return 0;
 }

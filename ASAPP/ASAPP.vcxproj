@@ -163,6 +163,7 @@
     <ClCompile Include="src\game\resources.cpp" />
     <ClCompile Include="src\game\settings.cpp" />
     <ClCompile Include="src\game\window.cpp" />
+    <ClCompile Include="src\interfaces\basetravelmap.cpp" />
     <ClCompile Include="src\interfaces\components\button.cpp" />
     <ClCompile Include="src\interfaces\components\searchbar.cpp" />
     <ClCompile Include="src\interfaces\exceptions.cpp" />
@@ -180,6 +181,7 @@
     <ClInclude Include="src\game\resources.h" />
     <ClInclude Include="src\game\window.h" />
     <ClInclude Include="src\game\settings.h" />
+    <ClInclude Include="src\interfaces\basetravelmap.h" />
     <ClInclude Include="src\interfaces\components\combobox.h" />
     <ClInclude Include="src\interfaces\engrams.h" />
     <ClInclude Include="src\interfaces\exceptions.h" />

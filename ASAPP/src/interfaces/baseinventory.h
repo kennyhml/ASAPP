@@ -39,6 +39,12 @@ namespace asa::interfaces
 			[[nodiscard]] bool HasItem(items::Item* item) const;
 		};
 
+		ManagementButton transferAllButton;
+		ManagementButton dropAllButton;
+		ManagementButton newFolderButton;
+		ManagementButton autoStackButton;
+		ManagementButton folderViewButton;
+
 	public:
 		BaseInventory(bool isRemote) : isRemoteInventory(isRemote)
 		{
@@ -64,12 +70,6 @@ namespace asa::interfaces
 
 		components::ComboBox itemFilter;
 		components::SearchBar searchBar;
-
-		ManagementButton transferAllButton;
-		ManagementButton dropAllButton;
-		ManagementButton newFolderButton;
-		ManagementButton autoStackButton;
-		ManagementButton folderViewButton;
 
 		window::Rect itemArea;
 
