@@ -144,6 +144,9 @@
     <ClInclude Include="src\interfaces\structureinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\interfaces\baseinfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />

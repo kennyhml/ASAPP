@@ -184,6 +184,7 @@
     <ClInclude Include="src\game\resources.h" />
     <ClInclude Include="src\game\window.h" />
     <ClInclude Include="src\game\settings.h" />
+    <ClInclude Include="src\interfaces\baseinfo.h" />
     <ClInclude Include="src\interfaces\basetravelmap.h" />
     <ClInclude Include="src\interfaces\components\combobox.h" />
     <ClInclude Include="src\interfaces\dinoinfo.h" />
