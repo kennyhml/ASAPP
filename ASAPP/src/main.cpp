@@ -7,10 +7,13 @@
 #include "interfaces/localinventory.h"
 #include "items/items.h"
 
-#include "interfaces/basetravelmap.h"
+#include "interfaces/teleportmap.h"
+#include <opencv2/core/utils/logger.hpp>
 
 int main()
 {
+	cv::utils::logging::setLogLevel(
+		cv::utils::logging::LogLevel::LOG_LEVEL_SILENT);
 
 	asa::globals::gameBaseDirectory = std::filesystem::path(
 		"F:\\SteamLibrary\\steamapps\\common\\ARK Survival Ascended");
@@ -26,10 +29,10 @@ int main()
 
 	asa::items::Init();
 
-	auto map = asa::interfaces::BaseTravelMap();
+	auto map = asa::interfaces::TeleportMap();
 
 
-	map.SelectResult(0);
+	map.GoTo("test");
 
 
 	return 0;

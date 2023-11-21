@@ -8,7 +8,7 @@ namespace asa::interfaces
 {
 	class BaseTravelMap : public IInterface
 	{
-	private:
+	protected:
 		std::array<components::Button, 12> results;
 		window::Rect dayTime{ 1570, 77, 272, 54 };
 		components::Button confirmButton{ 1461, 931, 367, 60 };

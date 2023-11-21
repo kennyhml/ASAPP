@@ -3,7 +3,7 @@
 bool asa::interfaces::BaseTravelMap::IsOpen()
 {
 	static window::Color dayText(116, 177, 186);
-	auto mask = window::GetMask(confirmButton.area, dayText, 20);
+	auto mask = window::GetMask(dayTime, dayText, 20);
 
 	return cv::countNonZero(mask) > 50;
 }

@@ -2,6 +2,7 @@
 #include "../_internal/util.h"
 #include "globals.h"
 #include <chrono>
+#include <fstream>
 #include <iostream>
 #include <random>
 using namespace asa;

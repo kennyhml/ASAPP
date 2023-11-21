@@ -170,6 +170,7 @@
     <ClCompile Include="src\interfaces\interfacemanager.cpp" />
     <ClCompile Include="src\interfaces\baseinventory.cpp" />
     <ClCompile Include="src\interfaces\localinventory.cpp" />
+    <ClCompile Include="src\interfaces\teleportmap.cpp" />
     <ClCompile Include="src\items\items.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\_internal\util.cpp" />
@@ -195,7 +196,10 @@
     <ClInclude Include="src\interfaces\modeselect.h" />
     <ClInclude Include="src\interfaces\playerinventory.h" />
     <ClInclude Include="src\interfaces\serverselect.h" />
+    <ClInclude Include="src\interfaces\spawnmap.h" />
+    <ClInclude Include="src\interfaces\teleportmap.h" />
     <ClInclude Include="src\interfaces\trackingtab.h" />
+    <ClInclude Include="src\interfaces\travelmap.h" />
     <ClInclude Include="src\interfaces\tribemanager.h" />
     <ClInclude Include="src\interfaces\components\button.h" />
     <ClInclude Include="src\interfaces\components\dinoinfo.h" />
