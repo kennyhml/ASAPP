@@ -158,4 +158,13 @@ void BaseInventory::DropAll()
 	this->dropAllButton.Press();
 	this->searchBar.SetTextCleared();
 	Sleep(200);
+	// TO DO: Wait for the items to be dropped
+}
+
+void BaseInventory::TransferAll()
+{
+	this->transferAllButton.Press();
+	this->searchBar.SetTextCleared();
+	Sleep(200);
+	// TO DO: Wait for the items to be transferred
 }

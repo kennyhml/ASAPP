@@ -336,13 +336,16 @@ void window::PostKeyPress(const std::string& key, bool catchCursor, ms delay)
 	if (catchCursor) {
 		GetCursorPos(&prevPos);
 	}
-	PostKeyDown(key, delay);
+
+	PostKeyDown(key);
 	PostKeyUp(key);
 
 	if (catchCursor) {
 		ResetCursor(prevPos);
 	}
 }
+
+void window::PostChar(char c) { PostMessageW(hWnd, WM_CHAR, c, NULL); }
 
 void window::PostMouseDown(controls::MouseButton button, ms delay)
 {

@@ -22,7 +22,7 @@ namespace asa::interfaces
 
 		void Open();
 		void Close();
-
 		void SwitchTo(Tab tab);
+		void ToggleTooltips();
 	};
 }

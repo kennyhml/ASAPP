@@ -97,20 +97,21 @@ namespace asa::window
 	void Press(const settings::ActionMapping&, bool catchCursor = false,
 		ms delay = ms(100));
 
-	void Down(const std::string& key, ms delay = ms(10));
-	void Up(const std::string& key, ms delay = ms(10));
+	void Down(const std::string& key, ms delay = ms(0));
+	void Up(const std::string& key, ms delay = ms(0));
 	void Press(
-		const std::string& key, bool catchCursor = false, ms delay = ms(100));
+		const std::string& key, bool catchCursor = false, ms delay = ms(0));
 
 	void PostDown(const settings::ActionMapping&, ms delay = ms(10));
 	void PostUp(const settings::ActionMapping&, ms delay = ms(10));
 	void PostPress(const settings::ActionMapping&, bool catchCursor = false,
 		ms delay = ms(100));
 
-	void PostKeyDown(const std::string& key, ms delay = ms(10));
-	void PostKeyUp(const std::string& key, ms delay = ms(10));
+	void PostKeyDown(const std::string& key, ms delay = ms(0));
+	void PostKeyUp(const std::string& key, ms delay = ms(0));
 	void PostKeyPress(
-		const std::string& key, bool catchCursor = false, ms delay = ms(100));
+		const std::string& key, bool catchCursor = false, ms delay = ms(0));
+	void PostChar(char c);
 
 	void PostMouseDown(controls::MouseButton, ms delay = ms(10));
 	void PostMouseUp(controls::MouseButton, ms delay = ms(10));

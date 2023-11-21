@@ -1,43 +1,30 @@
 #include "searchbar.h"
 #include "../../game/controls.h"
+#include "../../game/globals.h"
 #include <Windows.h>
 
 void asa::interfaces::components::SearchBar::Press() const
 {
 	window::Point loc = this->area.GetRandLocation(5);
-
-	window::SetMousePos(loc.x, loc.y);
-	Sleep(30);
-	controls::MousePress(controls::LEFT);
-	Sleep(30);
+	window::ClickAt(loc, controls::LEFT);
 }
 
 void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 {
 	this->Press();
 	this->isSearching = true;
-	if (!OpenClipboard(nullptr)) {
-		std::cout << "[!] Failed to open clipboard." << std::endl;
-		return;
-	}
-	EmptyClipboard();
 
-	size_t size = term.length() + 1;
-	HGLOBAL hClipboardData = GlobalAlloc(GMEM_MOVEABLE, size);
-
-	if (!hClipboardData) {
-		std::cout << "[!] Clipboard memory allocation failed!" << std::endl;
-		return;
+	for (auto c : term) {
+		if (globals::useWindowInput) {
+			window::PostChar(c);
+		}
+		else {
+			controls::KeyPress(std::string(1, c));
+		}
 	}
 
-	memcpy(GlobalLock(hClipboardData), term.c_str(), size);
-	GlobalUnlock(hClipboardData);
-	SetClipboardData(CF_TEXT, hClipboardData);
-	CloseClipboard();
-	GlobalFree(hClipboardData);
-
-	controls::KeyCombinationPress("Ctrl", "v");
-	controls::KeyPress("Esc");
+	std::this_thread::sleep_for(std::chrono::milliseconds(30));
+	window::PostKeyPress("Esc");
 
 	this->isSearching = false;
 	this->lastSearchedTerm = term;
@@ -48,11 +35,20 @@ void asa::interfaces::components::SearchBar::DeleteSearch()
 {
 	this->Press();
 
-	controls::KeyCombinationPress("Ctrl", "a");
-	Sleep(100);
-	controls::KeyPress("Delete");
-	Sleep(300);
-	controls::KeyPress("Esc");
+	if (globals::useWindowInput) {
+		for (int i = 0; i < lastSearchedTerm.size(); i++) {
+			window::PostKeyPress("BackSpace", false);
+			window::PostKeyPress("Delete", false);
+		}
+	}
+	else {
+		controls::KeyCombinationPress("Ctrl", "a");
+		std::this_thread::sleep_for(std::chrono::milliseconds(40));
+		controls::KeyPress("Delete");
+	}
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	window::Press("Esc");
 
 	this->SetTextCleared();
 }

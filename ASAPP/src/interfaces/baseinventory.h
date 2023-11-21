@@ -87,7 +87,12 @@ namespace asa::interfaces
 		virtual void Popcorn(items::Item* item, int stacks, int& stacksDropped);
 		virtual void PopcornSlots(int slots);
 
-		virtual void DropAll();
+		void DropAll();
+		void TransferAll();
+		void SetFilter();
+		void MakeNewFolder(std::string folderName);
+		void AutoStack();
+		void ToggleFolderView();
 
 	private:
 		bool isRemoteInventory{ false };

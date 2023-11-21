@@ -23,9 +23,11 @@ int main()
 
 	asa::items::Init();
 
+	auto dedi = asa::interfaces::BaseInventory(true);
 
-	auto inv = asa::interfaces::LocalInventory();
+	dedi.searchBar.SearchFor("Hi hi hi");
+	Sleep(300);
+	dedi.searchBar.DeleteSearch();
 
-	inv.SwitchTo(asa::interfaces::LocalInventory::CRAFTING);
 	return 0;
 }
