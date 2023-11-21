@@ -1,4 +1,5 @@
 #include "playerinfo.h"
+#include <stdexcept>
 
 using namespace asa::interfaces;
 
@@ -9,9 +10,20 @@ bool PlayerInfo::IsOpen()
 	return cv::countNonZero(mask) > 60;
 }
 
-const bool PlayerInfo::HasEquipped(const items::Item*, Slot slot)
+const bool PlayerInfo::HasEquipped(const items::Item* item, Slot slot)
 {
-	return false;
+	if (item && (!item->type == item->EQUIPPABLE)) {
+		throw std::invalid_argument(
+			std::format("Item '{}' cannot be equipped.", item->name));
+	}
+
+	GearSlot gearSlot = this->gearSlots[slot];
+	const auto roi = item ? gearSlot : gearSlot.GetSlotDescriptionArea();
+
+	if (!item) {
+		auto mask = window::GetMask(roi, window::Color(223, 250, 255), 20);
+		return cv::countNonZero(mask) < 30;
+	}
 }
 
 void PlayerInfo::UnequipItemAt(Slot slot) {}

@@ -14,6 +14,11 @@ namespace asa::interfaces
 		{
 			GearSlot() : Rect{ 0, 0, 87, 87 } {}
 			GearSlot(int x, int y) : Rect{ x, y, 87, 87 } {};
+
+			window::Rect GetSlotDescriptionArea()
+			{
+				return window::Rect(x, y + 68, 87, 17);
+			}
 		};
 
 		std::array<GearSlot, 6> gearSlots;
@@ -25,7 +30,7 @@ namespace asa::interfaces
 		{
 			for (int i = 0; i < gearSlots.max_size(); i++) {
 				gearSlots[i] = GearSlot(
-					764 + (305 * i > 2), 178 + (93 * (i % 3)));
+					764 + (305 * (i > 2)), 178 + (93 * (i % 3)));
 			}
 		}
 

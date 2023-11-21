@@ -30,12 +30,14 @@ int main()
 	auto info = asa::interfaces::PlayerInfo();
 
 
+
 	while (true) {
-
-		std::cout << info.IsOpen() << std::endl;
+		for (int i = 0; i < 6; i++) {
+			std::cout << info.HasEquipped(nullptr,
+							 static_cast<asa::interfaces::PlayerInfo::Slot>(i))
+					  << std::endl;
+		}
 	}
-
-
 
 	return 0;
 }
