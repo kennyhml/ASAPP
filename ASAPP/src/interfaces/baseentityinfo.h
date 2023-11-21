@@ -29,6 +29,18 @@ namespace asa::interfaces
 			}
 		}
 
+		enum Stat
+		{
+			HEALTH,
+			STAMINA,
+			FOOD,
+			WEIGHT,
+			MELEE,
+			TORPIDITY,
+		};
+
+		virtual const int GetLevel();
+
 		virtual const int GetDay();
 		virtual const int GetTime();
 		virtual const int GetTemp();

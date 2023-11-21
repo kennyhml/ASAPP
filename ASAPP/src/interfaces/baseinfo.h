@@ -10,6 +10,12 @@ namespace asa::interfaces
 		window::Rect area{ 747, 109, 429, 806 };
 
 	public:
+		enum Stat
+		{
+			HEALTH,
+			WEIGHT,
+		};
+
 		virtual const int GetMaxHealth() = 0;
 		virtual const int GetCurrentHealth() = 0;
 
