@@ -28,6 +28,6 @@ namespace asa::interfaces
 		virtual int CountResults();
 
 		virtual void SelectResult(int index = 0);
-		virtual void GoTo(std::string destination) = 0;
+		virtual void GoTo(const std::string& destination) = 0;
 	};
 }

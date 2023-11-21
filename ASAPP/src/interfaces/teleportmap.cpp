@@ -27,7 +27,7 @@ void asa::interfaces::TeleportMap::SetSelectedAsDefault()
 	this->setDefaultButton.Press();
 }
 
-void asa::interfaces::TeleportMap::GoTo(std::string destination)
+void asa::interfaces::TeleportMap::GoTo(const std::string& destination)
 {
 	std::cout << "[+] Teleporting to '" << destination << "'..." << std::endl;
 	this->searchbar.SearchFor(destination);
@@ -46,6 +46,5 @@ void asa::interfaces::TeleportMap::GoTo(std::string destination)
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
 	std::cout << "\t[-] Teleported to '" << destination << "'." << std::endl;
-
 	this->searchbar.SetTextCleared();
 }

@@ -18,7 +18,7 @@ void asa::interfaces::TravelMap::Close()
 	}
 }
 
-void asa::interfaces::TravelMap::GoTo(std::string destination)
+void asa::interfaces::TravelMap::GoTo(const std::string& destination)
 {
 	std::cout << "[+] Traveling to '" << destination << "'..." << std::endl;
 	this->searchbar.SearchFor(destination);

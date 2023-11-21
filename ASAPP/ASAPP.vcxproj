@@ -170,6 +170,7 @@
     <ClCompile Include="src\interfaces\interfacemanager.cpp" />
     <ClCompile Include="src\interfaces\baseinventory.cpp" />
     <ClCompile Include="src\interfaces\localinventory.cpp" />
+    <ClCompile Include="src\interfaces\spawnmap.cpp" />
     <ClCompile Include="src\interfaces\teleportmap.cpp" />
     <ClCompile Include="src\interfaces\travelmap.cpp" />
     <ClCompile Include="src\items\items.cpp" />

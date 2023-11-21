@@ -7,7 +7,7 @@
 #include "interfaces/localinventory.h"
 #include "items/items.h"
 
-#include "interfaces/travelmap.h"
+#include "interfaces/spawnmap.h"
 #include <opencv2/core/utils/logger.hpp>
 
 int main()
@@ -28,12 +28,10 @@ int main()
 	asa::resources::Init();
 
 	asa::items::Init();
+	Sleep(1000);
+	auto map = asa::interfaces::SpawnMap();
 
-	auto map = asa::interfaces::TravelMap();
-
-
-	map.GoTo("test");
-
+	map.SpawnAt("test");
 
 	return 0;
 }

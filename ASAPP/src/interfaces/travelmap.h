@@ -13,6 +13,6 @@ namespace asa::interfaces
 
 	public:
 		void Close();
-		virtual void GoTo(std::string destination);
+		virtual void GoTo(const std::string& destination);
 	};
 }

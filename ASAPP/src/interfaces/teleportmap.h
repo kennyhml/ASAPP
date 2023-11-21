@@ -16,6 +16,6 @@ namespace asa::interfaces
 		void Close();
 		void SetSelectedAsDefault();
 
-		virtual void GoTo(std::string destination);
+		virtual void GoTo(const std::string& destination);
 	};
 }
