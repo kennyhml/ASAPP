@@ -39,25 +39,34 @@ namespace asa::interfaces
 			TORPIDITY,
 		};
 
-		virtual const int GetLevel();
+		virtual const int GetLevel() { return 0; }
 
-		virtual const int GetDay();
-		virtual const int GetTime();
-		virtual const int GetTemp();
-		virtual const int GetArmor();
+		virtual const int GetDay() { return 0; }
+		virtual const int GetTime() { return 0; }
+		virtual const int GetTemp() { return 0; }
+		virtual const int GetTotalArmor() { return 0; }
 
-		virtual const int GetMaxStamine();
-		virtual const int GetCurrentStamine();
+		virtual const int GetMaxHealth() { return 0; }
+		virtual const int GetCurrentHealth() { return 0; }
 
-		virtual const int GetMaxFood();
-		virtual const int GetCurrentFood();
+		virtual const int GetMaxWeight() { return 0; };
+		virtual const int GetCurrentWeight() { return 0; };
 
-		virtual const int GetMaxWater();
-		virtual const int GetCurrentWater();
+		virtual const std::string GetOwner() { return ""; }
+		virtual const std::string GetName() { return ""; }
 
-		virtual const int GetMeleeMultiplier();
-		virtual const int GetTorpitidy();
+		virtual const int GetMaxStamine() { return 0; }
+		virtual const int GetCurrentStamine() { return 0; }
 
-		virtual const bool CanLevelUp();
+		virtual const int GetMaxFood() { return 0; }
+		virtual const int GetCurrentFood() { return 0; }
+
+		virtual const int GetMaxWater() { return 0; }
+		virtual const int GetCurrentWater() { return 0; }
+
+		virtual const int GetMeleeMultiplier() { return 0; }
+		virtual const int GetTorpitidy() { return 0; }
+
+		virtual const bool CanLevelUp() { return 0; }
 	};
 }

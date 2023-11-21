@@ -204,5 +204,8 @@
     <ClCompile Include="src\interfaces\spawnmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\interfaces\playerinfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

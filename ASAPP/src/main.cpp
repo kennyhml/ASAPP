@@ -4,11 +4,9 @@
 #include "game/resources.h"
 #include "game/settings.h"
 #include "game/window.h"
-#include "interfaces/localinventory.h"
-#include "items/items.h"
-
-#include "interfaces/spawnmap.h"
 #include <opencv2/core/utils/logger.hpp>
+
+#include "interfaces/playerinfo.h"
 
 int main()
 {
@@ -28,10 +26,16 @@ int main()
 	asa::resources::Init();
 
 	asa::items::Init();
-	Sleep(1000);
-	auto map = asa::interfaces::SpawnMap();
 
-	map.SpawnAt("test");
+	auto info = asa::interfaces::PlayerInfo();
+
+
+	while (true) {
+
+		std::cout << info.IsOpen() << std::endl;
+	}
+
+
 
 	return 0;
 }

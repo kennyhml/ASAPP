@@ -4,13 +4,13 @@
 
 namespace asa::interfaces
 {
-
 	class PlayerInfo : public BaseEntityInfo
 	{
-		using BaseEntityInfo::BaseEntityInfo;
-
+	protected:
+		components::Button you{ 757, 124, 111, 49 };
 
 	public:
+		using BaseEntityInfo::BaseEntityInfo;
 		enum Slot
 		{
 			HEAD,
@@ -26,7 +26,6 @@ namespace asa::interfaces
 			HEALTH,
 			FOOD,
 			OXYGEN,
-			FOOD,
 			WATER,
 			WEIGHT,
 			MELEE,
@@ -35,19 +34,18 @@ namespace asa::interfaces
 			TORPIDITY
 		};
 
-		const int GetTameLimit();
-		const int GetTotalArmor();
-		const int GetColdResist();
-		const int GetHeatResist();
+		bool IsOpen();
 
+		const int GetTameLimit() { return 0; }
+		const int GetCraftingSkill() { return 0; }
+		const int GetFortitude() { return 0; }
+
+		const bool GetGearDurability(Slot slot, int& duraOut) { return 0; }
+		const bool GetGearArmor(Slot slot, int& armorOut) { return 0; }
 		const bool HasEquipped(const items::Item*, Slot slot);
-		const bool GetGearDurability(Slot slot, int& durabilityOut);
-		const bool GetGearArmor(Slot slot, int& armorOut);
-
-		const int GetCraftingSkill();
-		const int GetFortitude();
 
 		void UnequipItemAt(Slot slot);
+
 		const items::Item* GetEquippedItem(Slot slot);
 	};
 
