@@ -29,23 +29,23 @@ namespace asa::interfaces
 			}
 		}
 
-		virtual const int GetDay() = 0;
-		virtual const int GetTime() = 0;
-		virtual const int GetTemp() = 0;
-		virtual const int GetArmor() = 0;
+		virtual const int GetDay();
+		virtual const int GetTime();
+		virtual const int GetTemp();
+		virtual const int GetArmor();
 
-		virtual const int GetMaxStamine() = 0;
-		virtual const int GetCurrentStamine() = 0;
+		virtual const int GetMaxStamine();
+		virtual const int GetCurrentStamine();
 
-		virtual const int GetMaxFood() = 0;
-		virtual const int GetCurrentFood() = 0;
+		virtual const int GetMaxFood();
+		virtual const int GetCurrentFood();
 
-		virtual const int GetMaxWater() = 0;
-		virtual const int GetCurrentWater() = 0;
+		virtual const int GetMaxWater();
+		virtual const int GetCurrentWater();
 
-		virtual const int GetMeleeMultiplier() = 0;
-		virtual const int GetTorpitidy() = 0;
+		virtual const int GetMeleeMultiplier();
+		virtual const int GetTorpitidy();
 
-		virtual const bool CanLevelUp() = 0;
+		virtual const bool CanLevelUp();
 	};
 }
