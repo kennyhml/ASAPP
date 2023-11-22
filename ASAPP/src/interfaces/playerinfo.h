@@ -44,8 +44,8 @@ namespace asa::interfaces
 		const bool GetGearArmor(Slot slot, int& armorOut) { return 0; }
 		const bool HasEquipped(const items::Item*, Slot slot);
 
-		void UnequipItemAt(Slot slot);
-		void UnequipAllItems();
+		void Unequip(Slot slot);
+		void UnequipAll();
 
 		const items::Item* GetEquippedItem(Slot slot);
 	};

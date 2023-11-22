@@ -26,7 +26,7 @@ const bool PlayerInfo::HasEquipped(const items::Item* item, Slot slot)
 	}
 }
 
-void PlayerInfo::UnequipItemAt(Slot slot)
+void PlayerInfo::Unequip(Slot slot)
 {
 	const auto& gearSlot = this->gearSlots[slot];
 	while (this->HasEquipped(nullptr, slot)) {
@@ -47,7 +47,7 @@ void PlayerInfo::UnequipItemAt(Slot slot)
 	}
 }
 
-void PlayerInfo::UnequipAllItems()
+void PlayerInfo::UnequipAll()
 {
 	bool anyLeft = true;
 	while (anyLeft) {
