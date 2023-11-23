@@ -150,6 +150,12 @@
     <ClInclude Include="src\entities\localplayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\entities\entities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\interfaces\hud.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
@@ -211,6 +217,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\entities\localplayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\interfaces\hud.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

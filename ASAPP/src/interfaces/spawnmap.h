@@ -21,4 +21,6 @@ namespace asa::interfaces
 
 		virtual void GoTo(const std::string& destination);
 	};
+
+	inline SpawnMap* gSpawnMap = new SpawnMap();
 }

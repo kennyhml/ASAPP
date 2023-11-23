@@ -168,6 +168,7 @@
     <ClCompile Include="src\interfaces\components\button.cpp" />
     <ClCompile Include="src\interfaces\components\searchbar.cpp" />
     <ClCompile Include="src\interfaces\exceptions.cpp" />
+    <ClCompile Include="src\interfaces\hud.cpp" />
     <ClCompile Include="src\interfaces\interfacemanager.cpp" />
     <ClCompile Include="src\interfaces\baseinventory.cpp" />
     <ClCompile Include="src\interfaces\localinventory.cpp" />
@@ -180,6 +181,7 @@
     <ClCompile Include="src\_internal\util.cpp" />
     <ClInclude Include="src\entities\dinoent.h" />
     <ClInclude Include="src\entities\baseentity.h" />
+    <ClInclude Include="src\entities\entities.h" />
     <ClInclude Include="src\entities\localplayer.h" />
     <ClInclude Include="src\entities\playerent.h" />
     <ClInclude Include="src\game\controls.h" />
@@ -195,6 +197,7 @@
     <ClInclude Include="src\interfaces\baseentityinfo.h" />
     <ClInclude Include="src\interfaces\exceptions.h" />
     <ClInclude Include="src\interfaces\explorernotes.h" />
+    <ClInclude Include="src\interfaces\hud.h" />
     <ClInclude Include="src\interfaces\interfaces.h" />
     <ClInclude Include="src\interfaces\localinventory.h" />
     <ClInclude Include="src\interfaces\mainmenu.h" />

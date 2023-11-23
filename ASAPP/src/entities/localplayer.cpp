@@ -4,7 +4,6 @@
 
 using namespace asa::entities;
 
-void LocalPlayer::Jump() { window::Press(settings::actionMappings::jump); }
 
 void LocalPlayer::Equip(
 	items::Item* item, interfaces::PlayerInfo::Slot targetSlot)

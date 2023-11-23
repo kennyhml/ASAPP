@@ -18,4 +18,8 @@ namespace asa::interfaces
 
 		virtual void GoTo(const std::string& destination);
 	};
+
+	inline TeleportMap* gTeleportMap = new TeleportMap();
+
+
 }

@@ -25,15 +25,4 @@ int main()
 	asa::resources::assetsDir = std::filesystem::path(
 		"C:\\dev\\ASAPP\\ASAPP\\src\\assets");
 	asa::resources::Init();
-
-	asa::items::Init();
-
-	auto inv = asa::interfaces::LocalInventory();
-	auto p = asa::entities::LocalPlayer(&inv);
-
-
-	while (true) {
-		p.Equip(asa::items::equippables::gasmask, p.inventory->info.HEAD);
-		p.Unequip(p.inventory->info.HEAD);
-	}
 }

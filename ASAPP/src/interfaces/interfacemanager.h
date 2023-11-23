@@ -30,4 +30,5 @@ namespace asa::interfaces
 		bool IsOpen();
 	};
 
+	inline InterfaceManager* gInterfaceManager = new InterfaceManager();
 }

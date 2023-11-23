@@ -30,4 +30,6 @@ namespace asa::interfaces
 
 		void Equip(items::Item* item, PlayerInfo::Slot slot);
 	};
+
+	inline LocalInventory* gLocalinventory = new LocalInventory();
 }
