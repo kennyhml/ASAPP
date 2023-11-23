@@ -82,7 +82,8 @@ namespace asa::interfaces
 		virtual bool CountStacks(
 			items::Item* item, int& stacksOut, bool search = false);
 
-		virtual const Slot* FindItem(items::Item*, bool isSearched = false, bool searchFor = false);
+		virtual const Slot* FindItem(
+			items::Item*, bool isSearched = false, bool searchFor = false);
 
 		virtual void Popcorn(items::Item* item);
 		virtual void Popcorn(items::Item* item, int stacks);
@@ -93,7 +94,11 @@ namespace asa::interfaces
 		void SelectSlot(int index);
 
 		void DropAll();
-		void TransferAll();
+
+		void TransferAll(items::Item* = nullptr, BaseInventory* tar = nullptr);
+		void Transfer(items::Item*, int amount = 1, BaseInventory* = nullptr,
+			bool search = true);
+
 		void SetFilter();
 		void MakeNewFolder(std::string folderName);
 		void AutoStack();

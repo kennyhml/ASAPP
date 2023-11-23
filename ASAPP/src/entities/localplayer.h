@@ -26,8 +26,8 @@ namespace asa::entities
 
 		void TurnRight(int degrees = 90) { controls::TurnDegrees(degrees, 0); }
 		void TurnLeft(int degrees = 90) { controls::TurnDegrees(-degrees, 0); }
-		void TurnUp(int degrees = 90) { controls::TurnDegrees(0, degrees); }
-		void TurnDown(int degrees = 90) { controls::TurnDegrees(0, -degrees); }
+		void TurnUp(int degrees = 90) { controls::TurnDegrees(0, -degrees); }
+		void TurnDown(int degrees = 90) { controls::TurnDegrees(0, degrees); }
 
 		void WalkFoward(std::chrono::milliseconds duration);
 		void WalkLeft(std::chrono::milliseconds duration);
