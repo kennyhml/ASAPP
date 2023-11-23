@@ -49,7 +49,6 @@ using namespace asa::interfaces;
 	return window::MatchTemplate(*this, item->icon);
 }
 
-
 bool BaseInventory::IsOpen()
 {
 	return window::MatchTemplate(
@@ -89,6 +88,27 @@ bool BaseInventory::CountStacks(items::Item* item, int& stacksOut, bool search)
 	return stacksOut != MAX_ITEMS_PER_PAGE;
 }
 
+const BaseInventory::Slot* BaseInventory::FindItem(
+	items::Item* item, bool isSearched)
+{
+	if (!item->hasAmbigiousQuery) {
+		return this->Has(item, !isSearched) ? &this->slots[0] : nullptr;
+	}
+
+	if (!isSearched) {
+		this->searchBar.SearchFor(item->name);
+	}
+
+	for (const Slot& slot : this->slots) {
+		if (slot.HasItem(item)) {
+			return &slot;
+		}
+		else if (!slot.HasItem(nullptr)) {
+			return nullptr;
+		}
+	}
+	return nullptr;
+}
 asa::window::Rect BaseInventory::GetArea() const { return this->area; }
 
 void BaseInventory::SetArea(const window::Point& origin)
@@ -151,6 +171,18 @@ void BaseInventory::PopcornSlots(int slots)
 		controls::KeyPress(settings::actionMappings::dropItem.key);
 		Sleep(100);
 	}
+}
+
+void BaseInventory::SelectSlot(Slot slot)
+{
+	window::Point location = slot.GetRandLocation(5);
+	window::SetMousePos(location);
+	std::this_thread::sleep_for(std::chrono::milliseconds(30));
+}
+
+void BaseInventory::SelectSlot(int index)
+{
+	return this->SelectSlot(this->slots[index]);
 }
 
 void BaseInventory::DropAll()

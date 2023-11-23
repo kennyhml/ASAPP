@@ -270,6 +270,26 @@
     "hasDurability": false,
     "requiresEngram": false,
     "hasAmbigiousQuery": false
+  },
+
+  "Gas Mask": {
+    "icon": "gasmask.png",
+    "type": "EQUIPPABLE",
+    "recipe": {
+      "Absorbant Substrate": 2,
+      "Crystal": 10,
+      "Polymer": 20
+    },
+    "weight": 12.0,
+    "stackSize": 1,
+    "canPutInHotbar": false,
+    "hasSpoilTimer": false,
+    "hasDurability": true,
+    "requiresEngram": false,
+    "hasAmbigiousQuery": false
   }
+
+
+
 
 }

@@ -32,6 +32,7 @@ namespace asa::resources
 		inline cv::Mat stone;
 		inline cv::Mat thatch;
 		inline cv::Mat wood;
+		inline cv::Mat gasmask;
 	}
 
 	inline namespace icons

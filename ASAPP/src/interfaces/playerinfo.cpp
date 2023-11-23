@@ -24,6 +24,9 @@ const bool PlayerInfo::HasEquipped(const items::Item* item, Slot slot)
 		auto mask = window::GetMask(roi, window::Color(223, 250, 255), 20);
 		return cv::countNonZero(mask) < 30;
 	}
+	else {
+		return window::MatchTemplate(roi, item->icon);
+	}
 }
 
 void PlayerInfo::Unequip(Slot slot)

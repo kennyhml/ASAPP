@@ -54,7 +54,7 @@ bool asa::items::Init()
 
 	std::cout << "[+] Initializing predefined items..." << std::endl;
 
-	if (!resources::Init()) {
+	if (!resources::Init() || !equippables::Init()) {
 		return false;
 	}
 	return true;
@@ -85,6 +85,12 @@ bool asa::items::resources::Init()
 	Load(thatch, "Thatch", asa::resources::thatch);
 	Load(wood, "Wood", asa::resources::wood);
 
+	return true;
+}
 
+
+bool asa::items::equippables::Init()
+{
+	Load(gasmask, "Gas Mask", asa::resources::gasmask);
 	return true;
 }

@@ -75,5 +75,7 @@ bool asa::resources::items::InitItems()
 	LOAD_RESOURCE(dir, stone);
 	LOAD_RESOURCE(dir, thatch);
 	LOAD_RESOURCE(dir, wood);
+	LOAD_RESOURCE(dir, gasmask);
+
 	return true;
 }

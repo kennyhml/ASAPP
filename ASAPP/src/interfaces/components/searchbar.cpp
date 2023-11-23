@@ -19,7 +19,7 @@ void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 			window::PostChar(c);
 		}
 		else {
-			controls::KeyPress(std::string(1, c));
+			controls::KeyPress(std::string(1, c), std::chrono::milliseconds(1));
 		}
 	}
 

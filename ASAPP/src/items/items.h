@@ -75,9 +75,13 @@ namespace asa::items
 		inline Item* stone = nullptr;
 		inline Item* thatch = nullptr;
 		inline Item* wood = nullptr;
+		inline Item* gasmask = nullptr;
 	}
 
-
-
+	namespace equippables
+	{
+		bool Init();
+		inline Item* gasmask = nullptr;
+	}
 
 }

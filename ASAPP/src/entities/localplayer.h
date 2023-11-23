@@ -8,7 +8,7 @@ namespace asa::entities
 	{
 	public:
 		LocalPlayer(interfaces::LocalInventory* associatedInventory)
-			: PlayerEnt(associatedInventory){};
+			: inventory(associatedInventory), PlayerEnt(associatedInventory){};
 
 		interfaces::LocalInventory* inventory{ nullptr };
 

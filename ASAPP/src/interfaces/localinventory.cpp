@@ -69,15 +69,21 @@ void asa::interfaces::LocalInventory::SwitchTo(Tab tab)
 void asa::interfaces::LocalInventory::Equip(
 	items::Item* item, PlayerInfo::Slot slot)
 {
-	if (!this->Has(item, false) && !this->Has(item, true)) {
-		throw std::runtime_error(
-			std::format("No '{}' in local player inventory", item->name));
+	bool searched = false;
+	if (!this->Has(item, false)) {
+		searched = true;
+		if (!this->Has(item, true)) {
+			throw std::runtime_error(
+				std::format("No '{}' in local player inventory", item->name));
+		}
 	}
 
-	while (!this->info.HasEquipped(item, slot)) {
+	const Slot* itemLocation = this->FindItem(item, searched);
+	this->SelectSlot(*itemLocation);
 
-
-
-
-	}
+	do {
+		window::Press(settings::actionMappings::use);
+	} while (!_internal::_util::Await(
+		[this, item, slot]() { return this->info.HasEquipped(item, slot); },
+		std::chrono::seconds(5)));
 }
