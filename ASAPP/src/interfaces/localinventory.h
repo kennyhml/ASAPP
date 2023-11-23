@@ -1,5 +1,6 @@
 #pragma once
 #include "baseinventory.h"
+#include "playerinfo.h"
 
 namespace asa::interfaces
 {
@@ -16,6 +17,8 @@ namespace asa::interfaces
 			CRAFTING
 		};
 
+		PlayerInfo info{};
+
 		InvTabButton inventoryTab{ 177, 118, 183, 47 };
 		InvTabButton cosmeticsTab{ 358, 120, 184, 46 };
 		InvTabButton craftingTab{ 542, 120, 183, 45 };
@@ -24,5 +27,7 @@ namespace asa::interfaces
 		void Close();
 		void SwitchTo(Tab tab);
 		void ToggleTooltips();
+
+		void Equip(items::Item* item, PlayerInfo::Slot slot);
 	};
 }

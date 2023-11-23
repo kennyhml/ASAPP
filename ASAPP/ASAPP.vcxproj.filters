@@ -66,13 +66,13 @@
     <ClInclude Include="src\interfaces\interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\iasaentity.h">
+    <ClInclude Include="src\entities\baseentity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\baseplayer.h">
+    <ClInclude Include="src\entities\playerent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\basedino.h">
+    <ClInclude Include="src\entities\dinoent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\game\settings.h">
@@ -147,6 +147,9 @@
     <ClInclude Include="src\interfaces\baseinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\entities\localplayer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
@@ -205,6 +208,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\interfaces\playerinfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\entities\localplayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

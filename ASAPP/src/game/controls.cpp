@@ -38,7 +38,8 @@ asa::controls::KeyboardMapping asa::controls::GetKeyboardMapping()
 		{ "numpadfive", VK_NUMPAD5 }, { "numpadsix", VK_NUMPAD6 },
 		{ "numpadseven", VK_NUMPAD7 }, { "numpadeight", VK_NUMPAD8 },
 		{ "NumPadnine", VK_NUMPAD9 }, { "ctrl", VK_CONTROL },
-		{ "esc", VK_ESCAPE }, { "space ", VK_SPACE } };
+		{ "esc", VK_ESCAPE }, { "space ", VK_SPACE },
+		{ "spacebar", VK_SPACE } };
 
 	for (int i = 32; i < 128; i++) {
 		char c = static_cast<char>(i);

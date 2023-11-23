@@ -82,10 +82,15 @@ namespace asa::interfaces
 		virtual bool CountStacks(
 			items::Item* item, int& stacksOut, bool search = false);
 
+		virtual Slot FindItem(items::Item*, bool isSearched = false);
+
 		virtual void Popcorn(items::Item* item);
 		virtual void Popcorn(items::Item* item, int stacks);
 		virtual void Popcorn(items::Item* item, int stacks, int& stacksDropped);
 		virtual void PopcornSlots(int slots);
+
+		void SelectSlot(Slot slot);
+		void SelectSlot(int index);
 
 		void DropAll();
 		void TransferAll();

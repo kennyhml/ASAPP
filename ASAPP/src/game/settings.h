@@ -61,6 +61,7 @@ namespace asa::settings
 		inline ActionMapping targeting("Targeting");
 		inline ActionMapping showExtendedInfo("ShowExtendedInfo");
 		inline ActionMapping toggleTooltip("ToggleTooltip");
+		inline ActionMapping jump("Jump");
 
 		bool LoadActionMappings(bool verbose = true);
 	}

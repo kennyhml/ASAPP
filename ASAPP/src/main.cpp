@@ -6,7 +6,8 @@
 #include "game/window.h"
 #include <opencv2/core/utils/logger.hpp>
 
-#include "interfaces/playerinfo.h"
+
+#include "entities/localplayer.h"
 
 int main()
 {
@@ -27,7 +28,9 @@ int main()
 
 	asa::items::Init();
 
-	auto info = asa::interfaces::PlayerInfo();
+	auto inv = asa::interfaces::LocalInventory();
+	auto p = asa::entities::LocalPlayer(&inv);
 
-	info.UnequipItemAt(info.HEAD);
+
+	p.Jump();
 }

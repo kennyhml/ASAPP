@@ -159,6 +159,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\entities\localplayer.cpp" />
     <ClCompile Include="src\game\controls.cpp" />
     <ClCompile Include="src\game\resources.cpp" />
     <ClCompile Include="src\game\settings.cpp" />
@@ -177,9 +178,10 @@
     <ClCompile Include="src\items\items.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\_internal\util.cpp" />
-    <ClInclude Include="src\entities\basedino.h" />
-    <ClInclude Include="src\entities\iasaentity.h" />
-    <ClInclude Include="src\entities\baseplayer.h" />
+    <ClInclude Include="src\entities\dinoent.h" />
+    <ClInclude Include="src\entities\baseentity.h" />
+    <ClInclude Include="src\entities\localplayer.h" />
+    <ClInclude Include="src\entities\playerent.h" />
     <ClInclude Include="src\game\controls.h" />
     <ClInclude Include="src\game\globals.h" />
     <ClInclude Include="src\game\resources.h" />
