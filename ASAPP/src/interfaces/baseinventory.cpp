@@ -35,9 +35,9 @@ using namespace asa::interfaces;
 [[nodiscard]] bool BaseInventory::Slot::HasItem() const
 {
 	auto roi = window::Rect(this->x + 46, this->y + 69, 42, 14);
-	window::Color weightTextCol(175, 241, 255);
+	window::Color weightTextCol(128, 231, 255);
 
-	cv::Mat masked = window::GetMask(roi, weightTextCol, 25);
+	cv::Mat masked = window::GetMask(roi, weightTextCol, 35);
 	return cv::countNonZero(masked) > 10;
 }
 
@@ -89,21 +89,23 @@ bool BaseInventory::CountStacks(items::Item* item, int& stacksOut, bool search)
 }
 
 const BaseInventory::Slot* BaseInventory::FindItem(
-	items::Item* item, bool isSearched)
+	items::Item* item, bool isSearched, bool searchFor)
 {
-	if (!item->hasAmbigiousQuery) {
-		return this->Has(item, !isSearched) ? &this->slots[0] : nullptr;
+	if (!item->hasAmbigiousQuery && (isSearched || searchFor)) {
+		if (searchFor) {
+			this->searchBar.SearchFor(item->name);
+		}
+		return this->slots[0].HasItem(item) ? &this->slots[0] : nullptr;
 	}
 
-	if (!isSearched) {
+	if (searchFor) {
 		this->searchBar.SearchFor(item->name);
 	}
-
 	for (const Slot& slot : this->slots) {
 		if (slot.HasItem(item)) {
 			return &slot;
 		}
-		else if (!slot.HasItem(nullptr)) {
+		else if (!slot.HasItem()) {
 			return nullptr;
 		}
 	}

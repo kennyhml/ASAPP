@@ -31,5 +31,9 @@ int main()
 	auto inv = asa::interfaces::LocalInventory();
 	auto p = asa::entities::LocalPlayer(&inv);
 
-	p.Equip(asa::items::equippables::gasmask, p.inventory->info.HEAD);
+
+	while (true) {
+		p.Equip(asa::items::equippables::gasmask, p.inventory->info.HEAD);
+		p.Unequip(p.inventory->info.HEAD);
+	}
 }

@@ -26,5 +26,6 @@ namespace asa::entities
 		void WalkBackwards(std::chrono::milliseconds duration);
 
 		void Equip(items::Item* item, interfaces::PlayerInfo::Slot targetSlot);
+		void Unequip(interfaces::PlayerInfo::Slot targetSlot);
 	};
 }
