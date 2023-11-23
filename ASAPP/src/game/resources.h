@@ -21,7 +21,7 @@ namespace asa::resources
 		bool InitItems();
 		inline cv::Mat metal;
 		inline cv::Mat metal_ingot;
-		inline cv::Mat cementing_paste;
+		inline cv::Mat paste;
 		inline cv::Mat crystal;
 		inline cv::Mat fiber;
 		inline cv::Mat flint;

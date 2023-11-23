@@ -63,7 +63,7 @@ bool asa::resources::items::InitItems()
 
 	LOAD_RESOURCE(dir, metal);
 	LOAD_RESOURCE(dir, metal_ingot);
-	LOAD_RESOURCE(dir, cementing_paste);
+	LOAD_RESOURCE(dir, paste);
 	LOAD_RESOURCE(dir, crystal);
 	LOAD_RESOURCE(dir, fiber);
 	LOAD_RESOURCE(dir, flint);

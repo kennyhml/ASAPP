@@ -66,6 +66,7 @@ namespace asa::items
 		inline Item* metal = nullptr;
 		inline Item* metalIngot = nullptr;
 		inline Item* cementingPaste = nullptr;
+		inline Item* achatinaPaste = nullptr;
 		inline Item* fiber = nullptr;
 		inline Item* flint = nullptr;
 		inline Item* gunpowder = nullptr;
@@ -76,6 +77,7 @@ namespace asa::items
 		inline Item* thatch = nullptr;
 		inline Item* wood = nullptr;
 		inline Item* gasmask = nullptr;
+
 	}
 
 	namespace equippables

@@ -26,7 +26,7 @@
   },
 
   "Cementing Paste": {
-    "icon": "cementing_paste.png",
+    "icon": "paste.png",
     "type": "RESOURCE",
     "recipe": {
       "Chitin": 4,
@@ -41,6 +41,17 @@
     "hasAmbigiousQuery": false
   },
 
+  "Achatina Paste": {
+    "icon": "paste.png",
+    "type": "RESOURCE",
+    "weight": 0.01,
+    "stackSize": 100,
+    "canPutInHotbar": false,
+    "hasSpoilTimer": false,
+    "hasDurability": false,
+    "requiresEngram": false,
+    "hasAmbigiousQuery": false
+  },
   "Fiber": {
     "icon": "fiber.png",
     "type": "RESOURCE",

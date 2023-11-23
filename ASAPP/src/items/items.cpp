@@ -74,7 +74,8 @@ bool asa::items::resources::Init()
 {
 	Load(metal, "Metal", asa::resources::metal);
 	Load(metalIngot, "Metal Ingot", asa::resources::metal_ingot);
-	Load(cementingPaste, "Cementing Paste", asa::resources::cementing_paste);
+	Load(cementingPaste, "Cementing Paste", asa::resources::paste);
+	Load(achatinaPaste, "Achatina Paste", asa::resources::paste);
 	Load(fiber, "Fiber", asa::resources::fiber);
 	Load(flint, "Flint", asa::resources::flint);
 	Load(gunpowder, "Gunpowder", asa::resources::gunpowder);
