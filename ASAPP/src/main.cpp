@@ -52,9 +52,6 @@ int main()
 		"Teleporter", &asa::settings::use, tp);
 
 
-	asa::entities::gLocalPlayer->Access(&teleporter);
-	exit(1);
-
 	for (int i = 1; i < 7; i++) {
 
 		std::ostringstream oss;
@@ -62,7 +59,14 @@ int main()
 		std::string bed = "PASTE" + oss.str();
 
 		asa::interfaces::gTravelMap->GoTo(bed);
-		Sleep(5000);
+
+		while (!asa::entities::gLocalPlayer->IsInTravelScreen()) {
+		}
+
+		while (asa::entities::gLocalPlayer->IsInTravelScreen()) {
+		}
+
+		Sleep(1000);
 
 		asa::entities::gLocalPlayer->Crouch();
 		asa::entities::gLocalPlayer->TurnDown(12);
@@ -89,8 +93,6 @@ int main()
 		}
 
 		asa::entities::gLocalPlayer->TurnDown(50);
-		Sleep(400);
-		asa::controls::Press(asa::settings::use);
-		Sleep(3000);
+		asa::entities::gLocalPlayer->Access(&teleporter);
 	}
 }

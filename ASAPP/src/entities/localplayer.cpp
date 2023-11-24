@@ -5,6 +5,15 @@
 
 using namespace asa::entities;
 
+const bool LocalPlayer::IsInTravelScreen()
+{
+	static window::Rect roi(806, 436, 310, 219);
+	static window::Color white(255, 255, 255);
+
+	auto mask = window::GetMask(roi, white, 5);
+	return cv::countNonZero(mask) > 3000;
+}
+
 const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut) {}
 
 const bool LocalPlayer::WithdrawFromDedicatedStorage(int withdrawnAmountOut) {}

@@ -39,6 +39,9 @@ namespace asa::entities
 			return interfaces::gHUD->GotItemRemoved(this->inventory->IsOpen());
 		}
 
+		const bool IsInSpawnAnimation();
+		const bool IsInTravelScreen();
+
 		const bool DepositIntoDedicatedStorage(int* depositedAmountOut);
 		const bool WithdrawFromDedicatedStorage(int withdrawnAmountOut);
 
