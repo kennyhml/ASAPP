@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\entities\localplayer.cpp" />
+    <ClCompile Include="src\entities\dinoent.cpp" />
     <ClCompile Include="src\game\controls.cpp" />
     <ClCompile Include="src\game\resources.cpp" />
     <ClCompile Include="src\game\settings.cpp" />

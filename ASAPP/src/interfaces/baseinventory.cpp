@@ -1,6 +1,8 @@
 #include "baseinventory.h"
+#include "../_internal/util.h"
 #include "../game/controls.h"
 #include "../game/resources.h"
+#include "exceptions.h"
 
 using namespace asa::interfaces;
 
@@ -47,6 +49,17 @@ using namespace asa::interfaces;
 		return this->HasItem();
 	}
 	return window::MatchTemplate(*this, item->icon);
+}
+
+bool BaseInventory::IsReceivingRemoteInventory()
+{
+	if (!this->isRemoteInventory) {
+		return false;
+	}
+
+	window::Color textColor(191, 243, 255);
+	auto mask = window::GetMask(this->recvRemoteInventoryArea, textColor, 25);
+	return cv::countNonZero(mask) > 100;
 }
 
 bool BaseInventory::IsOpen()
@@ -175,6 +188,32 @@ void BaseInventory::PopcornSlots(int slots)
 	}
 }
 
+void BaseInventory::TakeSlot(Slot slot)
+{
+	this->SelectSlot(slot);
+	window::Press(settings::transferItem, false, std::chrono::milliseconds(15));
+	std::this_thread::sleep_for(std::chrono::milliseconds(30));
+}
+
+void BaseInventory::TakeSlot(int index) { TakeSlot(this->slots[index]); }
+
+void BaseInventory::Close()
+{
+	auto start = std::chrono::system_clock::now();
+	while (this->IsOpen()) {
+		window::Press("esc", true);
+		if (_internal::_util::Await([this]() { return !this->IsOpen(); },
+				std::chrono::seconds(5))) {
+			return;
+		}
+
+		if (_internal::_util::Timedout(start, std::chrono::seconds(30))) {
+			throw exceptions::InterfaceNotClosedError(this);
+		}
+	}
+}
+
+
 void BaseInventory::SelectSlot(Slot slot)
 {
 	window::Point location = slot.GetRandLocation(5);
@@ -215,13 +254,12 @@ void BaseInventory::Transfer(
 		this->searchBar.SearchFor(item->name);
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
+
 	int i = 0;
 	while (auto slot = this->FindItem(item, search)) {
 		if (i++ > amount && amount != 0) {
 			break;
 		}
-		this->SelectSlot(*slot);
-		window::Press(settings::transferItem);
-		std::this_thread::sleep_for(std::chrono::milliseconds(250));
+		this->TakeSlot(*slot);
 	}
 }

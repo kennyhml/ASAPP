@@ -45,6 +45,10 @@ namespace asa::interfaces
 		ManagementButton autoStackButton;
 		ManagementButton folderViewButton;
 
+		bool isRemoteInventory{ false };
+		window::Rect area;
+		window::Rect recvRemoteInventoryArea{ 1340, 511, 295, 34 };
+
 	public:
 		BaseInventory(bool isRemote) : isRemoteInventory(isRemote)
 		{
@@ -77,6 +81,7 @@ namespace asa::interfaces
 
 		window::Rect GetArea() const;
 
+		bool IsReceivingRemoteInventory();
 		virtual bool IsOpen();
 		virtual bool Has(items::Item* item, bool search = false);
 		virtual bool CountStacks(
@@ -89,6 +94,11 @@ namespace asa::interfaces
 		virtual void Popcorn(items::Item* item, int stacks);
 		virtual void Popcorn(items::Item* item, int stacks, int& stacksDropped);
 		virtual void PopcornSlots(int slots);
+
+		virtual void TakeSlot(Slot slot);
+		virtual void TakeSlot(int index);
+
+		void Close();
 
 		void SelectSlot(Slot slot);
 		void SelectSlot(int index);
@@ -105,9 +115,6 @@ namespace asa::interfaces
 		void ToggleFolderView();
 
 	private:
-		bool isRemoteInventory{ false };
-		window::Rect area;
-
 		void SetArea(const window::Point& origin);
 		void InitSlots(const window::Point& origin);
 	};

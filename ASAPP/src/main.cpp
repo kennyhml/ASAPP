@@ -7,7 +7,19 @@
 #include "interfaces/travelmap.h"
 #include <opencv2/core/utils/logger.hpp>
 
+#include "entities/dinoent.h"
 #include "entities/localplayer.h"
+#include <sstream>
+
+
+void EmptySnail()
+{
+	auto snail = asa::entities::DinoEnt("Achatina");
+
+	snail.Access();
+	snail.inventory->TakeSlot(0);
+	snail.Exit();
+}
 
 int main()
 {
@@ -27,19 +39,34 @@ int main()
 	asa::resources::Init();
 	asa::items::Init();
 
+	auto snail = asa::entities::DinoEnt("Achatina");
 
+	for (int i = 1; i < 4; i++) {
 
-	asa::interfaces::gTravelMap->GoTo("PASTE03");
-	Sleep(5000);
+		std::ostringstream oss;
+		oss << std::setw(2) << std::setfill('0') << i;
+		std::string bed = "PASTE" + oss.str();
 
-	asa::entities::gLocalPlayer->Crouch();
+		asa::interfaces::gTravelMap->GoTo(bed);
+		Sleep(5000);
 
+		asa::entities::gLocalPlayer->Crouch();
+		asa::entities::gLocalPlayer->TurnDown(12);
+		Sleep(200);
 
-	auto snailInv = asa::interfaces::BaseInventory(true);
-	asa::entities::gLocalPlayer->TurnDown(12);
-	Sleep(2000);
+		EmptySnail();
 
-	asa::entities::gLocalPlayer->TurnRight(35);
-	Sleep(2000);
-	asa::entities::gLocalPlayer->TurnLeft(70);
+		asa::entities::gLocalPlayer->TurnRight(35);
+		Sleep(200);
+		EmptySnail();
+
+		asa::entities::gLocalPlayer->TurnLeft(70);
+		Sleep(200);
+		EmptySnail();
+
+		asa::entities::gLocalPlayer->TurnDown(50);
+		Sleep(400);
+		asa::controls::Press(asa::settings::use);
+		Sleep(3000);
+	}
 }

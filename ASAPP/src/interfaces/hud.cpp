@@ -38,3 +38,10 @@ const bool HUD::IsPlayerOutOfFood()
 }
 
 const bool HUD::IsPlayerSprinting() { return false; }
+
+const bool HUD::CanDefaultTeleport()
+{
+	window::Color white(255, 255, 255);
+	auto mask = window::GetMask(this->defaultTeleport, white, 30);
+	return cv::countNonZero(mask) > 50;
+}

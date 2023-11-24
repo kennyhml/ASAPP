@@ -95,7 +95,7 @@ namespace asa::window
 	void Down(const settings::ActionMapping&, ms delay = ms(10));
 	void Up(const settings::ActionMapping&, ms delay = ms(10));
 	void Press(const settings::ActionMapping&, bool catchCursor = false,
-		ms delay = ms(100));
+		ms delay = ms(50));
 
 	void Down(const std::string& key, ms delay = ms(0));
 	void Up(const std::string& key, ms delay = ms(0));
@@ -105,7 +105,7 @@ namespace asa::window
 	void PostDown(const settings::ActionMapping&, ms delay = ms(10));
 	void PostUp(const settings::ActionMapping&, ms delay = ms(10));
 	void PostPress(const settings::ActionMapping&, bool catchCursor = false,
-		ms delay = ms(100));
+		ms delay = ms(50));
 
 	void PostKeyDown(const std::string& key, ms delay = ms(0));
 	void PostKeyUp(const std::string& key, ms delay = ms(0));

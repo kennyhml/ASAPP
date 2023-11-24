@@ -16,6 +16,7 @@ namespace asa::interfaces
 		window::Rect stamIcon{ 1872, 900, 29, 51 };
 		window::Rect healthIcon{ 1861, 953, 48, 45 };
 		window::Rect weightIcon{ 1860, 751, 51, 56 };
+		window::Rect defaultTeleport{ 797, 907, 328, 38 };
 
 		[[nodiscard]] const bool IsBlinking(window::Rect icon,
 			window::Color color,
@@ -36,6 +37,8 @@ namespace asa::interfaces
 		[[nodiscard]] const bool IsPlayerOutOfWater();
 		[[nodiscard]] const bool IsPlayerOutOfFood();
 		[[nodiscard]] const bool IsPlayerSprinting();
+
+		[[nodiscard]] const bool CanDefaultTeleport();
 	};
 
 	inline HUD* gHUD = new HUD();

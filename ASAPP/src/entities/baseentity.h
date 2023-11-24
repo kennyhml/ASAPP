@@ -8,7 +8,13 @@ namespace asa::entities
 	{
 	public:
 		BaseEntity(interfaces::BaseInventory* associatedInventory)
-			: inventory(associatedInventory){};
+			: inventory(associatedInventory)
+		{
+			if (!inventory) {
+				this->inventory = new interfaces::BaseInventory(true);
+			}
+		};
+		~BaseEntity() { delete this->inventory; }
 
 		interfaces::BaseInventory* inventory{ nullptr };
 	};

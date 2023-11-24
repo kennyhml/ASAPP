@@ -11,27 +11,11 @@ void asa::interfaces::LocalInventory::Open()
 		window::Press(settings::showMyInventory, true);
 		if (_internal::_util::Await(
 				[this]() { return this->IsOpen(); }, std::chrono::seconds(5))) {
-			return;
+			break;
 		}
 
 		if (_internal::_util::Timedout(start, std::chrono::seconds(30))) {
 			throw exceptions::InterfaceNotOpenedError(this);
-		}
-	}
-}
-
-void asa::interfaces::LocalInventory::Close()
-{
-	auto start = std::chrono::system_clock::now();
-	while (this->IsOpen()) {
-		window::Press("esc", true);
-		if (_internal::_util::Await([this]() { return !this->IsOpen(); },
-				std::chrono::seconds(5))) {
-			return;
-		}
-
-		if (_internal::_util::Timedout(start, std::chrono::seconds(30))) {
-			throw exceptions::InterfaceNotClosedError(this);
 		}
 	}
 }
