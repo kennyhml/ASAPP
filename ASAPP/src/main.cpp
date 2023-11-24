@@ -9,8 +9,8 @@
 
 #include "entities/dinoent.h"
 #include "entities/localplayer.h"
+#include "structures/container.h"
 #include <sstream>
-
 
 void EmptySnail()
 {
@@ -41,6 +41,11 @@ int main()
 		"C:\\dev\\ASAPP\\ASAPP\\src\\assets");
 	asa::resources::Init();
 	asa::items::Init();
+
+
+	auto vault = asa::structures::Container("Vault");
+
+	std::cout << "..." << std::endl;
 
 
 	for (int i = 1; i < 7; i++) {

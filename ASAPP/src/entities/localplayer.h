@@ -2,6 +2,7 @@
 #include "../interfaces/hud.h"
 #include "../interfaces/localinventory.h"
 #include "../structures/basestructure.h"
+#include "../structures/container.h"
 #include "playerent.h"
 
 namespace asa::entities
@@ -42,6 +43,7 @@ namespace asa::entities
 		const bool WithdrawFromDedicatedStorage(int withdrawnAmountOut);
 
 		void Access(entities::BaseEntity*);
+		void Access(structures::Container*);
 		void Access(structures::BaseStructure*);
 
 		void Jump() { window::Press(settings::jump); }

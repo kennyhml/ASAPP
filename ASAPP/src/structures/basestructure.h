@@ -1,5 +1,5 @@
 #pragma once
-#include "../interfaces/baseinventory.h"
+#include "../interfaces/iinterface.h"
 
 
 namespace asa::structures
@@ -7,7 +7,12 @@ namespace asa::structures
 	class BaseStructure
 	{
 	public:
-		interfaces::BaseInventory* inventory;
+		BaseStructure(
+			std::string name, interfaces::IInterface* associatedInterface)
+			: name(name), _interface(associatedInterface){};
+
+		const std::string name;
+		interfaces::IInterface* _interface;
 	};
 
 }

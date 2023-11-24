@@ -150,6 +150,9 @@
     <ClInclude Include="src\structures\basestructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\structures\container.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />

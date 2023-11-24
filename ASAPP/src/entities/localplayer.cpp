@@ -34,7 +34,7 @@ void LocalPlayer::Access(entities::BaseEntity* ent)
 
 void LocalPlayer::Access(structures::BaseStructure* structure)
 {
-	if (structure->inventory->IsOpen()) {
+	if (structure->_interface->IsOpen()) {
 		return;
 	}
 	auto start = std::chrono::system_clock::now();
@@ -44,18 +44,9 @@ void LocalPlayer::Access(structures::BaseStructure* structure)
 			throw std::runtime_error("Failed to access structure");
 		}
 	} while (!_internal::_util::Await(
-		[structure]() { return structure->inventory->IsOpen(); },
+		[structure]() { return structure->_interface->IsOpen(); },
 		std::chrono::seconds(5)));
-
-	if (!_internal::_util::Await(
-			[structure]() {
-				return structure->inventory->IsReceivingRemoteInventory();
-			},
-			std::chrono::seconds(30))) {
-		throw std::runtime_error("Failed to receive remote inventory");
-	}
 }
-
 
 void LocalPlayer::Equip(
 	items::Item* item, interfaces::PlayerInfo::Slot targetSlot)
