@@ -16,7 +16,7 @@ void EmptySnail()
 {
 	auto snail = asa::entities::DinoEnt("Achatina");
 
-	snail.Access();
+	asa::entities::gLocalPlayer->Access(&snail);
 	if (snail.inventory->slots[0].HasItem(
 			asa::items::resources::achatinaPaste)) {
 		snail.inventory->TakeSlot(0);
@@ -42,7 +42,6 @@ int main()
 	asa::resources::Init();
 	asa::items::Init();
 
-	auto snail = asa::entities::DinoEnt("Achatina");
 
 	for (int i = 1; i < 7; i++) {
 

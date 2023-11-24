@@ -9,9 +9,9 @@ const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut) {}
 
 const bool LocalPlayer::WithdrawFromDedicatedStorage(int withdrawnAmountOut) {}
 
-void LocalPlayer::Access(entities::BaseEntity* entity)
+void LocalPlayer::Access(entities::BaseEntity* ent)
 {
-	if (entity->inventory->IsOpen()) {
+	if (ent->inventory->IsOpen()) {
 		return;
 	}
 
@@ -21,15 +21,15 @@ void LocalPlayer::Access(entities::BaseEntity* entity)
 		if (_internal::_util::Timedout(start, std::chrono::seconds(30))) {
 			throw std::runtime_error("Failed to access dino");
 		}
-	} while (
-		!_internal::_util::Await([this]() { return this->inventory->IsOpen(); },
-			std::chrono::seconds(5)));
+	} while (!_internal::_util::Await(
+		[ent]() { return ent->inventory->IsOpen(); }, std::chrono::seconds(5)));
 
 	if (!_internal::_util::Await(
-			[this]() { return this->inventory->IsReceivingRemoteInventory(); },
+			[ent]() { return !ent->inventory->IsReceivingRemoteInventory(); },
 			std::chrono::seconds(30))) {
 		throw std::runtime_error("Failed to receive remote inventory");
 	}
+	std::cout << "Inventory open" << std::endl;
 }
 
 void LocalPlayer::Access(structures::BaseStructure* structure)
@@ -43,12 +43,14 @@ void LocalPlayer::Access(structures::BaseStructure* structure)
 		if (_internal::_util::Timedout(start, std::chrono::seconds(30))) {
 			throw std::runtime_error("Failed to access structure");
 		}
-	} while (
-		!_internal::_util::Await([this]() { return this->inventory->IsOpen(); },
-			std::chrono::seconds(5)));
+	} while (!_internal::_util::Await(
+		[structure]() { return structure->inventory->IsOpen(); },
+		std::chrono::seconds(5)));
 
 	if (!_internal::_util::Await(
-			[this]() { return this->inventory->IsReceivingRemoteInventory(); },
+			[structure]() {
+				return structure->inventory->IsReceivingRemoteInventory();
+			},
 			std::chrono::seconds(30))) {
 		throw std::runtime_error("Failed to receive remote inventory");
 	}
