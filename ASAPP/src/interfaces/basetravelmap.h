@@ -24,6 +24,7 @@ namespace asa::interfaces
 		virtual bool IsOpen();
 		virtual bool CanConfirmTarget();
 		virtual bool HasResult();
+		virtual bool IsResultSelected(int index);
 
 		virtual int CountResults();
 

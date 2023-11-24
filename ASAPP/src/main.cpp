@@ -17,7 +17,10 @@ void EmptySnail()
 	auto snail = asa::entities::DinoEnt("Achatina");
 
 	snail.Access();
-	snail.inventory->TakeSlot(0);
+	if (snail.inventory->slots[0].HasItem(
+			asa::items::resources::achatinaPaste)) {
+		snail.inventory->TakeSlot(0);
+	}
 	snail.Exit();
 }
 
@@ -39,17 +42,9 @@ int main()
 	asa::resources::Init();
 	asa::items::Init();
 
-
-	while (true) {
-		std::cout << asa::entities::gLocalPlayer->hud->GotItemRemoved(
-						 asa::entities::gLocalPlayer->inventory->IsOpen())
-				  << std::endl;
-	}
-
-
 	auto snail = asa::entities::DinoEnt("Achatina");
 
-	for (int i = 1; i < 4; i++) {
+	for (int i = 1; i < 7; i++) {
 
 		std::ostringstream oss;
 		oss << std::setw(2) << std::setfill('0') << i;
@@ -71,6 +66,16 @@ int main()
 		asa::entities::gLocalPlayer->TurnLeft(70);
 		Sleep(200);
 		EmptySnail();
+		Sleep(200);
+
+		asa::entities::gLocalPlayer->TurnLeft(55);
+		asa::entities::gLocalPlayer->TurnLeft();
+		Sleep(1000);
+
+		while (!asa::entities::gLocalPlayer->DepositedItem()) {
+			asa::window::Press(asa::settings::use);
+			Sleep(100);
+		}
 
 		asa::entities::gLocalPlayer->TurnDown(50);
 		Sleep(400);

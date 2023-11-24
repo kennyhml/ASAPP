@@ -11,13 +11,31 @@ namespace asa::entities
 		LocalPlayer(interfaces::LocalInventory* associatedInventory)
 			: inventory(associatedInventory), PlayerEnt(associatedInventory){};
 
-		interfaces::LocalInventory* inventory{ nullptr };
-		interfaces::HUD* hud = interfaces::gHUD;
+		interfaces::LocalInventory* inventory;
 
 		const bool IsAlive();
-		const bool IsOutOfWater() { return this->hud->IsPlayerOutOfWater(); }
-		const bool IsOutOfFood() { return this->hud->IsPlayerOutOfFood(); }
-		const bool IsOverweight() { return this->hud->IsPlayerOverweight(); }
+		const bool IsOutOfWater()
+		{
+			return interfaces::gHUD->IsPlayerOutOfWater();
+		}
+		const bool IsOutOfFood()
+		{
+			return interfaces::gHUD->IsPlayerOutOfFood();
+		}
+		const bool IsOverweight()
+		{
+			return interfaces::gHUD->IsPlayerOverweight();
+		}
+
+		const bool ReceivedItem()
+		{
+			return interfaces::gHUD->GotItemAdded(this->inventory->IsOpen());
+		}
+
+		const bool DepositedItem()
+		{
+			return interfaces::gHUD->GotItemRemoved(this->inventory->IsOpen());
+		}
 
 		void Jump() { window::Press(settings::jump); }
 		void Crouch() { window::Press(settings::crouch); }

@@ -1,4 +1,5 @@
 #include "basetravelmap.h"
+#include "../_internal/util.h"
 
 bool asa::interfaces::BaseTravelMap::IsOpen()
 {
@@ -33,6 +34,19 @@ bool asa::interfaces::BaseTravelMap::HasResult()
 	return false;
 }
 
+bool asa::interfaces::BaseTravelMap::IsResultSelected(int index)
+{
+	static window::Color hoveredSelectedColor(83, 39, 1);
+	static window::Color selectedColor(128, 64, 2);
+
+	auto roi = this->results[index].area;
+
+	auto mask1 = window::GetMask(roi, hoveredSelectedColor, 30);
+	auto mask2 = window::GetMask(roi, selectedColor, 30);
+
+	return cv::countNonZero(mask1) > 50 || cv::countNonZero(mask2) > 50;
+};
+
 int asa::interfaces::BaseTravelMap::CountResults()
 {
 	static window::Color selectedColor(255, 255, 255);
@@ -51,5 +65,9 @@ int asa::interfaces::BaseTravelMap::CountResults()
 
 void asa::interfaces::BaseTravelMap::SelectResult(int index)
 {
-	this->results[index].Press();
+	do {
+		this->results[index].Press();
+	} while (!_internal::_util::Await(
+		[this, index]() { return this->IsResultSelected(index); },
+		std::chrono::seconds(3)));
 }
