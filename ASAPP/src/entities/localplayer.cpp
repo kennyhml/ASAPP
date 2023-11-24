@@ -1,8 +1,58 @@
 #include "localplayer.h"
+#include "../_internal/util.h"
 #include "../game/settings.h"
 #include "../game/window.h"
 
 using namespace asa::entities;
+
+const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut) {}
+
+const bool LocalPlayer::WithdrawFromDedicatedStorage(int withdrawnAmountOut) {}
+
+void LocalPlayer::Access(entities::BaseEntity* entity)
+{
+	if (entity->inventory->IsOpen()) {
+		return;
+	}
+
+	auto start = std::chrono::system_clock::now();
+	do {
+		window::Press(settings::accessInventory, true);
+		if (_internal::_util::Timedout(start, std::chrono::seconds(30))) {
+			throw std::runtime_error("Failed to access dino");
+		}
+	} while (
+		!_internal::_util::Await([this]() { return this->inventory->IsOpen(); },
+			std::chrono::seconds(5)));
+
+	if (!_internal::_util::Await(
+			[this]() { return this->inventory->IsReceivingRemoteInventory(); },
+			std::chrono::seconds(30))) {
+		throw std::runtime_error("Failed to receive remote inventory");
+	}
+}
+
+void LocalPlayer::Access(structures::BaseStructure* structure)
+{
+	if (structure->inventory->IsOpen()) {
+		return;
+	}
+	auto start = std::chrono::system_clock::now();
+	do {
+		window::Press(settings::accessInventory, true);
+		if (_internal::_util::Timedout(start, std::chrono::seconds(30))) {
+			throw std::runtime_error("Failed to access structure");
+		}
+	} while (
+		!_internal::_util::Await([this]() { return this->inventory->IsOpen(); },
+			std::chrono::seconds(5)));
+
+	if (!_internal::_util::Await(
+			[this]() { return this->inventory->IsReceivingRemoteInventory(); },
+			std::chrono::seconds(30))) {
+		throw std::runtime_error("Failed to receive remote inventory");
+	}
+}
 
 
 void LocalPlayer::Equip(

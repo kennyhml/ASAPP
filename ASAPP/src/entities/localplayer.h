@@ -1,6 +1,7 @@
 #pragma once
 #include "../interfaces/hud.h"
 #include "../interfaces/localinventory.h"
+#include "../structures/basestructure.h"
 #include "playerent.h"
 
 namespace asa::entities
@@ -36,6 +37,12 @@ namespace asa::entities
 		{
 			return interfaces::gHUD->GotItemRemoved(this->inventory->IsOpen());
 		}
+
+		const bool DepositIntoDedicatedStorage(int* depositedAmountOut);
+		const bool WithdrawFromDedicatedStorage(int withdrawnAmountOut);
+
+		void Access(entities::BaseEntity*);
+		void Access(structures::BaseStructure*);
 
 		void Jump() { window::Press(settings::jump); }
 		void Crouch() { window::Press(settings::crouch); }

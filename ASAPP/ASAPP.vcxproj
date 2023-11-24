@@ -223,9 +223,7 @@
     <ClInclude Include="src\interfaces\components\searchbar.h" />
     <ClInclude Include="src\items\items.h" />
     <ClInclude Include="src\items\recipe.h" />
-    <ClInclude Include="src\structures\container.h" />
-    <ClInclude Include="src\structures\craftingstation.h" />
-    <ClInclude Include="src\structures\iasastructure.h" />
+    <ClInclude Include="src\structures\basestructure.h" />
     <ClInclude Include="src\_internal\util.h" />
   </ItemGroup>
   <ItemGroup>

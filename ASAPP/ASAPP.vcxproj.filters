@@ -81,15 +81,6 @@
     <ClInclude Include="src\items\recipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\structures\iasastructure.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\structures\container.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\structures\craftingstation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\game\globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -154,6 +145,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\interfaces\hud.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\structures\basestructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

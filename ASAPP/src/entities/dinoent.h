@@ -17,7 +17,6 @@ namespace asa::entities
 
 		const std::string& GetName() { return this->name; }
 
-		void Access();
 		void Exit()
 		{
 			this->inventory->Close();
