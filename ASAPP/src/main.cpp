@@ -4,7 +4,9 @@
 #include "game/resources.h"
 #include "game/settings.h"
 #include "game/window.h"
+#include "interfaces/teleportmap.h"
 #include "interfaces/travelmap.h"
+
 #include <opencv2/core/utils/logger.hpp>
 
 #include "entities/dinoent.h"
@@ -43,10 +45,15 @@ int main()
 	asa::items::Init();
 
 
+	auto tp = new asa::interfaces::TeleportMap();
+
 	auto vault = asa::structures::Container("Vault");
+	auto teleporter = asa::structures::InteractableStructure(
+		"Teleporter", &asa::settings::use, tp);
 
-	std::cout << "..." << std::endl;
 
+	asa::entities::gLocalPlayer->Access(&teleporter);
+	exit(1);
 
 	for (int i = 1; i < 7; i++) {
 

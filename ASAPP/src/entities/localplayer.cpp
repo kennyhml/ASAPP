@@ -33,19 +33,7 @@ void LocalPlayer::Access(entities::BaseEntity* ent)
 
 void LocalPlayer::Access(structures::Container* container)
 {
-	if (container->inventory->IsOpen()) {
-		return;
-	}
-
-	auto start = std::chrono::system_clock::now();
-	do {
-		window::Press(settings::accessInventory, true);
-		if (_internal::_util::Timedout(start, std::chrono::seconds(30))) {
-			throw std::runtime_error("Failed to access container");
-		}
-	} while (!_internal::_util::Await(
-		[container]() { return container->inventory->IsOpen(); },
-		std::chrono::seconds(5)));
+	this->Access(static_cast<structures::InteractableStructure*>(container));
 
 	if (!_internal::_util::Await(
 			[container]() {
@@ -56,14 +44,14 @@ void LocalPlayer::Access(structures::Container* container)
 	}
 }
 
-void LocalPlayer::Access(structures::BaseStructure* structure)
+void LocalPlayer::Access(structures::InteractableStructure* structure)
 {
 	if (structure->_interface->IsOpen()) {
 		return;
 	}
 	auto start = std::chrono::system_clock::now();
 	do {
-		window::Press(settings::accessInventory, true);
+		window::Press(structure->GetInteractKey(), true);
 		if (_internal::_util::Timedout(start, std::chrono::seconds(30))) {
 			throw std::runtime_error("Failed to access structure");
 		}

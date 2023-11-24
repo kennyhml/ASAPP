@@ -44,7 +44,7 @@ namespace asa::entities
 
 		void Access(entities::BaseEntity*);
 		void Access(structures::Container*);
-		void Access(structures::BaseStructure*);
+		void Access(structures::InteractableStructure*);
 
 		void Jump() { window::Press(settings::jump); }
 		void Crouch() { window::Press(settings::crouch); }

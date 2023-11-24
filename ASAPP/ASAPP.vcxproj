@@ -225,6 +225,8 @@
     <ClInclude Include="src\items\recipe.h" />
     <ClInclude Include="src\structures\basestructure.h" />
     <ClInclude Include="src\structures\container.h" />
+    <ClInclude Include="src\structures\dedicatedstorage.h" />
+    <ClInclude Include="src\structures\interactablestructure.h" />
     <ClInclude Include="src\_internal\util.h" />
   </ItemGroup>
   <ItemGroup>
