@@ -1,5 +1,6 @@
 #include "hud.h"
 #include "../_internal/util.h"
+#include "../game/resources.h"
 
 using namespace asa::interfaces;
 
@@ -44,4 +45,21 @@ const bool HUD::CanDefaultTeleport()
 	window::Color white(255, 255, 255);
 	auto mask = window::GetMask(this->defaultTeleport, white, 30);
 	return cv::countNonZero(mask) > 50;
+}
+
+
+const bool HUD::GotItemAdded(bool isInventoryOpen)
+{
+	auto roi = isInventoryOpen ? this->invOpenItemAddedOrRemovedArea
+							   : this->invClosedItemAddedOrRemovedArea;
+
+	return window::MatchTemplate(roi, resources::text::added);
+}
+
+const bool HUD::GotItemRemoved(bool isInventoryOpen)
+{
+	auto roi = isInventoryOpen ? this->invOpenItemAddedOrRemovedArea
+							   : this->invClosedItemAddedOrRemovedArea;
+
+	return window::MatchTemplate(roi, resources::text::removed);
 }

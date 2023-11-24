@@ -35,13 +35,11 @@ namespace asa::resources
 		inline cv::Mat gasmask;
 	}
 
-	inline namespace icons
+	inline namespace text
 	{
-
-
+		bool InitText();
+		inline cv::Mat added;
+		inline cv::Mat removed;
 	}
-
-
-
 
 }

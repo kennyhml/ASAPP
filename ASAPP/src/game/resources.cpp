@@ -36,7 +36,7 @@ bool asa::resources::Init()
 	}
 
 	std::cout << "[+] Initializing resources..." << std::endl;
-	if (!InitInterfaces() || !InitItems()) {
+	if (!InitInterfaces() || !InitItems() || !InitText()) {
 		return false;
 	}
 
@@ -76,6 +76,18 @@ bool asa::resources::items::InitItems()
 	LOAD_RESOURCE(dir, thatch);
 	LOAD_RESOURCE(dir, wood);
 	LOAD_RESOURCE(dir, gasmask);
+
+	return true;
+}
+
+bool asa::resources::text::InitText()
+{
+	auto dir = assetsDir / "text";
+	if (!IsValidAssetsDir(dir)) {
+		return false;
+	}
+	LOAD_RESOURCE(dir, added);
+	LOAD_RESOURCE(dir, removed);
 
 	return true;
 }

@@ -23,6 +23,9 @@ namespace asa::interfaces
 			std::chrono::milliseconds maxDuration = std::chrono::milliseconds(
 				400));
 
+		window::Rect invClosedItemAddedOrRemovedArea{ 0, 260, 200, 615 };
+		window::Rect invOpenItemAddedOrRemovedArea{ 0, 765, 200, 315 };
+
 	public:
 		bool IsOpen() { return true; }
 
@@ -39,6 +42,8 @@ namespace asa::interfaces
 		[[nodiscard]] const bool IsPlayerSprinting();
 
 		[[nodiscard]] const bool CanDefaultTeleport();
+		[[nodiscard]] const bool GotItemAdded(bool isInventoryOpen);
+		[[nodiscard]] const bool GotItemRemoved(bool isInventoryOpen);
 	};
 
 	inline HUD* gHUD = new HUD();

@@ -39,6 +39,14 @@ int main()
 	asa::resources::Init();
 	asa::items::Init();
 
+
+	while (true) {
+		std::cout << asa::entities::gLocalPlayer->hud->GotItemRemoved(
+						 asa::entities::gLocalPlayer->inventory->IsOpen())
+				  << std::endl;
+	}
+
+
 	auto snail = asa::entities::DinoEnt("Achatina");
 
 	for (int i = 1; i < 4; i++) {
