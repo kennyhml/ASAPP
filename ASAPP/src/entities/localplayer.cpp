@@ -29,7 +29,31 @@ void LocalPlayer::Access(entities::BaseEntity* ent)
 			std::chrono::seconds(30))) {
 		throw std::runtime_error("Failed to receive remote inventory");
 	}
-	std::cout << "Inventory open" << std::endl;
+}
+
+void LocalPlayer::Access(structures::Container* container)
+{
+	if (container->inventory->IsOpen()) {
+		return;
+	}
+
+	auto start = std::chrono::system_clock::now();
+	do {
+		window::Press(settings::accessInventory, true);
+		if (_internal::_util::Timedout(start, std::chrono::seconds(30))) {
+			throw std::runtime_error("Failed to access container");
+		}
+	} while (!_internal::_util::Await(
+		[container]() { return container->inventory->IsOpen(); },
+		std::chrono::seconds(5)));
+
+	if (!_internal::_util::Await(
+			[container]() {
+				return !container->inventory->IsReceivingRemoteInventory();
+			},
+			std::chrono::seconds(30))) {
+		throw std::runtime_error("Failed to receive remote inventory");
+	}
 }
 
 void LocalPlayer::Access(structures::BaseStructure* structure)
