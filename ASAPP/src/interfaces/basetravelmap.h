@@ -17,7 +17,8 @@ namespace asa::interfaces
 		BaseTravelMap()
 		{
 			for (int i = 0; i < results.max_size(); i++) {
-				results[i] = components::Button(89, 195 + (i * 55), 459, 55, 5);
+				results[i] = components::Button(
+					89, 195 + (i * 55), 459, 55, 10);
 			}
 		}
 
