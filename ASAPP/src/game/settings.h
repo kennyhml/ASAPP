@@ -101,5 +101,7 @@ namespace asa::settings
 		inline UserSetting<bool> firstPersonRiding("bFirstPersonRiding");
 		inline UserSetting<bool> thirdPerson("bThirdPersonPlayer");
 		inline UserSetting<bool> showNotifs("bShowStatusNotificationMessages");
+		inline UserSetting<bool> toggleHUD("bToggleExtendedHUDInfo");
+
 	}
 }

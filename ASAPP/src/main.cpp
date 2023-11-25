@@ -51,6 +51,9 @@ int main()
 	auto teleporter = asa::structures::InteractableStructure(
 		"Teleporter", &asa::settings::use, tp);
 
+	asa::entities::gLocalPlayer->Suicide();
+	exit(1);
+
 
 	for (int i = 1; i < 7; i++) {
 

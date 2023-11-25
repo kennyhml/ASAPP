@@ -16,6 +16,8 @@ namespace asa::interfaces
 		components::Button bedsButton{ 351, 132, 129, 48 };
 
 	public:
+		bool IsOpen() override;
+
 		void SpawnAt(int regionIndex = 0);
 		void SpawnAt(const std::string& bed);
 

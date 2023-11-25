@@ -1,6 +1,7 @@
 #pragma once
 #include "../interfaces/hud.h"
 #include "../interfaces/localinventory.h"
+#include "../interfaces/spawnmap.h"
 #include "../structures/basestructure.h"
 #include "../structures/container.h"
 #include "playerent.h"
@@ -44,6 +45,8 @@ namespace asa::entities
 
 		const bool DepositIntoDedicatedStorage(int* depositedAmountOut);
 		const bool WithdrawFromDedicatedStorage(int withdrawnAmountOut);
+
+		void Suicide();
 
 		void Access(entities::BaseEntity*);
 		void Access(structures::Container*);

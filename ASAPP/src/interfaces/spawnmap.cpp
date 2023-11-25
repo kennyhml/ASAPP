@@ -1,6 +1,10 @@
 #include "spawnmap.h"
+#include "../game/resources.h"
 
-
+bool asa::interfaces::SpawnMap::IsOpen()
+{
+	return window::MatchTemplate(this->regionsButton.area, resources::regions);
+}
 
 void asa::interfaces::SpawnMap::SpawnAt(int regionIndex)
 {

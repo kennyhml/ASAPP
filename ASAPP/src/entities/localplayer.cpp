@@ -5,6 +5,27 @@
 
 using namespace asa::entities;
 
+const bool LocalPlayer::IsAlive()
+{
+	if (settings::gameUserSettings::toggleHUD.get()) {
+		window::Press(settings::showExtendedInfo);
+	}
+	else {
+		window::Down(settings::showExtendedInfo);
+	}
+	bool result = _internal::_util::Await(
+		[]() { return interfaces::gHUD->ExtendedInformationIsToggled(); },
+		std::chrono::milliseconds(300));
+
+	if (settings::gameUserSettings::toggleHUD.get()) {
+		window::Press(settings::showExtendedInfo);
+	}
+	else {
+		window::Up(settings::showExtendedInfo);
+	}
+	return result;
+}
+
 const bool LocalPlayer::IsInTravelScreen()
 {
 	static window::Rect roi(806, 436, 310, 219);
@@ -17,6 +38,26 @@ const bool LocalPlayer::IsInTravelScreen()
 const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut) {}
 
 const bool LocalPlayer::WithdrawFromDedicatedStorage(int withdrawnAmountOut) {}
+
+void LocalPlayer::Suicide()
+{
+	std::cout << "[+] Suiciding with implant..." << std::endl;
+
+	this->inventory->Open();
+	controls::MousePress(controls::LEFT);
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	this->inventory->SelectSlot(0);
+
+	std::cout << "\t[-] Waiting for implant cooldown... ";
+	std::this_thread::sleep_for(std::chrono::seconds(6));
+	std::cout << "Done." << std::endl;
+
+	while (this->IsAlive()) {
+		window::Press(settings::use);
+		std::this_thread::sleep_for(std::chrono::seconds(3));
+	}
+	std::cout << "\t[-] Suicided successfully." << std::endl;
+}
 
 void LocalPlayer::Access(entities::BaseEntity* ent)
 {

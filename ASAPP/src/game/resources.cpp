@@ -51,6 +51,7 @@ bool asa::resources::interfaces::InitInterfaces()
 	}
 
 	LOAD_RESOURCE(dir, cb_arrowdown);
+	LOAD_RESOURCE(dir, regions);
 	return true;
 }
 
@@ -88,6 +89,7 @@ bool asa::resources::text::InitText()
 	}
 	LOAD_RESOURCE(dir, added);
 	LOAD_RESOURCE(dir, removed);
+	LOAD_RESOURCE(dir, day);
 
 	return true;
 }

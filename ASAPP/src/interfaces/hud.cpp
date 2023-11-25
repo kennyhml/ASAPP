@@ -1,6 +1,7 @@
 #include "hud.h"
 #include "../_internal/util.h"
 #include "../game/resources.h"
+#include "../game/window.h"
 
 using namespace asa::interfaces;
 
@@ -47,6 +48,11 @@ const bool HUD::CanDefaultTeleport()
 	return cv::countNonZero(mask) > 50;
 }
 
+const bool HUD::ExtendedInformationIsToggled()
+{
+	static window::Rect roi{ 14, 34, 134, 35 };
+	return window::MatchTemplate(roi, resources::day);
+}
 
 const bool HUD::GotItemAdded(bool isInventoryOpen)
 {

@@ -14,6 +14,7 @@ namespace asa::resources
 	{
 		bool InitInterfaces();
 		inline cv::Mat cb_arrowdown;
+		inline cv::Mat regions;
 	}
 
 	inline namespace items
@@ -40,6 +41,7 @@ namespace asa::resources
 		bool InitText();
 		inline cv::Mat added;
 		inline cv::Mat removed;
+		inline cv::Mat day;
 	}
 
 }
