@@ -37,7 +37,7 @@ const bool LocalPlayer::IsInTravelScreen()
 
 const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut) {}
 
-const bool LocalPlayer::WithdrawFromDedicatedStorage(int withdrawnAmountOut) {}
+const bool LocalPlayer::WithdrawFromDedicatedStorage(int* withdrawnAmountOut) {}
 
 void LocalPlayer::Suicide()
 {
@@ -52,10 +52,11 @@ void LocalPlayer::Suicide()
 	std::this_thread::sleep_for(std::chrono::seconds(6));
 	std::cout << "Done." << std::endl;
 
-	while (this->IsAlive()) {
+	do {
 		window::Press(settings::use);
 		std::this_thread::sleep_for(std::chrono::seconds(3));
-	}
+
+	} while (this->IsAlive());
 	std::cout << "\t[-] Suicided successfully." << std::endl;
 }
 

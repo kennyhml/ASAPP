@@ -11,7 +11,7 @@ namespace asa::interfaces
 	protected:
 		std::array<components::Button, 12> results;
 		window::Rect dayTime{ 1570, 77, 272, 54 };
-		components::Button confirmButton{ 1461, 931, 367, 60 };
+		components::Button confirmButton{ 1461, 931, 367, 60, 10 };
 
 	public:
 		BaseTravelMap()

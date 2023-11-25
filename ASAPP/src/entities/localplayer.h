@@ -44,7 +44,7 @@ namespace asa::entities
 		const bool IsInTravelScreen();
 
 		const bool DepositIntoDedicatedStorage(int* depositedAmountOut);
-		const bool WithdrawFromDedicatedStorage(int withdrawnAmountOut);
+		const bool WithdrawFromDedicatedStorage(int* withdrawnAmountOut);
 
 		void Suicide();
 

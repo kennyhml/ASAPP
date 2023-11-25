@@ -51,7 +51,15 @@ int main()
 	auto teleporter = asa::structures::InteractableStructure(
 		"Teleporter", &asa::settings::use, tp);
 
-	asa::entities::gLocalPlayer->Suicide();
+
+	while (true) {
+		asa::entities::gLocalPlayer->Suicide();
+		Sleep(5000);
+		asa::interfaces::gSpawnMap->GoTo("WR");
+		Sleep(10000);
+	}
+
+
 	exit(1);
 
 
