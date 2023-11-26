@@ -12,7 +12,7 @@ namespace asa::entities
 	public:
 		DinoEnt(
 			std::string name, interfaces::BaseInventory* inventory = nullptr)
-			: BaseEntity(inventory){};
+			: BaseEntity(inventory), name(name){};
 
 		const std::string& GetName() { return this->name; }
 

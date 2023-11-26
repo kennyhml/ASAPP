@@ -3,6 +3,7 @@
 #include "asapp/interfaces/spawnmap.h"
 #include "asapp/structures/basestructure.h"
 #include "asapp/structures/container.h"
+#include "asapp/structures/simplebed.h"
 #include "playerent.h"
 
 namespace asa::entities
@@ -33,15 +34,21 @@ namespace asa::entities
 		void Access(structures::Container*);
 		void Access(structures::InteractableStructure*);
 
+		void FastTravelTo(structures::SimpleBed*);
+
 		void Jump() { window::Press(settings::jump); }
 		void Crouch() { window::Press(settings::crouch); }
 		void Prone() { window::Press(settings::prone); }
 		void GetUp() { window::Press(settings::run); }
 
-		void TurnRight(int degrees = 90) { controls::TurnDegrees(degrees, 0); }
-		void TurnLeft(int degrees = 90) { controls::TurnDegrees(-degrees, 0); }
-		void TurnUp(int degrees = 90) { controls::TurnDegrees(0, -degrees); }
-		void TurnDown(int degrees = 90) { controls::TurnDegrees(0, degrees); }
+		void TurnRight(int degree = 90,
+			std::chrono::milliseconds delay = std::chrono::milliseconds(100));
+		void TurnLeft(int degree = 90,
+			std::chrono::milliseconds delay = std::chrono::milliseconds(100));
+		void TurnUp(int degree = 90,
+			std::chrono::milliseconds delay = std::chrono::milliseconds(100));
+		void TurnDown(int degree = 90,
+			std::chrono::milliseconds delay = std::chrono::milliseconds(100));
 
 		void WalkFoward(std::chrono::milliseconds duration);
 		void WalkLeft(std::chrono::milliseconds duration);
@@ -50,6 +57,9 @@ namespace asa::entities
 
 		void Equip(items::Item* item, interfaces::PlayerInfo::Slot targetSlot);
 		void Unequip(interfaces::PlayerInfo::Slot targetSlot);
+
+	private:
+		void PassTravelScreen();
 	};
 
 	inline LocalPlayer* gLocalPlayer = new LocalPlayer(

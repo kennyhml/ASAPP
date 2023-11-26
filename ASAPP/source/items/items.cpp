@@ -36,7 +36,7 @@ asa::items::Item::Item(std::string name, cv::Mat icon, json itemData)
 
 bool asa::items::LoadRawData()
 {
-	std::ifstream f("src\\itemdata.json");
+	std::ifstream f(itemdataPath);
 	if (!f.is_open()) {
 		std::cout << "Failed to open itemdata.json!" << std::endl;
 		return false;

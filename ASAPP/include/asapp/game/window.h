@@ -1,4 +1,6 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
+
 #include "controls.h"
 #include "opencv2/core.hpp"
 #include "opencv2/highgui/highgui.hpp"

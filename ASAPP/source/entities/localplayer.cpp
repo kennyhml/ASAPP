@@ -27,7 +27,30 @@ const bool LocalPlayer::IsAlive()
 	return result;
 }
 
-const bool LocalPlayer::IsInTravelScreen()
+const bool LocalPlayer::IsOutOfWater()
+{
+	return interfaces::gHUD->IsPlayerOutOfWater();
+}
+const bool LocalPlayer::IsOutOfFood()
+{
+	return interfaces::gHUD->IsPlayerOutOfFood();
+}
+const bool LocalPlayer::IsOverweight()
+{
+	return interfaces::gHUD->IsPlayerOverweight();
+}
+
+const bool LocalPlayer::ReceivedItem()
+{
+	return interfaces::gHUD->GotItemAdded(this->inventory->IsOpen());
+}
+
+const bool LocalPlayer::DepositedItem()
+{
+	return interfaces::gHUD->GotItemRemoved(this->inventory->IsOpen());
+}
+
+const bool LocalPlayer::LocalPlayer::IsInTravelScreen()
 {
 	static window::Rect roi(806, 436, 310, 219);
 	static window::Color white(255, 255, 255);
@@ -36,7 +59,15 @@ const bool LocalPlayer::IsInTravelScreen()
 	return cv::countNonZero(mask) > 3000;
 }
 
-const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut) {}
+const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut)
+{
+	do {
+		window::Press(settings::use);
+	} while (!util::Await(
+		[this]() { return this->DepositedItem(); }, std::chrono::seconds(5)));
+
+	return true;
+}
 
 const bool LocalPlayer::WithdrawFromDedicatedStorage(int* withdrawnAmountOut) {}
 
@@ -112,6 +143,44 @@ void LocalPlayer::Access(structures::InteractableStructure* structure)
 			std::chrono::seconds(5)));
 }
 
+void LocalPlayer::FastTravelTo(structures::SimpleBed* bed)
+{
+	for (int i = 0; i < 10; i++) {
+		this->TurnDown(18, std::chrono::milliseconds(10));
+	}
+	this->Prone();
+
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	this->Access(bed);
+	bed->map->GoTo(bed->name);
+	this->PassTravelScreen();
+}
+
+void LocalPlayer::TurnRight(int degrees, std::chrono::milliseconds delay)
+{
+	controls::TurnDegrees(degrees, 0);
+	std::this_thread::sleep_for(delay);
+}
+void LocalPlayer::TurnLeft(int degrees, std::chrono::milliseconds delay)
+{
+	controls::TurnDegrees(-degrees, 0);
+	std::this_thread::sleep_for(delay);
+}
+
+void LocalPlayer::TurnUp(int degrees, std::chrono::milliseconds delay)
+{
+	controls::TurnDegrees(0, -degrees);
+	std::this_thread::sleep_for(delay);
+}
+
+void LocalPlayer::TurnDown(int degrees, std::chrono::milliseconds delay)
+{
+	controls::TurnDegrees(0, degrees);
+	std::this_thread::sleep_for(delay);
+}
+
+
+
 void LocalPlayer::Equip(
 	items::Item* item, interfaces::PlayerInfo::Slot targetSlot)
 {
@@ -139,4 +208,19 @@ void LocalPlayer::Unequip(interfaces::PlayerInfo::Slot targetSlot)
 	if (!wasInventoryOpen) {
 		this->inventory->Close();
 	}
+}
+
+void LocalPlayer::PassTravelScreen()
+{
+	if (!util::Await([this]() { return this->IsInTravelScreen(); },
+			std::chrono::seconds(30))) {
+		// throw a timeout error or something
+	}
+
+	if (!util::Await([this]() { return !this->IsInTravelScreen(); },
+			std::chrono::seconds(30))) {
+		// throw a timeout error or something
+	}
+
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 }
