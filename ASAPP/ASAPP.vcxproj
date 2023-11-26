@@ -77,9 +77,9 @@
     <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\ASAPP\build\</OutDir>
-    <IntDir>$(SolutionDir)\ASAPP\build\intermediates\</IntDir>
-    <IncludePath>C:\opencv\build\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\ASAPP\build\lib\</OutDir>
+    <IntDir>$(SolutionDir)\ASAPP\build\lib\intermediates\</IntDir>
+    <IncludePath>C:\opencv\build\include;$(SolutionDir)ASAPP\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -89,9 +89,9 @@
     <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)\ASAPP\build\</OutDir>
-    <IntDir>$(SolutionDir)\ASAPP\build\intermediates\</IntDir>
-    <IncludePath>C:\opencv\build\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)\ASAPP\build\lib\</OutDir>
+    <IntDir>$(SolutionDir)\ASAPP\build\lib\intermediates\</IntDir>
+    <IncludePath>C:\opencv\build\include;$(SolutionDir)ASAPP\include;$(IncludePath)</IncludePath>
     <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -159,78 +159,77 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\entities\localplayer.cpp" />
-    <ClCompile Include="src\entities\dinoent.cpp" />
-    <ClCompile Include="src\game\controls.cpp" />
-    <ClCompile Include="src\game\resources.cpp" />
-    <ClCompile Include="src\game\settings.cpp" />
-    <ClCompile Include="src\game\window.cpp" />
-    <ClCompile Include="src\interfaces\basetravelmap.cpp" />
-    <ClCompile Include="src\interfaces\components\button.cpp" />
-    <ClCompile Include="src\interfaces\components\searchbar.cpp" />
-    <ClCompile Include="src\interfaces\exceptions.cpp" />
-    <ClCompile Include="src\interfaces\hud.cpp" />
-    <ClCompile Include="src\interfaces\interfacemanager.cpp" />
-    <ClCompile Include="src\interfaces\baseinventory.cpp" />
-    <ClCompile Include="src\interfaces\localinventory.cpp" />
-    <ClCompile Include="src\interfaces\playerinfo.cpp" />
-    <ClCompile Include="src\interfaces\spawnmap.cpp" />
-    <ClCompile Include="src\interfaces\teleportmap.cpp" />
-    <ClCompile Include="src\interfaces\travelmap.cpp" />
-    <ClCompile Include="src\items\items.cpp" />
-    <ClCompile Include="src\_internal\util.cpp" />
-    <ClInclude Include="src\entities\dinoent.h" />
-    <ClInclude Include="src\entities\baseentity.h" />
-    <ClInclude Include="src\entities\entities.h" />
-    <ClInclude Include="src\entities\localplayer.h" />
-    <ClInclude Include="src\entities\playerent.h" />
-    <ClInclude Include="src\game\controls.h" />
-    <ClInclude Include="src\game\globals.h" />
-    <ClInclude Include="src\game\resources.h" />
-    <ClInclude Include="src\game\window.h" />
-    <ClInclude Include="src\game\settings.h" />
-    <ClInclude Include="src\interfaces\baseinfo.h" />
-    <ClInclude Include="src\interfaces\basetravelmap.h" />
-    <ClInclude Include="src\interfaces\components\combobox.h" />
-    <ClInclude Include="src\interfaces\dinoinfo.h" />
-    <ClInclude Include="src\interfaces\engrams.h" />
-    <ClInclude Include="src\interfaces\baseentityinfo.h" />
-    <ClInclude Include="src\interfaces\exceptions.h" />
-    <ClInclude Include="src\interfaces\explorernotes.h" />
-    <ClInclude Include="src\interfaces\hud.h" />
-    <ClInclude Include="src\interfaces\interfaces.h" />
-    <ClInclude Include="src\interfaces\localinventory.h" />
-    <ClInclude Include="src\interfaces\mainmenu.h" />
-    <ClInclude Include="src\interfaces\map.h" />
-    <ClInclude Include="src\interfaces\menu.h" />
-    <ClInclude Include="src\interfaces\minimap.h" />
-    <ClInclude Include="src\interfaces\modeselect.h" />
-    <ClInclude Include="src\interfaces\playerinfo.h" />
-    <ClInclude Include="src\interfaces\playerinventory.h" />
-    <ClInclude Include="src\interfaces\serverselect.h" />
-    <ClInclude Include="src\interfaces\spawnmap.h" />
-    <ClInclude Include="src\interfaces\structureinfo.h" />
-    <ClInclude Include="src\interfaces\teleportmap.h" />
-    <ClInclude Include="src\interfaces\trackingtab.h" />
-    <ClInclude Include="src\interfaces\travelmap.h" />
-    <ClInclude Include="src\interfaces\tribemanager.h" />
-    <ClInclude Include="src\interfaces\components\button.h" />
-    <ClInclude Include="src\interfaces\iinterface.h" />
-    <ClInclude Include="src\interfaces\interfacemanager.h" />
-    <ClInclude Include="src\interfaces\baseinventory.h" />
-    <ClInclude Include="src\interfaces\components\iinterfacecomponent.h" />
-    <ClInclude Include="src\interfaces\components\searchbar.h" />
-    <ClInclude Include="src\items\items.h" />
-    <ClInclude Include="src\items\recipe.h" />
-    <ClInclude Include="src\structures\basestructure.h" />
-    <ClInclude Include="src\structures\container.h" />
-    <ClInclude Include="src\structures\dedicatedstorage.h" />
-    <ClInclude Include="src\structures\interactablestructure.h" />
-    <ClInclude Include="src\_internal\util.h" />
+    <ClCompile Include="source\entities\localplayer.cpp" />
+    <ClCompile Include="source\entities\dinoent.cpp" />
+    <ClCompile Include="source\game\controls.cpp" />
+    <ClCompile Include="source\game\resources.cpp" />
+    <ClCompile Include="source\game\settings.cpp" />
+    <ClCompile Include="source\game\window.cpp" />
+    <ClCompile Include="source\interfaces\basetravelmap.cpp" />
+    <ClCompile Include="source\interfaces\components\button.cpp" />
+    <ClCompile Include="source\interfaces\components\searchbar.cpp" />
+    <ClCompile Include="source\interfaces\exceptions.cpp" />
+    <ClCompile Include="source\interfaces\hud.cpp" />
+    <ClCompile Include="source\interfaces\interfacemanager.cpp" />
+    <ClCompile Include="source\interfaces\baseinventory.cpp" />
+    <ClCompile Include="source\interfaces\localinventory.cpp" />
+    <ClCompile Include="source\interfaces\playerinfo.cpp" />
+    <ClCompile Include="source\interfaces\spawnmap.cpp" />
+    <ClCompile Include="source\interfaces\teleportmap.cpp" />
+    <ClCompile Include="source\interfaces\travelmap.cpp" />
+    <ClCompile Include="source\items\items.cpp" />
+    <ClCompile Include="source\util\util.cpp" />
+    <ClInclude Include="include\asapp\entities\dinoent.h" />
+    <ClInclude Include="include\asapp\entities\baseentity.h" />
+    <ClInclude Include="include\asapp\entities\entities.h" />
+    <ClInclude Include="include\asapp\entities\localplayer.h" />
+    <ClInclude Include="include\asapp\entities\playerent.h" />
+    <ClInclude Include="include\asapp\game\controls.h" />
+    <ClInclude Include="include\asapp\game\globals.h" />
+    <ClInclude Include="include\asapp\game\resources.h" />
+    <ClInclude Include="include\asapp\game\window.h" />
+    <ClInclude Include="include\asapp\game\settings.h" />
+    <ClInclude Include="include\asapp\interfaces\baseinfo.h" />
+    <ClInclude Include="include\asapp\interfaces\basetravelmap.h" />
+    <ClInclude Include="include\asapp\interfaces\components\combobox.h" />
+    <ClInclude Include="include\asapp\interfaces\dinoinfo.h" />
+    <ClInclude Include="include\asapp\interfaces\engrams.h" />
+    <ClInclude Include="include\asapp\interfaces\baseentityinfo.h" />
+    <ClInclude Include="include\asapp\interfaces\exceptions.h" />
+    <ClInclude Include="include\asapp\interfaces\explorernotes.h" />
+    <ClInclude Include="source\interfaces\hud.h" />
+    <ClInclude Include="include\asapp\interfaces\interfaces.h" />
+    <ClInclude Include="include\asapp\interfaces\localinventory.h" />
+    <ClInclude Include="include\asapp\interfaces\mainmenu.h" />
+    <ClInclude Include="include\asapp\interfaces\map.h" />
+    <ClInclude Include="include\asapp\interfaces\menu.h" />
+    <ClInclude Include="include\asapp\interfaces\minimap.h" />
+    <ClInclude Include="include\asapp\interfaces\modeselect.h" />
+    <ClInclude Include="include\asapp\interfaces\playerinfo.h" />
+    <ClInclude Include="include\asapp\interfaces\serverselect.h" />
+    <ClInclude Include="include\asapp\interfaces\spawnmap.h" />
+    <ClInclude Include="include\asapp\interfaces\structureinfo.h" />
+    <ClInclude Include="include\asapp\interfaces\teleportmap.h" />
+    <ClInclude Include="include\asapp\interfaces\trackingtab.h" />
+    <ClInclude Include="include\asapp\interfaces\travelmap.h" />
+    <ClInclude Include="include\asapp\interfaces\tribemanager.h" />
+    <ClInclude Include="include\asapp\interfaces\components\button.h" />
+    <ClInclude Include="include\asapp\interfaces\iinterface.h" />
+    <ClInclude Include="include\asapp\interfaces\interfacemanager.h" />
+    <ClInclude Include="include\asapp\interfaces\baseinventory.h" />
+    <ClInclude Include="include\asapp\interfaces\components\iinterfacecomponent.h" />
+    <ClInclude Include="include\asapp\interfaces\components\searchbar.h" />
+    <ClInclude Include="include\asapp\items\items.h" />
+    <ClInclude Include="include\asapp\items\recipe.h" />
+    <ClInclude Include="include\asapp\structures\basestructure.h" />
+    <ClInclude Include="include\asapp\structures\container.h" />
+    <ClInclude Include="include\asapp\structures\dedicatedstorage.h" />
+    <ClInclude Include="include\asapp\structures\interactablestructure.h" />
+    <ClInclude Include="source\util\util.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
-    <None Include="src\itemdata.json" />
+    <None Include="source\itemdata.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

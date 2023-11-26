@@ -15,214 +15,211 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\interfaces\iinterface.h">
+    <ClInclude Include="include\asapp\interfaces\iinterface.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\window.h">
+    <ClInclude Include="include\asapp\game\window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\baseinventory.h">
+    <ClInclude Include="include\asapp\interfaces\baseinventory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\interfacemanager.h">
+    <ClInclude Include="include\asapp\interfaces\interfacemanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\components\iinterfacecomponent.h">
+    <ClInclude Include="include\asapp\interfaces\components\iinterfacecomponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\components\searchbar.h">
+    <ClInclude Include="include\asapp\interfaces\components\searchbar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\components\button.h">
+    <ClInclude Include="include\asapp\interfaces\components\button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\engrams.h">
+    <ClInclude Include="include\asapp\interfaces\engrams.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\tribemanager.h">
+    <ClInclude Include="include\asapp\interfaces\tribemanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\trackingtab.h">
+    <ClInclude Include="include\asapp\interfaces\trackingtab.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\explorernotes.h">
+    <ClInclude Include="include\asapp\interfaces\explorernotes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\map.h">
+    <ClInclude Include="include\asapp\interfaces\map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\minimap.h">
+    <ClInclude Include="include\asapp\interfaces\minimap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\menu.h">
+    <ClInclude Include="include\asapp\interfaces\menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\components\combobox.h">
+    <ClInclude Include="include\asapp\interfaces\components\combobox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\items\items.h">
+    <ClInclude Include="include\asapp\items\items.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\interfaces.h">
+    <ClInclude Include="include\asapp\interfaces\interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\baseentity.h">
+    <ClInclude Include="include\asapp\entities\baseentity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\playerent.h">
+    <ClInclude Include="include\asapp\entities\playerent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\dinoent.h">
+    <ClInclude Include="include\asapp\entities\dinoent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\settings.h">
+    <ClInclude Include="include\asapp\game\settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\items\recipe.h">
+    <ClInclude Include="include\asapp\items\recipe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\globals.h">
+    <ClInclude Include="include\asapp\game\globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\controls.h">
+    <ClInclude Include="include\asapp\game\controls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\game\resources.h">
+    <ClInclude Include="include\asapp\game\resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\mainmenu.h">
+    <ClInclude Include="include\asapp\interfaces\mainmenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\modeselect.h">
+    <ClInclude Include="include\asapp\interfaces\modeselect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\serverselect.h">
+    <ClInclude Include="include\asapp\interfaces\serverselect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\playerinventory.h">
+    <ClInclude Include="include\asapp\interfaces\localinventory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\localinventory.h">
+    <ClInclude Include="source\util\util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\_internal\util.h">
+    <ClInclude Include="include\asapp\interfaces\exceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\exceptions.h">
+    <ClInclude Include="include\asapp\interfaces\basetravelmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\basetravelmap.h">
+    <ClInclude Include="include\asapp\interfaces\teleportmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\teleportmap.h">
+    <ClInclude Include="include\asapp\interfaces\travelmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\travelmap.h">
+    <ClInclude Include="include\asapp\interfaces\spawnmap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\spawnmap.h">
+    <ClInclude Include="include\asapp\interfaces\baseentityinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\baseentityinfo.h">
+    <ClInclude Include="include\asapp\interfaces\playerinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\playerinfo.h">
+    <ClInclude Include="include\asapp\interfaces\dinoinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\dinoinfo.h">
+    <ClInclude Include="include\asapp\interfaces\structureinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\structureinfo.h">
+    <ClInclude Include="include\asapp\interfaces\baseinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\baseinfo.h">
+    <ClInclude Include="include\asapp\entities\localplayer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\localplayer.h">
+    <ClInclude Include="include\asapp\entities\entities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\entities\entities.h">
+    <ClInclude Include="source\interfaces\hud.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\interfaces\hud.h">
+    <ClInclude Include="include\asapp\structures\basestructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\structures\basestructure.h">
+    <ClInclude Include="include\asapp\structures\container.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\structures\container.h">
+    <ClInclude Include="include\asapp\structures\dedicatedstorage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\structures\dedicatedstorage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\structures\interactablestructure.h">
+    <ClInclude Include="include\asapp\structures\interactablestructure.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
-    <None Include="src\itemdata.json" />
+    <None Include="source\itemdata.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\game\window.cpp">
+    <ClCompile Include="source\game\window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\settings.cpp">
+    <ClCompile Include="source\game\settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\controls.cpp">
+    <ClCompile Include="source\game\controls.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\interfacemanager.cpp">
+    <ClCompile Include="source\interfaces\interfacemanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\baseinventory.cpp">
+    <ClCompile Include="source\interfaces\baseinventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\components\searchbar.cpp">
+    <ClCompile Include="source\interfaces\components\searchbar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\game\resources.cpp">
+    <ClCompile Include="source\game\resources.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\localinventory.cpp">
+    <ClCompile Include="source\interfaces\localinventory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\_internal\util.cpp">
+    <ClCompile Include="source\util\util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\exceptions.cpp">
+    <ClCompile Include="source\interfaces\exceptions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\components\button.cpp">
+    <ClCompile Include="source\interfaces\components\button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\items\items.cpp">
+    <ClCompile Include="source\items\items.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\basetravelmap.cpp">
+    <ClCompile Include="source\interfaces\basetravelmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\teleportmap.cpp">
+    <ClCompile Include="source\interfaces\teleportmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\travelmap.cpp">
+    <ClCompile Include="source\interfaces\travelmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\spawnmap.cpp">
+    <ClCompile Include="source\interfaces\spawnmap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\playerinfo.cpp">
+    <ClCompile Include="source\interfaces\playerinfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\localplayer.cpp">
+    <ClCompile Include="source\entities\localplayer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\interfaces\hud.cpp">
+    <ClCompile Include="source\interfaces\hud.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\entities\dinoent.cpp">
+    <ClCompile Include="source\entities\dinoent.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
