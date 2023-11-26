@@ -1,2 +1,2 @@
 # ASAPP
-C++ automation framework for ARK: Survival Ascended
+C++ automation library for ARK: Survival Ascended
