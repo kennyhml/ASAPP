@@ -217,7 +217,7 @@ void BaseInventory::SelectSlot(Slot slot)
 {
 	window::Point location = slot.GetRandLocation(5);
 	window::SetMousePos(location);
-	std::this_thread::sleep_for(std::chrono::milliseconds(30));
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 }
 
 void BaseInventory::SelectSlot(int index)
