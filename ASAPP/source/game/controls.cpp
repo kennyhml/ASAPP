@@ -44,6 +44,8 @@ asa::controls::KeyboardMapping asa::controls::GetKeyboardMapping()
 	for (int i = 32; i < 128; i++) {
 		char c = static_cast<char>(i);
 		std::string character(1, c);
+		SHORT vkCode = VkKeyScanA(i);
+
 		mapping[character] = VkKeyScanA(i);
 	}
 	return mapping;
@@ -182,7 +184,14 @@ void asa::controls::KeyDown(std::string key, ms delay)
 {
 	INPUT input{ 0 };
 	input.type = INPUT_KEYBOARD;
-	input.ki.wVk = GetVirtualKeyCode(key);
+	int wVk = GetVirtualKeyCode(key);
+	input.ki.wVk = wVk;
+	if (HIBYTE(wVk) & 0x01) {
+		INPUT shiftInput{ 0 };
+		shiftInput.type = INPUT_KEYBOARD;
+		shiftInput.ki.wVk = VK_SHIFT;
+		SendInput(1, &shiftInput, sizeof(INPUT));
+	}
 
 	SendInput(1, &input, sizeof(INPUT));
 	std::this_thread::sleep_for(delay);
@@ -192,8 +201,17 @@ void asa::controls::KeyUp(std::string key, ms delay)
 {
 	INPUT input{ 0 };
 	input.type = INPUT_KEYBOARD;
-	input.ki.wVk = GetVirtualKeyCode(key);
+	int wVk = GetVirtualKeyCode(key);
+	input.ki.wVk = wVk;
 	input.ki.dwFlags = KEYEVENTF_KEYUP;
+
+	if (HIBYTE(wVk) & 0x01) {
+		INPUT shiftInput{ 0 };
+		shiftInput.type = INPUT_KEYBOARD;
+		shiftInput.ki.wVk = VK_SHIFT;
+		shiftInput.ki.dwFlags = KEYEVENTF_KEYUP;
+		SendInput(1, &shiftInput, sizeof(INPUT));
+	}
 
 	SendInput(1, &input, sizeof(INPUT));
 	std::this_thread::sleep_for(delay);

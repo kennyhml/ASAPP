@@ -3,6 +3,7 @@
 #include "../util/util.h"
 #include "asapp/game/settings.h"
 #include "asapp/game/window.h"
+#include "asapp/structures/structureexceptions.h"
 
 using namespace asa::entities;
 
@@ -123,7 +124,8 @@ void LocalPlayer::Access(structures::Container* container)
 				return !container->inventory->IsReceivingRemoteInventory();
 			},
 			std::chrono::seconds(30))) {
-		throw std::runtime_error("Failed to receive remote inventory");
+		throw structures::exceptions::StructureError(
+			container, "Failed to receive remote inventory");
 	}
 }
 
@@ -136,7 +138,7 @@ void LocalPlayer::Access(structures::InteractableStructure* structure)
 	do {
 		window::Press(structure->GetInteractKey(), true);
 		if (util::Timedout(start, std::chrono::seconds(30))) {
-			throw std::runtime_error("Failed to access structure");
+			throw structures::exceptions::StructureError(structure);
 		}
 	} while (
 		!util::Await([structure]() { return structure->_interface->IsOpen(); },

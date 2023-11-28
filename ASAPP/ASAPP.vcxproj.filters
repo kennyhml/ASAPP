@@ -159,6 +159,9 @@
     <ClInclude Include="include\asapp\structures\simplebed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\asapp\structures\structureexceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
@@ -223,6 +226,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\entities\dinoent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\structures\structureexceptions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

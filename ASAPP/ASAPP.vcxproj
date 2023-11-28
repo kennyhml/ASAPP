@@ -178,6 +178,7 @@
     <ClCompile Include="source\interfaces\teleportmap.cpp" />
     <ClCompile Include="source\interfaces\travelmap.cpp" />
     <ClCompile Include="source\items\items.cpp" />
+    <ClCompile Include="source\structures\structureexceptions.cpp" />
     <ClCompile Include="source\util\util.cpp" />
     <ClInclude Include="include\asapp\entities\dinoent.h" />
     <ClInclude Include="include\asapp\entities\baseentity.h" />
@@ -197,6 +198,7 @@
     <ClInclude Include="include\asapp\interfaces\baseentityinfo.h" />
     <ClInclude Include="include\asapp\interfaces\exceptions.h" />
     <ClInclude Include="include\asapp\interfaces\explorernotes.h" />
+    <ClInclude Include="include\asapp\structures\structureexceptions.h" />
     <ClInclude Include="include\asapp\structures\simplebed.h" />
     <ClInclude Include="source\interfaces\hud.h" />
     <ClInclude Include="include\asapp\interfaces\interfaces.h" />
