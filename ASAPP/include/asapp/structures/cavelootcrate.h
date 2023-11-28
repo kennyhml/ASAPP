@@ -9,19 +9,21 @@ namespace asa::structures
 	public:
 		enum Quality
 		{
-			BLUE = 0,
-			YELLOW = 1,
-			RED = 2,
+			BLUE = 1,
+			YELLOW = 2,
+			RED = 4,
 			ANY = BLUE | YELLOW | RED,
 		};
 
-		CaveLootCrate(Quality qualityFlags)
+		CaveLootCrate(int qualityFlags)
 			: Container("Loot Crate"), qualityFlags(qualityFlags){};
 
 
 		const Quality GetCrateQuality();
 
 	private:
-		Quality qualityFlags;
+		std::optional<asa::window::Rect> GetInfoArea();
+		const Quality GetQualityFromTooltip(std::string tooltip);
+		int qualityFlags;
 	};
 }

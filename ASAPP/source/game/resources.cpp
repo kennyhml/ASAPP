@@ -91,6 +91,7 @@ bool asa::resources::text::InitText()
 	LOAD_RESOURCE(dir, added);
 	LOAD_RESOURCE(dir, removed);
 	LOAD_RESOURCE(dir, day);
+	LOAD_RESOURCE(dir, lootcrate);
 
 	return true;
 }

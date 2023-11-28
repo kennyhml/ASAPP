@@ -1,5 +1,6 @@
 #include "asapp/game/window.h"
 #include "../util/util.h"
+#include "asapp/config.h"
 #include "asapp/game/globals.h"
 #include <chrono>
 #include <fstream>
@@ -7,6 +8,17 @@
 #include <random>
 
 using namespace asa;
+
+bool window::Init()
+{
+	tessEngine = new tesseract::TessBaseAPI();
+
+	if (tessEngine->Init(config::tessdataPath.string().c_str(), "eng")) {
+		std::cerr << "[!] Failed to initialize tesseract!" << std::endl;
+		return false;
+	}
+	std::cout << "[+] Tesseract engine initialized successfully." << std::endl;
+}
 
 void window::Color::ToRange(int v, cv::Scalar& low, cv::Scalar& high) const
 {
@@ -118,6 +130,12 @@ cv::Mat window::GetMask(
 	cv::Mat mask;
 	cv::inRange(image, low, high, mask);
 	return mask;
+}
+
+void window::SetTesseractImage(const cv::Mat& image)
+{
+	tessEngine->SetImage(image.data, image.size().width, image.size().height,
+		image.channels(), image.step1());
 }
 
 void window::GetHandle(int timeout, bool verbose)

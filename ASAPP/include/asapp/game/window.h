@@ -9,12 +9,16 @@
 #include <format>
 #include <optional>
 #include <string>
+#include <tesseract/baseapi.h>
 #include <vector>
 
 namespace asa::window
 {
+	bool Init();
+
 	using ms = std::chrono::milliseconds;
 
+	inline tesseract::TessBaseAPI* tessEngine = nullptr;
 	inline HWND hWnd = NULL;
 	inline int width = NULL;
 	inline int height = NULL;
@@ -70,6 +74,8 @@ namespace asa::window
 
 	void GetHandle(int timeout = 60, bool verbose = 0);
 	cv::Mat Screenshot(const Rect& region = Rect());
+
+	void SetTesseractImage(const cv::Mat& image);
 
 	inline std::ostream& operator<<(std::ostream& os, Point& point)
 	{

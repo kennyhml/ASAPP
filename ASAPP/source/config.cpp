@@ -17,7 +17,8 @@ bool asa::config::Init(std::filesystem::path configPath)
 
 	bool environmentSet = (SetGameDirectory(data["gameBaseDirectory"]) &&
 						   SetAssetsDirectory(data["assetsDir"]) &&
-						   SetItemdataPath(data["itemData"]));
+						   SetItemdataPath(data["itemData"]) &&
+						   SetTessdataPath(data["tessdataPath"]));
 
 	if (!environmentSet) {
 		std::cerr << "[!] One or more environment variables is faulty. ASAPP "
@@ -57,5 +58,15 @@ bool asa::config::SetItemdataPath(std::filesystem::path path)
 				  << " does not exist." << std::endl;
 	}
 	itemdataPath = path;
+	return true;
+}
+
+bool asa::config::SetTessdataPath(std::filesystem::path path)
+{
+	if (!std::filesystem::exists(path)) {
+		std::cerr << "[!] Failed to set Tesseract data path. " << path
+				  << " does not exist." << std::endl;
+	}
+	tessdataPath = path;
 	return true;
 }

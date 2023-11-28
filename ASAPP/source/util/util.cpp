@@ -33,7 +33,7 @@ bool util::Timedout(const std::chrono::system_clock::time_point& start,
 		start, std::chrono::duration_cast<std::chrono::milliseconds>(timeout));
 }
 
-bool util::IsLessThanTwoBitsSet(int bitfield)
+bool util::IsOnlyOneBitSet(int bitfield)
 {
-	return bitfield || !((bitfield & (bitfield - 1)) == 0);
+	return bitfield != 0 && (bitfield & (bitfield - 1)) == 0;
 }

@@ -41,6 +41,7 @@ namespace asa::resources
 		inline cv::Mat added;
 		inline cv::Mat removed;
 		inline cv::Mat day;
+		inline cv::Mat lootcrate;
 	}
 
 }
