@@ -1,4 +1,5 @@
 #include "asapp/game/settings.h"
+#include "asapp/config.h"
 #include "asapp/game/globals.h"
 #include <format>
 #include <fstream>
@@ -10,6 +11,10 @@ using namespace asa;
 	if (verbose) {                                                             \
 		std::cout << log << std::endl;                                         \
 	}
+
+
+bool settings::Init() { return LoadGameUserSettings() && LoadActionMappings(); }
+
 
 bool settings::OpenFile(
 	bool verbose, std::filesystem::path path, std::ifstream& fileOut)
@@ -156,7 +161,7 @@ static bool ParseActionMapping(std::istringstream& stream, bool verbose)
 bool settings::actionMappings::LoadActionMappings(bool verbose)
 {
 	std::ifstream file;
-	if (!OpenFile(verbose, globals::gameBaseDirectory / inputsRelPath, file)) {
+	if (!OpenFile(verbose, config::gameBaseDirectory / inputsRelPath, file)) {
 		return false;
 	}
 
@@ -173,7 +178,7 @@ bool settings::actionMappings::LoadActionMappings(bool verbose)
 bool settings::gameUserSettings::LoadGameUserSettings(bool verbose)
 {
 	std::ifstream file;
-	auto path = globals::gameBaseDirectory / userSettingsRelPath;
+	auto path = config::gameBaseDirectory / userSettingsRelPath;
 
 	if (!OpenFile(verbose, path, file)) {
 		return false;

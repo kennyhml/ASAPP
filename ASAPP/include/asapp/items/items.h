@@ -15,7 +15,6 @@ namespace asa::items
 	bool LoadRawData();
 
 	inline json rawData = NULL;
-	inline std::filesystem::path itemdataPath;
 
 	struct Item
 	{

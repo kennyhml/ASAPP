@@ -1,4 +1,5 @@
 #include "asapp/items/items.h"
+#include "asapp/config.h"
 #include <fstream>
 #include <iostream>
 
@@ -7,8 +8,7 @@ asa::items::Item::Item(std::string name, cv::Mat icon)
 
 asa::items::Item::Item(std::string name, json itemData) : name(name)
 {
-	this->icon = cv::imread(
-		(asa::resources::assetsDir / itemData["icon"]).string());
+	this->icon = cv::imread((config::assetsDir / itemData["icon"]).string());
 
 	this->type = itemTypeMap[itemData["type"]];
 	this->weight = itemData["weight"];
@@ -36,7 +36,7 @@ asa::items::Item::Item(std::string name, cv::Mat icon, json itemData)
 
 bool asa::items::LoadRawData()
 {
-	std::ifstream f(itemdataPath);
+	std::ifstream f(config::itemdataPath);
 	if (!f.is_open()) {
 		std::cout << "Failed to open itemdata.json!" << std::endl;
 		return false;

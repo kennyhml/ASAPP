@@ -162,6 +162,15 @@
     <ClInclude Include="include\asapp\structures\structureexceptions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\asapp\structures\cavelootcrate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asapp\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\asapp\init.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
@@ -229,6 +238,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\structures\structureexceptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\structures\cavelootcreate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\config.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\init.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

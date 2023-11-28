@@ -1,4 +1,6 @@
 #pragma once
+#define WIN32_LEAN_AND_MEAN
+
 #include <Windows.h>
 #include <any>
 #include <filesystem>
@@ -8,7 +10,7 @@
 
 namespace asa::settings
 {
-	bool Load();
+	bool Init();
 	bool OpenFile(
 		bool verbose, std::filesystem::path path, std::ifstream& fileOut);
 

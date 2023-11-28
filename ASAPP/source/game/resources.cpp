@@ -1,4 +1,5 @@
 #include "asapp/game/resources.h"
+#include "asapp/config.h"
 #include <iostream>
 
 #define LOAD_RESOURCE(dir, name)                                               \
@@ -31,7 +32,7 @@ cv::Mat asa::resources::LoadResource(std::filesystem::path path)
 
 bool asa::resources::Init()
 {
-	if (!IsValidAssetsDir(assetsDir)) {
+	if (!IsValidAssetsDir(config::assetsDir)) {
 		return false;
 	}
 
@@ -45,7 +46,7 @@ bool asa::resources::Init()
 
 bool asa::resources::interfaces::InitInterfaces()
 {
-	auto dir = assetsDir / "interfaces";
+	auto dir = config::assetsDir / "interfaces";
 	if (!IsValidAssetsDir(dir)) {
 		return false;
 	}
@@ -57,7 +58,7 @@ bool asa::resources::interfaces::InitInterfaces()
 
 bool asa::resources::items::InitItems()
 {
-	auto dir = assetsDir / "items";
+	auto dir = config::assetsDir / "items";
 	if (!IsValidAssetsDir(dir)) {
 		return false;
 	}
@@ -83,7 +84,7 @@ bool asa::resources::items::InitItems()
 
 bool asa::resources::text::InitText()
 {
-	auto dir = assetsDir / "text";
+	auto dir = config::assetsDir / "text";
 	if (!IsValidAssetsDir(dir)) {
 		return false;
 	}

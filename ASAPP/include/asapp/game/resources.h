@@ -5,7 +5,6 @@
 
 namespace asa::resources
 {
-	inline std::filesystem::path assetsDir;
 
 	bool Init();
 	cv::Mat LoadResource(std::filesystem::path path);

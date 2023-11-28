@@ -17,4 +17,6 @@ namespace util
 	{
 		return typeid(obj).name();
 	}
+
+	bool IsLessThanTwoBitsSet(int bitfield);
 }
