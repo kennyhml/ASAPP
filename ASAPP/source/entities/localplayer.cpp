@@ -158,6 +158,21 @@ void LocalPlayer::FastTravelTo(structures::SimpleBed* bed)
 	this->PassTravelScreen();
 }
 
+void LocalPlayer::TeleportTo(structures::Teleporter* teleporter, bool isDefault)
+{
+	if (isDefault) {
+		this->LookDown();
+		this->Access(teleporter);
+		teleporter->map->GoTo(teleporter->name);
+	}
+	else {
+		while (interfaces::gHUD->CanDefaultTeleport()) {
+			window::Press(settings::reload);
+		}
+	}
+	this->PassTeleportScreen();
+}
+
 void LocalPlayer::TurnRight(int degrees, std::chrono::milliseconds delay)
 {
 	controls::TurnDegrees(degrees, 0);
@@ -216,13 +231,37 @@ void LocalPlayer::PassTravelScreen()
 {
 	if (!util::Await([this]() { return this->IsInTravelScreen(); },
 			std::chrono::seconds(30))) {
-		// throw a timeout error or something
 	}
 
 	if (!util::Await([this]() { return !this->IsInTravelScreen(); },
 			std::chrono::seconds(30))) {
-		// throw a timeout error or something
 	}
 
 	std::this_thread::sleep_for(std::chrono::seconds(1));
+}
+
+void LocalPlayer::PassTeleportScreen()
+{
+	while (!interfaces::gHUD->CanDefaultTeleport()) {
+		// for long distance teleports we still enter a white screen,
+		// so we can simply reuse our bed logic
+		if (this->IsInTravelScreen()) {
+			return this->PassTravelScreen();
+		}
+	}
+	// See whether the default teleport popup lasts for more than 1 second
+	// if it doesnt its a glitched popup that appears when the teleport has
+	// happened. Restart the procedure in that case
+	if (util::Await([]() { return !interfaces::gHUD->CanDefaultTeleport(); },
+			std::chrono::seconds(1))) {
+		return this->PassTeleportScreen();
+	}
+}
+
+void LocalPlayer::LookDown()
+{
+	for (int i = 0; i < 10; i++) {
+		this->TurnDown(18, std::chrono::milliseconds(10));
+	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 }

@@ -42,6 +42,7 @@ namespace asa::resources
 		inline cv::Mat removed;
 		inline cv::Mat day;
 		inline cv::Mat lootcrate;
+		inline cv::Mat default_teleport;
 	}
 
 }

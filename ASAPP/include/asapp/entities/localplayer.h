@@ -4,6 +4,7 @@
 #include "asapp/structures/basestructure.h"
 #include "asapp/structures/container.h"
 #include "asapp/structures/simplebed.h"
+#include "asapp/structures/teleporter.h"
 #include "playerent.h"
 
 namespace asa::entities
@@ -35,6 +36,7 @@ namespace asa::entities
 		void Access(structures::InteractableStructure*);
 
 		void FastTravelTo(structures::SimpleBed*);
+		void TeleportTo(structures::Teleporter*, bool isDefault = false);
 
 		void Jump() { window::Press(settings::jump); }
 		void Crouch() { window::Press(settings::crouch); }
@@ -60,6 +62,8 @@ namespace asa::entities
 
 	private:
 		void PassTravelScreen();
+		void PassTeleportScreen();
+		void LookDown();
 	};
 
 	inline LocalPlayer* gLocalPlayer = new LocalPlayer(

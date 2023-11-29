@@ -92,6 +92,7 @@ bool asa::resources::text::InitText()
 	LOAD_RESOURCE(dir, removed);
 	LOAD_RESOURCE(dir, day);
 	LOAD_RESOURCE(dir, lootcrate);
+	LOAD_RESOURCE(dir, default_teleport);
 
 	return true;
 }

@@ -43,9 +43,8 @@ const bool HUD::IsPlayerSprinting() { return false; }
 
 const bool HUD::CanDefaultTeleport()
 {
-	window::Color white(255, 255, 255);
-	auto mask = window::GetMask(this->defaultTeleport, white, 30);
-	return cv::countNonZero(mask) > 50;
+	return window::MatchTemplate(
+		this->defaultTeleport, resources::default_teleport);
 }
 
 const bool HUD::ExtendedInformationIsToggled()

@@ -18,7 +18,6 @@ namespace asa::structures
 		CaveLootCrate(int qualityFlags)
 			: Container("Loot Crate"), qualityFlags(qualityFlags){};
 
-
 		const Quality GetCrateQuality();
 
 	private:
