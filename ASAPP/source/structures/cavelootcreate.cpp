@@ -58,7 +58,7 @@ const CaveLootCrate::Quality CaveLootCrate::GetQualityFromTooltip(
 		return YELLOW;
 	}
 	else if (tooltip.find("QualityTier4") != std::string::npos ||
-			 tooltip.find("SwampCaveTier1") != std::string::npos) {
+			 tooltip.find("SwampCaveTier3") != std::string::npos) {
 		std::cout << "\t[+] Drop determined to be red" << std::endl;
 		return RED;
 	}
