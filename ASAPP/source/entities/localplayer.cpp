@@ -80,7 +80,10 @@ const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut)
 	return true;
 }
 
-const bool LocalPlayer::WithdrawFromDedicatedStorage(int* withdrawnAmountOut) {}
+const bool LocalPlayer::WithdrawFromDedicatedStorage(int* withdrawnAmountOut)
+{
+	return false;
+}
 
 void LocalPlayer::Suicide()
 {
@@ -174,6 +177,8 @@ void LocalPlayer::FastTravelTo(structures::SimpleBed* bed)
 
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 	this->Access(bed);
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+
 	bed->map->GoTo(bed->name);
 	this->PassTravelScreen();
 }
@@ -183,6 +188,7 @@ void LocalPlayer::TeleportTo(structures::Teleporter* teleporter, bool isDefault)
 	if (!isDefault) {
 		this->LookAllTheWayDown();
 		this->Access(teleporter);
+		std::this_thread::sleep_for(std::chrono::milliseconds(300));
 		teleporter->map->GoTo(teleporter->name);
 		util::Await([]() { return !interfaces::gHUD->CanDefaultTeleport(); },
 			std::chrono::seconds(5));
@@ -195,6 +201,21 @@ void LocalPlayer::TeleportTo(structures::Teleporter* teleporter, bool isDefault)
 			std::chrono::seconds(5)));
 	}
 	this->PassTeleportScreen();
+}
+
+void LocalPlayer::LayOn(structures::SimpleBed* bed)
+{
+	while (!bed->actionWheel.IsOpen()) {
+		window::Down(settings::use);
+
+		if (!util::Await([bed]() { return bed->actionWheel.IsOpen(); },
+				std::chrono::seconds(3))) {
+			window::Up(settings::use);
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+	}
+	std::this_thread::sleep_for(std::chrono::seconds(1));
+	bed->actionWheel.SelectLayOn();
 }
 
 void LocalPlayer::TurnRight(int degrees, std::chrono::milliseconds delay)

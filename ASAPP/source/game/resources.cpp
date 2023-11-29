@@ -53,6 +53,8 @@ bool asa::resources::interfaces::InitInterfaces()
 
 	LOAD_RESOURCE(dir, cb_arrowdown);
 	LOAD_RESOURCE(dir, regions);
+	LOAD_RESOURCE(dir, lay_on);
+
 	return true;
 }
 

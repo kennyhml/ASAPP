@@ -41,6 +41,7 @@ namespace asa::entities
 
 		void FastTravelTo(structures::SimpleBed*);
 		void TeleportTo(structures::Teleporter*, bool isDefault = false);
+		void LayOn(structures::SimpleBed*);
 
 		void Jump() { window::Press(settings::jump); }
 		void Crouch() { window::Press(settings::crouch); }

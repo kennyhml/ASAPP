@@ -14,6 +14,8 @@ namespace asa::resources
 		bool InitInterfaces();
 		inline cv::Mat cb_arrowdown;
 		inline cv::Mat regions;
+		inline cv::Mat lay_on;
+
 	}
 
 	inline namespace items

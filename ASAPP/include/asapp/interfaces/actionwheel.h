@@ -9,8 +9,10 @@ namespace asa::interfaces
 	{
 	private:
 		window::Rect nameArea{ 815, 461, 294, 160 };
+		window::Rect area{ 683, 253, 543, 556 };
 
 	public:
 		bool IsOpen();
+		void SelectLayOn();
 	};
 }

@@ -4,13 +4,14 @@
 
 void asa::interfaces::components::SearchBar::Press() const
 {
-	window::Point loc = this->area.GetRandLocation(5);
+	window::Point loc = this->area.GetRandLocation(8);
 	window::ClickAt(loc, controls::LEFT);
 }
 
 void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 {
 	this->Press();
+	std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	this->isSearching = true;
 
 	for (auto c : term) {
