@@ -19,4 +19,5 @@ namespace util
 	}
 
 	bool IsOnlyOneBitSet(int bitfield);
+	void SetClipboard(const std::string& term);
 }

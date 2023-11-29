@@ -246,6 +246,15 @@ void BaseInventory::TransferAll(items::Item* item, BaseInventory* tar)
 	// TO DO: Wait for the items to be transferred
 }
 
+void BaseInventory::TransferAll(const std::string& term, BaseInventory* tar)
+{
+
+	this->searchBar.SearchFor(term);
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+
+	return this->TransferAll(nullptr, tar);
+}
+
 void BaseInventory::Transfer(
 	items::Item* item, int amount, BaseInventory*, bool search)
 {

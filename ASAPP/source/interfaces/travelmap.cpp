@@ -22,7 +22,7 @@ void asa::interfaces::TravelMap::GoTo(const std::string& destination)
 {
 	std::cout << "[+] Traveling to '" << destination << "'..." << std::endl;
 	this->searchbar.SearchFor(destination);
-	std::this_thread::sleep_for(std::chrono::milliseconds(150));
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
 	this->SelectResult();
 

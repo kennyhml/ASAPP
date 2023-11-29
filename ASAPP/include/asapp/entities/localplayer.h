@@ -42,11 +42,12 @@ namespace asa::entities
 		void FastTravelTo(structures::SimpleBed*);
 		void TeleportTo(structures::Teleporter*, bool isDefault = false);
 		void LayOn(structures::SimpleBed*);
+		void GetUp();
 
 		void Jump() { window::Press(settings::jump); }
 		void Crouch() { window::Press(settings::crouch); }
 		void Prone() { window::Press(settings::prone); }
-		void GetUp() { window::Press(settings::run); }
+		void StandUp() { window::Press(settings::run); }
 
 		void TurnRight(int degree = 90,
 			std::chrono::milliseconds delay = std::chrono::milliseconds(100));

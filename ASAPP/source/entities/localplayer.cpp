@@ -216,6 +216,13 @@ void LocalPlayer::LayOn(structures::SimpleBed* bed)
 	}
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	bed->actionWheel.SelectLayOn();
+	window::Up(settings::use);
+}
+
+void LocalPlayer::GetUp()
+{
+	window::Press(settings::use);
+	std::this_thread::sleep_for(std::chrono::seconds(3));
 }
 
 void LocalPlayer::TurnRight(int degrees, std::chrono::milliseconds delay)

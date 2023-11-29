@@ -1,11 +1,14 @@
 #include "asapp/interfaces/components/searchbar.h"
+#include "../../util/util.h"
 #include "asapp/game/controls.h"
 #include "asapp/game/globals.h"
 
 void asa::interfaces::components::SearchBar::Press() const
 {
 	window::Point loc = this->area.GetRandLocation(8);
-	window::ClickAt(loc, controls::LEFT);
+	for (int i = 0; i < 2; i++) {
+		window::ClickAt(loc, controls::LEFT);
+	}
 }
 
 void asa::interfaces::components::SearchBar::SearchFor(std::string term)
@@ -14,16 +17,20 @@ void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 	std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	this->isSearching = true;
 
-	for (auto c : term) {
-		if (globals::useWindowInput) {
-			window::PostChar(c);
-		}
-		else {
-			controls::KeyPress(std::string(1, c), std::chrono::milliseconds(1));
+	if (!globals::useWindowInput) {
+		util::SetClipboard(term);
+
+		controls::KeyCombinationPress("ctrl", "v");
+	}
+	else {
+		for (auto c : term) {
+			if (globals::useWindowInput) {
+				window::PostChar(c);
+			}
 		}
 	}
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(30));
+	std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	window::PostKeyPress("Esc");
 
 	this->isSearching = false;

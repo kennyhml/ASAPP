@@ -1,4 +1,7 @@
 #include "util.h"
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+#include <string>
 
 bool util::Await(
 	const std::function<bool()>& condition, std::chrono::milliseconds timeout)
@@ -36,4 +39,15 @@ bool util::Timedout(const std::chrono::system_clock::time_point& start,
 bool util::IsOnlyOneBitSet(int bitfield)
 {
 	return bitfield != 0 && (bitfield & (bitfield - 1)) == 0;
+}
+
+void util::SetClipboard(const std::string& text)
+{
+	auto glob = GlobalAlloc(GMEM_FIXED, (text.size() + 1) * sizeof(char));
+	memcpy(glob, text.c_str(), text.size() + 1);
+
+	OpenClipboard(NULL);
+	EmptyClipboard();
+	SetClipboardData(CF_TEXT, glob);
+	CloseClipboard();
 }

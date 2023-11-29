@@ -108,6 +108,8 @@ namespace asa::interfaces
 		void DropAll();
 
 		void TransferAll(items::Item* = nullptr, BaseInventory* tar = nullptr);
+		void TransferAll(const std::string& term, BaseInventory* tar = nullptr);
+
 		void Transfer(items::Item*, int amount = 1, BaseInventory* = nullptr,
 			bool search = true);
 

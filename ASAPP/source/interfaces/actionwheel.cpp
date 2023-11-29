@@ -14,9 +14,13 @@ void asa::interfaces::ActionWheel::SelectLayOn()
 {
 	auto matchLoc = window::LocateTemplate(this->area, resources::lay_on, 0.9);
 
+	if (!matchLoc.has_value()) {
+		std::cerr << "[!] Lay on option not found! " << std::endl;
+		return;
+	}
+
 	auto randPoint = matchLoc.value().GetRandLocation(5);
-
-
-	window::ClickAt({ this->area.x + randPoint.x, this->area.y + randPoint.y },
-		controls::LEFT);
+	window::SetMousePos(this->area.x + randPoint.x, this->area.y + randPoint.y);
+	std::this_thread::sleep_for(std::chrono::milliseconds(400));
+	controls::MousePress(controls::LEFT);
 }
