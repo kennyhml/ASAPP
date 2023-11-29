@@ -1,5 +1,6 @@
 #pragma once
-#include "asapp/interfaces/baseinventory.h"
+#include "../interfaces/actionwheel.h"
+#include "../interfaces/baseinventory.h"
 
 namespace asa::entities
 {
@@ -16,5 +17,6 @@ namespace asa::entities
 		~BaseEntity() { delete this->inventory; }
 
 		interfaces::BaseInventory* inventory{ nullptr };
+		interfaces::ActionWheel actionWheel;
 	};
 }

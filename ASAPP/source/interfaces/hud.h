@@ -42,6 +42,9 @@ namespace asa::interfaces
 		[[nodiscard]] const bool IsPlayerSprinting();
 
 		[[nodiscard]] const bool CanDefaultTeleport();
+		[[nodiscard]] const bool CanFastTravel();
+		[[nodiscard]] const bool CanAccessInventory();
+
 		[[nodiscard]] const bool ExtendedInformationIsToggled();
 		[[nodiscard]] const bool GotItemAdded(bool isInventoryOpen);
 		[[nodiscard]] const bool GotItemRemoved(bool isInventoryOpen);

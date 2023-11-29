@@ -65,6 +65,11 @@ const bool LocalPlayer::LocalPlayer::IsInTravelScreen()
 	return mean[0] > 240.f;
 }
 
+const bool LocalPlayer::LocalPlayer::CanAccessBed()
+{
+	return interfaces::gHUD->CanFastTravel();
+}
+
 const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut)
 {
 	do {
@@ -96,6 +101,16 @@ void LocalPlayer::Suicide()
 
 	} while (this->IsAlive());
 	std::cout << "\t[-] Suicided successfully." << std::endl;
+}
+
+const bool LocalPlayer::CanAccess(structures::BaseStructure*)
+{
+
+	return interfaces::gHUD->CanAccessInventory();
+}
+const bool LocalPlayer::CanAccess(entities::BaseEntity*)
+{
+	return interfaces::gHUD->CanAccessInventory();
 }
 
 void LocalPlayer::Access(entities::BaseEntity* ent)
@@ -166,7 +181,7 @@ void LocalPlayer::FastTravelTo(structures::SimpleBed* bed)
 void LocalPlayer::TeleportTo(structures::Teleporter* teleporter, bool isDefault)
 {
 	if (!isDefault) {
-		this->LookDown();
+		this->LookAllTheWayDown();
 		this->Access(teleporter);
 		teleporter->map->GoTo(teleporter->name);
 		util::Await([]() { return !interfaces::gHUD->CanDefaultTeleport(); },
@@ -267,10 +282,18 @@ void LocalPlayer::PassTeleportScreen()
 	}
 }
 
-void LocalPlayer::LookDown()
+void LocalPlayer::LookAllTheWayDown()
 {
 	for (int i = 0; i < 10; i++) {
 		this->TurnDown(18, std::chrono::milliseconds(10));
+	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+}
+
+void LocalPlayer::LookAllTheWayUp()
+{
+	for (int i = 0; i < 10; i++) {
+		this->TurnUp(18, std::chrono::milliseconds(10));
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 }

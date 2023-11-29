@@ -174,6 +174,9 @@
     <ClInclude Include="include\asapp\structures\teleporter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\asapp\interfaces\actionwheel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />
@@ -250,6 +253,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\init.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\interfaces\actionwheel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

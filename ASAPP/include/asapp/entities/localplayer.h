@@ -25,11 +25,15 @@ namespace asa::entities
 		const bool DepositedItem();
 		const bool IsInSpawnAnimation();
 		const bool IsInTravelScreen();
+		const bool CanAccessBed();
 
 		const bool DepositIntoDedicatedStorage(int* depositedAmountOut);
 		const bool WithdrawFromDedicatedStorage(int* withdrawnAmountOut);
 
 		void Suicide();
+
+		const bool CanAccess(structures::BaseStructure*);
+		const bool CanAccess(entities::BaseEntity*);
 
 		void Access(entities::BaseEntity*);
 		void Access(structures::Container*);
@@ -60,10 +64,12 @@ namespace asa::entities
 		void Equip(items::Item* item, interfaces::PlayerInfo::Slot targetSlot);
 		void Unequip(interfaces::PlayerInfo::Slot targetSlot);
 
+		void LookAllTheWayDown();
+		void LookAllTheWayUp();
+
 	private:
 		void PassTravelScreen();
 		void PassTeleportScreen();
-		void LookDown();
 	};
 
 	inline LocalPlayer* gLocalPlayer = new LocalPlayer(

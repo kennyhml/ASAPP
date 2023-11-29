@@ -47,6 +47,17 @@ const bool HUD::CanDefaultTeleport()
 		this->defaultTeleport, resources::default_teleport);
 }
 
+const bool HUD::CanFastTravel()
+{
+	return window::MatchTemplate(window::Screenshot(), resources::fast_travel);
+}
+
+const bool HUD::CanAccessInventory()
+{
+	return window::MatchTemplate(
+		window::Screenshot(), resources::access_inventory);
+}
+
 const bool HUD::ExtendedInformationIsToggled()
 {
 	static window::Rect roi{ 14, 34, 134, 35 };

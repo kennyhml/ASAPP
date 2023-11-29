@@ -167,6 +167,7 @@
     <ClCompile Include="source\game\settings.cpp" />
     <ClCompile Include="source\game\window.cpp" />
     <ClCompile Include="source\init.cpp" />
+    <ClCompile Include="source\interfaces\actionwheel.cpp" />
     <ClCompile Include="source\interfaces\basetravelmap.cpp" />
     <ClCompile Include="source\interfaces\components\button.cpp" />
     <ClCompile Include="source\interfaces\components\searchbar.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="include\asapp\game\window.h" />
     <ClInclude Include="include\asapp\game\settings.h" />
     <ClInclude Include="include\asapp\init.h" />
+    <ClInclude Include="include\asapp\interfaces\actionwheel.h" />
     <ClInclude Include="include\asapp\interfaces\baseinfo.h" />
     <ClInclude Include="include\asapp\interfaces\basetravelmap.h" />
     <ClInclude Include="include\asapp\interfaces\components\combobox.h" />

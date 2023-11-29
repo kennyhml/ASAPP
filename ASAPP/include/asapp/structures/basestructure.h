@@ -1,4 +1,5 @@
 #pragma once
+#include "../interfaces/actionwheel.h"
 #include <string>
 
 namespace asa::structures
@@ -9,6 +10,7 @@ namespace asa::structures
 		BaseStructure(std::string name) : name(name){};
 
 		const std::string name;
+		interfaces::ActionWheel actionWheel;
 	};
 
 }
