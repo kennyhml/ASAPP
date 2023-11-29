@@ -53,11 +53,16 @@ const bool LocalPlayer::DepositedItem()
 
 const bool LocalPlayer::LocalPlayer::IsInTravelScreen()
 {
-	static window::Rect roi(806, 436, 310, 219);
+	static window::Rect roi(94, 69, 1751, 883);
 	static window::Color white(255, 255, 255);
 
-	auto mask = window::GetMask(roi, white, 5);
-	return cv::countNonZero(mask) > 3000;
+	cv::Mat image = window::Screenshot(roi);
+	cv::Mat gray;
+	cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+
+	cv::Scalar mean, stddev;
+	cv::meanStdDev(gray, mean, stddev);
+	return mean[0] > 240.f;
 }
 
 const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut)
@@ -160,16 +165,18 @@ void LocalPlayer::FastTravelTo(structures::SimpleBed* bed)
 
 void LocalPlayer::TeleportTo(structures::Teleporter* teleporter, bool isDefault)
 {
-	if (isDefault) {
+	if (!isDefault) {
 		this->LookDown();
 		this->Access(teleporter);
 		teleporter->map->GoTo(teleporter->name);
+		util::Await([]() { return !interfaces::gHUD->CanDefaultTeleport(); },
+			std::chrono::seconds(5));
 	}
 	else {
 		do {
 			window::Press(settings::reload);
 		} while (!util::Await(
-			[]() { return interfaces::gHUD->CanDefaultTeleport(); },
+			[]() { return !interfaces::gHUD->CanDefaultTeleport(); },
 			std::chrono::seconds(5)));
 	}
 	this->PassTeleportScreen();
@@ -246,6 +253,7 @@ void LocalPlayer::PassTeleportScreen()
 		// for long distance teleports we still enter a white screen,
 		// so we can simply reuse our bed logic
 		if (this->IsInTravelScreen()) {
+			std::cout << "[+] Whitescreen entered upon teleport." << std::endl;
 			return this->PassTravelScreen();
 		}
 	}
@@ -254,6 +262,7 @@ void LocalPlayer::PassTeleportScreen()
 	// happened. Restart the procedure in that case
 	if (util::Await([]() { return !interfaces::gHUD->CanDefaultTeleport(); },
 			std::chrono::seconds(1))) {
+		std::cout << "[!] Glitched default teleport popup found." << std::endl;
 		return this->PassTeleportScreen();
 	}
 }
