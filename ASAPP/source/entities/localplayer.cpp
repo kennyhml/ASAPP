@@ -166,9 +166,11 @@ void LocalPlayer::TeleportTo(structures::Teleporter* teleporter, bool isDefault)
 		teleporter->map->GoTo(teleporter->name);
 	}
 	else {
-		while (interfaces::gHUD->CanDefaultTeleport()) {
+		do {
 			window::Press(settings::reload);
-		}
+		} while (!util::Await(
+			[]() { return interfaces::gHUD->CanDefaultTeleport(); },
+			std::chrono::seconds(5)));
 	}
 	this->PassTeleportScreen();
 }
@@ -195,8 +197,6 @@ void LocalPlayer::TurnDown(int degrees, std::chrono::milliseconds delay)
 	controls::TurnDegrees(0, degrees);
 	std::this_thread::sleep_for(delay);
 }
-
-
 
 void LocalPlayer::Equip(
 	items::Item* item, interfaces::PlayerInfo::Slot targetSlot)
