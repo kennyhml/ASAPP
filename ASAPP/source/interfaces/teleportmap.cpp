@@ -31,7 +31,7 @@ void asa::interfaces::TeleportMap::GoTo(const std::string& destination)
 {
 	std::cout << "[+] Teleporting to '" << destination << "'..." << std::endl;
 	this->searchbar.SearchFor(destination);
-	std::this_thread::sleep_for(std::chrono::milliseconds(250));
+	std::this_thread::sleep_for(std::chrono::milliseconds(400));
 
 	this->SelectResult();
 

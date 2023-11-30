@@ -188,7 +188,7 @@ void LocalPlayer::TeleportTo(structures::Teleporter* teleporter, bool isDefault)
 	if (!isDefault) {
 		this->LookAllTheWayDown();
 		this->Access(teleporter);
-		std::this_thread::sleep_for(std::chrono::milliseconds(300));
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		teleporter->map->GoTo(teleporter->name);
 		util::Await([]() { return !interfaces::gHUD->CanDefaultTeleport(); },
 			std::chrono::seconds(5));
@@ -277,14 +277,18 @@ void LocalPlayer::Unequip(interfaces::PlayerInfo::Slot targetSlot)
 	}
 }
 
-void LocalPlayer::PassTravelScreen()
+void LocalPlayer::PassTravelScreen(bool in, bool out)
 {
-	if (!util::Await([this]() { return this->IsInTravelScreen(); },
-			std::chrono::seconds(30))) {
+	if (in) {
+		if (!util::Await([this]() { return this->IsInTravelScreen(); },
+				std::chrono::seconds(30))) {
+		}
 	}
 
-	if (!util::Await([this]() { return !this->IsInTravelScreen(); },
-			std::chrono::seconds(30))) {
+	if (out) {
+		if (!util::Await([this]() { return !this->IsInTravelScreen(); },
+				std::chrono::seconds(30))) {
+		}
 	}
 
 	std::this_thread::sleep_for(std::chrono::seconds(1));
@@ -297,14 +301,14 @@ void LocalPlayer::PassTeleportScreen()
 		// so we can simply reuse our bed logic
 		if (this->IsInTravelScreen()) {
 			std::cout << "[+] Whitescreen entered upon teleport." << std::endl;
-			return this->PassTravelScreen();
+			return this->PassTravelScreen(false);
 		}
 	}
 	// See whether the default teleport popup lasts for more than 1 second
 	// if it doesnt its a glitched popup that appears when the teleport has
 	// happened. Restart the procedure in that case
 	if (util::Await([]() { return !interfaces::gHUD->CanDefaultTeleport(); },
-			std::chrono::seconds(1))) {
+			std::chrono::milliseconds(800))) {
 		std::cout << "[!] Glitched default teleport popup found." << std::endl;
 		return this->PassTeleportScreen();
 	}

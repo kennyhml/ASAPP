@@ -22,15 +22,13 @@ void asa::interfaces::SpawnMap::SpawnAt(const std::string& bed)
 	this->bedsButton.Press();
 	std::this_thread::sleep_for(std::chrono::milliseconds(200));
 
-
 	this->searchbar.SearchFor(bed);
-	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	std::this_thread::sleep_for(std::chrono::milliseconds(400));
 	this->SelectResult();
 
 	while (!this->CanConfirmTarget()) {
 	}
 	this->confirmButton.Press();
-
 	this->searchbar.SetTextCleared();
 }
 

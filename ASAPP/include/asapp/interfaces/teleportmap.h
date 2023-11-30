@@ -9,10 +9,10 @@ namespace asa::interfaces
 		using BaseTravelMap::BaseTravelMap;
 
 	private:
-		components::SearchBar searchbar{ 307, 946, 226, 43 };
 		components::Button setDefaultButton{ 1210, 948, 245, 43 };
 
 	public:
+		TravelSearchBar searchbar{ 307, 946, 226, 43 };
 		void Close();
 		void SetSelectedAsDefault();
 

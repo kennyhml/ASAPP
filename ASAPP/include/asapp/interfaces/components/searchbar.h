@@ -8,8 +8,8 @@ namespace asa::interfaces::components
 	{
 		using IInterfaceComponent::IInterfaceComponent;
 
-		void Press() const;
-		void SearchFor(std::string term);
+		virtual void Press() const;
+		virtual void SearchFor(std::string term);
 		void DeleteSearch();
 
 		void SetTextCleared() { this->isTextEntered = false; }
@@ -17,7 +17,7 @@ namespace asa::interfaces::components
 		bool IsSearching() const { return this->isSearching; }
 		bool TextIsEntered() const { return this->isTextEntered; }
 
-	private:
+	protected:
 		std::string lastSearchedTerm = "";
 		bool isSearching{ false };
 		bool isTextEntered{ false };

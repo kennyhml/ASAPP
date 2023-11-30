@@ -70,7 +70,7 @@ namespace asa::entities
 		void LookAllTheWayUp();
 
 	private:
-		void PassTravelScreen();
+		void PassTravelScreen(bool in = true, bool out = true);
 		void PassTeleportScreen();
 	};
 
