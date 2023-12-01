@@ -44,24 +44,25 @@ const bool HUD::IsPlayerSprinting() { return false; }
 const bool HUD::CanDefaultTeleport()
 {
 	return window::MatchTemplate(
-		this->defaultTeleport, resources::default_teleport);
+		this->defaultTeleport, resources::text::default_teleport, 0.5);
 }
 
 const bool HUD::CanFastTravel()
 {
-	return window::MatchTemplate(window::Screenshot(), resources::fast_travel);
+	return window::MatchTemplate(
+		window::Screenshot(), resources::text::fast_travel);
 }
 
 const bool HUD::CanAccessInventory()
 {
 	return window::MatchTemplate(
-		window::Screenshot(), resources::access_inventory);
+		window::Screenshot(), resources::text::access_inventory);
 }
 
 const bool HUD::ExtendedInformationIsToggled()
 {
 	static window::Rect roi{ 14, 34, 134, 35 };
-	return window::MatchTemplate(roi, resources::day);
+	return window::MatchTemplate(roi, resources::text::day);
 }
 
 const bool HUD::GotItemAdded(bool isInventoryOpen)

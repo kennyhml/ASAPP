@@ -1,6 +1,7 @@
 #include "asapp/interfaces/basetravelmap.h"
 #include "../util/util.h"
 #include "asapp/game/globals.h"
+#include "asapp/game/resources.h"
 
 const bool asa::interfaces::BaseTravelMap::TravelSearchBar::HasTextEntered()
 {
@@ -64,12 +65,9 @@ void asa::interfaces::BaseTravelMap::TravelSearchBar::Press() const
 		std::chrono::milliseconds(500)));
 }
 
-bool asa::interfaces::BaseTravelMap::IsOpen()
+const bool asa::interfaces::BaseTravelMap::IsOpen() const
 {
-	static window::Color dayText(116, 177, 186);
-	auto mask = window::GetMask(dayTime, dayText, 20);
-
-	return cv::countNonZero(mask) > 50;
+	return window::MatchTemplate(this->dayTime, resources::interfaces::day);
 }
 
 bool asa::interfaces::BaseTravelMap::CanConfirmTarget()

@@ -72,25 +72,25 @@ void asa::items::Load(Item*& item, std::string name, cv::Mat icon)
 
 bool asa::items::resources::Init()
 {
-	Load(metal, "Metal", asa::resources::metal);
-	Load(metalIngot, "Metal Ingot", asa::resources::metal_ingot);
-	Load(cementingPaste, "Cementing Paste", asa::resources::paste);
-	Load(achatinaPaste, "Achatina Paste", asa::resources::paste);
-	Load(fiber, "Fiber", asa::resources::fiber);
-	Load(flint, "Flint", asa::resources::flint);
-	Load(gunpowder, "Gunpowder", asa::resources::gunpowder);
-	Load(sparkpowder, "Sparkpowder", asa::resources::sparkpowder);
-	Load(obsidian, "Obsidian", asa::resources::obsidian);
-	Load(polymer, "Polymer", asa::resources::polymer);
-	Load(stone, "Stone", asa::resources::stone);
-	Load(thatch, "Thatch", asa::resources::thatch);
-	Load(wood, "Wood", asa::resources::wood);
+	Load(metal, "Metal", asa::resources::items::metal);
+	Load(metalIngot, "Metal Ingot", asa::resources::items::metal_ingot);
+	Load(cementingPaste, "Cementing Paste", asa::resources::items::paste);
+	Load(achatinaPaste, "Achatina Paste", asa::resources::items::paste);
+	Load(fiber, "Fiber", asa::resources::items::fiber);
+	Load(flint, "Flint", asa::resources::items::flint);
+	Load(gunpowder, "Gunpowder", asa::resources::items::gunpowder);
+	Load(sparkpowder, "Sparkpowder", asa::resources::items::sparkpowder);
+	Load(obsidian, "Obsidian", asa::resources::items::obsidian);
+	Load(polymer, "Polymer", asa::resources::items::polymer);
+	Load(stone, "Stone", asa::resources::items::stone);
+	Load(thatch, "Thatch", asa::resources::items::thatch);
+	Load(wood, "Wood", asa::resources::items::wood);
 
 	return true;
 }
 
 bool asa::items::equippables::Init()
 {
-	Load(gasmask, "Gas Mask", asa::resources::gasmask);
+	Load(gasmask, "Gas Mask", asa::resources::items::gasmask);
 	return true;
 }

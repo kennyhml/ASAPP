@@ -16,7 +16,7 @@ namespace asa::interfaces
 		window::Rect stamIcon{ 1872, 900, 29, 51 };
 		window::Rect healthIcon{ 1861, 953, 48, 45 };
 		window::Rect weightIcon{ 1860, 751, 51, 56 };
-		window::Rect defaultTeleport{ 833, 910, 283, 29 };
+		window::Rect defaultTeleport{ 866, 911, 78, 27 };
 
 		[[nodiscard]] const bool IsBlinking(window::Rect icon,
 			window::Color color,

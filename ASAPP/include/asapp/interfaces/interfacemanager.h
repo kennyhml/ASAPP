@@ -27,7 +27,7 @@ namespace asa::interfaces
 
 		IInterface* GetOpenInterface() const;
 
-		bool IsOpen();
+		virtual const bool IsOpen() const;
 	};
 
 	inline InterfaceManager* gInterfaceManager = new InterfaceManager();

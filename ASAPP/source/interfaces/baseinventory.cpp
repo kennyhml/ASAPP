@@ -62,10 +62,10 @@ bool BaseInventory::IsReceivingRemoteInventory()
 	return cv::countNonZero(mask) > 100;
 }
 
-bool BaseInventory::IsOpen()
+const bool BaseInventory::IsOpen() const
 {
 	return window::MatchTemplate(
-		this->itemFilter.area, resources::cb_arrowdown, 0.9);
+		this->itemFilter.area, resources::interfaces::cb_arrowdown, 0.9);
 }
 
 bool BaseInventory::Has(items::Item* item, bool search)

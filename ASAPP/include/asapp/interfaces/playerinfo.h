@@ -34,7 +34,7 @@ namespace asa::interfaces
 			TORPIDITY
 		};
 
-		bool IsOpen();
+		virtual const bool IsOpen() const;
 
 		const int GetTameLimit() { return 0; }
 		const int GetCraftingSkill() { return 0; }

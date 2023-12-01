@@ -84,7 +84,7 @@ namespace asa::interfaces
 		window::Rect GetArea() const;
 
 		bool IsReceivingRemoteInventory();
-		virtual bool IsOpen();
+		virtual const bool IsOpen() const override;
 		virtual bool Has(items::Item* item, bool search = false);
 		virtual bool CountStacks(
 			items::Item* item, int& stacksOut, bool search = false);

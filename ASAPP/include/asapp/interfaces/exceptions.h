@@ -8,6 +8,7 @@ namespace asa::interfaces::exceptions
 {
 	class InterfaceError : public std::exception
 	{
+		IInterface* _interface;
 		std::string message;
 
 	public:

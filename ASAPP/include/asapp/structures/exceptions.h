@@ -11,21 +11,21 @@ namespace asa::structures::exceptions
 		std::string message;
 
 	public:
-		StructureError(BaseStructure* structure, std::string message);
-		StructureError(BaseStructure* structure);
+		StructureError(const BaseStructure* structure, std::string message);
+		StructureError(const BaseStructure* structure);
 
 		const char* what();
 	};
 
 	class StructureNotOpenedError : public StructureError
 	{
-		StructureNotOpenedError(BaseStructure* structure)
+		StructureNotOpenedError(const BaseStructure* structure)
 			: StructureError(structure, "Accessing structure failed."){};
 	};
 
 	class StructureNotClosedError : public StructureError
 	{
-		StructureNotClosedError(BaseStructure* structure)
+		StructureNotClosedError(const BaseStructure* structure)
 			: StructureError(structure, "Exitting structure failed."){};
 	};
 

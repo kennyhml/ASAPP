@@ -1,7 +1,7 @@
 #include "asapp/interfaces/actionwheel.h"
 #include "asapp/game/resources.h"
 
-bool asa::interfaces::ActionWheel::IsOpen()
+const bool asa::interfaces::ActionWheel::IsOpen() const
 {
 	window::Color white(126, 216, 236);
 
@@ -12,7 +12,8 @@ bool asa::interfaces::ActionWheel::IsOpen()
 
 void asa::interfaces::ActionWheel::SelectLayOn()
 {
-	auto matchLoc = window::LocateTemplate(this->area, resources::lay_on, 0.9);
+	auto matchLoc = window::LocateTemplate(
+		this->area, resources::interfaces::lay_on, 0.9);
 
 	if (!matchLoc.has_value()) {
 		std::cerr << "[!] Lay on option not found! " << std::endl;

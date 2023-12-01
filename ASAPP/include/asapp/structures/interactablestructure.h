@@ -19,7 +19,7 @@ namespace asa::structures
 
 		interfaces::IInterface* _interface;
 
-		const settings::ActionMapping GetInteractKey()
+		const settings::ActionMapping GetInteractKey() const
 		{
 			return *(this->interactKey);
 		}

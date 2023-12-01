@@ -1,9 +1,10 @@
 #include "asapp/interfaces/spawnmap.h"
 #include "asapp/game/resources.h"
 
-bool asa::interfaces::SpawnMap::IsOpen()
+const bool asa::interfaces::SpawnMap::IsOpen() const
 {
-	return window::MatchTemplate(this->regionsButton.area, resources::regions);
+	return window::MatchTemplate(
+		this->regionsButton.area, resources::interfaces::regions);
 }
 
 void asa::interfaces::SpawnMap::SpawnAt(int regionIndex)

@@ -3,7 +3,7 @@
 #include "../util/util.h"
 #include "asapp/game/settings.h"
 #include "asapp/game/window.h"
-#include "asapp/structures/structureexceptions.h"
+#include "asapp/structures/exceptions.h"
 
 using namespace asa::entities;
 
@@ -70,6 +70,11 @@ const bool LocalPlayer::LocalPlayer::CanAccessBed()
 	return interfaces::gHUD->CanFastTravel();
 }
 
+const bool LocalPlayer::LocalPlayer::CanUseDefaultTeleport()
+{
+	return interfaces::gHUD->CanDefaultTeleport();
+}
+
 const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut)
 {
 	do {
@@ -106,19 +111,21 @@ void LocalPlayer::Suicide()
 	std::cout << "\t[-] Suicided successfully." << std::endl;
 }
 
-const bool LocalPlayer::CanAccess(structures::BaseStructure*)
-{
-
-	return interfaces::gHUD->CanAccessInventory();
-}
-const bool LocalPlayer::CanAccess(entities::BaseEntity*)
+const bool LocalPlayer::CanAccess(const structures::BaseStructure&)
 {
 	return interfaces::gHUD->CanAccessInventory();
+	// TODO: if ghud fails use the action wheel
 }
 
-void LocalPlayer::Access(entities::BaseEntity* ent)
+const bool LocalPlayer::CanAccess(const entities::BaseEntity&)
 {
-	if (ent->inventory->IsOpen()) {
+	return interfaces::gHUD->CanAccessInventory();
+	// TODO: if ghud fails use the action wheel
+}
+
+void LocalPlayer::Access(const entities::BaseEntity& ent)
+{
+	if (ent.inventory->IsOpen()) {
 		return;
 	}
 
@@ -129,46 +136,46 @@ void LocalPlayer::Access(entities::BaseEntity* ent)
 			throw std::runtime_error("Failed to access dino");
 		}
 	} while (!util::Await(
-		[ent]() { return ent->inventory->IsOpen(); }, std::chrono::seconds(5)));
+		[ent]() { return ent.inventory->IsOpen(); }, std::chrono::seconds(5)));
 
 	if (!util::Await(
-			[ent]() { return !ent->inventory->IsReceivingRemoteInventory(); },
+			[ent]() { return !ent.inventory->IsReceivingRemoteInventory(); },
 			std::chrono::seconds(30))) {
 		throw std::runtime_error("Failed to receive remote inventory");
 	}
 }
 
-void LocalPlayer::Access(structures::Container* container)
+void LocalPlayer::Access(const structures::Container& container)
 {
-	this->Access(static_cast<structures::InteractableStructure*>(container));
+	this->Access(static_cast<structures::InteractableStructure>(container));
 
 	if (!util::Await(
 			[container]() {
-				return !container->inventory->IsReceivingRemoteInventory();
+				return !container.inventory->IsReceivingRemoteInventory();
 			},
 			std::chrono::seconds(30))) {
 		throw structures::exceptions::StructureError(
-			container, "Failed to receive remote inventory");
+			&container, "Failed to receive remote inventory");
 	}
 }
 
-void LocalPlayer::Access(structures::InteractableStructure* structure)
+void LocalPlayer::Access(const structures::InteractableStructure& structure)
 {
-	if (structure->_interface->IsOpen()) {
+	if (structure._interface->IsOpen()) {
 		return;
 	}
 	auto start = std::chrono::system_clock::now();
 	do {
-		window::Press(structure->GetInteractKey(), true);
+		window::Press(structure.GetInteractKey(), true);
 		if (util::Timedout(start, std::chrono::seconds(30))) {
-			throw structures::exceptions::StructureError(structure);
+			throw structures::exceptions::StructureError(&structure);
 		}
 	} while (
-		!util::Await([structure]() { return structure->_interface->IsOpen(); },
+		!util::Await([structure]() { return structure._interface->IsOpen(); },
 			std::chrono::seconds(5)));
 }
 
-void LocalPlayer::FastTravelTo(structures::SimpleBed* bed)
+void LocalPlayer::FastTravelTo(const structures::SimpleBed& bed)
 {
 	for (int i = 0; i < 10; i++) {
 		this->TurnDown(18, std::chrono::milliseconds(10));
@@ -179,17 +186,17 @@ void LocalPlayer::FastTravelTo(structures::SimpleBed* bed)
 	this->Access(bed);
 	std::this_thread::sleep_for(std::chrono::milliseconds(300));
 
-	bed->map->GoTo(bed->name);
+	bed.map->GoTo(bed.name);
 	this->PassTravelScreen();
 }
 
-void LocalPlayer::TeleportTo(structures::Teleporter* teleporter, bool isDefault)
+void LocalPlayer::TeleportTo(const structures::Teleporter& tp, bool isDefault)
 {
 	if (!isDefault) {
 		this->LookAllTheWayDown();
-		this->Access(teleporter);
+		this->Access(tp);
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		teleporter->map->GoTo(teleporter->name);
+		tp.map->GoTo(tp.name);
 		util::Await([]() { return !interfaces::gHUD->CanDefaultTeleport(); },
 			std::chrono::seconds(5));
 	}
@@ -203,23 +210,23 @@ void LocalPlayer::TeleportTo(structures::Teleporter* teleporter, bool isDefault)
 	this->PassTeleportScreen();
 }
 
-void LocalPlayer::LayOn(structures::SimpleBed* bed)
+void LocalPlayer::LayOn(const structures::SimpleBed& bed)
 {
-	while (!bed->actionWheel.IsOpen()) {
+	while (!bed.actionWheel.IsOpen()) {
 		window::Down(settings::use);
 
-		if (!util::Await([bed]() { return bed->actionWheel.IsOpen(); },
+		if (!util::Await([bed]() { return bed.actionWheel.IsOpen(); },
 				std::chrono::seconds(3))) {
 			window::Up(settings::use);
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
 	std::this_thread::sleep_for(std::chrono::seconds(1));
-	bed->actionWheel.SelectLayOn();
+	bed.actionWheel.SelectLayOn();
 	window::Up(settings::use);
 }
 
-void LocalPlayer::GetUp()
+void LocalPlayer::GetOffBed()
 {
 	window::Press(settings::use);
 	std::this_thread::sleep_for(std::chrono::seconds(3));

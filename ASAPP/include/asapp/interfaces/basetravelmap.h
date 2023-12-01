@@ -35,7 +35,7 @@ namespace asa::interfaces
 			}
 		}
 
-		virtual bool IsOpen();
+		virtual const bool IsOpen() const override;
 		virtual bool CanConfirmTarget();
 		virtual bool HasResult();
 		virtual bool IsResultSelected(int index);

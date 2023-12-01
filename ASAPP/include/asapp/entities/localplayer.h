@@ -26,23 +26,24 @@ namespace asa::entities
 		const bool IsInSpawnAnimation();
 		const bool IsInTravelScreen();
 		const bool CanAccessBed();
+		const bool CanUseDefaultTeleport();
 
 		const bool DepositIntoDedicatedStorage(int* depositedAmountOut);
 		const bool WithdrawFromDedicatedStorage(int* withdrawnAmountOut);
 
 		void Suicide();
 
-		const bool CanAccess(structures::BaseStructure*);
-		const bool CanAccess(entities::BaseEntity*);
+		const bool CanAccess(const structures::BaseStructure&);
+		const bool CanAccess(const entities::BaseEntity&);
 
-		void Access(entities::BaseEntity*);
-		void Access(structures::Container*);
-		void Access(structures::InteractableStructure*);
+		void Access(const entities::BaseEntity&);
+		void Access(const structures::Container&);
+		void Access(const structures::InteractableStructure&);
 
-		void FastTravelTo(structures::SimpleBed*);
-		void TeleportTo(structures::Teleporter*, bool isDefault = false);
-		void LayOn(structures::SimpleBed*);
-		void GetUp();
+		void FastTravelTo(const structures::SimpleBed&);
+		void TeleportTo(const structures::Teleporter&, bool isDefault = false);
+		void LayOn(const structures::SimpleBed&);
+		void GetOffBed();
 
 		void Jump() { window::Press(settings::jump); }
 		void Crouch() { window::Press(settings::crouch); }

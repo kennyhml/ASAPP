@@ -4,7 +4,7 @@
 
 using namespace asa::interfaces;
 
-bool PlayerInfo::IsOpen()
+const bool PlayerInfo::IsOpen() const
 {
 	window::Color textColor(188, 244, 255);
 	auto mask = window::GetMask(this->you.area, textColor, 20);

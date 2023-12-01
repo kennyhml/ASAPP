@@ -103,6 +103,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -119,6 +120,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,6 +137,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,6 +154,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -184,12 +188,13 @@
     <ClCompile Include="source\interfaces\travelmap.cpp" />
     <ClCompile Include="source\items\items.cpp" />
     <ClCompile Include="source\structures\cavelootcreate.cpp" />
-    <ClCompile Include="source\structures\structureexceptions.cpp" />
+    <ClCompile Include="source\structures\exceptions.cpp" />
     <ClCompile Include="source\util\util.cpp" />
     <ClInclude Include="include\asapp\config.h" />
     <ClInclude Include="include\asapp\entities\dinoent.h" />
     <ClInclude Include="include\asapp\entities\baseentity.h" />
     <ClInclude Include="include\asapp\entities\entities.h" />
+    <ClInclude Include="include\asapp\entities\exceptions.h" />
     <ClInclude Include="include\asapp\entities\localplayer.h" />
     <ClInclude Include="include\asapp\entities\playerent.h" />
     <ClInclude Include="include\asapp\game\controls.h" />
@@ -208,7 +213,7 @@
     <ClInclude Include="include\asapp\interfaces\exceptions.h" />
     <ClInclude Include="include\asapp\interfaces\explorernotes.h" />
     <ClInclude Include="include\asapp\structures\cavelootcrate.h" />
-    <ClInclude Include="include\asapp\structures\structureexceptions.h" />
+    <ClInclude Include="include\asapp\structures\exceptions.h" />
     <ClInclude Include="include\asapp\structures\simplebed.h" />
     <ClInclude Include="include\asapp\structures\teleporter.h" />
     <ClInclude Include="source\interfaces\hud.h" />

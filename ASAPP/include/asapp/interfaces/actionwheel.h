@@ -12,7 +12,7 @@ namespace asa::interfaces
 		window::Rect area{ 683, 253, 543, 556 };
 
 	public:
-		bool IsOpen();
-		void SelectLayOn();
+		const bool IsOpen() const override;
+		void SelectLayOn() const;
 	};
 }
