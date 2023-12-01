@@ -12,7 +12,8 @@ bool asa::interfaces::ActionWheel::IsOpen()
 
 void asa::interfaces::ActionWheel::SelectLayOn()
 {
-	auto matchLoc = window::LocateTemplate(this->area, resources::lay_on, 0.9);
+	auto matchLoc = window::LocateTemplate(
+		this->area, resources::interfaces::lay_on, 0.9);
 
 	if (!matchLoc.has_value()) {
 		std::cerr << "[!] Lay on option not found! " << std::endl;

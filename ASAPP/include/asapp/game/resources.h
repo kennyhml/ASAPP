@@ -9,16 +9,17 @@ namespace asa::resources
 	bool Init();
 	cv::Mat LoadResource(std::filesystem::path path);
 
-	inline namespace interfaces
+	namespace interfaces
 	{
 		bool InitInterfaces();
 		inline cv::Mat cb_arrowdown;
 		inline cv::Mat regions;
 		inline cv::Mat lay_on;
+		inline cv::Mat day;
 
 	}
 
-	inline namespace items
+	namespace items
 	{
 		bool InitItems();
 		inline cv::Mat metal;
@@ -37,7 +38,7 @@ namespace asa::resources
 		inline cv::Mat gasmask;
 	}
 
-	inline namespace text
+	namespace text
 	{
 		bool InitText();
 		inline cv::Mat added;

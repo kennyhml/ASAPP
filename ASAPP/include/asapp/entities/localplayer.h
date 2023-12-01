@@ -26,6 +26,7 @@ namespace asa::entities
 		const bool IsInSpawnAnimation();
 		const bool IsInTravelScreen();
 		const bool CanAccessBed();
+		const bool CanUseDefaultTeleport();
 
 		const bool DepositIntoDedicatedStorage(int* depositedAmountOut);
 		const bool WithdrawFromDedicatedStorage(int* withdrawnAmountOut);

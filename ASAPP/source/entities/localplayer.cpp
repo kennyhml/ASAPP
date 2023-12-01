@@ -70,6 +70,11 @@ const bool LocalPlayer::LocalPlayer::CanAccessBed()
 	return interfaces::gHUD->CanFastTravel();
 }
 
+const bool LocalPlayer::LocalPlayer::CanUseDefaultTeleport()
+{
+	return interfaces::gHUD->CanDefaultTeleport();
+}
+
 const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut)
 {
 	do {

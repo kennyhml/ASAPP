@@ -37,7 +37,8 @@ bool asa::resources::Init()
 	}
 
 	std::cout << "[+] Initializing resources..." << std::endl;
-	if (!InitInterfaces() || !InitItems() || !InitText()) {
+	if (!interfaces::InitInterfaces() || !items::InitItems() ||
+		!text::InitText()) {
 		return false;
 	}
 
@@ -54,6 +55,7 @@ bool asa::resources::interfaces::InitInterfaces()
 	LOAD_RESOURCE(dir, cb_arrowdown);
 	LOAD_RESOURCE(dir, regions);
 	LOAD_RESOURCE(dir, lay_on);
+	LOAD_RESOURCE(dir, day);
 
 	return true;
 }

@@ -65,7 +65,7 @@ bool BaseInventory::IsReceivingRemoteInventory()
 bool BaseInventory::IsOpen()
 {
 	return window::MatchTemplate(
-		this->itemFilter.area, resources::cb_arrowdown, 0.9);
+		this->itemFilter.area, resources::interfaces::cb_arrowdown, 0.9);
 }
 
 bool BaseInventory::Has(items::Item* item, bool search)
