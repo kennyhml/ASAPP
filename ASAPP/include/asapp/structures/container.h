@@ -1,5 +1,6 @@
 #pragma once
-#include "asapp/interfaces/baseinventory.h"
+#include "../interfaces/baseinventory.h"
+#include "../interfaces/containerinfo.h"
 #include "interactablestructure.h"
 
 namespace asa::structures
@@ -7,18 +8,9 @@ namespace asa::structures
 	class Container : public InteractableStructure
 	{
 	public:
-		Container(std::string name,
-			interfaces::BaseInventory* associatedInventory = nullptr)
-			: inventory(associatedInventory),
-			  InteractableStructure(name,
-				  &settings::actionMappings::accessInventory,
-				  associatedInventory)
-		{
-			if (!this->inventory) {
-				this->inventory = new interfaces::BaseInventory(true);
-				this->_interface = inventory;
-			}
-		}
+		Container(std::string name, interfaces::BaseInventory* inv = nullptr);
+
+		interfaces::ContainerInfo info;
 		interfaces::BaseInventory* inventory;
 	};
 }

@@ -193,6 +193,7 @@
     <ClCompile Include="source\interfaces\travelmap.cpp" />
     <ClCompile Include="source\items\items.cpp" />
     <ClCompile Include="source\structures\cavelootcreate.cpp" />
+    <ClCompile Include="source\structures\container.cpp" />
     <ClCompile Include="source\structures\exceptions.cpp" />
     <ClCompile Include="source\util\util.cpp" />
     <ClInclude Include="include\asapp\core\config.h" />
