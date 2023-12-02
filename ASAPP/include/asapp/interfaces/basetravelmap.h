@@ -30,7 +30,7 @@ namespace asa::interfaces
 		BaseTravelMap();
 
 
-		virtual const bool IsOpen() const override;
+		virtual bool IsOpen() const override;
 		virtual bool CanConfirmTarget();
 		virtual bool HasResult();
 		virtual bool IsResultSelected(int index);

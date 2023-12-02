@@ -5,6 +5,6 @@ namespace asa::interfaces
 	class IInterface
 	{
 	public:
-		[[nodiscard]] virtual const bool IsOpen() const = 0;
+		[[nodiscard]] virtual bool IsOpen() const = 0;
 	};
 }

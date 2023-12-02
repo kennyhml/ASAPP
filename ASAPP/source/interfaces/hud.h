@@ -27,7 +27,7 @@ namespace asa::interfaces
 		window::Rect invOpenItemAddedOrRemovedArea{ 0, 765, 200, 315 };
 
 	public:
-		const bool IsOpen() const { return true; }
+		bool IsOpen() const { return true; }
 
 		[[nodiscard]] const bool IsMountOverweight() { return false; };
 		[[nodiscard]] const bool IsMountLow() { return false; };

@@ -87,7 +87,7 @@ void BaseInventory::ReceiveRemoteInventory(std::chrono::seconds timeout) const
 	}
 }
 
-const bool BaseInventory::IsOpen() const
+bool BaseInventory::IsOpen() const
 {
 	return window::MatchTemplate(
 		this->itemFilter.area, resources::interfaces::cb_arrowdown, 0.9);

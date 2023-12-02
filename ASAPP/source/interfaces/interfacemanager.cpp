@@ -1,6 +1,6 @@
 #include "asapp/interfaces/interfacemanager.h"
 
-const bool asa::interfaces::InterfaceManager::IsOpen() const
+bool asa::interfaces::InterfaceManager::IsOpen() const
 {
 	window::Color xColor(169, 246, 254);
 	cv::Mat masked = window::GetMask(this->closeButton.area, xColor, 25);

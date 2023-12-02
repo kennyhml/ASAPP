@@ -4,15 +4,19 @@
 
 namespace asa::interfaces
 {
-	class MainMenu : public IInterface
+	class MainMenu final : public IInterface
 	{
 	private:
-		components::Button esc{ 1749, 88, 46, 34 };
+		components::Button esc{ 1732, 87, 82, 34 };
 		components::Button accept{ 764, 710, 376, 42 };
+		components::Button joinLastSession{ 823, 924, 273, 51 };
 
 	public:
-		const bool IsOpen() const override;
-		const bool GotConnectionTimeout() const;
+		bool IsOpen() const override;
+		bool GotConnectionTimeout() const;
+
+		void Start() const;
+		void JoinLastSession();
 	};
 
 	inline MainMenu* gMainMenu = new MainMenu();

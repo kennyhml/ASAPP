@@ -18,7 +18,8 @@ namespace asa::resources
 		inline cv::Mat day;
 		inline cv::Mat esc;
 		inline cv::Mat accept;
-
+		inline cv::Mat back;
+		inline cv::Mat join_last_session;
 	}
 
 	namespace items

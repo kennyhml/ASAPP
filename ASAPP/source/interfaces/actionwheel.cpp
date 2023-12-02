@@ -2,7 +2,7 @@
 #include "../core/wrappers.h"
 #include "asapp/game/resources.h"
 
-const bool asa::interfaces::ActionWheel::IsOpen() const
+bool asa::interfaces::ActionWheel::IsOpen() const
 {
 	window::Color white(126, 216, 236);
 

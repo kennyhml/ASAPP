@@ -2,7 +2,7 @@
 #include "../core/wrappers.h"
 #include "asapp/game/resources.h"
 
-const bool asa::interfaces::SpawnMap::IsOpen() const
+bool asa::interfaces::SpawnMap::IsOpen() const
 {
 	return window::MatchTemplate(
 		this->regionsButton.area, resources::interfaces::regions);

@@ -69,7 +69,7 @@ namespace asa::interfaces
 		bool IsReceivingRemoteInventory() const;
 		void ReceiveRemoteInventory(std::chrono::seconds timeout) const;
 
-		virtual const bool IsOpen() const override;
+		virtual bool IsOpen() const override;
 		virtual bool Has(items::Item* item, bool search = false);
 		virtual bool CountStacks(
 			items::Item* item, int& stacksOut, bool search = false);

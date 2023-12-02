@@ -76,7 +76,7 @@ void asa::interfaces::BaseTravelMap::TravelSearchBar::Press() const
 }
 
 
-const bool asa::interfaces::BaseTravelMap::IsOpen() const
+bool asa::interfaces::BaseTravelMap::IsOpen() const
 {
 	return window::MatchTemplate(this->dayTime, resources::interfaces::day);
 }

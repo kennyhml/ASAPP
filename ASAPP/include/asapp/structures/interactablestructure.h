@@ -7,7 +7,7 @@ namespace asa::structures
 {
 	class InteractableStructure : public BaseStructure
 	{
-	private:
+	protected:
 		const settings::ActionMapping* interactKey;
 
 	public:

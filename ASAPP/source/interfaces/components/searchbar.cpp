@@ -32,7 +32,7 @@ void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 	}
 
 	SleepFor(std::chrono::milliseconds(50));
-	window::PostKeyPress("Esc");
+	window::PostKeyPress("enter");
 
 	this->isSearching = false;
 	this->lastSearchedTerm = term;

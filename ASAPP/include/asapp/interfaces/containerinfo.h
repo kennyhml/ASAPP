@@ -11,7 +11,7 @@ namespace asa::interfaces
 		window::Rect slotsBar{ 768, 548, 382, 6 };
 
 	public:
-		virtual const bool IsOpen() const { return true; }
+		virtual bool IsOpen() const { return true; }
 
 		virtual const int GetMaxHealth() { return 0; };
 		virtual const int GetCurrentHealth() { return 0; };

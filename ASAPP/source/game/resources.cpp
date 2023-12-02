@@ -58,8 +58,8 @@ bool asa::resources::interfaces::InitInterfaces()
 	LOAD_RESOURCE(dir, day);
 	LOAD_RESOURCE(dir, esc);
 	LOAD_RESOURCE(dir, accept);
-
-
+	LOAD_RESOURCE(dir, back);
+	LOAD_RESOURCE(dir, join_last_session);
 
 	return true;
 }
