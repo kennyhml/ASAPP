@@ -1,4 +1,5 @@
 #include "asapp/interfaces/actionwheel.h"
+#include "../core/wrappers.h"
 #include "asapp/game/resources.h"
 
 const bool asa::interfaces::ActionWheel::IsOpen() const
@@ -22,6 +23,6 @@ void asa::interfaces::ActionWheel::SelectLayOn() const
 
 	auto randPoint = matchLoc.value().GetRandLocation(5);
 	window::SetMousePos(this->area.x + randPoint.x, this->area.y + randPoint.y);
-	std::this_thread::sleep_for(std::chrono::milliseconds(400));
+	SleepFor(std::chrono::milliseconds(400));
 	controls::MousePress(controls::LEFT);
 }

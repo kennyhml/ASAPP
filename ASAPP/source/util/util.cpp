@@ -1,5 +1,6 @@
 #include "util.h"
 #define WIN32_LEAN_AND_MEAN
+#include "../core/wrappers.h"
 #include <Windows.h>
 #include <string>
 
@@ -15,7 +16,7 @@ bool util::Await(
 		if (elapsed_time >= timeout) {
 			return false;
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(5));
+		asa::SleepFor(std::chrono::milliseconds(5));
 	}
 	return true;
 }

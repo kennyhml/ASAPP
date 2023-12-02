@@ -1,12 +1,12 @@
 #pragma once
+#include "asapp/core/exceptions.h"
+#include "asapp/interfaces/mainmenu.h"
 #include <chrono>
 
 namespace asa
 {
+	inline std::chrono::system_clock::time_point lastCheck;
 
-	void Sleep(std::chrono::milliseconds duration)
-	{
-		return std::this_thread::sleep_for(duration);
-	}
-
+	void CheckState();
+	void SleepFor(std::chrono::milliseconds duration);
 }

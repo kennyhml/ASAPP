@@ -1,5 +1,6 @@
 #pragma once
 #include "baseentity.h"
+#include "dinoent.h"
 #include <stdexcept>
 
 namespace asa::entities::exceptions
@@ -8,11 +9,11 @@ namespace asa::entities::exceptions
 	{
 	private:
 		const BaseEntity* entity;
-		std::string message;
+		std::string info;
 
 	public:
 		EntityError(const BaseEntity*);
-		EntityError(const BaseEntity*, std::string message);
+		EntityError(const BaseEntity*, std::string info);
 
 		const char* what();
 	};
@@ -21,23 +22,17 @@ namespace asa::entities::exceptions
 	{
 	public:
 		EntityNotAccessed(const BaseEntity*);
-
-		const char* what();
 	};
 
 	class EntityNotClosed : public EntityError
 	{
 	public:
 		EntityNotClosed(const BaseEntity*);
-
-		const char* what();
 	};
 
 	class EntityNotMounted : public EntityError
 	{
 	public:
-		EntityNotMounted(const BaseEntity*);
-
-		const char* what();
+		EntityNotMounted(const DinoEnt*);
 	};
 }

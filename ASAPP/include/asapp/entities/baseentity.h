@@ -6,9 +6,13 @@ namespace asa::entities
 {
 	class BaseEntity
 	{
+	protected:
+		std::string name;
+
 	public:
-		BaseEntity(interfaces::BaseInventory* associatedInventory)
-			: inventory(associatedInventory)
+		BaseEntity(
+			std::string name, interfaces::BaseInventory* associatedInventory)
+			: name(name), inventory(associatedInventory)
 		{
 			if (!inventory) {
 				this->inventory = new interfaces::BaseInventory(true);
@@ -18,5 +22,7 @@ namespace asa::entities
 
 		interfaces::BaseInventory* inventory{ nullptr };
 		interfaces::ActionWheel actionWheel;
+
+		std::string GetName() const { return this->name; }
 	};
 }

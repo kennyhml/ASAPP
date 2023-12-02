@@ -1,4 +1,5 @@
 #include "asapp/interfaces/travelmap.h"
+#include "../core/wrappers.h"
 #include "../util/util.h"
 #include "asapp/interfaces/exceptions.h"
 
@@ -22,19 +23,19 @@ void asa::interfaces::TravelMap::GoTo(const std::string& destination)
 {
 	std::cout << "[+] Traveling to '" << destination << "'..." << std::endl;
 	this->searchbar.SearchFor(destination);
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	SleepFor(std::chrono::milliseconds(300));
 
 	this->SelectResult();
 
 	std::cout << "\t[-] Waiting for fast travel to go off cooldown...";
 	while (!this->CanConfirmTarget()) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		SleepFor(std::chrono::milliseconds(50));
 	}
 	std::cout << " Done." << std::endl;
 
 	while (this->IsOpen()) {
 		this->confirmButton.Press();
-		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+		SleepFor(std::chrono::milliseconds(200));
 	}
 	std::cout << "\t[-] Traveled to '" << destination << "'." << std::endl;
 

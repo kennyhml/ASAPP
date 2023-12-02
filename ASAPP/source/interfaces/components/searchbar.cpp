@@ -1,4 +1,5 @@
 #include "asapp/interfaces/components/searchbar.h"
+#include "../../core/wrappers.h"
 #include "../../util/util.h"
 #include "asapp/game/controls.h"
 #include "asapp/game/globals.h"
@@ -14,7 +15,7 @@ void asa::interfaces::components::SearchBar::Press() const
 void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 {
 	this->Press();
-	std::this_thread::sleep_for(std::chrono::milliseconds(200));
+	SleepFor(std::chrono::milliseconds(200));
 	this->isSearching = true;
 
 	if (!globals::useWindowInput) {
@@ -30,7 +31,7 @@ void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 		}
 	}
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	SleepFor(std::chrono::milliseconds(50));
 	window::PostKeyPress("Esc");
 
 	this->isSearching = false;
@@ -50,11 +51,11 @@ void asa::interfaces::components::SearchBar::DeleteSearch()
 	}
 	else {
 		controls::KeyCombinationPress("Ctrl", "a");
-		std::this_thread::sleep_for(std::chrono::milliseconds(40));
+		SleepFor(std::chrono::milliseconds(40));
 		controls::KeyPress("Delete");
 	}
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	SleepFor(std::chrono::milliseconds(50));
 	window::Press("Esc");
 
 	this->SetTextCleared();

@@ -1,4 +1,5 @@
 #include "asapp/game/window.h"
+#include "../core/wrappers.h"
 #include "../util/util.h"
 #include "asapp/core/config.h"
 #include "asapp/game/globals.h"
@@ -55,6 +56,8 @@ std::optional<window::Rect> window::LocateTemplate(
 std::optional<window::Rect> window::LocateTemplate(
 	const cv::Mat& source, const cv::Mat& templ, float threshold)
 {
+	CheckState();
+
 	cv::Mat result;
 	cv::matchTemplate(source, templ, result, cv::TM_CCOEFF_NORMED);
 
@@ -267,7 +270,7 @@ void window::ClickAt(
 
 	if (!globals::useWindowInput) {
 		SetMousePos(position);
-		std::this_thread::sleep_for(delay);
+		SleepFor(delay);
 		controls::MousePress(button);
 	}
 	else {
@@ -341,13 +344,13 @@ void window::PostPress(
 void window::PostKeyDown(const std::string& key, ms delay)
 {
 	PostMessageW(hWnd, WM_KEYDOWN, controls::GetVirtualKeyCode(key), NULL);
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void window::PostKeyUp(const std::string& key, ms delay)
 {
 	PostMessageW(hWnd, WM_KEYUP, controls::GetVirtualKeyCode(key), NULL);
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void window::PostKeyPress(const std::string& key, bool catchCursor, ms delay)
@@ -387,7 +390,7 @@ void window::PostMouseDown(controls::MouseButton button, ms delay)
 		PostMessageW(hWnd, WM_XBUTTONDOWN, MK_XBUTTON2, NULL);
 		break;
 	}
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void window::PostMouseUp(controls::MouseButton button, ms delay)
@@ -410,7 +413,7 @@ void window::PostMouseUp(controls::MouseButton button, ms delay)
 		PostMessageW(hWnd, WM_XBUTTONUP, MK_XBUTTON2, NULL);
 		break;
 	}
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void window::PostMousePress(
@@ -434,7 +437,7 @@ void window::PostMousePressAt(
 {
 	HWND previousFocus = GetForegroundWindow();
 	SetForegroundButHidden();
-	std::this_thread::sleep_for(ms(50));
+	SleepFor(ms(50));
 
 	LPARAM lParam = MAKELPARAM(position.x, position.y);
 	if (button == controls::MouseButton::LEFT) {

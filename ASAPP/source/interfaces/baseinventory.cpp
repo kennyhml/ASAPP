@@ -1,4 +1,5 @@
 #include "asapp/interfaces/baseinventory.h"
+#include "../core/wrappers.h"
 #include "../util/util.h"
 #include "asapp/game/controls.h"
 #include "asapp/game/resources.h"
@@ -202,7 +203,7 @@ void BaseInventory::TakeSlot(Slot slot)
 {
 	this->SelectSlot(slot);
 	window::Press(settings::transferItem, false, std::chrono::milliseconds(15));
-	std::this_thread::sleep_for(std::chrono::milliseconds(30));
+	SleepFor(std::chrono::milliseconds(30));
 }
 
 void BaseInventory::TakeSlot(int index) { TakeSlot(this->slots[index]); }
@@ -227,7 +228,7 @@ void BaseInventory::SelectSlot(Slot slot)
 {
 	window::Point location = slot.GetRandLocation(5);
 	window::SetMousePos(location);
-	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	SleepFor(std::chrono::milliseconds(50));
 }
 
 void BaseInventory::SelectSlot(int index)
@@ -247,7 +248,7 @@ void BaseInventory::TransferAll(items::Item* item, BaseInventory* tar)
 {
 	if (item) {
 		this->searchBar.SearchFor(item->name);
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		SleepFor(std::chrono::milliseconds(50));
 	}
 
 	this->transferAllButton.Press();
@@ -260,7 +261,7 @@ void BaseInventory::TransferAll(const std::string& term, BaseInventory* tar)
 {
 
 	this->searchBar.SearchFor(term);
-	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	SleepFor(std::chrono::milliseconds(50));
 
 	return this->TransferAll(nullptr, tar);
 }
@@ -270,7 +271,7 @@ void BaseInventory::Transfer(
 {
 	if (search) {
 		this->searchBar.SearchFor(item->name);
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		SleepFor(std::chrono::milliseconds(50));
 	}
 
 	int i = 0;

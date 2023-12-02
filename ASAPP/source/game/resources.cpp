@@ -57,6 +57,8 @@ bool asa::resources::interfaces::InitInterfaces()
 	LOAD_RESOURCE(dir, lay_on);
 	LOAD_RESOURCE(dir, day);
 	LOAD_RESOURCE(dir, esc);
+	LOAD_RESOURCE(dir, accept);
+
 
 
 	return true;

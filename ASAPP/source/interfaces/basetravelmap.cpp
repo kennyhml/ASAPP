@@ -1,4 +1,5 @@
 #include "asapp/interfaces/basetravelmap.h"
+#include "../core/wrappers.h"
 #include "../util/util.h"
 #include "asapp/game/globals.h"
 #include "asapp/game/resources.h"
@@ -24,7 +25,7 @@ void asa::interfaces::BaseTravelMap::TravelSearchBar::SearchFor(
 	std::string term)
 {
 	this->Press();
-	std::this_thread::sleep_for(std::chrono::milliseconds(200));
+	SleepFor(std::chrono::milliseconds(200));
 	this->isSearching = true;
 
 	if (!globals::useWindowInput) {
@@ -45,7 +46,7 @@ void asa::interfaces::BaseTravelMap::TravelSearchBar::SearchFor(
 		return this->SearchFor(term);
 	}
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(50));
+	SleepFor(std::chrono::milliseconds(50));
 	window::PostKeyPress("Esc");
 
 	this->isSearching = false;

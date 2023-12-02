@@ -1,4 +1,5 @@
 #include "asapp/entities/localplayer.h"
+#include "../core/wrappers.h"
 #include "../interfaces/hud.h"
 #include "../util/util.h"
 #include "asapp/entities/exceptions.h"
@@ -97,16 +98,16 @@ void LocalPlayer::Suicide()
 
 	this->inventory->Open();
 	controls::MousePress(controls::LEFT);
-	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	SleepFor(std::chrono::milliseconds(100));
 	this->inventory->SelectSlot(0);
 
 	std::cout << "\t[-] Waiting for implant cooldown... ";
-	std::this_thread::sleep_for(std::chrono::seconds(6));
+	SleepFor(std::chrono::seconds(6));
 	std::cout << "Done." << std::endl;
 
 	do {
 		window::Press(settings::use);
-		std::this_thread::sleep_for(std::chrono::seconds(3));
+		SleepFor(std::chrono::seconds(3));
 
 	} while (this->IsAlive());
 	std::cout << "\t[-] Suicided successfully." << std::endl;
@@ -175,9 +176,9 @@ void LocalPlayer::FastTravelTo(const structures::SimpleBed& bed)
 	}
 	this->Prone();
 
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	SleepFor(std::chrono::milliseconds(300));
 	this->Access(bed);
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	SleepFor(std::chrono::milliseconds(300));
 
 	bed.map->GoTo(bed.name);
 	this->PassTravelScreen();
@@ -188,7 +189,7 @@ void LocalPlayer::TeleportTo(const structures::Teleporter& tp, bool isDefault)
 	if (!isDefault) {
 		this->LookAllTheWayDown();
 		this->Access(tp);
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		SleepFor(std::chrono::milliseconds(500));
 		tp.map->GoTo(tp.name);
 		util::Await([]() { return !interfaces::gHUD->CanDefaultTeleport(); },
 			std::chrono::seconds(5));
@@ -212,9 +213,9 @@ void LocalPlayer::LayOn(const structures::SimpleBed& bed)
 				std::chrono::seconds(3))) {
 			window::Up(settings::use);
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(200));
+		SleepFor(std::chrono::milliseconds(200));
 	}
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	SleepFor(std::chrono::seconds(1));
 	bed.actionWheel.SelectLayOn();
 	window::Up(settings::use);
 }
@@ -222,30 +223,30 @@ void LocalPlayer::LayOn(const structures::SimpleBed& bed)
 void LocalPlayer::GetOffBed()
 {
 	window::Press(settings::use);
-	std::this_thread::sleep_for(std::chrono::seconds(3));
+	SleepFor(std::chrono::seconds(3));
 }
 
 void LocalPlayer::TurnRight(int degrees, std::chrono::milliseconds delay)
 {
 	controls::TurnDegrees(degrees, 0);
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 void LocalPlayer::TurnLeft(int degrees, std::chrono::milliseconds delay)
 {
 	controls::TurnDegrees(-degrees, 0);
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void LocalPlayer::TurnUp(int degrees, std::chrono::milliseconds delay)
 {
 	controls::TurnDegrees(0, -degrees);
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void LocalPlayer::TurnDown(int degrees, std::chrono::milliseconds delay)
 {
 	controls::TurnDegrees(0, degrees);
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void LocalPlayer::Equip(
@@ -254,7 +255,7 @@ void LocalPlayer::Equip(
 	bool wasInventoryOpen = this->inventory->IsOpen();
 	if (!wasInventoryOpen) {
 		this->inventory->Open();
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		SleepFor(std::chrono::milliseconds(500));
 	}
 
 
@@ -269,7 +270,7 @@ void LocalPlayer::Unequip(interfaces::PlayerInfo::Slot targetSlot)
 	bool wasInventoryOpen = this->inventory->IsOpen();
 	if (!wasInventoryOpen) {
 		this->inventory->Open();
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		SleepFor(std::chrono::milliseconds(500));
 	}
 	this->inventory->info.Unequip(targetSlot);
 	if (!wasInventoryOpen) {
@@ -291,7 +292,7 @@ void LocalPlayer::PassTravelScreen(bool in, bool out)
 		}
 	}
 
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	SleepFor(std::chrono::seconds(1));
 }
 
 void LocalPlayer::PassTeleportScreen()
@@ -319,7 +320,7 @@ void LocalPlayer::LookAllTheWayDown()
 	for (int i = 0; i < 10; i++) {
 		this->TurnDown(18, std::chrono::milliseconds(10));
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	SleepFor(std::chrono::milliseconds(300));
 }
 
 void LocalPlayer::LookAllTheWayUp()
@@ -327,5 +328,5 @@ void LocalPlayer::LookAllTheWayUp()
 	for (int i = 0; i < 10; i++) {
 		this->TurnUp(18, std::chrono::milliseconds(10));
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(300));
+	SleepFor(std::chrono::milliseconds(300));
 }

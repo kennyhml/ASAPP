@@ -13,7 +13,8 @@ namespace asa::entities
 	{
 	public:
 		LocalPlayer(interfaces::LocalInventory* associatedInventory)
-			: inventory(associatedInventory), PlayerEnt(associatedInventory){};
+			: inventory(associatedInventory),
+			  PlayerEnt("You", associatedInventory){};
 
 		interfaces::LocalInventory* inventory;
 

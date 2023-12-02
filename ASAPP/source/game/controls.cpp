@@ -1,4 +1,5 @@
 #include "asapp/game/controls.h"
+#include "../core/wrappers.h"
 #include <algorithm>
 
 int constexpr asa::controls::GetMouseFlag(MouseButton button, bool down)
@@ -109,7 +110,7 @@ void asa::controls::MouseDown(MouseButton button, ms delay)
 	}
 
 	SendInput(1, &input, sizeof(INPUT));
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void asa::controls::MouseUp(MouseButton button, ms delay)
@@ -127,22 +128,22 @@ void asa::controls::MouseUp(MouseButton button, ms delay)
 	}
 
 	SendInput(1, &input, sizeof(INPUT));
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void asa::controls::MousePress(MouseButton button, ms delay)
 {
 	MouseDown(button);
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 	MouseUp(button);
 }
 
 void asa::controls::MouseCombinationPress(MouseButton button, std::string key)
 {
 	KeyDown(key);
-	std::this_thread::sleep_for(ms(20));
+	SleepFor(ms(20));
 	MousePress(button);
-	std::this_thread::sleep_for(ms(20));
+	SleepFor(ms(20));
 	KeyUp(key);
 }
 
@@ -194,7 +195,7 @@ void asa::controls::KeyDown(std::string key, ms delay)
 	}
 
 	SendInput(1, &input, sizeof(INPUT));
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void asa::controls::KeyUp(std::string key, ms delay)
@@ -214,13 +215,13 @@ void asa::controls::KeyUp(std::string key, ms delay)
 	}
 
 	SendInput(1, &input, sizeof(INPUT));
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 }
 
 void asa::controls::KeyPress(std::string key, ms delay)
 {
 	KeyDown(key);
-	std::this_thread::sleep_for(delay);
+	SleepFor(delay);
 	KeyUp(key);
 }
 
