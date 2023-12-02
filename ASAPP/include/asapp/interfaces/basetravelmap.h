@@ -27,13 +27,8 @@ namespace asa::interfaces
 		};
 
 	public:
-		BaseTravelMap()
-		{
-			for (int i = 0; i < results.max_size(); i++) {
-				results[i] = components::Button(
-					89, 195 + (i * 55), 459, 55, 10);
-			}
-		}
+		BaseTravelMap();
+
 
 		virtual const bool IsOpen() const override;
 		virtual bool CanConfirmTarget();

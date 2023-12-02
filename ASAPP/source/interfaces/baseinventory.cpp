@@ -163,7 +163,6 @@ void BaseInventory::InitSlots(const window::Point& origin)
 	}
 }
 
-
 void BaseInventory::Popcorn(items::Item* item)
 {
 	int tmp{ 0 };

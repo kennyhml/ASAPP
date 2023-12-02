@@ -435,9 +435,10 @@ void window::PostMousePress(
 void window::PostMousePressAt(
 	const Point& position, controls::MouseButton button)
 {
-	HWND previousFocus = GetForegroundWindow();
-	SetForegroundButHidden();
-	SleepFor(ms(50));
+	if (GetForegroundWindow() != hWnd) {
+		SetForeground();
+		SleepFor(std::chrono::milliseconds(100));
+	}
 
 	LPARAM lParam = MAKELPARAM(position.x, position.y);
 	if (button == controls::MouseButton::LEFT) {
@@ -453,7 +454,6 @@ void window::PostMousePressAt(
 	else {
 		PostMessageW(hWnd, WM_RBUTTONUP, MK_RBUTTON, lParam);
 	}
-	SetForegroundWindow(previousFocus);
 }
 
 void window::ResetCursor(POINT& previousPosition)

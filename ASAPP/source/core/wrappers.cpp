@@ -22,5 +22,5 @@ void asa::CheckState()
 void asa::SleepFor(std::chrono::milliseconds duration)
 {
 	CheckState();
-	return SleepFor(duration);
+	return std::this_thread::sleep_for(duration);
 }

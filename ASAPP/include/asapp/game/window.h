@@ -76,7 +76,7 @@ namespace asa::window
 	cv::Mat GetMask(const Rect& region, const Color& color, float variance);
 
 	void GetHandle(int timeout = 60, bool verbose = 0);
-	cv::Mat Screenshot(const Rect& region = Rect());
+	cv::Mat Screenshot(const Rect& region = Rect(0, 0, 0, 0));
 
 	void SetTesseractImage(const cv::Mat& image);
 

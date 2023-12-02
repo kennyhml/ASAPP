@@ -3,6 +3,18 @@
 #include "../util/util.h"
 #include "asapp/game/globals.h"
 #include "asapp/game/resources.h"
+#include <algorithm>
+
+asa::interfaces::BaseTravelMap::BaseTravelMap()
+	: results([this]() {
+		  int i = 0;
+		  std::generate(results.begin(), results.end(), [&i]() mutable {
+			  return components::Button(89, 195 + (i++ * 55), 459, 55, 10);
+		  });
+		  return results;
+	  }())
+{
+}
 
 const bool asa::interfaces::BaseTravelMap::TravelSearchBar::HasTextEntered()
 {
@@ -58,12 +70,11 @@ void asa::interfaces::BaseTravelMap::TravelSearchBar::Press() const
 	window::Point loc = this->area.GetRandLocation(8);
 
 	do {
-		window::ClickAt(loc, controls::LEFT);
-
-
+		window::PostMousePressAt(loc, controls::LEFT);
 	} while (!util::Await([this]() { return this->HasBlinkingCursor(); },
 		std::chrono::milliseconds(500)));
 }
+
 
 const bool asa::interfaces::BaseTravelMap::IsOpen() const
 {

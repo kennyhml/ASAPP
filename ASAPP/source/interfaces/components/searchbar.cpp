@@ -8,7 +8,7 @@ void asa::interfaces::components::SearchBar::Press() const
 {
 	window::Point loc = this->area.GetRandLocation(8);
 	for (int i = 0; i < 2; i++) {
-		window::ClickAt(loc, controls::LEFT);
+		window::PostMousePressAt(loc, controls::LEFT);
 	}
 }
 

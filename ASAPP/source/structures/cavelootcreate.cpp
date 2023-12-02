@@ -35,7 +35,7 @@ const CaveLootCrate::Quality CaveLootCrate::GetCrateQuality()
 std::optional<asa::window::Rect> CaveLootCrate::GetInfoArea()
 {
 	auto matchLoc = window::LocateTemplate(
-		window::Rect(), resources::text::lootcrate);
+		window::Rect(0, 0, 0, 0), resources::text::lootcrate);
 
 	if (!matchLoc.has_value()) {
 		return std::nullopt;
