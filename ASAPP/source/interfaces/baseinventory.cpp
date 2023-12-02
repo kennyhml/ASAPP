@@ -7,6 +7,20 @@
 
 using namespace asa::interfaces;
 
+
+BaseInventory::BaseInventory(bool r)
+	: area(r ? 1179 : 149, 94, 591, 827), isRemoteInventory(r),
+	  itemFilter(r ? 1205 : 175, 841, 552, 42),
+	  searchBar(r ? 1207 : 177, 176, 142, 44),
+	  transferAllButton(r ? 1388 : 366, 176),
+	  dropAllButton(r ? 1436 : 413, 176), newFolderButton(r ? 1531 : 509, 176),
+	  autoStackButton(r ? 1579 : 557, 176),
+	  folderViewButton(r ? 1652 : 629, 176),
+	  itemArea(r ? 1205 : 178, 239, 552, 588)
+{
+	this->InitSlots({ r ? 1205 : 178, 239 });
+};
+
 [[nodiscard]] bool BaseInventory::ManagementButton::IsToggled() const
 {
 	window::Color toggledColor(128, 231, 255);
@@ -136,11 +150,6 @@ const BaseInventory::Slot* BaseInventory::FindItem(
 	return nullptr;
 }
 asa::window::Rect BaseInventory::GetArea() const { return this->area; }
-
-void BaseInventory::SetArea(const window::Point& origin)
-{
-	this->area = { origin.x, origin.y, 600, 832 };
-}
 
 void BaseInventory::InitSlots(const window::Point& origin)
 {

@@ -16,7 +16,6 @@ namespace asa::interfaces
 	protected:
 		struct ManagementButton : components::Button
 		{
-			ManagementButton() : Button(0, 0, 0, 0){};
 			ManagementButton(int x, int y) : Button(x, y, 45, 45){};
 
 			[[nodiscard]] bool IsToggled() const;
@@ -33,8 +32,7 @@ namespace asa::interfaces
 
 		struct Slot : window::Rect
 		{
-
-			Slot() : Rect{ 0, 0, 86, 87 } {};
+			Slot() : Slot(0, 0){};
 			Slot(int x, int y) : Rect{ x, y, 86, 87 } {};
 
 			[[nodiscard]] bool HasItem() const;
@@ -47,27 +45,12 @@ namespace asa::interfaces
 		ManagementButton autoStackButton;
 		ManagementButton folderViewButton;
 
-		bool isRemoteInventory{ false };
+		bool isRemoteInventory;
 		window::Rect area;
 		window::Rect recvRemoteInventoryArea{ 1340, 511, 295, 34 };
 
 	public:
-		BaseInventory(bool isRemote) : isRemoteInventory(isRemote)
-		{
-			using Point = window::Point;
-			Point org = isRemote ? Point(1176, 93) : Point(149, 93);
-
-			this->SetArea(org);
-			this->itemFilter = { org.x + 27, org.y + 750, 552, 42 };
-			this->searchBar = { org.x + 29, org.y + 84, 172, 44 };
-			this->transferAllButton = ManagementButton(org.x + 218, org.y + 84);
-			this->dropAllButton = ManagementButton(org.x + 265, org.y + 84);
-			this->newFolderButton = ManagementButton(org.x + 361, org.y + 84);
-			this->autoStackButton = ManagementButton(org.x + 408, org.y + 84);
-			this->folderViewButton = ManagementButton(org.x + 481, org.y + 84);
-			this->itemArea = { org.x + 28, org.y + 145, 563, 600 };
-			this->InitSlots(org);
-		};
+		BaseInventory(bool isRemote);
 
 		enum Tab
 		{
@@ -121,7 +104,6 @@ namespace asa::interfaces
 		void ToggleFolderView();
 
 	private:
-		void SetArea(const window::Point& origin);
 		void InitSlots(const window::Point& origin);
 	};
 

@@ -9,7 +9,6 @@ namespace asa::interfaces::components
 		inline static std::chrono::system_clock::time_point lastButtonPress =
 			std::chrono::system_clock::now();
 
-		Button() : Button(0, 0, 0, 0){};
 		Button(window::Rect area, int padding = 2)
 			: borderPadding(padding), IInterfaceComponent(area){};
 
