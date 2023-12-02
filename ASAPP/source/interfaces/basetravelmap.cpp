@@ -47,7 +47,6 @@ void asa::interfaces::BaseTravelMap::TravelSearchBar::SearchFor(
 	}
 
 	SleepFor(std::chrono::milliseconds(50));
-	window::PostKeyPress("Esc");
 
 	this->isSearching = false;
 	this->lastSearchedTerm = term;
