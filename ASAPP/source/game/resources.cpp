@@ -1,5 +1,5 @@
 #include "asapp/game/resources.h"
-#include "asapp/config.h"
+#include "asapp/core/config.h"
 #include <iostream>
 
 #define LOAD_RESOURCE(dir, name)                                               \

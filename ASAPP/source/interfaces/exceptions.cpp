@@ -5,12 +5,12 @@
 
 
 asa::interfaces::exceptions::InterfaceError::InterfaceError(
-	IInterface* _interface, std::string message)
+	const IInterface* _interface, std::string message)
 	: message(std::format(
 		  "Interface Error at {}: {}", util::GetName(*_interface), message)){};
 
 asa::interfaces::exceptions::InterfaceError::InterfaceError(
-	IInterface* _interface)
+	const IInterface* _interface)
 	: message(
 		  std::format("Interface Error at {}", util::GetName(*_interface))){};
 

@@ -1,5 +1,5 @@
 #include "asapp/game/settings.h"
-#include "asapp/config.h"
+#include "asapp/core/config.h"
 #include "asapp/game/globals.h"
 #include <format>
 #include <fstream>

@@ -165,14 +165,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\config.cpp" />
+    <ClCompile Include="source\core\config.cpp" />
+    <ClCompile Include="source\core\exceptions.cpp" />
+    <ClCompile Include="source\core\wrappers.cpp" />
     <ClCompile Include="source\entities\localplayer.cpp" />
     <ClCompile Include="source\entities\dinoent.cpp" />
     <ClCompile Include="source\game\controls.cpp" />
     <ClCompile Include="source\game\resources.cpp" />
     <ClCompile Include="source\game\settings.cpp" />
     <ClCompile Include="source\game\window.cpp" />
-    <ClCompile Include="source\init.cpp" />
+    <ClCompile Include="source\core\init.cpp" />
     <ClCompile Include="source\interfaces\actionwheel.cpp" />
     <ClCompile Include="source\interfaces\basetravelmap.cpp" />
     <ClCompile Include="source\interfaces\components\button.cpp" />
@@ -190,19 +192,20 @@
     <ClCompile Include="source\structures\cavelootcreate.cpp" />
     <ClCompile Include="source\structures\exceptions.cpp" />
     <ClCompile Include="source\util\util.cpp" />
-    <ClInclude Include="include\asapp\config.h" />
+    <ClInclude Include="include\asapp\core\config.h" />
     <ClInclude Include="include\asapp\entities\dinoent.h" />
     <ClInclude Include="include\asapp\entities\baseentity.h" />
     <ClInclude Include="include\asapp\entities\entities.h" />
     <ClInclude Include="include\asapp\entities\exceptions.h" />
     <ClInclude Include="include\asapp\entities\localplayer.h" />
     <ClInclude Include="include\asapp\entities\playerent.h" />
+    <ClInclude Include="include\asapp\core\exceptions.h" />
     <ClInclude Include="include\asapp\game\controls.h" />
     <ClInclude Include="include\asapp\game\globals.h" />
     <ClInclude Include="include\asapp\game\resources.h" />
     <ClInclude Include="include\asapp\game\window.h" />
     <ClInclude Include="include\asapp\game\settings.h" />
-    <ClInclude Include="include\asapp\init.h" />
+    <ClInclude Include="include\asapp\core\init.h" />
     <ClInclude Include="include\asapp\interfaces\actionwheel.h" />
     <ClInclude Include="include\asapp\interfaces\baseinfo.h" />
     <ClInclude Include="include\asapp\interfaces\basetravelmap.h" />
@@ -216,6 +219,7 @@
     <ClInclude Include="include\asapp\structures\exceptions.h" />
     <ClInclude Include="include\asapp\structures\simplebed.h" />
     <ClInclude Include="include\asapp\structures\teleporter.h" />
+    <ClInclude Include="source\core\wrappers.h" />
     <ClInclude Include="source\interfaces\hud.h" />
     <ClInclude Include="include\asapp\interfaces\interfaces.h" />
     <ClInclude Include="include\asapp\interfaces\localinventory.h" />

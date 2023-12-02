@@ -1,6 +1,6 @@
 #include "asapp/game/window.h"
 #include "../util/util.h"
-#include "asapp/config.h"
+#include "asapp/core/config.h"
 #include "asapp/game/globals.h"
 #include <chrono>
 #include <fstream>

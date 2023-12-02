@@ -1,4 +1,4 @@
-#include "asapp/init.h"
+#include "asapp/core/init.h"
 #include "asapp/game/resources.h"
 #include "asapp/game/settings.h"
 #include "asapp/game/window.h"

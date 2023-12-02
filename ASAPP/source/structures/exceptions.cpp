@@ -3,12 +3,12 @@
 #include <format>
 
 asa::structures::exceptions::StructureError::StructureError(
-	BaseStructure* structure, std::string message)
+	const BaseStructure* structure, std::string message)
 	: message(std::format(
 		  "Structure Error at {}: {}", util::GetName(*structure), message)){};
 
 asa::structures::exceptions::StructureError::StructureError(
-	BaseStructure* structure)
+	const BaseStructure* structure)
 	: message(
 		  std::format("Structure Error at {}", util::GetName(*structure))){};
 

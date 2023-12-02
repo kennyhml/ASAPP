@@ -10,7 +10,7 @@ const bool asa::interfaces::ActionWheel::IsOpen() const
 }
 
 
-void asa::interfaces::ActionWheel::SelectLayOn()
+void asa::interfaces::ActionWheel::SelectLayOn() const
 {
 	auto matchLoc = window::LocateTemplate(
 		this->area, resources::interfaces::lay_on, 0.9);
