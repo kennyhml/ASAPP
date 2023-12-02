@@ -188,6 +188,7 @@
     <ClCompile Include="source\interfaces\mainmenu.cpp" />
     <ClCompile Include="source\interfaces\playerinfo.cpp" />
     <ClCompile Include="source\interfaces\spawnmap.cpp" />
+    <ClCompile Include="source\interfaces\structureinfo.cpp" />
     <ClCompile Include="source\interfaces\teleportmap.cpp" />
     <ClCompile Include="source\interfaces\travelmap.cpp" />
     <ClCompile Include="source\items\items.cpp" />
@@ -233,7 +234,7 @@
     <ClInclude Include="include\asapp\interfaces\playerinfo.h" />
     <ClInclude Include="include\asapp\interfaces\serverselect.h" />
     <ClInclude Include="include\asapp\interfaces\spawnmap.h" />
-    <ClInclude Include="include\asapp\interfaces\structureinfo.h" />
+    <ClInclude Include="include\asapp\interfaces\containerinfo.h" />
     <ClInclude Include="include\asapp\interfaces\teleportmap.h" />
     <ClInclude Include="include\asapp\interfaces\trackingtab.h" />
     <ClInclude Include="include\asapp\interfaces\travelmap.h" />

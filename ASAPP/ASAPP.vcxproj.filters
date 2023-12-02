@@ -129,7 +129,7 @@
     <ClInclude Include="include\asapp\interfaces\dinoinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\asapp\interfaces\structureinfo.h">
+    <ClInclude Include="include\asapp\interfaces\containerinfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\asapp\interfaces\baseinfo.h">
@@ -277,6 +277,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="source\entities\exceptions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\interfaces\structureinfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
