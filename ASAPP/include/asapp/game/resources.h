@@ -16,6 +16,7 @@ namespace asa::resources
 		inline cv::Mat regions;
 		inline cv::Mat lay_on;
 		inline cv::Mat day;
+		inline cv::Mat esc;
 
 	}
 
