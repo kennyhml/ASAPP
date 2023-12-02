@@ -1,6 +1,7 @@
 #include "asapp/entities/localplayer.h"
 #include "../interfaces/hud.h"
 #include "../util/util.h"
+#include "asapp/entities/exceptions.h"
 #include "asapp/game/settings.h"
 #include "asapp/game/window.h"
 #include "asapp/structures/exceptions.h"
@@ -133,30 +134,21 @@ void LocalPlayer::Access(const entities::BaseEntity& ent)
 	do {
 		window::Press(settings::accessInventory, true);
 		if (util::Timedout(start, std::chrono::seconds(30))) {
-			throw std::runtime_error("Failed to access dino");
+			throw exceptions::EntityNotAccessed(&ent);
 		}
 	} while (!util::Await(
 		[ent]() { return ent.inventory->IsOpen(); }, std::chrono::seconds(5)));
 
-	if (!util::Await(
-			[ent]() { return !ent.inventory->IsReceivingRemoteInventory(); },
-			std::chrono::seconds(30))) {
-		throw std::runtime_error("Failed to receive remote inventory");
-	}
+	ent.inventory->ReceiveRemoteInventory(std::chrono::seconds(30));
 }
 
 void LocalPlayer::Access(const structures::Container& container)
 {
+	// Accessing the inventory is the same as accessing the interface of
+	// any interactable structure such as teleporters, beds etc.
+	// just that we have to wait to receive the remote inventory afterwards.
 	this->Access(static_cast<structures::InteractableStructure>(container));
-
-	if (!util::Await(
-			[container]() {
-				return !container.inventory->IsReceivingRemoteInventory();
-			},
-			std::chrono::seconds(30))) {
-		throw structures::exceptions::StructureError(
-			&container, "Failed to receive remote inventory");
-	}
+	container.inventory->ReceiveRemoteInventory(std::chrono::seconds(30));
 }
 
 void LocalPlayer::Access(const structures::InteractableStructure& structure)
@@ -164,6 +156,7 @@ void LocalPlayer::Access(const structures::InteractableStructure& structure)
 	if (structure._interface->IsOpen()) {
 		return;
 	}
+
 	auto start = std::chrono::system_clock::now();
 	do {
 		window::Press(structure.GetInteractKey(), true);

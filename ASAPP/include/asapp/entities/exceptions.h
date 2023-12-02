@@ -7,12 +7,12 @@ namespace asa::entities::exceptions
 	class EntityError : public std::exception
 	{
 	private:
-		BaseEntity* entity;
+		const BaseEntity* entity;
 		std::string message;
 
 	public:
-		EntityError(BaseEntity*);
-		EntityError(BaseEntity*, std::string message);
+		EntityError(const BaseEntity*);
+		EntityError(const BaseEntity*, std::string message);
 
 		const char* what();
 	};
@@ -20,7 +20,7 @@ namespace asa::entities::exceptions
 	class EntityNotAccessed : public EntityError
 	{
 	public:
-		EntityNotAccessed(BaseEntity*);
+		EntityNotAccessed(const BaseEntity*);
 
 		const char* what();
 	};
@@ -28,7 +28,7 @@ namespace asa::entities::exceptions
 	class EntityNotClosed : public EntityError
 	{
 	public:
-		EntityNotClosed(BaseEntity*);
+		EntityNotClosed(const BaseEntity*);
 
 		const char* what();
 	};
@@ -36,7 +36,7 @@ namespace asa::entities::exceptions
 	class EntityNotMounted : public EntityError
 	{
 	public:
-		EntityNotMounted(BaseEntity*);
+		EntityNotMounted(const BaseEntity*);
 
 		const char* what();
 	};

@@ -51,7 +51,7 @@ using namespace asa::interfaces;
 	return window::MatchTemplate(*this, item->icon);
 }
 
-bool BaseInventory::IsReceivingRemoteInventory()
+bool BaseInventory::IsReceivingRemoteInventory() const
 {
 	if (!this->isRemoteInventory) {
 		return false;
@@ -60,6 +60,16 @@ bool BaseInventory::IsReceivingRemoteInventory()
 	window::Color textColor(191, 243, 255);
 	auto mask = window::GetMask(this->recvRemoteInventoryArea, textColor, 25);
 	return cv::countNonZero(mask) > 100;
+}
+
+void BaseInventory::ReceiveRemoteInventory(std::chrono::seconds timeout) const
+{
+	auto start = std::chrono::system_clock::now();
+
+	if (!util::Await([this]() { return !this->IsReceivingRemoteInventory(); },
+			timeout)) {
+		throw exceptions::ReceivingRemoteInventoryTimeoutError(this);
+	}
 }
 
 const bool BaseInventory::IsOpen() const
