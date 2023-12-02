@@ -3,8 +3,7 @@
 
 const bool asa::interfaces::SpawnMap::IsOpen() const
 {
-	return window::MatchTemplate(
-		this->regionsButton.area, resources::interfaces::regions);
+	return window::MatchTemplate(this->regionsButton.area, resources::regions);
 }
 
 void asa::interfaces::SpawnMap::SpawnAt(int regionIndex)
