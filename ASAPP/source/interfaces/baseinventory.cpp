@@ -153,8 +153,8 @@ asa::window::Rect BaseInventory::GetArea() const { return this->area; }
 
 void BaseInventory::InitSlots(const window::Point& origin)
 {
-	int x = origin.x + 31;
-	int y = origin.y + 147;
+	int x = origin.x;
+	int y = origin.y;
 
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {

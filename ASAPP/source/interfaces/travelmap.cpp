@@ -35,7 +35,7 @@ void asa::interfaces::TravelMap::GoTo(const std::string& destination)
 
 	while (this->IsOpen()) {
 		this->confirmButton.Press();
-		SleepFor(std::chrono::milliseconds(200));
+		SleepFor(std::chrono::milliseconds(500));
 	}
 	std::cout << "\t[-] Traveled to '" << destination << "'." << std::endl;
 
