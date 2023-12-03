@@ -188,6 +188,7 @@
     <ClCompile Include="source\interfaces\mainmenu.cpp" />
     <ClCompile Include="source\interfaces\modeselect.cpp" />
     <ClCompile Include="source\interfaces\playerinfo.cpp" />
+    <ClCompile Include="source\interfaces\serverselect.cpp" />
     <ClCompile Include="source\interfaces\spawnmap.cpp" />
     <ClCompile Include="source\interfaces\structureinfo.cpp" />
     <ClCompile Include="source\interfaces\teleportmap.cpp" />

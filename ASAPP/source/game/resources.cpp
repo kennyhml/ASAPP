@@ -60,7 +60,7 @@ bool asa::resources::interfaces::InitInterfaces()
 	LOAD_RESOURCE(dir, accept);
 	LOAD_RESOURCE(dir, back);
 	LOAD_RESOURCE(dir, join_last_session);
-
+	LOAD_RESOURCE(dir, refresh);
 	return true;
 }
 

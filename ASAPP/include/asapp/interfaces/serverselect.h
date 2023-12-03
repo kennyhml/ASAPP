@@ -17,6 +17,8 @@ namespace asa::interfaces
 		components::Button joinButton{ 1615, 924, 195, 41 };
 
 	public:
+		bool IsOpen() const;
+
 		void JoinServer(const std::string& serverName);
 		void Refresh();
 
