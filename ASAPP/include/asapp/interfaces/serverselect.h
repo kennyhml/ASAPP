@@ -15,19 +15,15 @@ namespace asa::interfaces
 		components::Button refreshButton{ 834, 932, 275, 39 };
 
 		components::Button joinButton{ 1615, 924, 195, 41 };
+		components::Button joinLastPlayedButton{ 1624, 876, 178, 39 };
+
 
 	public:
 		bool IsOpen() const;
+		bool CanJoin() const;
+		bool CanJoinLastPlayed() const;
 
 		void JoinServer(const std::string& serverName);
 		void Refresh();
-
-		bool CanJoin();
-		bool CanJoinLastPlayed();
 	};
-
-
-
-
-
 }
