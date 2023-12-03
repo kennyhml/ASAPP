@@ -15,10 +15,6 @@ bool ServerSelect::CanJoin() const
 	static window::Color joinableColor(153, 77, 4);
 	auto masked = window::GetMask(this->joinButton.area, joinableColor, 20);
 
-	cv::imshow("t", masked);
-	cv::waitKey(0);
-
-
 	return cv::countNonZero(masked) > 200;
 }
 
@@ -29,8 +25,6 @@ bool ServerSelect::CanJoinLastPlayed() const
 	auto masked = window::GetMask(
 		this->joinLastPlayedButton.area, lastPlayedColor, 20);
 
-	cv::imshow("t", masked);
-	cv::waitKey(0);
 	return cv::countNonZero(masked) > 50;
 }
 

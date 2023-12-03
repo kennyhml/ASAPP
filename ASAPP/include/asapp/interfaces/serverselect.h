@@ -17,7 +17,6 @@ namespace asa::interfaces
 		components::Button joinButton{ 1615, 924, 195, 41 };
 		components::Button joinLastPlayedButton{ 1624, 876, 178, 39 };
 
-
 	public:
 		bool IsOpen() const;
 		bool CanJoin() const;
