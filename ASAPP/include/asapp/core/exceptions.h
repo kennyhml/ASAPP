@@ -3,6 +3,9 @@
 
 namespace asa::exceptions
 {
+	void SetCrashAware(bool aware);
+	bool GetCrashAware();
+
 	class ShooterGameError : public std::exception
 	{
 	protected:

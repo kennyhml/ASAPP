@@ -4,8 +4,6 @@
 
 using namespace asa::interfaces;
 
-
-
 bool MainMenu::IsOpen() const
 {
 	return window::MatchTemplate(
@@ -17,6 +15,19 @@ bool MainMenu::GotConnectionTimeout() const
 	return window::MatchTemplate(
 		this->accept.area, resources::interfaces::accept);
 }
+
+void MainMenu::AcceptPopup()
+{
+	if (!this->GotConnectionTimeout()) {
+		return;
+	}
+
+	do {
+		this->accept.Press();
+	} while (!util::Await([this]() { return !this->GotConnectionTimeout(); },
+		std::chrono::seconds(5)));
+}
+
 void MainMenu::Start()
 {
 	if (!this->IsOpen()) {

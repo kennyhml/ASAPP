@@ -3,7 +3,8 @@
 
 void asa::CheckState()
 {
-	if (!util::Timedout(lastCheck, std::chrono::seconds(1))) {
+	if (!util::Timedout(lastCheck, std::chrono::seconds(1)) ||
+		exceptions::GetCrashAware()) {
 		return;
 	}
 	lastCheck = std::chrono::system_clock::now();

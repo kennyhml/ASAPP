@@ -16,6 +16,7 @@ namespace asa::interfaces
 		bool IsOpen() const override;
 		bool GotConnectionTimeout() const;
 
+		void AcceptPopup();
 		void Start();
 		void JoinLastSession();
 	};
