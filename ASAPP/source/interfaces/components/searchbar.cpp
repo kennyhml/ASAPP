@@ -4,15 +4,26 @@
 #include "asapp/game/controls.h"
 #include "asapp/game/globals.h"
 
-void asa::interfaces::components::SearchBar::Press() const
+using namespace asa::interfaces::components;
+
+
+bool SearchBar::HasTextEntered()
 {
-	window::Point loc = this->area.GetRandLocation(8);
-	for (int i = 0; i < 2; i++) {
-		window::PostMousePressAt(loc, controls::LEFT);
-	}
+	window::Color textColor(134, 234, 255);
+
+	auto mask = window::GetMask(this->area, textColor, 30);
+	return cv::countNonZero(mask) > 50;
 }
 
-void asa::interfaces::components::SearchBar::SearchFor(std::string term)
+bool SearchBar::HasBlinkingCursor() const
+{
+	window::Color textColor(134, 234, 255);
+
+	auto mask = window::GetMask(this->area, textColor, 30);
+	return cv::countNonZero(mask) > 15;
+}
+
+void SearchBar::SearchFor(std::string term)
 {
 	this->Press();
 	SleepFor(std::chrono::milliseconds(200));
@@ -20,7 +31,6 @@ void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 
 	if (!globals::useWindowInput) {
 		util::SetClipboard(term);
-
 		controls::KeyCombinationPress("ctrl", "v");
 	}
 	else {
@@ -31,12 +41,27 @@ void asa::interfaces::components::SearchBar::SearchFor(std::string term)
 		}
 	}
 
+	if (!util::Await([this]() { return this->HasTextEntered(); },
+			std::chrono::seconds(5))) {
+		std::cerr << "[!] Failed to search, trying again..." << std::endl;
+		return this->SearchFor(term);
+	}
+
 	SleepFor(std::chrono::milliseconds(50));
-	window::PostKeyPress("enter");
 
 	this->isSearching = false;
 	this->lastSearchedTerm = term;
 	this->isTextEntered = true;
+}
+
+void SearchBar::Press() const
+{
+	window::Point loc = this->area.GetRandLocation(8);
+
+	do {
+		window::PostMousePressAt(loc, controls::LEFT);
+	} while (!util::Await([this]() { return this->HasBlinkingCursor(); },
+		std::chrono::milliseconds(500)));
 }
 
 void asa::interfaces::components::SearchBar::DeleteSearch()
@@ -56,7 +81,7 @@ void asa::interfaces::components::SearchBar::DeleteSearch()
 	}
 
 	SleepFor(std::chrono::milliseconds(50));
-	window::Press("Esc");
+	window::Press("enter");
 
 	this->SetTextCleared();
 }

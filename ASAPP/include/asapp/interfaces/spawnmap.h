@@ -9,7 +9,7 @@ namespace asa::interfaces
 		using BaseTravelMap::BaseTravelMap;
 
 	private:
-		TravelSearchBar searchbar{ 93, 941, 240, 50 };
+		components::SearchBar searchbar{ 93, 941, 240, 50 };
 
 		components::Button newSurvivorButton{ 1210, 948, 244, 42 };
 		components::Button regionsButton{ 176, 129, 176, 52 };

@@ -9,7 +9,7 @@ namespace asa::interfaces
 		using BaseTravelMap::BaseTravelMap;
 
 	private:
-		TravelSearchBar searchbar{ 301, 940, 245, 51 };
+		components::SearchBar searchbar{ 301, 940, 245, 51 };
 
 	public:
 		void Close();

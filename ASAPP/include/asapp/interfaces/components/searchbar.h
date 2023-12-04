@@ -21,5 +21,8 @@ namespace asa::interfaces::components
 		std::string lastSearchedTerm = "";
 		bool isSearching{ false };
 		bool isTextEntered{ false };
+
+		bool HasTextEntered();
+		bool HasBlinkingCursor() const;
 	};
 }

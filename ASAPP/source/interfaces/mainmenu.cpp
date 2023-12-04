@@ -17,14 +17,14 @@ bool MainMenu::GotConnectionTimeout() const
 	return window::MatchTemplate(
 		this->accept.area, resources::interfaces::accept);
 }
-void MainMenu::Start() const
+void MainMenu::Start()
 {
 	if (!this->IsOpen()) {
 		return;
 	}
 
 	do {
-		window::Press("space");
+		this->startButton.Press();
 	} while (!util::Await(
 		[this]() { return !this->IsOpen(); }, std::chrono::seconds(5)));
 }

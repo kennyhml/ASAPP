@@ -17,4 +17,6 @@ namespace asa::interfaces
 
 		void JoinGame();
 	};
+
+	inline ModeSelect* gModeSelect = new ModeSelect();
 }

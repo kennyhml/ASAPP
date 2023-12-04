@@ -14,18 +14,6 @@ namespace asa::interfaces
 		window::Rect dayTime{ 1570, 77, 272, 54 };
 		components::Button confirmButton{ 1461, 931, 367, 60, 10 };
 
-
-		struct TravelSearchBar : public components::SearchBar
-		{
-			using SearchBar::SearchBar;
-
-			void SearchFor(std::string term) override;
-			void Press() const override;
-
-			const bool HasTextEntered();
-			const bool HasBlinkingCursor() const;
-		};
-
 	public:
 		BaseTravelMap();
 

@@ -16,65 +16,6 @@ asa::interfaces::BaseTravelMap::BaseTravelMap()
 {
 }
 
-const bool asa::interfaces::BaseTravelMap::TravelSearchBar::HasTextEntered()
-{
-	window::Color textColor(134, 234, 255);
-
-	auto mask = window::GetMask(this->area, textColor, 30);
-	return cv::countNonZero(mask) > 100;
-}
-
-const bool
-asa::interfaces::BaseTravelMap::TravelSearchBar::HasBlinkingCursor() const
-{
-	window::Color textColor(134, 234, 255);
-
-	auto mask = window::GetMask(this->area, textColor, 30);
-	return cv::countNonZero(mask) > 20;
-}
-
-void asa::interfaces::BaseTravelMap::TravelSearchBar::SearchFor(
-	std::string term)
-{
-	this->Press();
-	SleepFor(std::chrono::milliseconds(200));
-	this->isSearching = true;
-
-	if (!globals::useWindowInput) {
-		util::SetClipboard(term);
-		controls::KeyCombinationPress("ctrl", "v");
-	}
-	else {
-		for (auto c : term) {
-			if (globals::useWindowInput) {
-				window::PostChar(c);
-			}
-		}
-	}
-
-	if (!util::Await([this]() { return this->HasTextEntered(); },
-			std::chrono::seconds(5))) {
-		std::cerr << "[!] Failed to search, trying again..." << std::endl;
-		return this->SearchFor(term);
-	}
-
-	SleepFor(std::chrono::milliseconds(50));
-
-	this->isSearching = false;
-	this->lastSearchedTerm = term;
-	this->isTextEntered = true;
-}
-
-void asa::interfaces::BaseTravelMap::TravelSearchBar::Press() const
-{
-	window::Point loc = this->area.GetRandLocation(8);
-
-	do {
-		window::PostMousePressAt(loc, controls::LEFT);
-	} while (!util::Await([this]() { return this->HasBlinkingCursor(); },
-		std::chrono::milliseconds(500)));
-}
-
 
 bool asa::interfaces::BaseTravelMap::IsOpen() const
 {
