@@ -257,6 +257,13 @@ bool window::SetForegroundButHidden()
 								  SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
 }
 
+bool window::HasCrashedPopup()
+{
+	return (FindWindowA("UnrealWindow",
+				"The UE-ShooterGame Game has crashed and will close") ||
+			FindWindowA("UnrealWindow", "Crash") != NULL);
+}
+
 void window::SetMousePos(const Point& location)
 {
 	SetCursorPos(location.x, location.y);

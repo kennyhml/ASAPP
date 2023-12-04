@@ -12,9 +12,7 @@ void asa::CheckState()
 		throw exceptions::ServerCrashedError();
 	}
 
-	if (FindWindowA("UnrealWindow",
-			"The UE-ShooterGame Game has crashed and will close") ||
-		FindWindowA("UnrealWindow", "Crash") != NULL) {
+	if (window::HasCrashedPopup()) {
 		throw exceptions::GameCrashedError();
 	}
 }

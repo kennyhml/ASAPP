@@ -98,6 +98,7 @@ namespace asa::window
 
 	bool SetForeground();
 	bool SetForegroundButHidden();
+	bool HasCrashedPopup();
 
 	void SetMousePos(const Point&);
 	void SetMousePos(int x, int y);
