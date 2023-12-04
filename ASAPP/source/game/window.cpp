@@ -259,9 +259,9 @@ bool window::SetForegroundButHidden()
 
 bool window::HasCrashedPopup()
 {
-	return (FindWindowA("UnrealWindow",
-				"The UE-ShooterGame Game has crashed and will close") ||
-			FindWindowA("UnrealWindow", "Crash") != NULL);
+	return (FindWindowA(NULL,
+				"The UE-ShooterGame Game has crashed and will close") != NULL ||
+			FindWindowA(NULL, "Crash!") != NULL);
 }
 
 void window::SetMousePos(const Point& location)

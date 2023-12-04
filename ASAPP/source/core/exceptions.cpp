@@ -2,15 +2,15 @@
 
 
 asa::exceptions::ShooterGameError::ShooterGameError(std::string info)
-	: info(info){};
+	: info("ShooterGameError: " + info){};
 
 const char* asa::exceptions::ShooterGameError::what()
 {
-	return ("ShooterGameError: " + this->info).c_str();
+	return this->info.c_str();
 }
 
 asa::exceptions::ServerCrashedError::ServerCrashedError()
-	: ShooterGameError("Server or connection crashed."){};
+	: ShooterGameError("Server or internet connection has crashed."){};
 
 asa::exceptions::GameCrashedError::GameCrashedError()
-	: ShooterGameError("The game has crashed"){};
+	: ShooterGameError("The game has run into a fatal error."){};
