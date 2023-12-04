@@ -9,7 +9,7 @@
 
 using namespace asa::entities;
 
-const bool LocalPlayer::IsAlive()
+bool LocalPlayer::IsAlive()
 {
 	if (settings::gameUserSettings::toggleHUD.get()) {
 		window::Press(settings::showExtendedInfo);
@@ -30,30 +30,30 @@ const bool LocalPlayer::IsAlive()
 	return result;
 }
 
-const bool LocalPlayer::IsOutOfWater()
+bool LocalPlayer::IsOutOfWater()
 {
 	return interfaces::gHUD->IsPlayerOutOfWater();
 }
-const bool LocalPlayer::IsOutOfFood()
+bool LocalPlayer::IsOutOfFood()
 {
 	return interfaces::gHUD->IsPlayerOutOfFood();
 }
-const bool LocalPlayer::IsOverweight()
+bool LocalPlayer::IsOverweight()
 {
 	return interfaces::gHUD->IsPlayerOverweight();
 }
 
-const bool LocalPlayer::ReceivedItem()
+bool LocalPlayer::ReceivedItem()
 {
 	return interfaces::gHUD->GotItemAdded(this->inventory->IsOpen());
 }
 
-const bool LocalPlayer::DepositedItem()
+bool LocalPlayer::DepositedItem()
 {
 	return interfaces::gHUD->GotItemRemoved(this->inventory->IsOpen());
 }
 
-const bool LocalPlayer::LocalPlayer::IsInTravelScreen()
+bool LocalPlayer::LocalPlayer::IsInTravelScreen()
 {
 	static window::Rect roi(94, 69, 1751, 883);
 	static window::Color white(255, 255, 255);
@@ -67,17 +67,22 @@ const bool LocalPlayer::LocalPlayer::IsInTravelScreen()
 	return mean[0] > 240.f;
 }
 
-const bool LocalPlayer::LocalPlayer::CanAccessBed()
+bool LocalPlayer::LocalPlayer::CanAccessBed()
 {
 	return interfaces::gHUD->CanFastTravel();
 }
 
-const bool LocalPlayer::LocalPlayer::CanUseDefaultTeleport()
+bool LocalPlayer::LocalPlayer::CanAccessInventory()
+{
+	return interfaces::gHUD->CanAccessInventory();
+}
+
+bool LocalPlayer::LocalPlayer::CanUseDefaultTeleport()
 {
 	return interfaces::gHUD->CanDefaultTeleport();
 }
 
-const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut)
+bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut)
 {
 	do {
 		window::Press(settings::use);
@@ -87,7 +92,7 @@ const bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut)
 	return true;
 }
 
-const bool LocalPlayer::WithdrawFromDedicatedStorage(int* withdrawnAmountOut)
+bool LocalPlayer::WithdrawFromDedicatedStorage(int* withdrawnAmountOut)
 {
 	return false;
 }
@@ -113,13 +118,13 @@ void LocalPlayer::Suicide()
 	std::cout << "\t[-] Suicided successfully." << std::endl;
 }
 
-const bool LocalPlayer::CanAccess(const structures::BaseStructure&)
+bool LocalPlayer::CanAccess(const structures::BaseStructure&)
 {
 	return interfaces::gHUD->CanAccessInventory();
 	// TODO: if ghud fails use the action wheel
 }
 
-const bool LocalPlayer::CanAccess(const entities::BaseEntity&)
+bool LocalPlayer::CanAccess(const entities::BaseEntity&)
 {
 	return interfaces::gHUD->CanAccessInventory();
 	// TODO: if ghud fails use the action wheel
@@ -186,6 +191,8 @@ void LocalPlayer::FastTravelTo(const structures::SimpleBed& bed)
 
 void LocalPlayer::TeleportTo(const structures::Teleporter& tp, bool isDefault)
 {
+	bool couldAccessBefore = this->CanAccess(tp);
+
 	if (!isDefault) {
 		this->LookAllTheWayDown();
 		this->Access(tp);
@@ -201,7 +208,7 @@ void LocalPlayer::TeleportTo(const structures::Teleporter& tp, bool isDefault)
 			[]() { return !interfaces::gHUD->CanDefaultTeleport(); },
 			std::chrono::seconds(5)));
 	}
-	this->PassTeleportScreen();
+	this->PassTeleportScreen(!couldAccessBefore);
 }
 
 void LocalPlayer::LayOn(const structures::SimpleBed& bed)
@@ -295,7 +302,7 @@ void LocalPlayer::PassTravelScreen(bool in, bool out)
 	SleepFor(std::chrono::seconds(1));
 }
 
-void LocalPlayer::PassTeleportScreen()
+void LocalPlayer::PassTeleportScreen(bool allowAccessFlag)
 {
 	while (!interfaces::gHUD->CanDefaultTeleport()) {
 		// for long distance teleports we still enter a white screen,
@@ -303,6 +310,10 @@ void LocalPlayer::PassTeleportScreen()
 		if (this->IsInTravelScreen()) {
 			std::cout << "[+] Whitescreen entered upon teleport." << std::endl;
 			return this->PassTravelScreen(false);
+		}
+		if (allowAccessFlag && this->CanAccessInventory()) {
+			std::cout << "[+] Teleported to a container." << std::endl;
+			return;
 		}
 	}
 	// See whether the default teleport popup lasts for more than 1 second

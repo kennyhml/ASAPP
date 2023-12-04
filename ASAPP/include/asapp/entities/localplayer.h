@@ -18,24 +18,25 @@ namespace asa::entities
 
 		interfaces::LocalInventory* inventory;
 
-		const bool IsAlive();
-		const bool IsOutOfWater();
-		const bool IsOutOfFood();
-		const bool IsOverweight();
-		const bool ReceivedItem();
-		const bool DepositedItem();
-		const bool IsInSpawnAnimation();
-		const bool IsInTravelScreen();
-		const bool CanAccessBed();
-		const bool CanUseDefaultTeleport();
+		[[nodiscard]] bool IsAlive();
+		[[nodiscard]] bool IsOutOfWater();
+		[[nodiscard]] bool IsOutOfFood();
+		[[nodiscard]] bool IsOverweight();
+		[[nodiscard]] bool ReceivedItem();
+		[[nodiscard]] bool DepositedItem();
+		[[nodiscard]] bool IsInSpawnAnimation();
+		[[nodiscard]] bool IsInTravelScreen();
+		[[nodiscard]] bool CanAccessBed();
+		[[nodiscard]] bool CanAccessInventory();
+		[[nodiscard]] bool CanUseDefaultTeleport();
 
-		const bool DepositIntoDedicatedStorage(int* depositedAmountOut);
-		const bool WithdrawFromDedicatedStorage(int* withdrawnAmountOut);
+		bool DepositIntoDedicatedStorage(int* depositedAmountOut);
+		bool WithdrawFromDedicatedStorage(int* withdrawnAmountOut);
 
 		void Suicide();
 
-		const bool CanAccess(const structures::BaseStructure&);
-		const bool CanAccess(const entities::BaseEntity&);
+		bool CanAccess(const structures::BaseStructure&);
+		bool CanAccess(const entities::BaseEntity&);
 
 		void Access(const entities::BaseEntity&);
 		void Access(const structures::Container&);
@@ -73,7 +74,7 @@ namespace asa::entities
 
 	private:
 		void PassTravelScreen(bool in = true, bool out = true);
-		void PassTeleportScreen();
+		void PassTeleportScreen(bool allowAccessFlag = false);
 	};
 
 	inline LocalPlayer* gLocalPlayer = new LocalPlayer(
