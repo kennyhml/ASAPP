@@ -10,7 +10,7 @@ namespace asa::interfaces
 	class ServerSelect final : public IInterface
 	{
 	private:
-		components::SearchBar searchbar{ 823, 924, 273, 51 };
+		components::SearchBar searchbar{ 1577, 172, 184, 46 };
 
 		window::Rect joiningText{ 717, 469, 507, 38 };
 		window::Rect joiningText2{ 828, 357, 266, 66 };

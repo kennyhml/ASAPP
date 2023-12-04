@@ -60,10 +60,13 @@ void ServerSelect::JoinServer(const std::string& serverName)
 {
 	std::cout << "[+] Joining server " << serverName << "..." << std::endl;
 	this->searchbar.SearchFor(serverName);
+	SleepFor(std::chrono::seconds(3));
+
 	while (!this->IsBestResultSelected()) {
 		this->bestResult.Press();
 		SleepFor(std::chrono::milliseconds(300));
 	}
+
 
 	std::cout << "\t[-] Best search result selected." << std::endl;
 	while (!this->IsJoiningServer()) {

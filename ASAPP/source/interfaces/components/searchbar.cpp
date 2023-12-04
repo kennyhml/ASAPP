@@ -48,6 +48,7 @@ void SearchBar::SearchFor(std::string term)
 	}
 
 	SleepFor(std::chrono::milliseconds(50));
+	window::Press("enter");
 
 	this->isSearching = false;
 	this->lastSearchedTerm = term;
