@@ -15,7 +15,7 @@ asa::interfaces::exceptions::InterfaceError::InterfaceError(
 		  std::format("Interface Error at {}", util::GetName(*_interface))){};
 
 
-const char* asa::interfaces::exceptions::InterfaceError::what()
+const char* asa::interfaces::exceptions::InterfaceError::what() const noexcept
 {
 	return this->message.c_str();
 }

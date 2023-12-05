@@ -14,7 +14,7 @@ namespace asa::exceptions
 	public:
 		ShooterGameError(std::string info);
 
-		const char* what();
+		const char* what() const noexcept override;
 	};
 
 	class ServerCrashedError : public ShooterGameError

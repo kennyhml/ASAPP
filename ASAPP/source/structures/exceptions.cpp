@@ -12,7 +12,7 @@ asa::structures::exceptions::StructureError::StructureError(
 	: message(
 		  std::format("Structure Error at {}", util::GetName(*structure))){};
 
-const char* asa::structures::exceptions::StructureError::what()
+const char* asa::structures::exceptions::StructureError::what() const
 {
 	return this->message.c_str();
 }

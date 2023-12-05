@@ -8,7 +8,7 @@ EntityError::EntityError(const BaseEntity* entity)
 EntityError::EntityError(const BaseEntity* entity, std::string info)
 	: entity(entity), info("EntityError: " + info){};
 
-const char* EntityError::what() { return this->info.c_str(); }
+const char* EntityError::what() const { return this->info.c_str(); }
 
 EntityNotAccessed::EntityNotAccessed(const BaseEntity* entity)
 	: EntityError(entity, "Failed to access " + entity->GetName()){};

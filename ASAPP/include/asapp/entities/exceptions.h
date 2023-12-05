@@ -15,7 +15,7 @@ namespace asa::entities::exceptions
 		EntityError(const BaseEntity*);
 		EntityError(const BaseEntity*, std::string info);
 
-		const char* what();
+		const char* what() const noexcept override;
 	};
 
 	class EntityNotAccessed : public EntityError

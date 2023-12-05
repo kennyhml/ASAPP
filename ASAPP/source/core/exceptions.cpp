@@ -8,7 +8,7 @@ bool asa::exceptions::GetCrashAware() { return crashAware; }
 asa::exceptions::ShooterGameError::ShooterGameError(std::string info)
 	: info("ShooterGameError: " + info){};
 
-const char* asa::exceptions::ShooterGameError::what()
+const char* asa::exceptions::ShooterGameError::what() const noexcept
 {
 	return this->info.c_str();
 }

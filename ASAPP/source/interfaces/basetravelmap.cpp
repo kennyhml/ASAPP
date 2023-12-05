@@ -12,10 +12,7 @@ asa::interfaces::BaseTravelMap::BaseTravelMap()
 			  return components::Button(89, 195 + (i++ * 55), 459, 55, 10);
 		  });
 		  return results;
-	  }())
-{
-}
-
+	  }()){};
 
 bool asa::interfaces::BaseTravelMap::IsOpen() const
 {

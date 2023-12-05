@@ -320,7 +320,7 @@ void LocalPlayer::PassTeleportScreen(bool allowAccessFlag)
 	// if it doesnt its a glitched popup that appears when the teleport has
 	// happened. Restart the procedure in that case
 	if (util::Await([]() { return !interfaces::gHUD->CanDefaultTeleport(); },
-			std::chrono::milliseconds(800))) {
+			std::chrono::milliseconds(1000))) {
 		std::cout << "[!] Glitched default teleport popup found." << std::endl;
 		return this->PassTeleportScreen();
 	}

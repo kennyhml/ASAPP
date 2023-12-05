@@ -222,7 +222,6 @@ cv::Mat window::Screenshot(const Rect& region)
 
 	BITMAPINFOHEADER bi = GetBitmapInfoHeader(wWidth, wHeight, 32, BI_RGB);
 
-	// copies the bitmap into the mat buffer
 	cv::Mat mat = cv::Mat(wHeight, wWidth, CV_8UC4);
 	GetDIBits(mDc, bitmap, 0, wHeight, mat.data,
 		reinterpret_cast<BITMAPINFO*>(&bi), DIB_RGB_COLORS);

@@ -15,7 +15,7 @@ namespace asa::interfaces::exceptions
 		InterfaceError(const IInterface* _interface, std::string message);
 		InterfaceError(const IInterface* _interface);
 
-		const char* what();
+		const char* what() const noexcept override;
 	};
 
 	class InterfaceNotOpenedError : public InterfaceError

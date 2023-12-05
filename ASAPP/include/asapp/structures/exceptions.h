@@ -14,7 +14,7 @@ namespace asa::structures::exceptions
 		StructureError(const BaseStructure* structure, std::string message);
 		StructureError(const BaseStructure* structure);
 
-		const char* what();
+		const char* what() const noexcept override;
 	};
 
 	class StructureNotOpenedError : public StructureError
