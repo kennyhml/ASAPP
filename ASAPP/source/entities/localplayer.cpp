@@ -167,7 +167,7 @@ void LocalPlayer::Access(const structures::InteractableStructure& structure)
 	do {
 		window::Press(structure.GetInteractKey(), true);
 		if (util::Timedout(start, std::chrono::seconds(30))) {
-			throw structures::exceptions::StructureError(&structure);
+			throw structures::exceptions::StructureNotOpenedError(&structure);
 		}
 	} while (
 		!util::Await([structure]() { return structure._interface->IsOpen(); },

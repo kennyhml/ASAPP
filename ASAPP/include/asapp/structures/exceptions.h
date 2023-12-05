@@ -8,25 +8,25 @@ namespace asa::structures::exceptions
 {
 	class StructureError : public std::exception
 	{
-		std::string message;
+		const BaseStructure* structure;
+		std::string info;
 
 	public:
-		StructureError(const BaseStructure* structure, std::string message);
 		StructureError(const BaseStructure* structure);
+		StructureError(const BaseStructure* structure, std::string info);
 
 		const char* what() const noexcept override;
 	};
 
 	class StructureNotOpenedError : public StructureError
 	{
-		StructureNotOpenedError(const BaseStructure* structure)
-			: StructureError(structure, "Accessing structure failed."){};
+	public:
+		StructureNotOpenedError(const BaseStructure* structure);
 	};
 
 	class StructureNotClosedError : public StructureError
 	{
-		StructureNotClosedError(const BaseStructure* structure)
-			: StructureError(structure, "Exitting structure failed."){};
+	public:
+		StructureNotClosedError(const BaseStructure* structure);
 	};
-
 }

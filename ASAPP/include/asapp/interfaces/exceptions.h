@@ -9,10 +9,10 @@ namespace asa::interfaces::exceptions
 	class InterfaceError : public std::exception
 	{
 		const IInterface* _interface;
-		std::string message;
+		std::string info;
 
 	public:
-		InterfaceError(const IInterface* _interface, std::string message);
+		InterfaceError(const IInterface* _interface, std::string info);
 		InterfaceError(const IInterface* _interface);
 
 		const char* what() const noexcept override;
@@ -20,16 +20,20 @@ namespace asa::interfaces::exceptions
 
 	class InterfaceNotOpenedError : public InterfaceError
 	{
-		using InterfaceError::InterfaceError;
+	public:
+		InterfaceNotOpenedError(const IInterface* _interface);
 	};
 
 	class InterfaceNotClosedError : public InterfaceError
 	{
-		using InterfaceError::InterfaceError;
+	public:
+		InterfaceNotClosedError(const IInterface* _interface);
 	};
 
 	class ReceivingRemoteInventoryTimeoutError : public InterfaceError
 	{
-		using InterfaceError::InterfaceError;
+	public:
+		ReceivingRemoteInventoryTimeoutError(const IInterface* _interface);
 	};
+
 }

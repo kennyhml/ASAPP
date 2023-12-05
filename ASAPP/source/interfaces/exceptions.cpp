@@ -3,19 +3,23 @@
 #include "asapp/interfaces/iinterface.h"
 #include <format>
 
+using namespace asa::interfaces::exceptions;
 
-asa::interfaces::exceptions::InterfaceError::InterfaceError(
-	const IInterface* _interface, std::string message)
-	: message(std::format(
-		  "Interface Error at {}: {}", util::GetName(*_interface), message)){};
+InterfaceError::InterfaceError(const IInterface* _interface, std::string info)
+	: _interface(_interface), info(std::format("InterfaceError: {}", info)){};
 
-asa::interfaces::exceptions::InterfaceError::InterfaceError(
+InterfaceError::InterfaceError(const IInterface* _interface)
+	: InterfaceError(_interface, "Unspecified error"){};
+
+const char* InterfaceError::what() const noexcept { return this->info.c_str(); }
+
+InterfaceNotOpenedError::InterfaceNotOpenedError(const IInterface* _interface)
+	: InterfaceError(_interface, std::format("Failed to access interface")){};
+
+InterfaceNotClosedError::InterfaceNotClosedError(const IInterface* _interface)
+	: InterfaceError(_interface, std::format("Failed to close interface")){};
+
+ReceivingRemoteInventoryTimeoutError::ReceivingRemoteInventoryTimeoutError(
 	const IInterface* _interface)
-	: message(
-		  std::format("Interface Error at {}", util::GetName(*_interface))){};
-
-
-const char* asa::interfaces::exceptions::InterfaceError::what() const noexcept
-{
-	return this->message.c_str();
-}
+	: InterfaceError(
+		  _interface, std::format("Timed out receing remote inventory")){};
