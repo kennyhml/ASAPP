@@ -143,7 +143,7 @@ void LocalPlayer::Access(const entities::BaseEntity& ent)
 			throw exceptions::EntityNotAccessed(&ent);
 		}
 	} while (!util::Await(
-		[ent]() { return ent.inventory->IsOpen(); }, std::chrono::seconds(5)));
+		[&ent]() { return ent.inventory->IsOpen(); }, std::chrono::seconds(5)));
 
 	ent.inventory->ReceiveRemoteInventory(std::chrono::seconds(30));
 }
@@ -170,7 +170,7 @@ void LocalPlayer::Access(const structures::InteractableStructure& structure)
 			throw structures::exceptions::StructureNotOpenedError(&structure);
 		}
 	} while (
-		!util::Await([structure]() { return structure._interface->IsOpen(); },
+		!util::Await([&structure]() { return structure._interface->IsOpen(); },
 			std::chrono::seconds(5)));
 }
 
@@ -216,7 +216,7 @@ void LocalPlayer::LayOn(const structures::SimpleBed& bed)
 	while (!bed.actionWheel.IsOpen()) {
 		window::Down(settings::use);
 
-		if (!util::Await([bed]() { return bed.actionWheel.IsOpen(); },
+		if (!util::Await([&bed]() { return bed.actionWheel.IsOpen(); },
 				std::chrono::seconds(3))) {
 			window::Up(settings::use);
 		}

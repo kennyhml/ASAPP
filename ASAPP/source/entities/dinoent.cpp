@@ -5,6 +5,12 @@
 using namespace asa::entities;
 
 
+DinoEnt::DinoEnt(std::string name, interfaces::BaseInventory* inv)
+	: BaseEntity(name, inv){};
+
+DinoEnt::DinoEnt(const char* name, interfaces::BaseInventory* inv)
+	: BaseEntity(std::string(name), inv){};
+
 void DinoEnt::Exit()
 {
 	this->inventory->Close();

@@ -16,10 +16,8 @@ namespace asa::interfaces
 		void Close();
 		void SetSelectedAsDefault();
 
-		virtual void GoTo(const std::string& destination);
+		void GoTo(const std::string& destination);
 	};
 
 	inline TeleportMap* gTeleportMap = new TeleportMap();
-
-
 }
