@@ -18,36 +18,37 @@ namespace asa::interfaces
 		window::Rect weightIcon{ 1860, 751, 51, 56 };
 		window::Rect defaultTeleport{ 866, 911, 78, 27 };
 
-		[[nodiscard]] const bool IsBlinking(window::Rect icon,
-			window::Color color,
+		[[nodiscard]] bool IsBlinking(window::Rect icon, window::Color color,
 			std::chrono::milliseconds maxDuration = std::chrono::milliseconds(
 				400));
 
 		window::Rect invClosedItemAddedOrRemovedArea{ 0, 260, 200, 615 };
 		window::Rect invOpenItemAddedOrRemovedArea{ 0, 765, 200, 315 };
+		window::Rect statusUpdateArea{ 844, 12, 224, 30 };
 
 	public:
 		bool IsOpen() const { return true; }
 
-		[[nodiscard]] const bool IsMountOverweight() { return false; };
-		[[nodiscard]] const bool IsMountLow() { return false; };
-		[[nodiscard]] const bool IsMountOutOfFood() { return false; };
-		[[nodiscard]] const bool IsMountOutOfStamina() { return false; };
-		[[nodiscard]] const bool IsMountSprinting() { return false; };
+		[[nodiscard]] bool IsMountOverweight() { return false; };
+		[[nodiscard]] bool IsMountLow() { return false; };
+		[[nodiscard]] bool IsMountOutOfFood() { return false; };
+		[[nodiscard]] bool IsMountOutOfStamina() { return false; };
+		[[nodiscard]] bool IsMountSprinting() { return false; };
 
-		[[nodiscard]] const bool IsPlayerOverweight();
-		[[nodiscard]] const bool IsPlayerBrokenBones();
-		[[nodiscard]] const bool IsPlayerOutOfWater();
-		[[nodiscard]] const bool IsPlayerOutOfFood();
-		[[nodiscard]] const bool IsPlayerSprinting();
+		[[nodiscard]] bool IsPlayerOverweight();
+		[[nodiscard]] bool IsPlayerBrokenBones();
+		[[nodiscard]] bool IsPlayerOutOfWater();
+		[[nodiscard]] bool IsPlayerOutOfFood();
+		[[nodiscard]] bool IsPlayerSprinting();
 
-		[[nodiscard]] const bool CanDefaultTeleport();
-		[[nodiscard]] const bool CanFastTravel();
-		[[nodiscard]] const bool CanAccessInventory();
+		[[nodiscard]] bool CanDefaultTeleport();
+		[[nodiscard]] bool CanFastTravel();
+		[[nodiscard]] bool CanAccessInventory();
 
-		[[nodiscard]] const bool ExtendedInformationIsToggled();
-		[[nodiscard]] const bool GotItemAdded(bool isInventoryOpen);
-		[[nodiscard]] const bool GotItemRemoved(bool isInventoryOpen);
+		[[nodiscard]] bool ExtendedInformationIsToggled();
+		[[nodiscard]] bool GotItemAdded(bool isInventoryOpen);
+		[[nodiscard]] bool GotItemRemoved(bool isInventoryOpen);
+		[[nodiscard]] bool TransferredItemIntoDedicatedStorage();
 	};
 
 	inline HUD* gHUD = new HUD();

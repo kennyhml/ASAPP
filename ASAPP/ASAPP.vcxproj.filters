@@ -186,6 +186,9 @@
     <ClInclude Include="source\core\wrappers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\asapp\items\item.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include=".clang-format" />

@@ -46,20 +46,25 @@ const window::Point window::Rect::GetRandLocation(int padding) const
 	return Point{ this->x + randXRange(gen), this->y + randYRange(gen) };
 }
 
-std::optional<window::Rect> window::LocateTemplate(
-	const Rect& region, const cv::Mat& templ, float threshold)
+std::optional<window::Rect> window::LocateTemplate(const Rect& region,
+	const cv::Mat& templ, float threshold, const cv::Mat& mask)
 {
 	cv::Mat image = Screenshot(region);
-	return LocateTemplate(image, templ, threshold);
+	return LocateTemplate(image, templ, threshold, mask);
 }
 
-std::optional<window::Rect> window::LocateTemplate(
-	const cv::Mat& source, const cv::Mat& templ, float threshold)
+std::optional<window::Rect> window::LocateTemplate(const cv::Mat& source,
+	const cv::Mat& templ, float threshold, const cv::Mat& mask)
 {
 	CheckState();
 
 	cv::Mat result;
-	cv::matchTemplate(source, templ, result, cv::TM_CCOEFF_NORMED);
+	if (mask.empty()) {
+		cv::matchTemplate(source, templ, result, cv::TM_CCOEFF_NORMED);
+	}
+	else {
+		cv::matchTemplate(source, templ, result, cv::TM_CCOEFF_NORMED, mask);
+	}
 
 	double minVal, maxVal;
 	cv::Point minLoc, maxLoc;
@@ -72,15 +77,15 @@ std::optional<window::Rect> window::LocateTemplate(
 	return Rect(maxLoc.x, maxLoc.y, templ.cols, templ.rows);
 }
 
-std::vector<window::Rect> window::LocateAllTemplate(
-	const Rect& region, const cv::Mat& templ, float threshold)
+std::vector<window::Rect> window::LocateAllTemplate(const Rect& region,
+	const cv::Mat& templ, float threshold, const cv::Mat& mask)
 {
 	cv::Mat image = Screenshot(region);
-	return LocateAllTemplate(image, templ, threshold);
+	return LocateAllTemplate(image, templ, threshold, mask);
 }
 
-std::vector<window::Rect> window::LocateAllTemplate(
-	const cv::Mat& source, const cv::Mat& templ, float threshold)
+std::vector<window::Rect> window::LocateAllTemplate(const cv::Mat& source,
+	const cv::Mat& templ, float threshold, const cv::Mat& mask)
 {
 
 	cv::Mat matchResult;
@@ -105,16 +110,16 @@ std::vector<window::Rect> window::LocateAllTemplate(
 	return allMatches;
 }
 
-bool window::MatchTemplate(
-	const Rect& region, const cv::Mat& templ, float threshold)
+bool window::MatchTemplate(const Rect& region, const cv::Mat& templ,
+	float threshold, const cv::Mat& mask)
 {
-	return LocateTemplate(region, templ, threshold) != std::nullopt;
+	return LocateTemplate(region, templ, threshold, mask) != std::nullopt;
 }
 
-bool window::MatchTemplate(
-	const cv::Mat& source, const cv::Mat& templ, float threshold)
+bool window::MatchTemplate(const cv::Mat& source, const cv::Mat& templ,
+	float threshold, const cv::Mat& mask)
 {
-	return LocateTemplate(source, templ, threshold) != std::nullopt;
+	return LocateTemplate(source, templ, threshold, mask) != std::nullopt;
 }
 
 cv::Mat window::GetMask(const Rect& region, const Color& color, float variance)

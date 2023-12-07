@@ -210,8 +210,10 @@ void BaseInventory::PopcornSlots(int slots)
 void BaseInventory::TakeSlot(Slot slot)
 {
 	this->SelectSlot(slot);
+	window::PostMousePressAt(slot.GetRandLocation(5), controls::LEFT);
+	SleepFor(std::chrono::milliseconds(10));
 	window::Press(settings::transferItem, false, std::chrono::milliseconds(15));
-	SleepFor(std::chrono::milliseconds(30));
+	SleepFor(std::chrono::milliseconds(50));
 }
 
 void BaseInventory::TakeSlot(int index) { TakeSlot(this->slots[index]); }

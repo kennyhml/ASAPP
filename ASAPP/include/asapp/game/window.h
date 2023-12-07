@@ -57,20 +57,23 @@ namespace asa::window
 		const Point GetRandLocation(int padding) const;
 	};
 
-	std::optional<Rect> LocateTemplate(
-		const Rect& region, const cv::Mat& templ, float threshold = 0.7);
-	std::optional<Rect> LocateTemplate(
-		const cv::Mat& source, const cv::Mat& templ, float threshold = 0.7);
+	std::optional<Rect> LocateTemplate(const Rect& region, const cv::Mat& templ,
+		float threshold = 0.7, const cv::Mat& mask = cv::Mat());
+	std::optional<Rect> LocateTemplate(const cv::Mat& source,
+		const cv::Mat& templ, float threshold = 0.7,
+		const cv::Mat& mask = cv::Mat());
 
-	std::vector<Rect> LocateAllTemplate(
-		const Rect& region, const cv::Mat& templ, float threshold = 0.7);
-	std::vector<Rect> LocateAllTemplate(
-		const cv::Mat& source, const cv::Mat& templ, float threshold = 0.7);
+	std::vector<Rect> LocateAllTemplate(const Rect& region,
+		const cv::Mat& templ, float threshold = 0.7,
+		const cv::Mat& mask = cv::Mat());
+	std::vector<Rect> LocateAllTemplate(const cv::Mat& source,
+		const cv::Mat& templ, float threshold = 0.7,
+		const cv::Mat& mask = cv::Mat());
 
-	bool MatchTemplate(
-		const Rect& region, const cv::Mat& templ, float threshold = 0.7);
-	bool MatchTemplate(
-		const cv::Mat& source, const cv::Mat& templ, float threshold = 0.7);
+	bool MatchTemplate(const Rect& region, const cv::Mat& templ,
+		float threshold = 0.7, const cv::Mat& mask = cv::Mat());
+	bool MatchTemplate(const cv::Mat& source, const cv::Mat& templ,
+		float threshold = 0.7, const cv::Mat& mask = cv::Mat());
 
 	cv::Mat GetMask(const cv::Mat& image, const Color& color, float variance);
 	cv::Mat GetMask(const Rect& region, const Color& color, float variance);
