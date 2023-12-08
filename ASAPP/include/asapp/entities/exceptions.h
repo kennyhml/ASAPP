@@ -8,10 +8,11 @@ namespace asa::entities::exceptions
 	class EntityError : public std::exception
 	{
 	private:
-		const BaseEntity* entity;
 		std::string info;
 
 	public:
+		const BaseEntity* entity;
+
 		EntityError(const BaseEntity*);
 		EntityError(const BaseEntity*, std::string info);
 
