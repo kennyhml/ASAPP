@@ -33,6 +33,8 @@ namespace asa::resources
 		inline cv::Mat default_teleport;
 		inline cv::Mat fast_travel;
 		inline cv::Mat access_inventory;
+		inline cv::Mat x;
+
 	}
 
 }

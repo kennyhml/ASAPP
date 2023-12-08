@@ -27,9 +27,14 @@ namespace asa::interfaces
 		[[nodiscard]] bool CanAccessInventory();
 
 		[[nodiscard]] bool ExtendedInformationIsToggled();
-		[[nodiscard]] bool GotItemAdded(bool isInventoryOpen, items::Item*);
-		[[nodiscard]] bool GotItemRemoved(bool isInventoryOpen, items::Item*);
+		[[nodiscard]] bool GotItemAdded(
+			bool isInventoryOpen, items::Item*, window::Rect* roiOut);
+		[[nodiscard]] bool GotItemRemoved(
+			bool isInventoryOpen, items::Item*, window::Rect* roiOut);
 		[[nodiscard]] bool TransferredItemIntoDedicatedStorage();
+
+		bool CountItemsAdded(bool isInvOpen, items::Item&, int& amountOut);
+		bool CountItemsRemoved(bool isInvOpen, items::Item&, int& amountOut);
 
 	private:
 		window::Color blinkRedState{ 109, 54, 52 };

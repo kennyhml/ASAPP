@@ -32,6 +32,8 @@ namespace asa::entities
 
 		bool DepositIntoDedicatedStorage(int* depositedAmountOut);
 		bool WithdrawFromDedicatedStorage(int* withdrawnAmountOut);
+		bool GetAmountAdded(items::Item&, int& amountOut);
+		bool GetAmountRemoved(items::Item&, int& amountOut);
 
 		void Suicide();
 

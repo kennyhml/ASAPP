@@ -2,6 +2,7 @@
 #include "../util/util.h"
 #include "asapp/game/resources.h"
 #include "asapp/game/window.h"
+#include <stdexcept>
 
 using namespace asa::interfaces;
 
@@ -75,7 +76,8 @@ bool HUD::ExtendedInformationIsToggled()
 	return window::MatchTemplate(roi, resources::text::day);
 }
 
-bool HUD::GotItemAdded(bool isInventoryOpen, items::Item* item)
+bool HUD::GotItemAdded(
+	bool isInventoryOpen, items::Item* item, window::Rect* roiOut)
 {
 	auto roi = isInventoryOpen ? invOpenItemAddedOrRemovedArea
 							   : invClosedItemAddedOrRemovedArea;
@@ -86,11 +88,16 @@ bool HUD::GotItemAdded(bool isInventoryOpen, items::Item* item)
 			return false;
 		}
 		roi = { roi.x + loc->x + 20, roi.y + loc->y, 120, 25 };
+	}
+
+	if (roiOut) {
+		*roiOut = roi;
 	}
 	return ItemAdded(roi);
 }
 
-bool HUD::GotItemRemoved(bool isInventoryOpen, items::Item* item)
+bool HUD::GotItemRemoved(
+	bool isInventoryOpen, items::Item* item, window::Rect* roiOut)
 {
 	auto roi = isInventoryOpen ? invOpenItemAddedOrRemovedArea
 							   : invClosedItemAddedOrRemovedArea;
@@ -102,5 +109,51 @@ bool HUD::GotItemRemoved(bool isInventoryOpen, items::Item* item)
 		}
 		roi = { roi.x + loc->x + 20, roi.y + loc->y, 120, 25 };
 	}
+	if (roiOut) {
+		*roiOut = roi;
+	}
 	return ItemRemoved(roi);
+}
+
+bool HUD::CountItemsAdded(bool invOpen, items::Item& item, int& amountOut)
+{
+	window::Rect roi{ 0, 0, 0, 0 };
+	if (!GotItemAdded(invOpen, &item, &roi)) {
+		return false;
+	}
+
+	roi = { roi.x + 85, roi.y, 100, roi.height };
+
+	auto xLoc = window::LocateTemplate(roi, resources::text::x);
+	if (!xLoc.has_value()) {
+		std::cerr << "[!] Failed to locate x location." << std::endl;
+		return false;
+	}
+
+	roi = { roi.x, roi.y, xLoc->x, roi.height };
+	cv::imshow("t", window::Screenshot(roi));
+	cv::waitKey(0);
+	return false;
+}
+
+
+bool HUD::CountItemsRemoved(bool invOpen, items::Item& item, int& amountOut)
+{
+	window::Rect roi{ 0, 0, 0, 0 };
+	if (!GotItemRemoved(invOpen, &item, &roi)) {
+		return false;
+	}
+
+	roi = { roi.x + 110, roi.y, 100, roi.height };
+
+	auto xLoc = window::LocateTemplate(roi, resources::text::x);
+	if (!xLoc.has_value()) {
+		std::cerr << "[!] Failed to locate x location." << std::endl;
+		return false;
+	}
+
+	roi = { roi.x, roi.y, xLoc->x, roi.height };
+	cv::imshow("t", window::Screenshot(roi));
+	cv::waitKey(0);
+	return false;
 }

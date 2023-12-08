@@ -76,6 +76,7 @@ bool asa::resources::text::InitText()
 	LOAD_RESOURCE(dir, default_teleport);
 	LOAD_RESOURCE(dir, fast_travel);
 	LOAD_RESOURCE(dir, access_inventory);
+	LOAD_RESOURCE(dir, x);
 
 	return true;
 }
