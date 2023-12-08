@@ -43,14 +43,14 @@ bool LocalPlayer::IsOverweight()
 	return interfaces::gHUD->IsPlayerOverweight();
 }
 
-bool LocalPlayer::ReceivedItem()
+bool LocalPlayer::ReceivedItem(items::Item* item)
 {
-	return interfaces::gHUD->GotItemAdded(this->inventory->IsOpen());
+	return interfaces::gHUD->GotItemAdded(this->inventory->IsOpen(), item);
 }
 
-bool LocalPlayer::DepositedItem()
+bool LocalPlayer::DepositedItem(items::Item* item)
 {
-	return interfaces::gHUD->GotItemRemoved(this->inventory->IsOpen());
+	return interfaces::gHUD->GotItemRemoved(this->inventory->IsOpen(), item);
 }
 
 bool LocalPlayer::LocalPlayer::IsInTravelScreen()

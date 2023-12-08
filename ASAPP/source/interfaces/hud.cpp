@@ -18,6 +18,16 @@ bool HUD::IsBlinking(window::Rect icon, window::Color color,
 	return false;
 }
 
+bool HUD::ItemRemoved(const window::Rect& area)
+{
+	return window::MatchTemplate(area, resources::text::removed);
+}
+
+bool HUD::ItemAdded(const window::Rect& area)
+{
+	return window::MatchTemplate(area, resources::text::added);
+}
+
 bool HUD::IsPlayerOverweight()
 {
 	return this->IsBlinking(this->weightIcon, this->blinkRedStateWeight,
@@ -65,18 +75,32 @@ bool HUD::ExtendedInformationIsToggled()
 	return window::MatchTemplate(roi, resources::text::day);
 }
 
-bool HUD::GotItemAdded(bool isInventoryOpen)
+bool HUD::GotItemAdded(bool isInventoryOpen, items::Item* item)
 {
-	auto roi = isInventoryOpen ? this->invOpenItemAddedOrRemovedArea
-							   : this->invClosedItemAddedOrRemovedArea;
-
-	return window::MatchTemplate(roi, resources::text::added);
+	auto roi = isInventoryOpen ? invOpenItemAddedOrRemovedArea
+							   : invClosedItemAddedOrRemovedArea;
+	if (item) {
+		auto loc = window::LocateTemplate(
+			roi, item->GetNotificationIcon(), 0.7, item->GetNotificationMask());
+		if (!loc.has_value()) {
+			return false;
+		}
+		roi = { roi.x + loc->x + 20, roi.y + loc->y, 120, 25 };
+	}
+	return ItemAdded(roi);
 }
 
-bool HUD::GotItemRemoved(bool isInventoryOpen)
+bool HUD::GotItemRemoved(bool isInventoryOpen, items::Item* item)
 {
-	auto roi = isInventoryOpen ? this->invOpenItemAddedOrRemovedArea
-							   : this->invClosedItemAddedOrRemovedArea;
-
-	return window::MatchTemplate(roi, resources::text::removed);
+	auto roi = isInventoryOpen ? invOpenItemAddedOrRemovedArea
+							   : invClosedItemAddedOrRemovedArea;
+	if (item) {
+		auto loc = window::LocateTemplate(
+			roi, item->GetNotificationIcon(), 0.7, item->GetNotificationMask());
+		if (!loc.has_value()) {
+			return false;
+		}
+		roi = { roi.x + loc->x + 20, roi.y + loc->y, 120, 25 };
+	}
+	return ItemRemoved(roi);
 }

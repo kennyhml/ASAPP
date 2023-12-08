@@ -22,8 +22,8 @@ namespace asa::entities
 		[[nodiscard]] bool IsOutOfWater();
 		[[nodiscard]] bool IsOutOfFood();
 		[[nodiscard]] bool IsOverweight();
-		[[nodiscard]] bool ReceivedItem();
-		[[nodiscard]] bool DepositedItem();
+		[[nodiscard]] bool ReceivedItem(items::Item* = nullptr);
+		[[nodiscard]] bool DepositedItem(items::Item* = nullptr);
 		[[nodiscard]] bool IsInSpawnAnimation();
 		[[nodiscard]] bool IsInTravelScreen();
 		[[nodiscard]] bool CanAccessBed();
