@@ -134,8 +134,7 @@ bool HUD::CountItemsAdded(items::Item& item, int& amountOut)
 	}
 
 	roi = { roi.x, roi.y, xLoc->x, roi.height };
-
-	cv::Mat mask = window::GetMask(roi, window::Color(255, 255, 255), 15);
+	cv::Mat mask = window::GetMask(roi, window::Color(255, 255, 255), 50);
 	window::SetTesseractImage(mask);
 	window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
 	window::tessEngine->SetVariable("tessedit_char_whitelist", "0123456789");
@@ -166,5 +165,17 @@ bool HUD::CountItemsRemoved(items::Item& item, int& amountOut)
 	}
 
 	roi = { roi.x, roi.y, xLoc->x, roi.height };
-	return false;
+	cv::Mat mask = window::GetMask(roi, window::Color(255, 255, 255), 50);
+	window::SetTesseractImage(mask);
+	window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
+	window::tessEngine->SetVariable("tessedit_char_whitelist", "0123456789");
+
+	std::string resultString = window::tessEngine->GetUTF8Text();
+	if (resultString.empty() || resultString == "\\n") {
+		std::cerr << "[!] OCR failed, no result determined." << std::endl;
+		return false;
+	}
+
+	amountOut = std::stoi(resultString);
+	return true;
 }
