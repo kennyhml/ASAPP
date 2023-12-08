@@ -89,7 +89,7 @@ std::vector<window::Rect> window::LocateAllTemplate(const cv::Mat& source,
 {
 
 	cv::Mat matchResult;
-	cv::matchTemplate(source, templ, matchResult, cv::TM_CCOEFF_NORMED);
+	cv::matchTemplate(source, templ, matchResult, cv::TM_CCOEFF_NORMED, mask);
 
 	double minVal, maxVal;
 	cv::Point minLoc, maxLoc;
