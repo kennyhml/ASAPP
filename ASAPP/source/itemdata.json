@@ -1,6 +1,6 @@
 {
   "Metal": {
-    "icon": "metal.png",
+    "icon": "items\\resources\\MetalOre_Icon.png",
     "type": "RESOURCE",
     "recipe": {},
     "weight": 1.0,
@@ -13,7 +13,7 @@
   },
 
   "Metal Ingot": {
-    "icon": "metal_ingot.png",
+    "icon": "items\\resources\\MetalIngot_Icon.png",
     "type": "RESOURCE",
     "recipe": {},
     "weight": 1.0,
@@ -26,7 +26,7 @@
   },
 
   "Cementing Paste": {
-    "icon": "paste.png",
+    "icon": "items\\resources\\CementPaste_Icon.png",
     "type": "RESOURCE",
     "recipe": {
       "Chitin": 4,
@@ -42,7 +42,7 @@
   },
 
   "Achatina Paste": {
-    "icon": "paste.png",
+    "icon": "items\\resources\\CementPaste_Icon.png",
     "type": "RESOURCE",
     "weight": 0.01,
     "stackSize": 100,
@@ -53,7 +53,7 @@
     "hasAmbigiousQuery": false
   },
   "Fiber": {
-    "icon": "fiber.png",
+    "icon": "items\\resources\\Fiber_Icon.png",
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.01,
@@ -66,7 +66,7 @@
   },
 
   "Thatch": {
-    "icon": "thatch.png",
+    "icon": "items\\resources\\Thatch_Icon.png",
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.02,
@@ -79,7 +79,7 @@
   },
 
   "Wood": {
-    "icon": "wood.png",
+    "icon": "items\\resources\\Wood_Icon.png",
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.05,
@@ -92,7 +92,7 @@
   },
 
   "Stone": {
-    "icon": "stone.png",
+    "icon": "items\\resources\\Stone_Icon.png",
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.5,
@@ -105,7 +105,7 @@
   },
 
   "Flint": {
-    "icon": "flint.png",
+    "icon": "items\\resources\\Flint_Icon.png",
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.05,
@@ -118,7 +118,7 @@
   },
 
   "Gunpowder": {
-    "icon": "gunpowder.png",
+    "icon": "items\\resources\\Gunpowder_Icon.png",
     "type": "RESOURCE",
     "recipe": {
       "Charcoal": 1,
@@ -134,7 +134,7 @@
   },
 
   "Sparkpowder": {
-    "icon": "sparkpowder.png",
+    "icon": "items\\resources\\Sparkpowder_Icon.png",
     "type": "RESOURCE",
     "recipe": {
       "Flint": 2,
@@ -150,7 +150,7 @@
   },
 
   "Obsidian": {
-    "icon": "obsidian.png",
+    "icon": "items\\resources\\Obsidian_Icon.png",
     "type": "RESOURCE",
     "recipe": {
     },
@@ -164,7 +164,7 @@
   },
 
   "Polymer": {
-    "icon": "polymer.png",
+    "icon": "items\\resources\\Polymer_Icon.png",
     "type": "RESOURCE",
     "recipe": {
       "Cementing Paste": 2,
@@ -180,7 +180,7 @@
   },
 
   "Organic Polymer": {
-    "icon": "organic_polymer.png",
+    "icon": "items\\resources\\OrganicPolymer_Icon.png",
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.25,
@@ -193,7 +193,7 @@
   },
 
   "Mejoberry": {
-    "icon": "mejoberry.png",
+    "icon": "items\\consumables\\Mejoberry_Icon.png",
     "type": "CONSUMABLE",
     "recipe": {},
     "weight": 0.1,
@@ -206,7 +206,7 @@
   },
 
   "Element": {
-    "icon": "element.png",
+    "icon": "items\\resources\\TEKElement_Icon.png",
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.01,
@@ -219,7 +219,7 @@
   },
 
   "Element Shard": {
-    "icon": "element_shard.png",
+    "icon": "items\\resources\\TEKElementShard_Icon.png",
     "type": "RESOURCE",
     "recipe": { "Element": 0.01 },
     "weight": 0.05,
@@ -232,7 +232,7 @@
   },
 
   "Medical Brew": {
-    "icon": "medical_brew.png",
+    "icon": "items\\consumables\\HealthPotion_Icon.png",
     "type": "CONSUMABLE",
     "recipe": {
       "Narcotic": 2,
@@ -245,62 +245,6 @@
     "hasDurability": false,
     "requiresEngram": false,
     "hasAmbigiousQuery": false
-  },
-
-  "Parachute": {
-    "icon": "parachute.png",
-    "type": "CONSUMABLE",
-    "recipe": {
-      "Fiber": 20,
-      "Thatch": 40,
-      "Hide": 10
-    },
-    "weight": 3.0,
-    "stackSize": 20,
-    "canPutInHotbar": true,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
-  },
-
-  "Grappling Hook": {
-    "icon": "grappling_hook.png",
-    "type": "AMMO",
-    "recipe": {
-      "Cementing Paste": 1,
-      "Metal Ingot": 9,
-      "Thatch": 2,
-      "Fiber": 35,
-      "Stone Arrow": 3
-    },
-    "weight": 1.0,
-    "stackSize": 10,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
-  },
-
-  "Gas Mask": {
-    "icon": "gasmask.png",
-    "type": "EQUIPPABLE",
-    "recipe": {
-      "Absorbant Substrate": 2,
-      "Crystal": 10,
-      "Polymer": 20
-    },
-    "weight": 12.0,
-    "stackSize": 1,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": true,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
   }
-
-
-
 
 }

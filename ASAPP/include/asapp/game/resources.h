@@ -23,26 +23,6 @@ namespace asa::resources
 		inline cv::Mat refresh;
 
 	}
-
-	namespace items
-	{
-		bool InitItems();
-		inline cv::Mat metal;
-		inline cv::Mat metal_ingot;
-		inline cv::Mat paste;
-		inline cv::Mat crystal;
-		inline cv::Mat fiber;
-		inline cv::Mat flint;
-		inline cv::Mat gunpowder;
-		inline cv::Mat sparkpowder;
-		inline cv::Mat obsidian;
-		inline cv::Mat polymer;
-		inline cv::Mat stone;
-		inline cv::Mat thatch;
-		inline cv::Mat wood;
-		inline cv::Mat gasmask;
-	}
-
 	namespace text
 	{
 		bool InitText();

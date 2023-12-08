@@ -8,30 +8,114 @@ asa::items::Item::Item(std::string name, cv::Mat icon)
 
 asa::items::Item::Item(std::string name, json itemData) : name(name)
 {
-	this->icon = cv::imread((config::assetsDir / itemData["icon"]).string());
+	iconPath = (config::assetsDir / itemData["icon"]).string();
 
-	this->type = itemTypeMap[itemData["type"]];
-	this->weight = itemData["weight"];
-	this->stackSize = itemData["stackSize"];
-	this->canPutInHotbar = itemData["canPutInHotbar"];
-	this->hasSpoilTimer = itemData["hasSpoilTimer"];
-	this->hasDurability = itemData["hasDurability"];
-	this->requiresEngram = itemData["requiresEngram"];
-	this->hasAmbigiousQuery = itemData["hasAmbigiousQuery"];
+	// items are loaded rgba so that we can drop the alpha channel to create a
+	// mask scale them down by 0.24x for inventory icons and 0.11x for added /
+	// removed.
+	icon = cv::imread(iconPath, cv::IMREAD_UNCHANGED);
+	if (icon.empty()) {
+		std::cerr << "\t[!] Failure reading: '" << iconPath << "'" << std::endl;
+	}
+
+	type = itemTypeMap[itemData["type"]];
+	weight = itemData["weight"];
+	stackSize = itemData["stackSize"];
+	canPutInHotbar = itemData["canPutInHotbar"];
+	hasSpoilTimer = itemData["hasSpoilTimer"];
+	hasDurability = itemData["hasDurability"];
+	requiresEngram = itemData["requiresEngram"];
+	hasAmbigiousQuery = itemData["hasAmbigiousQuery"];
 }
 
 asa::items::Item::Item(std::string name, cv::Mat icon, json itemData)
 	: name(name)
 {
-	this->icon = icon;
-	this->type = itemTypeMap[itemData["type"]];
-	this->weight = itemData["weight"];
-	this->stackSize = itemData["stackSize"];
-	this->canPutInHotbar = itemData["canPutInHotbar"];
-	this->hasSpoilTimer = itemData["hasSpoilTimer"];
-	this->hasDurability = itemData["hasDurability"];
-	this->requiresEngram = itemData["requiresEngram"];
-	this->hasAmbigiousQuery = itemData["hasAmbigiousQuery"];
+	icon = icon;
+	type = itemTypeMap[itemData["type"]];
+	weight = itemData["weight"];
+	stackSize = itemData["stackSize"];
+	canPutInHotbar = itemData["canPutInHotbar"];
+	hasSpoilTimer = itemData["hasSpoilTimer"];
+	hasDurability = itemData["hasDurability"];
+	requiresEngram = itemData["requiresEngram"];
+	hasAmbigiousQuery = itemData["hasAmbigiousQuery"];
+}
+
+const cv::Mat& asa::items::Item::GetInventoryIcon()
+{
+	if (!inventoryIcon.empty()) {
+		return inventoryIcon;
+	}
+
+	cv::resize(icon, rgbaInventoryIcon,
+		cv::Size(icon.cols * 0.24, icon.rows * 0.24), 0, 0, cv::INTER_LINEAR);
+
+	cv::cvtColor(rgbaInventoryIcon, inventoryIcon, cv::COLOR_RGBA2RGB);
+	return inventoryIcon;
+}
+
+const cv::Mat& asa::items::Item::GetInventoryIconMask()
+{
+	if (!inventoryIconMask.empty()) {
+		return inventoryIconMask;
+	}
+
+	// Make sure the rgba inventory icon has been created already
+	if (rgbaInventoryIcon.empty()) {
+		GetInventoryIcon();
+	}
+
+	// Dont want to have to convert the original in consideration of a
+	// multi-threaded environment
+	cv::Mat copy;
+	rgbaInventoryIcon.copyTo(copy);
+
+	// We can split out the alpha channel and create a mask where the alpha
+	// value isnt transparent (0) to get the mask we want for our icon
+	std::vector<cv::Mat> channels;
+	cv::split(copy, channels);
+	cv::Mat alphaChannel = channels[3];
+	inventoryIconMask = (alphaChannel > 0);
+
+	return inventoryIconMask;
+}
+
+const cv::Mat& asa::items::Item::GetNotificationIcon()
+{
+	if (!notificationIcon.empty()) {
+		return notificationIcon;
+	}
+	cv::resize(icon, rgbaNotificationIcon,
+		cv::Size(icon.cols * 0.11, icon.rows * 0.11), 0, 0, cv::INTER_LINEAR);
+
+	cv::cvtColor(rgbaNotificationIcon, notificationIcon, cv::COLOR_RGBA2RGB);
+	return notificationIcon;
+}
+
+const cv::Mat& asa::items::Item::GetNotificationMask()
+{
+	if (!notificationIconMask.empty()) {
+		return notificationIconMask;
+	}
+
+	if (rgbaNotificationIcon.empty()) {
+		GetNotificationIcon();
+	}
+
+	// Dont want to have to convert the original in consideration of a
+	// multi-threaded environment
+	cv::Mat copy;
+	rgbaNotificationIcon.copyTo(copy);
+
+	// We can split out the alpha channel and create a mask where the alpha
+	// value isnt transparent (0) to get the mask we want for our icon
+	std::vector<cv::Mat> channels;
+	cv::split(copy, channels);
+	cv::Mat alphaChannel = channels[3];
+	notificationIconMask = (alphaChannel > 0);
+
+	return notificationIconMask;
 }
 
 bool asa::items::LoadRawData()
@@ -48,49 +132,55 @@ bool asa::items::LoadRawData()
 }
 bool asa::items::Init()
 {
+	auto start = std::chrono::system_clock::now();
+
 	if (!LoadRawData()) {
 		return false;
 	}
-
 	std::cout << "[+] Initializing predefined items..." << std::endl;
-
-	if (!resources::Init() || !equippables::Init()) {
+	if (!resources::Init()) {
 		return false;
 	}
+
+	auto timeTaken = std::chrono::duration_cast<std::chrono::milliseconds>(
+		std::chrono::system_clock::now() - start);
+	std::cout << "-> Loaded all assets within " << timeTaken << std::endl;
 	return true;
 }
 
-void asa::items::Load(Item*& item, std::string name, cv::Mat icon)
+void asa::items::Load(Item*& item, std::string name)
 {
+	if (rawData.find(name) == rawData.end()) {
+		std::cout << "[!] No item data found for: " << name << std::endl;
+		return;
+	}
+
 	if (item) {
 		delete item;
 		item = nullptr;
 	}
-	item = new Item(name, icon);
-	std::cout << "\t[-] Predefined item loaded: " << item->name << std::endl;
+
+	item = new Item(name, asa::items::rawData[name]);
+	std::cout << std::format("\t[-] Loaded predef. item '{}'. Icon: '{}'",
+					 item->name, item->iconPath)
+			  << std::endl;
 }
 
 bool asa::items::resources::Init()
 {
-	Load(metal, "Metal", asa::resources::items::metal);
-	Load(metalIngot, "Metal Ingot", asa::resources::items::metal_ingot);
-	Load(cementingPaste, "Cementing Paste", asa::resources::items::paste);
-	Load(achatinaPaste, "Achatina Paste", asa::resources::items::paste);
-	Load(fiber, "Fiber", asa::resources::items::fiber);
-	Load(flint, "Flint", asa::resources::items::flint);
-	Load(gunpowder, "Gunpowder", asa::resources::items::gunpowder);
-	Load(sparkpowder, "Sparkpowder", asa::resources::items::sparkpowder);
-	Load(obsidian, "Obsidian", asa::resources::items::obsidian);
-	Load(polymer, "Polymer", asa::resources::items::polymer);
-	Load(stone, "Stone", asa::resources::items::stone);
-	Load(thatch, "Thatch", asa::resources::items::thatch);
-	Load(wood, "Wood", asa::resources::items::wood);
+	Load(metal, "Metal");
+	Load(metalIngot, "Metal Ingot");
+	Load(cementingPaste, "Cementing Paste");
+	Load(achatinaPaste, "Achatina Paste");
+	Load(fiber, "Fiber");
+	Load(flint, "Flint");
+	Load(gunpowder, "Gunpowder");
+	Load(sparkpowder, "Sparkpowder");
+	Load(obsidian, "Obsidian");
+	Load(polymer, "Polymer");
+	Load(stone, "Stone");
+	Load(thatch, "Thatch");
+	Load(wood, "Wood");
 
-	return true;
-}
-
-bool asa::items::equippables::Init()
-{
-	Load(gasmask, "Gas Mask", asa::resources::items::gasmask);
 	return true;
 }

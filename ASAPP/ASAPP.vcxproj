@@ -250,7 +250,6 @@
     <ClInclude Include="include\asapp\interfaces\components\iinterfacecomponent.h" />
     <ClInclude Include="include\asapp\interfaces\components\searchbar.h" />
     <ClInclude Include="include\asapp\items\items.h" />
-    <ClInclude Include="include\asapp\items\recipe.h" />
     <ClInclude Include="include\asapp\structures\basestructure.h" />
     <ClInclude Include="include\asapp\structures\container.h" />
     <ClInclude Include="include\asapp\structures\dedicatedstorage.h" />

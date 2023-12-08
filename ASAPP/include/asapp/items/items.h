@@ -13,7 +13,7 @@ namespace asa::items
 	bool LoadRawData();
 
 	Item* GetCustomItem(std::string itemName);
-	void Load(Item*& item, std::string name, cv::Mat icon);
+	void Load(Item*& item, std::string name);
 
 	namespace resources
 	{
@@ -34,12 +34,6 @@ namespace asa::items
 		inline Item* wood = nullptr;
 		inline Item* gasmask = nullptr;
 
-	}
-
-	namespace equippables
-	{
-		bool Init();
-		inline Item* gasmask = nullptr;
 	}
 
 }

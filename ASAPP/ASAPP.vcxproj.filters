@@ -78,9 +78,6 @@
     <ClInclude Include="include\asapp\game\settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\asapp\items\recipe.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\asapp\game\globals.h">
       <Filter>Header Files</Filter>
     </ClInclude>

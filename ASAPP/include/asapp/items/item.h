@@ -1,6 +1,5 @@
 #pragma once
 #include "asapp/game/resources.h"
-#include "recipe.h"
 #include <nlohmann/json.hpp>
 #include <string>
 
@@ -10,6 +9,7 @@ namespace asa::items
 {
 	struct Item
 	{
+	public:
 		Item(std::string name, json itemData);
 		Item(std::string name, cv::Mat icon);
 		Item(std::string name, cv::Mat icon, json itemData);
@@ -27,9 +27,9 @@ namespace asa::items
 		};
 
 		std::string name;
+		std::string iconPath;
 		cv::Mat icon;
 		ItemType type;
-		Recipe* recipe = nullptr;
 
 		float weight;
 		int stackSize;
@@ -39,6 +39,20 @@ namespace asa::items
 		bool hasDurability;
 		bool requiresEngram;
 		bool hasAmbigiousQuery;
+
+		const cv::Mat& GetInventoryIcon();
+		const cv::Mat& GetInventoryIconMask();
+		const cv::Mat& GetNotificationIcon();
+		const cv::Mat& GetNotificationMask();
+
+	private:
+		cv::Mat rgbaInventoryIcon;
+		cv::Mat rgbaNotificationIcon;
+
+		cv::Mat inventoryIcon;
+		cv::Mat inventoryIconMask;
+		cv::Mat notificationIcon;
+		cv::Mat notificationIconMask;
 	};
 
 	inline std::unordered_map<std::string, Item::ItemType> itemTypeMap = {
