@@ -27,14 +27,12 @@ namespace asa::interfaces
 		[[nodiscard]] bool CanAccessInventory();
 
 		[[nodiscard]] bool ExtendedInformationIsToggled();
-		[[nodiscard]] bool GotItemAdded(
-			bool isInventoryOpen, items::Item*, window::Rect* roiOut);
-		[[nodiscard]] bool GotItemRemoved(
-			bool isInventoryOpen, items::Item*, window::Rect* roiOut);
+		[[nodiscard]] bool GotItemAdded(items::Item*, window::Rect* roiOut);
+		[[nodiscard]] bool GotItemRemoved(items::Item*, window::Rect* roiOut);
 		[[nodiscard]] bool TransferredItemIntoDedicatedStorage();
 
-		bool CountItemsAdded(bool isInvOpen, items::Item&, int& amountOut);
-		bool CountItemsRemoved(bool isInvOpen, items::Item&, int& amountOut);
+		bool CountItemsAdded(items::Item&, int& amountOut);
+		bool CountItemsRemoved(items::Item&, int& amountOut);
 
 	private:
 		window::Color blinkRedState{ 109, 54, 52 };
@@ -54,8 +52,10 @@ namespace asa::interfaces
 		[[nodiscard]] bool ItemRemoved(const window::Rect& area);
 		[[nodiscard]] bool ItemAdded(const window::Rect& area);
 
-		window::Rect invClosedItemAddedOrRemovedArea{ 0, 260, 200, 615 };
-		window::Rect invOpenItemAddedOrRemovedArea{ 0, 765, 200, 315 };
+		window::Rect itemIconRemovedOrAddedArea{ 7, 12, 41, 1067 };
+		window::Rect itemRemovedArea{ 43, 20, 110, 1054 };
+		window::Rect itemAddedArea{ 40, 15, 85, 1063 };
+
 		window::Rect statusUpdateArea{ 844, 12, 224, 30 };
 	};
 

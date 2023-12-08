@@ -76,56 +76,54 @@ bool HUD::ExtendedInformationIsToggled()
 	return window::MatchTemplate(roi, resources::text::day);
 }
 
-bool HUD::GotItemAdded(
-	bool isInventoryOpen, items::Item* item, window::Rect* roiOut)
+bool HUD::GotItemAdded(items::Item* item, window::Rect* roiOut)
 {
-	auto roi = isInventoryOpen ? invOpenItemAddedOrRemovedArea
-							   : invClosedItemAddedOrRemovedArea;
+	auto roi = item ? itemIconRemovedOrAddedArea : itemAddedArea;
 	if (!item) {
 		return ItemAdded(roi);
 	}
-
 	auto locations = window::LocateAllTemplate(
 		roi, item->GetNotificationIcon(), 0.7, item->GetNotificationMask());
 
+	std::cout << "Matches: " << locations.size() << std::endl;
 	for (const auto& rect : locations) {
 		roi = { roi.x + rect.x + 20, roi.y + rect.y, 120, 25 };
-
 		if (ItemAdded(roi)) {
-			*roiOut = roi;
+			if (roiOut) {
+				*roiOut = roi;
+			}
 			return true;
 		}
 	}
 	return false;
 }
 
-bool HUD::GotItemRemoved(
-	bool isInventoryOpen, items::Item* item, window::Rect* roiOut)
+bool HUD::GotItemRemoved(items::Item* item, window::Rect* roiOut)
 {
-	auto roi = isInventoryOpen ? invOpenItemAddedOrRemovedArea
-							   : invClosedItemAddedOrRemovedArea;
+	auto roi = item ? itemIconRemovedOrAddedArea : itemRemovedArea;
 	if (!item) {
 		return ItemRemoved(roi);
 	}
-
 	auto locations = window::LocateAllTemplate(
 		roi, item->GetNotificationIcon(), 0.7, item->GetNotificationMask());
 
+	std::cout << "Matches: " << locations.size() << std::endl;
 	for (const auto& rect : locations) {
 		roi = { roi.x + rect.x + 20, roi.y + rect.y, 120, 25 };
-
 		if (ItemRemoved(roi)) {
-			*roiOut = roi;
+			if (roiOut) {
+				*roiOut = roi;
+			}
 			return true;
 		}
 	}
 	return false;
 }
 
-bool HUD::CountItemsAdded(bool invOpen, items::Item& item, int& amountOut)
+bool HUD::CountItemsAdded(items::Item& item, int& amountOut)
 {
 	window::Rect roi{ 0, 0, 0, 0 };
-	if (!GotItemAdded(invOpen, &item, &roi)) {
+	if (!GotItemAdded(&item, &roi)) {
 		return false;
 	}
 
@@ -142,10 +140,10 @@ bool HUD::CountItemsAdded(bool invOpen, items::Item& item, int& amountOut)
 }
 
 
-bool HUD::CountItemsRemoved(bool invOpen, items::Item& item, int& amountOut)
+bool HUD::CountItemsRemoved(items::Item& item, int& amountOut)
 {
 	window::Rect roi{ 0, 0, 0, 0 };
-	if (!GotItemRemoved(invOpen, &item, &roi)) {
+	if (!GotItemRemoved(&item, &roi)) {
 		return false;
 	}
 

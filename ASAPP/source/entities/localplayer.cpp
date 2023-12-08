@@ -45,14 +45,12 @@ bool LocalPlayer::IsOverweight()
 
 bool LocalPlayer::ReceivedItem(items::Item* item)
 {
-	return interfaces::gHUD->GotItemAdded(
-		this->inventory->IsOpen(), item, nullptr);
+	return interfaces::gHUD->GotItemAdded(item, nullptr);
 }
 
 bool LocalPlayer::DepositedItem(items::Item* item)
 {
-	return interfaces::gHUD->GotItemRemoved(
-		this->inventory->IsOpen(), item, nullptr);
+	return interfaces::gHUD->GotItemRemoved(item, nullptr);
 }
 
 bool LocalPlayer::LocalPlayer::IsInTravelScreen()
@@ -101,14 +99,12 @@ bool LocalPlayer::WithdrawFromDedicatedStorage(int* withdrawnAmountOut)
 
 bool LocalPlayer::GetAmountAdded(items::Item& item, int& amountOut)
 {
-	return interfaces::gHUD->CountItemsAdded(
-		inventory->IsOpen(), item, amountOut);
+	return interfaces::gHUD->CountItemsAdded(item, amountOut);
 }
 
 bool LocalPlayer::GetAmountRemoved(items::Item& item, int& amountOut)
 {
-	return interfaces::gHUD->CountItemsRemoved(
-		inventory->IsOpen(), item, amountOut);
+	return interfaces::gHUD->CountItemsRemoved(item, amountOut);
 }
 
 void LocalPlayer::Suicide()
