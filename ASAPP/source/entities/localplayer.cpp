@@ -82,17 +82,27 @@ bool LocalPlayer::LocalPlayer::CanUseDefaultTeleport()
 	return interfaces::gHUD->CanDefaultTeleport();
 }
 
-bool LocalPlayer::DepositIntoDedicatedStorage(int* depositedAmountOut)
+bool LocalPlayer::DepositIntoDedicatedStorage(
+	items::Item* item, int* depositedAmountOut)
 {
+	auto deposited = [this, item, depositedAmountOut]() {
+		if (item && depositedAmountOut) {
+			return GetAmountRemoved(*item, *depositedAmountOut);
+		}
+		else {
+			return DepositedItem(item);
+		}
+	};
+
 	do {
 		window::Press(settings::use);
-	} while (!util::Await(
-		[this]() { return this->DepositedItem(); }, std::chrono::seconds(5)));
+	} while (!util::Await(deposited, std::chrono::seconds(5)));
 
 	return true;
 }
 
-bool LocalPlayer::WithdrawFromDedicatedStorage(int* withdrawnAmountOut)
+bool LocalPlayer::WithdrawFromDedicatedStorage(
+	items::Item* item, int* withdrawnAmountOut)
 {
 	return false;
 }

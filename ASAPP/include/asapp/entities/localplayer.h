@@ -30,8 +30,8 @@ namespace asa::entities
 		[[nodiscard]] bool CanAccessInventory();
 		[[nodiscard]] bool CanUseDefaultTeleport();
 
-		bool DepositIntoDedicatedStorage(int* depositedAmountOut);
-		bool WithdrawFromDedicatedStorage(int* withdrawnAmountOut);
+		bool DepositIntoDedicatedStorage(items::Item*, int* depositedAmountOut);
+		bool WithdrawFromDedicatedStorage(items::Item*, int* withdrawAmountOut);
 		bool GetAmountAdded(items::Item&, int& amountOut);
 		bool GetAmountRemoved(items::Item&, int& amountOut);
 
