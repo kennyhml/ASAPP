@@ -83,14 +83,13 @@ bool HUD::GotItemAdded(items::Item* item, window::Rect* roiOut)
 		return ItemAdded(roi);
 	}
 	auto locations = window::LocateAllTemplate(
-		roi, item->GetNotificationIcon(), 0.7, item->GetNotificationMask());
+		roi, item->GetNotificationIcon(), 0.75, item->GetNotificationMask());
 
-	std::cout << "Matches: " << locations.size() << std::endl;
 	for (const auto& rect : locations) {
-		roi = { roi.x + rect.x + 20, roi.y + rect.y, 120, 25 };
-		if (ItemAdded(roi)) {
+		window::Rect matchRoi(roi.x + rect.x + 20, roi.y + rect.y, 120, 25);
+		if (ItemAdded(matchRoi)) {
 			if (roiOut) {
-				*roiOut = roi;
+				*roiOut = matchRoi;
 			}
 			return true;
 		}
@@ -105,14 +104,13 @@ bool HUD::GotItemRemoved(items::Item* item, window::Rect* roiOut)
 		return ItemRemoved(roi);
 	}
 	auto locations = window::LocateAllTemplate(
-		roi, item->GetNotificationIcon(), 0.7, item->GetNotificationMask());
+		roi, item->GetNotificationIcon(), 0.75, item->GetNotificationMask());
 
-	std::cout << "Matches: " << locations.size() << std::endl;
 	for (const auto& rect : locations) {
-		roi = { roi.x + rect.x + 20, roi.y + rect.y, 120, 25 };
-		if (ItemRemoved(roi)) {
+		window::Rect matchRoi(roi.x + rect.x + 20, roi.y + rect.y, 120, 25);
+		if (ItemRemoved(matchRoi)) {
 			if (roiOut) {
-				*roiOut = roi;
+				*roiOut = matchRoi;
 			}
 			return true;
 		}
@@ -136,9 +134,21 @@ bool HUD::CountItemsAdded(items::Item& item, int& amountOut)
 	}
 
 	roi = { roi.x, roi.y, xLoc->x, roi.height };
-	return false;
-}
 
+	cv::Mat mask = window::GetMask(roi, window::Color(255, 255, 255), 15);
+	window::SetTesseractImage(mask);
+	window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
+	window::tessEngine->SetVariable("tessedit_char_whitelist", "0123456789");
+
+	std::string resultString = window::tessEngine->GetUTF8Text();
+	if (resultString.empty() || resultString == "\\n") {
+		std::cerr << "[!] OCR failed, no result determined." << std::endl;
+		return false;
+	}
+
+	amountOut = std::stoi(resultString);
+	return true;
+}
 
 bool HUD::CountItemsRemoved(items::Item& item, int& amountOut)
 {
