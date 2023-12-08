@@ -81,19 +81,22 @@ bool HUD::GotItemAdded(
 {
 	auto roi = isInventoryOpen ? invOpenItemAddedOrRemovedArea
 							   : invClosedItemAddedOrRemovedArea;
-	if (item) {
-		auto loc = window::LocateTemplate(
-			roi, item->GetNotificationIcon(), 0.7, item->GetNotificationMask());
-		if (!loc.has_value()) {
-			return false;
-		}
-		roi = { roi.x + loc->x + 20, roi.y + loc->y, 120, 25 };
+	if (!item) {
+		return ItemAdded(roi);
 	}
 
-	if (roiOut) {
-		*roiOut = roi;
+	auto locations = window::LocateAllTemplate(
+		roi, item->GetNotificationIcon(), 0.7, item->GetNotificationMask());
+
+	for (const auto& rect : locations) {
+		roi = { roi.x + rect.x + 20, roi.y + rect.y, 120, 25 };
+
+		if (ItemAdded(roi)) {
+			*roiOut = roi;
+			return true;
+		}
 	}
-	return ItemAdded(roi);
+	return false;
 }
 
 bool HUD::GotItemRemoved(
@@ -101,18 +104,22 @@ bool HUD::GotItemRemoved(
 {
 	auto roi = isInventoryOpen ? invOpenItemAddedOrRemovedArea
 							   : invClosedItemAddedOrRemovedArea;
-	if (item) {
-		auto loc = window::LocateTemplate(
-			roi, item->GetNotificationIcon(), 0.7, item->GetNotificationMask());
-		if (!loc.has_value()) {
-			return false;
+	if (!item) {
+		return ItemRemoved(roi);
+	}
+
+	auto locations = window::LocateAllTemplate(
+		roi, item->GetNotificationIcon(), 0.7, item->GetNotificationMask());
+
+	for (const auto& rect : locations) {
+		roi = { roi.x + rect.x + 20, roi.y + rect.y, 120, 25 };
+
+		if (ItemRemoved(roi)) {
+			*roiOut = roi;
+			return true;
 		}
-		roi = { roi.x + loc->x + 20, roi.y + loc->y, 120, 25 };
 	}
-	if (roiOut) {
-		*roiOut = roi;
-	}
-	return ItemRemoved(roi);
+	return false;
 }
 
 bool HUD::CountItemsAdded(bool invOpen, items::Item& item, int& amountOut)
@@ -131,8 +138,6 @@ bool HUD::CountItemsAdded(bool invOpen, items::Item& item, int& amountOut)
 	}
 
 	roi = { roi.x, roi.y, xLoc->x, roi.height };
-	cv::imshow("t", window::Screenshot(roi));
-	cv::waitKey(0);
 	return false;
 }
 
@@ -153,7 +158,5 @@ bool HUD::CountItemsRemoved(bool invOpen, items::Item& item, int& amountOut)
 	}
 
 	roi = { roi.x, roi.y, xLoc->x, roi.height };
-	cv::imshow("t", window::Screenshot(roi));
-	cv::waitKey(0);
 	return false;
 }
