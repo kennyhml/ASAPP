@@ -12,7 +12,7 @@ bool PlayerInfo::IsOpen() const
 	return cv::countNonZero(mask) > 60;
 }
 
-const bool PlayerInfo::HasEquipped(const items::Item* item, Slot slot)
+const bool PlayerInfo::HasEquipped(items::Item* item, Slot slot)
 {
 	if (item && (!item->type == item->EQUIPPABLE)) {
 		throw std::invalid_argument(
@@ -27,7 +27,8 @@ const bool PlayerInfo::HasEquipped(const items::Item* item, Slot slot)
 		return cv::countNonZero(mask) < 30;
 	}
 	else {
-		return window::MatchTemplate(roi, item->icon);
+		return window::MatchTemplate(
+			roi, item->GetInventoryIcon(), 0.7, item->GetInventoryIconMask());
 	}
 }
 
