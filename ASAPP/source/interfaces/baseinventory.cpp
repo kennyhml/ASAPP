@@ -63,7 +63,8 @@ BaseInventory::BaseInventory(bool r)
 	if (!item) {
 		return this->HasItem();
 	}
-	return window::MatchTemplate(*this, item->icon);
+	return window::MatchTemplate(
+		*this, item->GetInventoryIcon(), 0.7, item->GetInventoryIconMask());
 }
 
 bool BaseInventory::IsReceivingRemoteInventory() const
@@ -106,7 +107,8 @@ bool BaseInventory::Has(items::Item* item, bool search)
 		return this->slots[0].HasItem(item);
 	}
 
-	return window::MatchTemplate(this->itemArea, item->icon);
+	return window::MatchTemplate(this->itemArea, item->GetInventoryIcon(), 0.7,
+		item->GetInventoryIconMask());
 }
 
 bool BaseInventory::CountStacks(items::Item* item, int& stacksOut, bool search)
@@ -116,7 +118,8 @@ bool BaseInventory::CountStacks(items::Item* item, int& stacksOut, bool search)
 		Sleep(100);
 	}
 
-	auto matches = window::LocateAllTemplate(this->itemArea, item->icon, 0.9);
+	auto matches = window::LocateAllTemplate(this->itemArea,
+		item->GetInventoryIcon(), 0.9, item->GetInventoryIconMask());
 
 	if (matches.empty()) {
 		stacksOut = 0;
