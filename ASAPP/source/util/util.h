@@ -1,4 +1,5 @@
 #pragma once
+#include "opencv2/imgproc.hpp"
 #include <chrono>
 #include <functional>
 
@@ -20,4 +21,6 @@ namespace util
 
 	bool IsOnlyOneBitSet(int bitfield);
 	void SetClipboard(const std::string& term);
+
+	cv::Mat MaskAlphaChannel(const cv::Mat& src);
 }

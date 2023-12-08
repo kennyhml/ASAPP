@@ -1,4 +1,5 @@
 #include "asapp/items/items.h"
+#include "../util/util.h"
 #include "asapp/core/config.h"
 #include <fstream>
 #include <iostream>
@@ -66,18 +67,7 @@ const cv::Mat& asa::items::Item::GetInventoryIconMask()
 		GetInventoryIcon();
 	}
 
-	// Dont want to have to convert the original in consideration of a
-	// multi-threaded environment
-	cv::Mat copy;
-	rgbaInventoryIcon.copyTo(copy);
-
-	// We can split out the alpha channel and create a mask where the alpha
-	// value isnt transparent (0) to get the mask we want for our icon
-	std::vector<cv::Mat> channels;
-	cv::split(copy, channels);
-	cv::Mat alphaChannel = channels[3];
-	inventoryIconMask = (alphaChannel > 0);
-
+	inventoryIconMask = util::MaskAlphaChannel(rgbaInventoryIcon);
 	return inventoryIconMask;
 }
 
@@ -102,19 +92,7 @@ const cv::Mat& asa::items::Item::GetNotificationMask()
 	if (rgbaNotificationIcon.empty()) {
 		GetNotificationIcon();
 	}
-
-	// Dont want to have to convert the original in consideration of a
-	// multi-threaded environment
-	cv::Mat copy;
-	rgbaNotificationIcon.copyTo(copy);
-
-	// We can split out the alpha channel and create a mask where the alpha
-	// value isnt transparent (0) to get the mask we want for our icon
-	std::vector<cv::Mat> channels;
-	cv::split(copy, channels);
-	cv::Mat alphaChannel = channels[3];
-	notificationIconMask = (alphaChannel > 0);
-
+	notificationIconMask = util::MaskAlphaChannel(rgbaNotificationIcon);
 	return notificationIconMask;
 }
 

@@ -52,3 +52,15 @@ void util::SetClipboard(const std::string& text)
 	SetClipboardData(CF_TEXT, glob);
 	CloseClipboard();
 }
+
+cv::Mat util::MaskAlphaChannel(const cv::Mat& src)
+{
+	cv::Mat copy;
+	src.copyTo(copy);
+
+	std::vector<cv::Mat> channels;
+	cv::split(copy, channels);
+	cv::Mat alphaChannel = channels[3];
+	cv::Mat mask = (alphaChannel > 0);
+	return mask;
+}
