@@ -22,11 +22,11 @@ namespace asa::interfaces
 		InvTabButton cosmeticsTab{ 358, 120, 184, 46 };
 		InvTabButton craftingTab{ 542, 120, 183, 45 };
 
-		void Open();
-		void SwitchTo(Tab tab);
-		void ToggleTooltips();
+		void open();
+		void switch_to(Tab tab);
+		void toggle_tooltips();
 
-		void Equip(items::Item* item, PlayerInfo::Slot slot);
+		void equip(items::Item* item, PlayerInfo::Slot slot);
 	};
 
 	inline LocalInventory* gLocalinventory = new LocalInventory();

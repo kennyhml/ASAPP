@@ -13,7 +13,7 @@ namespace asa::interfaces
 
 	public:
 		void Close();
-		virtual void GoTo(const std::string& destination);
+		virtual void go_to(const std::string& destination);
 	};
 
 	inline TravelMap* gTravelMap = new TravelMap();

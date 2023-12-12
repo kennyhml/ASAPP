@@ -54,5 +54,5 @@ namespace asa::interfaces
 		window::Rect status_update_area{ 844, 12, 224, 30 };
 	};
 
-	inline HUD* gHUD = new HUD();
+	inline HUD* hud = new HUD();
 }

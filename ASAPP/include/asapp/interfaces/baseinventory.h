@@ -69,7 +69,7 @@ namespace asa::interfaces
 		bool IsReceivingRemoteInventory() const;
 		void ReceiveRemoteInventory(std::chrono::seconds timeout) const;
 
-		virtual bool IsOpen() const override;
+		virtual bool is_open() const override;
 		virtual bool Has(items::Item* item, bool search = false);
 		virtual bool CountStacks(
 			items::Item* item, int& stacksOut, bool search = false);
@@ -85,7 +85,7 @@ namespace asa::interfaces
 		virtual void TakeSlot(Slot slot);
 		virtual void TakeSlot(int index);
 
-		void Close();
+		void close();
 
 		void SelectSlot(Slot slot);
 		void SelectSlot(int index);

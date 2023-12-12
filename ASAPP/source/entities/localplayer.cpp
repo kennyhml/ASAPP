@@ -23,7 +23,7 @@ namespace asa::entities
 			window::down(settings::show_extended_info);
 		}
 		bool result = util::await(
-			[]() { return interfaces::gHUD->ExtendedInformationIsToggled(); },
+			[]() { return interfaces::hud->extended_information_is_toggled(); },
 			std::chrono::milliseconds(300));
 
 		if (settings::game_user_settings::toggle_hud.get()) {
@@ -37,25 +37,25 @@ namespace asa::entities
 
 	bool LocalPlayer::is_out_of_water() const
 	{
-		return interfaces::gHUD->IsPlayerOutOfWater();
+		return interfaces::hud->is_player_out_of_water();
 	}
 	bool LocalPlayer::is_out_of_food() const
 	{
-		return interfaces::gHUD->IsPlayerOutOfFood();
+		return interfaces::hud->is_player_out_of_food();
 	}
 	bool LocalPlayer::is_overweight() const
 	{
-		return interfaces::gHUD->IsPlayerOverweight();
+		return interfaces::hud->is_player_overweight();
 	}
 
 	bool LocalPlayer::received_item(items::Item* item) const
 	{
-		return interfaces::gHUD->GotItemAdded(item, nullptr);
+		return interfaces::hud->item_added(item, nullptr);
 	}
 
 	bool LocalPlayer::deposited_item(items::Item* item) const
 	{
-		return interfaces::gHUD->GotItemRemoved(item, nullptr);
+		return interfaces::hud->item_removed(item, nullptr);
 	}
 
 	bool LocalPlayer::is_in_travel_screen() const
@@ -74,25 +74,25 @@ namespace asa::entities
 
 	bool LocalPlayer::can_access_bed() const
 	{
-		return interfaces::gHUD->CanFastTravel();
+		return interfaces::hud->can_fast_travel();
 	}
 
 	bool LocalPlayer::can_access_inventory() const
 	{
-		return interfaces::gHUD->CanAccessInventory();
+		return interfaces::hud->can_access_inventory();
 	}
 
 	bool LocalPlayer::can_use_default_teleport() const
 	{
-		return interfaces::gHUD->CanDefaultTeleport();
+		return interfaces::hud->can_default_teleport();
 	}
 
-	bool LocalPlayer::DepositIntoDedicatedStorage(
+	bool LocalPlayer::deposit_into_dedi(
 		items::Item* item, int* depositedAmountOut)
 	{
 		auto deposited = [this, item, depositedAmountOut]() {
 			if (item && depositedAmountOut) {
-				return GetAmountRemoved(*item, *depositedAmountOut);
+				return get_amount_removed(*item, *depositedAmountOut);
 			}
 			else {
 				return deposited_item(item);
@@ -100,247 +100,248 @@ namespace asa::entities
 		};
 
 		do {
-			window::Press(settings::use);
-		} while (!util::Await(deposited, std::chrono::seconds(5)));
+			window::press(settings::use);
+		} while (!util::await(deposited, std::chrono::seconds(5)));
 
 		return true;
 	}
 
-	bool LocalPlayer::WithdrawFromDedicatedStorage(
+	bool LocalPlayer::withdraw_from_dedi(
 		items::Item* item, int* withdrawnAmountOut)
 	{
 		return false;
 	}
 
-	bool LocalPlayer::GetAmountAdded(items::Item& item, int& amountOut)
+	bool LocalPlayer::get_amount_added(items::Item& item, int& amountOut)
 	{
-		return interfaces::gHUD->CountItemsAdded(item, amountOut);
+		return interfaces::hud->count_items_added(item, amountOut);
 	}
 
-	bool LocalPlayer::GetAmountRemoved(items::Item& item, int& amountOut)
+	bool LocalPlayer::get_amount_removed(items::Item& item, int& amountOut)
 	{
-		return interfaces::gHUD->CountItemsRemoved(item, amountOut);
+		return interfaces::hud->count_items_removed(item, amountOut);
 	}
 
-	void LocalPlayer::Suicide()
+	void LocalPlayer::suicide()
 	{
 		std::cout << "[+] Suiciding with implant..." << std::endl;
 
-		this->inventory->Open();
-		controls::MousePress(controls::LEFT);
-		SleepFor(std::chrono::milliseconds(100));
-		this->inventory->SelectSlot(0);
+		get_inventory()->open();
+		controls::mouse_press(controls::LEFT);
+		sleep_for(std::chrono::milliseconds(100));
+		inventory->SelectSlot(0);
 
 		std::cout << "\t[-] Waiting for implant cooldown... ";
-		SleepFor(std::chrono::seconds(6));
+		sleep_for(std::chrono::seconds(6));
 		std::cout << "Done." << std::endl;
 
 		do {
-			window::Press(settings::use);
-			SleepFor(std::chrono::seconds(3));
+			window::press(settings::use);
+			sleep_for(std::chrono::seconds(3));
 
-		} while (this->IsAlive());
+		} while (is_alive());
 		std::cout << "\t[-] Suicided successfully." << std::endl;
 	}
 
-	bool LocalPlayer::CanAccess(const structures::BaseStructure&)
+	bool LocalPlayer::can_access(const structures::BaseStructure&) const
 	{
-		return interfaces::gHUD->CanAccessInventory();
+		return interfaces::hud->can_access_inventory();
 		// TODO: if ghud fails use the action wheel
 	}
 
-	bool LocalPlayer::CanAccess(const entities::BaseEntity&)
+	bool LocalPlayer::can_access(const entities::BaseEntity&) const
 	{
-		return interfaces::gHUD->CanAccessInventory();
+		return interfaces::hud->can_access_inventory();
 		// TODO: if ghud fails use the action wheel
 	}
 
-	void LocalPlayer::Access(const entities::BaseEntity& ent)
+	void LocalPlayer::access(const entities::BaseEntity& ent) const
 	{
-		if (ent.inventory->IsOpen()) {
+		if (ent.get_inventory()->is_open()) {
 			return;
 		}
 
 		auto start = std::chrono::system_clock::now();
 		do {
-			window::Press(settings::accessInventory, true);
-			if (util::Timedout(start, std::chrono::seconds(30))) {
-				throw exceptions::EntityNotAccessed(&ent);
+			window::press(settings::access_inventory, true);
+			if (util::timedout(start, std::chrono::seconds(30))) {
+				throw EntityNotAccessed(&ent);
 			}
-		} while (!util::Await([&ent]() { return ent.inventory->IsOpen(); },
-			std::chrono::seconds(5)));
+		} while (
+			!util::await([&ent]() { return ent.get_inventory()->is_open(); },
+				std::chrono::seconds(5)));
 
-		ent.inventory->ReceiveRemoteInventory(std::chrono::seconds(30));
+		ent.get_inventory()->ReceiveRemoteInventory(std::chrono::seconds(30));
 	}
 
-	void LocalPlayer::Access(const structures::Container& container)
+	void LocalPlayer::access(const structures::Container& container) const
 	{
 		// Accessing the inventory is the same as accessing the interface of
 		// any interactable structure such as teleporters, beds etc.
 		// just that we have to wait to receive the remote inventory afterwards.
-		this->Access(static_cast<structures::InteractableStructure>(container));
+		access(static_cast<structures::InteractableStructure>(container));
 		container.inventory->ReceiveRemoteInventory(std::chrono::seconds(30));
 	}
 
-	void LocalPlayer::Access(const structures::InteractableStructure& structure)
+	void LocalPlayer::access(
+		const structures::InteractableStructure& structure) const
 	{
-		if (structure._interface->IsOpen()) {
+		if (structure._interface->is_open()) {
 			return;
 		}
 
 		auto start = std::chrono::system_clock::now();
 		do {
-			window::Press(structure.GetInteractKey(), true);
-			if (util::Timedout(start, std::chrono::seconds(30))) {
+			window::press(structure.get_interact_key(), true);
+			if (util::timedout(start, std::chrono::seconds(30))) {
 				throw structures::exceptions::StructureNotOpenedError(
 					&structure);
 			}
-		} while (!util::Await(
-			[&structure]() { return structure._interface->IsOpen(); },
+		} while (!util::await(
+			[&structure]() { return structure._interface->is_open(); },
 			std::chrono::seconds(5)));
 	}
 
-	void LocalPlayer::FastTravelTo(const structures::SimpleBed& bed)
+	void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
 	{
 		for (int i = 0; i < 10; i++) {
-			this->TurnDown(18, std::chrono::milliseconds(10));
+			turn_down(18, std::chrono::milliseconds(10));
 		}
-		this->Prone();
+		prone();
 
-		SleepFor(std::chrono::milliseconds(300));
-		this->Access(bed);
-		SleepFor(std::chrono::milliseconds(300));
+		sleep_for(std::chrono::milliseconds(300));
+		access(bed);
+		sleep_for(std::chrono::milliseconds(300));
 
-		bed.map->GoTo(bed.name);
-		this->PassTravelScreen();
+		bed.map->go_to(bed.name);
+		pass_travel_screen();
 	}
 
-	void LocalPlayer::TeleportTo(
+	void LocalPlayer::teleport_to(
 		const structures::Teleporter& tp, bool isDefault)
 	{
-		bool couldAccessBefore = this->CanAccess(tp);
+		bool couldAccessBefore = can_access(tp);
 
 		if (!isDefault) {
-			this->LookAllTheWayDown();
-			this->Access(tp);
-			SleepFor(std::chrono::milliseconds(500));
+			look_fully_down();
+			access(tp);
+			sleep_for(std::chrono::milliseconds(500));
 			tp.map->GoTo(tp.name);
-			util::Await(
-				[]() { return !interfaces::gHUD->CanDefaultTeleport(); },
+			util::await(
+				[]() { return !interfaces::hud->can_default_teleport(); },
 				std::chrono::seconds(5));
 		}
 		else {
 			do {
-				window::Press(settings::reload);
-			} while (!util::Await(
-				[]() { return !interfaces::gHUD->CanDefaultTeleport(); },
+				window::press(settings::reload);
+			} while (!util::await(
+				[]() { return !interfaces::hud->can_default_teleport(); },
 				std::chrono::seconds(5)));
 		}
-		this->PassTeleportScreen(!couldAccessBefore);
+		pass_teleport_screen(!couldAccessBefore);
 	}
 
-	void LocalPlayer::LayOn(const structures::SimpleBed& bed)
+	void LocalPlayer::lay_on(const structures::SimpleBed& bed)
 	{
 		while (!bed.actionWheel.IsOpen()) {
-			window::Down(settings::use);
+			window::down(settings::use);
 
-			if (!util::Await([&bed]() { return bed.actionWheel.IsOpen(); },
+			if (!util::await([&bed]() { return bed.actionWheel.IsOpen(); },
 					std::chrono::seconds(3))) {
-				window::Up(settings::use);
+				window::up(settings::use);
 			}
-			SleepFor(std::chrono::milliseconds(200));
+			sleep_for(std::chrono::milliseconds(200));
 		}
-		SleepFor(std::chrono::seconds(1));
+		sleep_for(std::chrono::seconds(1));
 		bed.actionWheel.SelectLayOn();
-		window::Up(settings::use);
+		window::up(settings::use);
 	}
 
-	void LocalPlayer::GetOffBed()
+	void LocalPlayer::get_off_bed()
 	{
-		window::Press(settings::use);
-		SleepFor(std::chrono::seconds(3));
+		window::press(settings::use);
+		sleep_for(std::chrono::seconds(3));
 	}
 
-	void LocalPlayer::TurnRight(int degrees, std::chrono::milliseconds delay)
+	void LocalPlayer::turn_right(int degrees, std::chrono::milliseconds delay)
 	{
-		controls::TurnDegrees(degrees, 0);
-		SleepFor(delay);
+		controls::turn_degrees(degrees, 0);
+		sleep_for(delay);
 	}
-	void LocalPlayer::TurnLeft(int degrees, std::chrono::milliseconds delay)
+	void LocalPlayer::turn_left(int degrees, std::chrono::milliseconds delay)
 	{
-		controls::TurnDegrees(-degrees, 0);
-		SleepFor(delay);
-	}
-
-	void LocalPlayer::TurnUp(int degrees, std::chrono::milliseconds delay)
-	{
-		controls::TurnDegrees(0, -degrees);
-		SleepFor(delay);
+		controls::turn_degrees(-degrees, 0);
+		sleep_for(delay);
 	}
 
-	void LocalPlayer::TurnDown(int degrees, std::chrono::milliseconds delay)
+	void LocalPlayer::turn_up(int degrees, std::chrono::milliseconds delay)
 	{
-		controls::TurnDegrees(0, degrees);
-		SleepFor(delay);
+		controls::turn_degrees(0, -degrees);
+		sleep_for(delay);
 	}
 
-	void LocalPlayer::Equip(
-		items::Item* item, interfaces::PlayerInfo::Slot targetSlot)
+	void LocalPlayer::turn_down(int degrees, std::chrono::milliseconds delay)
 	{
-		bool wasInventoryOpen = this->inventory->IsOpen();
+		controls::turn_degrees(0, degrees);
+		sleep_for(delay);
+	}
+
+	void LocalPlayer::equip(
+		items::Item* item, interfaces::PlayerInfo::Slot slot)
+	{
+		bool wasInventoryOpen = inventory->is_open();
 		if (!wasInventoryOpen) {
-			this->inventory->Open();
-			SleepFor(std::chrono::milliseconds(500));
+			get_inventory()->open();
+			sleep_for(std::chrono::milliseconds(500));
 		}
 
-
-		this->inventory->Equip(item, targetSlot);
+		get_inventory()->equip(item, slot);
 		if (!wasInventoryOpen) {
-			this->inventory->Close();
-		}
-	}
-
-	void LocalPlayer::Unequip(interfaces::PlayerInfo::Slot targetSlot)
-	{
-		bool wasInventoryOpen = this->inventory->IsOpen();
-		if (!wasInventoryOpen) {
-			this->inventory->Open();
-			SleepFor(std::chrono::milliseconds(500));
-		}
-		this->inventory->info.Unequip(targetSlot);
-		if (!wasInventoryOpen) {
-			this->inventory->Close();
+			get_inventory()->close();
 		}
 	}
 
-	void LocalPlayer::PassTravelScreen(bool in, bool out)
+	void LocalPlayer::unequip(interfaces::PlayerInfo::Slot slot)
+	{
+		bool wasInventoryOpen = get_inventory()->is_open();
+		if (!wasInventoryOpen) {
+			get_inventory()->open();
+			sleep_for(std::chrono::milliseconds(500));
+		}
+		get_inventory()->info.Unequip(slot);
+		if (!wasInventoryOpen) {
+			get_inventory()->close();
+		}
+	}
+
+	void LocalPlayer::pass_travel_screen(bool in, bool out)
 	{
 		if (in) {
-			if (!util::Await([this]() { return this->is_in_travel_screen(); },
+			if (!util::await([this]() { return is_in_travel_screen(); },
 					std::chrono::seconds(30))) {
 			}
 		}
 
 		if (out) {
-			if (!util::Await([this]() { return !this->is_in_travel_screen(); },
+			if (!util::await([this]() { return !is_in_travel_screen(); },
 					std::chrono::seconds(30))) {
 			}
 		}
 
-		SleepFor(std::chrono::seconds(1));
+		sleep_for(std::chrono::seconds(1));
 	}
 
-	void LocalPlayer::PassTeleportScreen(bool allowAccessFlag)
+	void LocalPlayer::pass_teleport_screen(bool allowAccessFlag)
 	{
-		while (!interfaces::gHUD->CanDefaultTeleport()) {
+		while (!interfaces::hud->can_default_teleport()) {
 			// for long distance teleports we still enter a white screen,
 			// so we can simply reuse our bed logic
-			if (this->is_in_travel_screen()) {
+			if (is_in_travel_screen()) {
 				std::cout << "[+] Whitescreen entered upon teleport."
 						  << std::endl;
-				return this->PassTravelScreen(false);
+				return pass_travel_screen(false);
 			}
-			if (allowAccessFlag && this->CanAccessInventory()) {
+			if (allowAccessFlag && can_access_inventory()) {
 				std::cout << "[+] Teleported to a container." << std::endl;
 				return;
 			}
@@ -348,30 +349,29 @@ namespace asa::entities
 		// See whether the default teleport popup lasts for more than 1 second
 		// if it doesnt its a glitched popup that appears when the teleport has
 		// happened. Restart the procedure in that case
-		if (util::Await(
-				[]() { return !interfaces::gHUD->CanDefaultTeleport(); },
+		if (util::await(
+				[]() { return !interfaces::hud->can_default_teleport(); },
 				std::chrono::milliseconds(1000))) {
 			std::cout << "[!] Glitched default teleport popup found."
 					  << std::endl;
-			return this->PassTeleportScreen();
+			return pass_teleport_screen();
 		}
 	}
 
-	void LocalPlayer::LookAllTheWayDown()
+	void LocalPlayer::look_fully_down()
 	{
 		for (int i = 0; i < 10; i++) {
-			this->TurnDown(18, std::chrono::milliseconds(10));
+			turn_down(18, std::chrono::milliseconds(10));
 		}
-		SleepFor(std::chrono::milliseconds(300));
+		sleep_for(std::chrono::milliseconds(300));
 	}
 
-	void LocalPlayer::LookAllTheWayUp()
+	void LocalPlayer::look_fully_up()
 	{
 		for (int i = 0; i < 10; i++) {
-			this->TurnUp(18, std::chrono::milliseconds(10));
+			turn_up(18, std::chrono::milliseconds(10));
 		}
-		SleepFor(std::chrono::milliseconds(300));
+		sleep_for(std::chrono::milliseconds(300));
 	}
-
 
 }
