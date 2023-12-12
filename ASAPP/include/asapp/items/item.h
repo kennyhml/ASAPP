@@ -32,27 +32,27 @@ namespace asa::items
 		ItemType type;
 
 		float weight;
-		int stackSize;
+		int stack_size;
 
 		bool can_put_in_hotbar;
 		bool has_spoil_timer;
 		bool has_durability;
 		bool requires_engram;
-		bool has_ambigious_query;
+		bool has_ambiguous_query;
 
-		const cv::Mat& GetInventoryIcon();
-		const cv::Mat& GetInventoryIconMask();
-		const cv::Mat& GetNotificationIcon();
-		const cv::Mat& GetNotificationMask();
+		const cv::Mat& get_inventory_icon();
+		const cv::Mat& get_inventory_icon_mask();
+		const cv::Mat& get_notification_icon();
+		const cv::Mat& get_notification_icon_mask();
 
 	private:
-		cv::Mat rgbaInventoryIcon;
-		cv::Mat rgbaNotificationIcon;
+		cv::Mat rgba_inventory_icon;
+		cv::Mat rgba_notification_icon;
 
-		cv::Mat inventoryIcon;
-		cv::Mat inventoryIconMask;
-		cv::Mat notificationIcon;
-		cv::Mat notificationIconMask;
+		cv::Mat inventory_icon;
+		cv::Mat inventory_icon_mask;
+		cv::Mat notification_icon;
+		cv::Mat notification_icon_mask;
 	};
 
 	inline std::unordered_map<std::string, Item::ItemType> itemTypeMap = {

@@ -9,20 +9,20 @@ namespace asa::items
 {
 	inline json rawData = NULL;
 
-	bool Init();
-	bool LoadRawData();
+	bool init();
+	bool load_raw_data();
 
-	Item* GetCustomItem(std::string itemName);
-	void Load(Item*& item, std::string name);
+	Item* get_custom_item(std::string itemName);
+	void load(Item*& item, std::string name);
 
 	namespace resources
 	{
-		bool Init();
+		bool init();
 
 		inline Item* metal = nullptr;
-		inline Item* metalIngot = nullptr;
-		inline Item* cementingPaste = nullptr;
-		inline Item* achatinaPaste = nullptr;
+		inline Item* metal_ingot = nullptr;
+		inline Item* cementing_paste = nullptr;
+		inline Item* achatina_paste = nullptr;
 		inline Item* fiber = nullptr;
 		inline Item* flint = nullptr;
 		inline Item* gunpowder = nullptr;
