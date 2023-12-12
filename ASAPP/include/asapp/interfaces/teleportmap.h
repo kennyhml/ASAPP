@@ -19,5 +19,7 @@ namespace asa::interfaces
 		void go_to(const std::string& destination);
 	};
 
-	inline TeleportMap* gTeleportMap = new TeleportMap();
+
+	inline std::unique_ptr<TeleportMap> teleport_map =
+		std::make_unique<TeleportMap>();
 }

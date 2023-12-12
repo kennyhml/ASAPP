@@ -18,5 +18,7 @@ namespace asa::interfaces
 		void join_game();
 	};
 
-	inline ModeSelect* gModeSelect = new ModeSelect();
+
+	inline std::unique_ptr<ModeSelect> mode_select =
+		std::make_unique<ModeSelect>();
 }

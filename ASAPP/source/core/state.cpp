@@ -9,7 +9,7 @@ namespace asa::core
 		std::chrono::system_clock::time_point last_check;
 		std::vector<StateCheckCallback_t> state_check_callbacks{
 			[]() {
-				if (interfaces::gMainMenu->got_connection_timeout()) {
+				if (interfaces::main_menu->got_connection_timeout()) {
 					throw core::ServerCrashedError();
 				}
 			},

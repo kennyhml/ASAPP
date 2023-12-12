@@ -16,7 +16,7 @@ namespace asa::interfaces
 		virtual void go_to(const std::string& destination);
 	};
 
-	inline TravelMap* gTravelMap = new TravelMap();
-
+	inline std::unique_ptr<TravelMap> travel_map =
+		std::make_unique<TravelMap>();
 
 }

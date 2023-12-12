@@ -33,5 +33,7 @@ namespace asa::interfaces
 		void refresh();
 	};
 
-	inline ServerSelect* gServerSelect = new ServerSelect();
+
+	inline std::unique_ptr<ServerSelect> server_select =
+		std::make_unique<ServerSelect>();
 }

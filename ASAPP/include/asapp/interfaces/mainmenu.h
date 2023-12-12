@@ -21,6 +21,5 @@ namespace asa::interfaces
 		void join_last_session();
 	};
 
-	inline MainMenu* gMainMenu = new MainMenu();
-
+	inline std::unique_ptr<MainMenu> main_menu = std::make_unique<MainMenu>();
 }
