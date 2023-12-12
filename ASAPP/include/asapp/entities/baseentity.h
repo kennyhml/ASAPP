@@ -1,28 +1,25 @@
 #pragma once
 #include "../interfaces/actionwheel.h"
 #include "../interfaces/baseinventory.h"
+#include <memory>
 
 namespace asa::entities
 {
 	class BaseEntity
 	{
+	public:
+		BaseEntity(std::string t_name,
+			std::unique_ptr<interfaces::BaseInventory> t_inventory = nullptr);
+
+		std::string get_name() const { return name; }
+		virtual interfaces::BaseInventory* get_inventory() const
+		{
+			return inventory.get();
+		}
+
 	protected:
 		std::string name;
-
-	public:
-		BaseEntity(
-			std::string name, interfaces::BaseInventory* associatedInventory)
-			: name(name), inventory(associatedInventory)
-		{
-			if (!inventory) {
-				this->inventory = new interfaces::BaseInventory(true);
-			}
-		};
-		~BaseEntity() { delete this->inventory; }
-
-		interfaces::BaseInventory* inventory{ nullptr };
+		std::unique_ptr<interfaces::BaseInventory> inventory;
 		interfaces::ActionWheel actionWheel;
-
-		std::string GetName() const { return this->name; }
 	};
 }

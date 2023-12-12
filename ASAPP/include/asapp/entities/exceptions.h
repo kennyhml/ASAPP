@@ -3,7 +3,7 @@
 #include "dinoent.h"
 #include <stdexcept>
 
-namespace asa::entities::exceptions
+namespace asa::entities
 {
 	class EntityError : public std::exception
 	{

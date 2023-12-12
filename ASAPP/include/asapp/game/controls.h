@@ -5,7 +5,6 @@
 
 namespace asa::controls
 {
-	using ms = std::chrono::milliseconds;
 	using KeyboardMapping = std::unordered_map<std::string, int>;
 
 	enum MouseButton
@@ -17,48 +16,31 @@ namespace asa::controls
 		MOUSE5,
 	};
 
-	inline auto stringToMouseButton =
-		std::unordered_map<std::string, MouseButton>{
-			{ "LeftMouseButton", MouseButton::LEFT },
-			{ "RightMouseButton", MouseButton::RIGHT },
-			{ "MiddleMouseButton", MouseButton::MIDDLE },
-			{ "ThumbMouseButton", MouseButton::MOUSE4 },
-			{ "ThumbMouseButton2", MouseButton::MOUSE5 },
-		};
+	void down(const settings::ActionMapping&,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void release(const settings::ActionMapping&,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void press(const settings::ActionMapping&,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(150));
 
-	int constexpr GetMouseFlag(MouseButton button, bool down);
-	int GetVirtualKeyCode(std::string key);
+	void mouse_down(MouseButton,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void mouse_up(MouseButton,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void mouse_press(MouseButton,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(150));
 
-	KeyboardMapping GetKeyboardMapping();
+	void mouse_combination_press(MouseButton, std::string key);
 
-	inline KeyboardMapping mapping = GetKeyboardMapping();
+	void turn_degrees(int x, int y);
+	void turn_position(int x, int y);
+	void turn_to(int x, int y);
 
-	const float pixelsPerDegree = 129.f / 90.f;
-	const float GetLRFactor();
-	const float GetUDFactor();
-	const float GetFovFactor();
-
-	bool IsMouseInput(const settings::ActionMapping&);
-	bool IsKeyInput(const settings::ActionMapping&);
-
-	void Down(const settings::ActionMapping&, ms delay = ms(10));
-	void Release(const settings::ActionMapping&, ms delay = ms(10));
-	void Press(const settings::ActionMapping&, ms delay = ms(150));
-
-	void MouseDown(MouseButton, ms delay = ms(10));
-	void MouseUp(MouseButton, ms delay = ms(10));
-	void MousePress(MouseButton, ms delay = ms(150));
-
-	void MouseCombinationPress(MouseButton, std::string key);
-	void LeftClick();
-	void RightClick();
-
-	void TurnDegrees(int x, int y);
-	void TurnPosition(int x, int y);
-	void TurnTo(int x, int y);
-
-	void KeyDown(std::string key, ms delay = ms(10));
-	void KeyUp(std::string key, ms delay = ms(10));
-	void KeyPress(std::string key, ms delay = ms(150));
-	void KeyCombinationPress(std::string holdKey, std::string pressKey);
+	void key_down(std::string key,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void key_up(std::string key,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void key_press(std::string key,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(150));
+	void key_combination_press(std::string holdKey, std::string pressKey);
 }

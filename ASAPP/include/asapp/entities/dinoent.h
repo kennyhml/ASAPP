@@ -6,9 +6,8 @@ namespace asa::entities
 	class DinoEnt : public BaseEntity
 	{
 	public:
-		DinoEnt(std::string name, interfaces::BaseInventory* inv = nullptr);
-		DinoEnt(const char* name, interfaces::BaseInventory* inv = nullptr);
+		using BaseEntity::BaseEntity;
 
-		void Exit();
+		void exit();
 	};
 }

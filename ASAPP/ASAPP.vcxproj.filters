@@ -291,5 +291,8 @@
     <ClCompile Include="source\interfaces\serverselect.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\entities\baseentity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

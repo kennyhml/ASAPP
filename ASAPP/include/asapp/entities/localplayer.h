@@ -12,73 +12,73 @@ namespace asa::entities
 	class LocalPlayer : public PlayerEnt
 	{
 	public:
-		LocalPlayer(interfaces::LocalInventory* associatedInventory)
-			: inventory(associatedInventory),
-			  PlayerEnt("You", associatedInventory){};
+		LocalPlayer(std::unique_ptr<interfaces::LocalInventory> t_inventory)
+			: PlayerEnt("You", std::move(t_inventory)){};
 
-		interfaces::LocalInventory* inventory;
+		interfaces::LocalInventory* get_inventory() const override;
 
-		[[nodiscard]] bool IsAlive();
-		[[nodiscard]] bool IsOutOfWater();
-		[[nodiscard]] bool IsOutOfFood();
-		[[nodiscard]] bool IsOverweight();
-		[[nodiscard]] bool ReceivedItem(items::Item* = nullptr);
-		[[nodiscard]] bool DepositedItem(items::Item* = nullptr);
-		[[nodiscard]] bool IsInSpawnAnimation();
-		[[nodiscard]] bool IsInTravelScreen();
-		[[nodiscard]] bool CanAccessBed();
-		[[nodiscard]] bool CanAccessInventory();
-		[[nodiscard]] bool CanUseDefaultTeleport();
+		[[nodiscard]] bool is_alive() const;
+		[[nodiscard]] bool is_out_of_water() const;
+		[[nodiscard]] bool is_out_of_food() const;
+		[[nodiscard]] bool is_overweight() const;
+		[[nodiscard]] bool received_item(items::Item* = nullptr) const;
+		[[nodiscard]] bool deposited_item(items::Item* = nullptr) const;
+		[[nodiscard]] bool is_in_spawn_animation() const;
+		[[nodiscard]] bool is_in_travel_screen() const;
+		[[nodiscard]] bool can_access_bed() const;
+		[[nodiscard]] bool can_access_inventory() const;
+		[[nodiscard]] bool can_use_default_teleport() const;
 
-		bool DepositIntoDedicatedStorage(items::Item*, int* depositedAmountOut);
-		bool WithdrawFromDedicatedStorage(items::Item*, int* withdrawAmountOut);
-		bool GetAmountAdded(items::Item&, int& amountOut);
-		bool GetAmountRemoved(items::Item&, int& amountOut);
+		bool deposit_into_dedi(items::Item*, int* depositedAmountOut);
+		bool withdraw_from_dedi(items::Item*, int* withdrawAmountOut);
+		bool get_amount_added(items::Item&, int& amountOut);
+		bool get_amount_removed(items::Item&, int& amountOut);
 
-		void Suicide();
+		bool can_access(const structures::BaseStructure&) const;
+		bool can_access(const entities::BaseEntity&) const;
 
-		bool CanAccess(const structures::BaseStructure&);
-		bool CanAccess(const entities::BaseEntity&);
+		void access(const entities::BaseEntity&) const;
+		void access(const structures::Container&) const;
+		void access(const structures::InteractableStructure&) const;
 
-		void Access(const entities::BaseEntity&);
-		void Access(const structures::Container&);
-		void Access(const structures::InteractableStructure&);
+		void fast_travel_to(const structures::SimpleBed&);
+		void teleport_to(const structures::Teleporter&, bool isDefault = false);
+		void lay_on(const structures::SimpleBed&);
+		void get_off_bed();
+		void suicide();
 
-		void FastTravelTo(const structures::SimpleBed&);
-		void TeleportTo(const structures::Teleporter&, bool isDefault = false);
-		void LayOn(const structures::SimpleBed&);
-		void GetOffBed();
+		void jump() { window::Press(settings::jump); }
+		void crouch() { window::Press(settings::crouch); }
+		void prone() { window::Press(settings::prone); }
+		void stand_up() { window::Press(settings::run); }
 
-		void Jump() { window::Press(settings::jump); }
-		void Crouch() { window::Press(settings::crouch); }
-		void Prone() { window::Press(settings::prone); }
-		void StandUp() { window::Press(settings::run); }
-
-		void TurnRight(int degree = 90,
+		void turn_right(int degree = 90,
 			std::chrono::milliseconds delay = std::chrono::milliseconds(100));
-		void TurnLeft(int degree = 90,
+		void turn_left(int degree = 90,
 			std::chrono::milliseconds delay = std::chrono::milliseconds(100));
-		void TurnUp(int degree = 90,
+		void turn_up(int degree = 90,
 			std::chrono::milliseconds delay = std::chrono::milliseconds(100));
-		void TurnDown(int degree = 90,
+		void turn_down(int degree = 90,
 			std::chrono::milliseconds delay = std::chrono::milliseconds(100));
 
-		void WalkFoward(std::chrono::milliseconds duration);
-		void WalkLeft(std::chrono::milliseconds duration);
-		void WalkRight(std::chrono::milliseconds duration);
-		void WalkBackwards(std::chrono::milliseconds duration);
+		void walk_forward(std::chrono::milliseconds duration);
+		void walk_left(std::chrono::milliseconds duration);
+		void walk_right(std::chrono::milliseconds duration);
+		void walk_back(std::chrono::milliseconds duration);
 
-		void Equip(items::Item* item, interfaces::PlayerInfo::Slot targetSlot);
-		void Unequip(interfaces::PlayerInfo::Slot targetSlot);
+		void equip(items::Item* item, interfaces::PlayerInfo::Slot targetSlot);
+		void unequip(interfaces::PlayerInfo::Slot targetSlot);
 
-		void LookAllTheWayDown();
-		void LookAllTheWayUp();
+		void look_fully_down();
+		void look_fully_up();
 
 	private:
-		void PassTravelScreen(bool in = true, bool out = true);
-		void PassTeleportScreen(bool allowAccessFlag = false);
+		void pass_travel_screen(bool in = true, bool out = true);
+		void pass_teleport_screen(bool allowAccessFlag = false);
 	};
 
-	inline LocalPlayer* gLocalPlayer = new LocalPlayer(
-		asa::interfaces::gLocalinventory);
+	inline std::unique_ptr<LocalPlayer> local_player =
+		std::make_unique<LocalPlayer>(
+			std::make_unique<interfaces::LocalInventory>());
+
 }

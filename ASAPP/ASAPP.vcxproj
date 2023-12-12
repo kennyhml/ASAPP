@@ -168,6 +168,7 @@
     <ClCompile Include="source\core\config.cpp" />
     <ClCompile Include="source\core\exceptions.cpp" />
     <ClCompile Include="source\core\wrappers.cpp" />
+    <ClCompile Include="source\entities\baseentity.cpp" />
     <ClCompile Include="source\entities\exceptions.cpp" />
     <ClCompile Include="source\entities\localplayer.cpp" />
     <ClCompile Include="source\entities\dinoent.cpp" />
