@@ -77,14 +77,14 @@ namespace asa::settings
 		{
 			UserSetting(std::string t_name) : name(t_name)
 			{
-				settingValueMap[name] = Type(0);
+				setting_value_map[name] = Type(0);
 			};
 
 			std::string name;
 
 			Type get()
 			{
-				return std::any_cast<Type>(settingValueMap[this->name]);
+				return std::any_cast<Type>(setting_value_map.at(name));
 			}
 		};
 

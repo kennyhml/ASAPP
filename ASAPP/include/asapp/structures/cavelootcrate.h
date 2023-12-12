@@ -15,14 +15,14 @@ namespace asa::structures
 			ANY = BLUE | YELLOW | RED,
 		};
 
-		CaveLootCrate(int qualityFlags)
-			: Container("Loot Crate", 0), qualityFlags(qualityFlags){};
+		CaveLootCrate(int t_quality_flags)
+			: Container("Loot Crate", 0), quality_flags(t_quality_flags){};
 
-		const Quality GetCrateQuality();
+		const Quality get_crate_quality();
 
 	private:
-		std::optional<asa::window::Rect> GetInfoArea();
-		const Quality GetQualityFromTooltip(std::string tooltip);
-		int qualityFlags;
+		std::optional<asa::window::Rect> get_info_area();
+		const Quality get_quality_from_tooltip(std::string tooltip);
+		int quality_flags;
 	};
 }

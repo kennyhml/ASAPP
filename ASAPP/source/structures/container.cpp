@@ -1,20 +1,23 @@
 #include "asapp/structures/container.h"
 
-using namespace asa::structures;
 
-Container::Container(
-	std::string name, int slots, interfaces::BaseInventory* inv)
-	: inventory(inv), maxSlots(slots),
-	  InteractableStructure(
-		  name, &settings::actionMappings::accessInventory, inv)
+namespace asa::structures
 {
-	if (!this->inventory) {
-		this->inventory = new interfaces::BaseInventory(true);
-		this->_interface = inventory;
+	Container::Container(
+		std::string name, int slots, interfaces::BaseInventory* inv)
+		: inventory(inv), max_slots(slots),
+		  InteractableStructure(
+			  name, &settings::action_mappings::access_inventory, inv)
+	{
+		if (!inventory) {
+			inventory = new interfaces::BaseInventory(true);
+			_interface = inventory;
+		}
 	}
-}
 
-int Container::GetSlotCount()
-{
-	return this->info.GetFillLevel() * this->maxSlots;
+	int Container::get_slot_count()
+	{
+		return info.get_fill_level() * max_slots;
+	}
+
 }

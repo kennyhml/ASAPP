@@ -9,7 +9,8 @@ namespace asa::interfaces
 	namespace
 	{
 		bool is_blinking(window::Rect icon, window::Color color,
-			std::chrono::milliseconds maxDuration)
+			std::chrono::milliseconds maxDuration = std::chrono::milliseconds(
+				500))
 		{
 			auto start = std::chrono::system_clock::now();
 			while (!util::timedout(start, maxDuration)) {
@@ -86,7 +87,8 @@ namespace asa::interfaces
 			return item_added(roi);
 		}
 		auto locations = window::locate_all_template(roi,
-			item->GetNotificationIcon(), 0.75, item->GetNotificationMask());
+			item->get_notification_icon(), 0.75,
+			item->get_notification_icon_mask());
 
 		for (const auto& rect : locations) {
 			window::Rect match_roi(
@@ -108,7 +110,8 @@ namespace asa::interfaces
 			return item_removed(roi);
 		}
 		auto locations = window::locate_all_template(roi,
-			item->GetNotificationIcon(), 0.75, item->GetNotificationMask());
+			item->get_notification_icon(), 0.75,
+			item->get_inventory_icon_mask());
 
 		for (const auto& rect : locations) {
 			window::Rect match_roi(

@@ -84,7 +84,7 @@ namespace asa::items
 		return notification_icon;
 	}
 
-	const cv::Mat& Item::get_inventory_icon_mask()
+	const cv::Mat& Item::get_notification_icon_mask()
 	{
 		if (!notification_icon_mask.empty()) {
 			return notification_icon_mask;

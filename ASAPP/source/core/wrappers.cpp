@@ -8,19 +8,19 @@ namespace asa
 
 	void asa::check_state()
 	{
-		if (!util::Timedout(last_check, std::chrono::seconds(1)) ||
-			exceptions::get_crash_aware()) {
+		if (!util::timedout(last_check, std::chrono::seconds(1)) ||
+			core::get_crash_aware()) {
 			return;
 		}
 
 		last_check = std::chrono::system_clock::now();
 
-		if (interfaces::gMainMenu->GotConnectionTimeout()) {
-			throw exceptions::ServerCrashedError();
+		if (interfaces::gMainMenu->got_connection_timeout()) {
+			throw core::ServerCrashedError();
 		}
 
-		if (window::HasCrashedPopup()) {
-			throw exceptions::GameCrashedError();
+		if (window::has_crashed_popup()) {
+			throw core::GameCrashedError();
 		}
 	}
 

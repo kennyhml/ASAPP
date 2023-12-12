@@ -3,12 +3,11 @@
 
 namespace asa::interfaces::components
 {
-	Button::Button(
-		int t_x, int t_y, int t_width, int t_height, int t_padding = 2)
+	Button::Button(int t_x, int t_y, int t_width, int t_height, int t_padding)
 		: padding(t_padding),
 		  IInterfaceComponent(t_x, t_y, t_width, t_height){};
 
-	Button::Button(window::Rect t_area, int t_padding = 2)
+	Button::Button(window::Rect t_area, int t_padding)
 		: padding(t_padding), IInterfaceComponent(t_area){};
 
 	void Button::press()

@@ -129,7 +129,7 @@ namespace asa::entities
 		get_inventory()->open();
 		controls::mouse_press(controls::LEFT);
 		sleep_for(std::chrono::milliseconds(100));
-		inventory->SelectSlot(0);
+		inventory->select_slot(0);
 
 		std::cout << "\t[-] Waiting for implant cooldown... ";
 		sleep_for(std::chrono::seconds(6));
@@ -171,7 +171,7 @@ namespace asa::entities
 			!util::await([&ent]() { return ent.get_inventory()->is_open(); },
 				std::chrono::seconds(5)));
 
-		ent.get_inventory()->ReceiveRemoteInventory(std::chrono::seconds(30));
+		ent.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
 	}
 
 	void LocalPlayer::access(const structures::Container& container) const
@@ -180,7 +180,7 @@ namespace asa::entities
 		// any interactable structure such as teleporters, beds etc.
 		// just that we have to wait to receive the remote inventory afterwards.
 		access(static_cast<structures::InteractableStructure>(container));
-		container.inventory->ReceiveRemoteInventory(std::chrono::seconds(30));
+		container.inventory->receive_remote_inventory(std::chrono::seconds(30));
 	}
 
 	void LocalPlayer::access(
@@ -194,8 +194,7 @@ namespace asa::entities
 		do {
 			window::press(structure.get_interact_key(), true);
 			if (util::timedout(start, std::chrono::seconds(30))) {
-				throw structures::exceptions::StructureNotOpenedError(
-					&structure);
+				throw structures::StructureNotOpenedError(&structure);
 			}
 		} while (!util::await(
 			[&structure]() { return structure._interface->is_open(); },
@@ -226,7 +225,7 @@ namespace asa::entities
 			look_fully_down();
 			access(tp);
 			sleep_for(std::chrono::milliseconds(500));
-			tp.map->GoTo(tp.name);
+			tp.map->go_to(tp.name);
 			util::await(
 				[]() { return !interfaces::hud->can_default_teleport(); },
 				std::chrono::seconds(5));
@@ -243,17 +242,17 @@ namespace asa::entities
 
 	void LocalPlayer::lay_on(const structures::SimpleBed& bed)
 	{
-		while (!bed.actionWheel.IsOpen()) {
+		while (!bed.action_wheel.is_open()) {
 			window::down(settings::use);
 
-			if (!util::await([&bed]() { return bed.actionWheel.IsOpen(); },
+			if (!util::await([&bed]() { return bed.action_wheel.is_open(); },
 					std::chrono::seconds(3))) {
 				window::up(settings::use);
 			}
 			sleep_for(std::chrono::milliseconds(200));
 		}
 		sleep_for(std::chrono::seconds(1));
-		bed.actionWheel.SelectLayOn();
+		bed.action_wheel.select_lay_on();
 		window::up(settings::use);
 	}
 
@@ -308,7 +307,7 @@ namespace asa::entities
 			get_inventory()->open();
 			sleep_for(std::chrono::milliseconds(500));
 		}
-		get_inventory()->info.Unequip(slot);
+		get_inventory()->info.unequip(slot);
 		if (!wasInventoryOpen) {
 			get_inventory()->close();
 		}

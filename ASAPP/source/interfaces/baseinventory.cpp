@@ -63,8 +63,8 @@ namespace asa::interfaces
 		if (!item) {
 			return this->has_item();
 		}
-		return window::match_template(
-			*this, item->GetInventoryIcon(), 0.7, item->GetInventoryIconMask());
+		return window::match_template(*this, item->get_inventory_icon(), 0.7,
+			item->get_inventory_icon_mask());
 	}
 
 	bool BaseInventory::is_receiving_remote_inventory() const
@@ -87,7 +87,7 @@ namespace asa::interfaces
 		if (!util::await(
 				[this]() { return !this->is_receiving_remote_inventory(); },
 				timeout)) {
-			throw exceptions::ReceivingRemoteInventoryTimeoutError(this);
+			throw ReceivingRemoteInventoryTimeoutError(this);
 		}
 	}
 
@@ -107,12 +107,12 @@ namespace asa::interfaces
 		// if an items query isnt ambigious, i.e when we enter the item name
 		// ONLY the item can show up, just check the first slot for
 		// efficiency.
-		if (search && !item->has_ambigious_query) {
+		if (search && !item->has_ambiguous_query) {
 			return this->slots[0].has_item(item);
 		}
 
-		return window::match_template(this->item_area, item->GetInventoryIcon(),
-			0.7, item->GetInventoryIconMask());
+		return window::match_template(this->item_area,
+			item->get_inventory_icon(), 0.7, item->get_inventory_icon_mask());
 	}
 
 	bool BaseInventory::count_stacks(
@@ -124,7 +124,7 @@ namespace asa::interfaces
 		}
 
 		auto matches = window::locate_all_template(this->item_area,
-			item->GetInventoryIcon(), 0.9, item->GetInventoryIconMask());
+			item->get_inventory_icon(), 0.9, item->get_inventory_icon_mask());
 
 		if (matches.empty()) {
 			stacks_out = 0;
@@ -137,7 +137,7 @@ namespace asa::interfaces
 	const BaseInventory::Slot* BaseInventory::find_item(
 		items::Item* item, bool is_searched, bool search_for)
 	{
-		if (!item->has_ambigious_query && (is_searched || search_for)) {
+		if (!item->has_ambiguous_query && (is_searched || search_for)) {
 			if (search_for) {
 				this->search_bar.search_for(item->name);
 			}
@@ -240,7 +240,7 @@ namespace asa::interfaces
 			}
 
 			if (util::timedout(start, std::chrono::seconds(30))) {
-				throw exceptions::InterfaceNotClosedError(this);
+				throw InterfaceNotClosedError(this);
 			}
 		}
 	}

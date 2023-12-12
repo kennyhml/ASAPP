@@ -4,7 +4,7 @@
 #include <format>
 #include <typeinfo>
 
-namespace asa::structures::exceptions
+namespace asa::structures
 {
 	class StructureError : public std::exception
 	{
@@ -12,10 +12,11 @@ namespace asa::structures::exceptions
 		std::string info;
 
 	public:
-		StructureError(const BaseStructure* structure);
-		StructureError(const BaseStructure* structure, std::string info);
+		StructureError(const BaseStructure* t_structure);
+		StructureError(const BaseStructure* t_structure, std::string t_info);
 
 		const char* what() const noexcept override;
+		const BaseStructure* get_structure() { return structure; }
 	};
 
 	class StructureNotOpenedError : public StructureError

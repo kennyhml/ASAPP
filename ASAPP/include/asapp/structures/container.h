@@ -8,16 +8,17 @@ namespace asa::structures
 	class Container : public InteractableStructure
 	{
 	protected:
-		int maxSlots;
+		int max_slots;
 
 	public:
-		Container(std::string name, int slots,
+		Container(std::string t_name, int t_slots,
 			interfaces::BaseInventory* inv = nullptr);
 
 		interfaces::ContainerInfo info;
 		interfaces::BaseInventory* inventory;
 
-		int GetSlotCount();
+		int get_slot_count();
+		int get_max_slots() const { return max_slots; }
 	};
 
 }

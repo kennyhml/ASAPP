@@ -28,8 +28,8 @@ namespace asa::interfaces
 			return cv::countNonZero(mask) < 30;
 		}
 		else {
-			return window::match_template(roi, item->GetInventoryIcon(), 0.7,
-				item->GetInventoryIconMask());
+			return window::match_template(roi, item->get_inventory_icon(), 0.7,
+				item->get_inventory_icon_mask());
 		}
 	}
 

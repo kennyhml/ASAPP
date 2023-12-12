@@ -7,10 +7,10 @@ namespace asa::structures
 	class BaseStructure
 	{
 	public:
-		BaseStructure(std::string name) : name(name){};
+		BaseStructure(std::string t_name) : name(t_name){};
 
 		const std::string name;
-		interfaces::ActionWheel actionWheel;
+		interfaces::ActionWheel action_wheel;
 	};
 
 }
