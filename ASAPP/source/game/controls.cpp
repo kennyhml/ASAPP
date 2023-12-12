@@ -4,82 +4,79 @@
 
 namespace asa::controls
 {
-	const float PIXELS_PER_DEGREE = 129.f / 90.f;
-	const float MAX_LEFT_RIGHT_SENS = 3.2f;
-	const float MAX_UP_DOWN_SENS = 3.2f;
-	const float MAX_FOV = 1.25f;
-
-	const KeyboardMapping static_keymap = { { "tab", VK_TAB }, { "f1", VK_F1 },
-		{ "f2", VK_F2 }, { "f3", VK_F3 }, { "f4", VK_F4 }, { "f5", VK_F5 },
-		{ "f6", VK_F6 }, { "f7", VK_F7 }, { "f8", VK_F8 }, { "f9", VK_F9 },
-		{ "f10", VK_F10 }, { "delete", VK_DELETE }, { "home", VK_HOME },
-		{ "end", VK_END }, { "backspace", VK_BACK }, { "enter", VK_RETURN },
-		{ "period", VK_OEM_PERIOD }, { "numpadzero", VK_NUMPAD0 },
-		{ "numpadone", VK_NUMPAD1 }, { "numpadtwo", VK_NUMPAD2 },
-		{ "numpadthree", VK_NUMPAD3 }, { "numpadfour", VK_NUMPAD4 },
-		{ "numpadfive", VK_NUMPAD5 }, { "numpadsix", VK_NUMPAD6 },
-		{ "numpadseven", VK_NUMPAD7 }, { "numpadeight", VK_NUMPAD8 },
-		{ "NumPadnine", VK_NUMPAD9 }, { "ctrl", VK_CONTROL },
-		{ "esc", VK_ESCAPE }, { "space", VK_SPACE }, { "spacebar", VK_SPACE } };
-
-	const auto str_to_button = std::unordered_map<std::string, MouseButton>{
-		{ "LeftMouseButton", MouseButton::LEFT },
-		{ "RightMouseButton", MouseButton::RIGHT },
-		{ "MiddleMouseButton", MouseButton::MIDDLE },
-		{ "ThumbMouseButton", MouseButton::MOUSE4 },
-		{ "ThumbMouseButton2", MouseButton::MOUSE5 },
-	};
-
-	KeyboardMapping GetKeyboardMapping()
+	namespace
 	{
-		KeyboardMapping mapping = static_keymap;
+		const float PIXELS_PER_DEGREE = 129.f / 90.f;
+		const float MAX_LEFT_RIGHT_SENS = 3.2f;
+		const float MAX_UP_DOWN_SENS = 3.2f;
+		const float MAX_FOV = 1.25f;
 
-		for (int i = 32; i < 128; i++) {
-			char c = static_cast<char>(i);
-			std::string character(1, c);
-			SHORT vkCode = VkKeyScanA(i);
+		const KeyboardMapping static_keymap = { { "tab", VK_TAB },
+			{ "f1", VK_F1 }, { "f2", VK_F2 }, { "f3", VK_F3 }, { "f4", VK_F4 },
+			{ "f5", VK_F5 }, { "f6", VK_F6 }, { "f7", VK_F7 }, { "f8", VK_F8 },
+			{ "f9", VK_F9 }, { "f10", VK_F10 }, { "delete", VK_DELETE },
+			{ "home", VK_HOME }, { "end", VK_END }, { "backspace", VK_BACK },
+			{ "enter", VK_RETURN }, { "period", VK_OEM_PERIOD },
+			{ "numpadzero", VK_NUMPAD0 }, { "numpadone", VK_NUMPAD1 },
+			{ "numpadtwo", VK_NUMPAD2 }, { "numpadthree", VK_NUMPAD3 },
+			{ "numpadfour", VK_NUMPAD4 }, { "numpadfive", VK_NUMPAD5 },
+			{ "numpadsix", VK_NUMPAD6 }, { "numpadseven", VK_NUMPAD7 },
+			{ "numpadeight", VK_NUMPAD8 }, { "NumPadnine", VK_NUMPAD9 },
+			{ "ctrl", VK_CONTROL }, { "esc", VK_ESCAPE }, { "space", VK_SPACE },
+			{ "spacebar", VK_SPACE } };
 
-			mapping[character] = VkKeyScanA(i);
+		KeyboardMapping GetKeyboardMapping()
+		{
+			KeyboardMapping mapping = static_keymap;
+
+			for (int i = 32; i < 128; i++) {
+				char c = static_cast<char>(i);
+				std::string character(1, c);
+				SHORT vkCode = VkKeyScanA(i);
+
+				mapping[character] = VkKeyScanA(i);
+			}
+			return mapping;
 		}
-		return mapping;
-	}
 
-	KeyboardMapping mapping = GetKeyboardMapping();
+		const KeyboardMapping mapping = GetKeyboardMapping();
 
-	int constexpr get_mouse_flag(MouseButton button, bool down)
-	{
-		switch (button) {
-		case MouseButton::LEFT:
-			return down ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP;
-		case MouseButton::RIGHT:
-			return down ? MOUSEEVENTF_RIGHTDOWN : MOUSEEVENTF_RIGHTUP;
-		case MouseButton::MIDDLE:
-			return down ? MOUSEEVENTF_MIDDLEDOWN : MOUSEEVENTF_MIDDLEUP;
-		case MouseButton::MOUSE4:
-		case MouseButton::MOUSE5:
-			return down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP;
+		int constexpr get_mouse_flag(MouseButton button, bool down)
+		{
+			switch (button) {
+			case MouseButton::LEFT:
+				return down ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP;
+			case MouseButton::RIGHT:
+				return down ? MOUSEEVENTF_RIGHTDOWN : MOUSEEVENTF_RIGHTUP;
+			case MouseButton::MIDDLE:
+				return down ? MOUSEEVENTF_MIDDLEDOWN : MOUSEEVENTF_MIDDLEUP;
+			case MouseButton::MOUSE4:
+			case MouseButton::MOUSE5:
+				return down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP;
+			}
+			return -1;
 		}
-		return -1;
+
+		float get_left_right_factor()
+		{
+			return MAX_LEFT_RIGHT_SENS / settings::sens_x.get();
+		}
+
+		float get_up_down_factor()
+		{
+			return MAX_UP_DOWN_SENS / settings::sens_y.get();
+		}
+
+		float get_fov_factor() { return MAX_FOV / settings::fov.get(); }
+
 	}
 
 	int get_virtual_keycode(std::string key)
 	{
 		std::transform(key.begin(), key.end(), key.begin(),
 			[](unsigned char c) { return std::tolower(c); });
-		return mapping[key];
+		return mapping.at(key);
 	}
-
-	float get_left_right_factor()
-	{
-		return MAX_LEFT_RIGHT_SENS / settings::sens_x.get();
-	}
-
-	float get_up_down_factor()
-	{
-		return MAX_UP_DOWN_SENS / settings::sens_y.get();
-	}
-
-	float get_fov_factor() { return MAX_FOV / settings::fov.get(); }
 
 
 	bool is_mouse_input(const settings::ActionMapping& input)
@@ -112,6 +109,7 @@ namespace asa::controls
 		is_mouse_input(input) ? mouse_press(str_to_button.at(input.key), delay)
 							  : key_press(input.key, delay);
 	}
+
 	void mouse_down(MouseButton button, std::chrono::milliseconds delay)
 	{
 		INPUT input{ 0 };
@@ -248,5 +246,4 @@ namespace asa::controls
 		key_press(pressKey, std::chrono::milliseconds(20));
 		key_up(holdKey);
 	}
-
 }

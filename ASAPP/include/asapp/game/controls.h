@@ -16,6 +16,19 @@ namespace asa::controls
 		MOUSE5,
 	};
 
+	inline const auto str_to_button =
+		std::unordered_map<std::string, MouseButton>{
+			{ "LeftMouseButton", MouseButton::LEFT },
+			{ "RightMouseButton", MouseButton::RIGHT },
+			{ "MiddleMouseButton", MouseButton::MIDDLE },
+			{ "ThumbMouseButton", MouseButton::MOUSE4 },
+			{ "ThumbMouseButton2", MouseButton::MOUSE5 },
+		};
+
+	int get_virtual_keycode(std::string key);
+	bool is_mouse_input(const settings::ActionMapping& input);
+	bool is_key_input(const settings::ActionMapping& input);
+
 	void down(const settings::ActionMapping&,
 		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
 	void release(const settings::ActionMapping&,

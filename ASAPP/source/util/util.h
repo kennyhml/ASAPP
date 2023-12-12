@@ -5,13 +5,13 @@
 
 namespace util
 {
-	bool Await(const std::function<bool()>& condition,
+	bool await(const std::function<bool()>& condition,
 		std::chrono::milliseconds timeout);
 
-	bool Timedout(const std::chrono::system_clock::time_point& start,
+	bool timedout(const std::chrono::system_clock::time_point& start,
 		const std::chrono::milliseconds timeout);
 
-	bool Timedout(const std::chrono::system_clock::time_point& start,
+	bool timedout(const std::chrono::system_clock::time_point& start,
 		const std::chrono::seconds timeout);
 
 	template <typename Type> const char* GetName(const Type& obj)
@@ -19,8 +19,8 @@ namespace util
 		return typeid(obj).name();
 	}
 
-	bool IsOnlyOneBitSet(int bitfield);
-	void SetClipboard(const std::string& term);
+	bool is_only_one_bit_set(int bitfield);
+	void set_clipboard(const std::string& term);
 
-	cv::Mat MaskAlphaChannel(const cv::Mat& src);
+	cv::Mat mask_alpha_channel(const cv::Mat& src);
 }

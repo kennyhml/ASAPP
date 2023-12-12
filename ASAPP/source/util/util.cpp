@@ -1,66 +1,70 @@
-#include "util.h"
 #define WIN32_LEAN_AND_MEAN
+#include "util.h"
 #include "../core/wrappers.h"
 #include <Windows.h>
 #include <string>
 
-bool util::Await(
-	const std::function<bool()>& condition, std::chrono::milliseconds timeout)
+namespace util
 {
-	auto start_time = std::chrono::steady_clock::now();
-	while (!condition()) {
-		auto current_time = std::chrono::steady_clock::now();
-		auto elapsed_time = std::chrono::duration_cast<std::chrono::seconds>(
-			current_time - start_time);
+	bool await(const std::function<bool()>& condition,
+		std::chrono::milliseconds timeout)
+	{
+		auto start_time = std::chrono::steady_clock::now();
+		while (!condition()) {
+			auto current_time = std::chrono::steady_clock::now();
+			auto elapsed_time =
+				std::chrono::duration_cast<std::chrono::seconds>(
+					current_time - start_time);
 
-		if (elapsed_time >= timeout) {
-			return false;
+			if (elapsed_time >= timeout) {
+				return false;
+			}
+			asa::sleep_for(std::chrono::milliseconds(5));
 		}
-		asa::SleepFor(std::chrono::milliseconds(5));
+		return true;
 	}
-	return true;
-}
 
-bool util::Timedout(const std::chrono::system_clock::time_point& start,
-	const std::chrono::milliseconds timeout)
-{
-	auto now = std::chrono::system_clock::now();
-	auto timePassed = now - start;
+	bool timedout(const std::chrono::system_clock::time_point& start,
+		const std::chrono::milliseconds timeout)
+	{
+		auto now = std::chrono::system_clock::now();
+		auto timePassed = now - start;
 
-	return timePassed >= timeout;
-}
+		return timePassed >= timeout;
+	}
 
-bool util::Timedout(const std::chrono::system_clock::time_point& start,
-	const std::chrono::seconds timeout)
-{
-	return Timedout(
-		start, std::chrono::duration_cast<std::chrono::milliseconds>(timeout));
-}
+	bool timedout(const std::chrono::system_clock::time_point& start,
+		const std::chrono::seconds timeout)
+	{
+		return timedout(start,
+			std::chrono::duration_cast<std::chrono::milliseconds>(timeout));
+	}
 
-bool util::IsOnlyOneBitSet(int bitfield)
-{
-	return bitfield != 0 && (bitfield & (bitfield - 1)) == 0;
-}
+	bool is_only_one_bit_set(int bitfield)
+	{
+		return bitfield != 0 && (bitfield & (bitfield - 1)) == 0;
+	}
 
-void util::SetClipboard(const std::string& text)
-{
-	auto glob = GlobalAlloc(GMEM_FIXED, (text.size() + 1) * sizeof(char));
-	memcpy(glob, text.c_str(), text.size() + 1);
+	void set_clipboard(const std::string& text)
+	{
+		auto glob = GlobalAlloc(GMEM_FIXED, (text.size() + 1) * sizeof(char));
+		memcpy(glob, text.c_str(), text.size() + 1);
 
-	OpenClipboard(NULL);
-	EmptyClipboard();
-	SetClipboardData(CF_TEXT, glob);
-	CloseClipboard();
-}
+		OpenClipboard(NULL);
+		EmptyClipboard();
+		SetClipboardData(CF_TEXT, glob);
+		CloseClipboard();
+	}
 
-cv::Mat util::MaskAlphaChannel(const cv::Mat& src)
-{
-	cv::Mat copy;
-	src.copyTo(copy);
+	cv::Mat mask_alpha_channel(const cv::Mat& src)
+	{
+		cv::Mat copy;
+		src.copyTo(copy);
 
-	std::vector<cv::Mat> channels;
-	cv::split(copy, channels);
-	cv::Mat alphaChannel = channels[3];
-	cv::Mat mask = (alphaChannel > 0);
-	return mask;
+		std::vector<cv::Mat> channels;
+		cv::split(copy, channels);
+		cv::Mat alpha_channel = channels[3];
+		cv::Mat mask = (alpha_channel > 0);
+		return mask;
+	}
 }

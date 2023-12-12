@@ -14,9 +14,7 @@
 
 namespace asa::window
 {
-	bool Init();
-
-	using ms = std::chrono::milliseconds;
+	bool init();
 
 	inline tesseract::TessBaseAPI* tessEngine = nullptr;
 	inline HWND hWnd = NULL;
@@ -35,8 +33,8 @@ namespace asa::window
 		int g{ 0 };
 		int b{ 0 };
 
-		Color ToBGR() const { return Color(b, g, r); }
-		void ToRange(int variance, cv::Scalar& low, cv::Scalar& high) const;
+		Color to_bgr() const { return Color(b, g, r); }
+		void to_range(int variance, cv::Scalar& low, cv::Scalar& high) const;
 	};
 
 	struct Rect
@@ -49,39 +47,40 @@ namespace asa::window
 		int width{ 0 };
 		int height{ 0 };
 
-		const Point& GetEndPoint() const
+		const Point& get_end_point() const
 		{
 			return Point(x + width, y + height);
 		}
 
-		const Point GetRandLocation(int padding) const;
+		const Point get_random_location(int padding) const;
 	};
 
-	std::optional<Rect> LocateTemplate(const Rect& region, const cv::Mat& templ,
-		float threshold = 0.7, const cv::Mat& mask = cv::Mat());
-	std::optional<Rect> LocateTemplate(const cv::Mat& source,
+	std::optional<Rect> locate_template(const Rect& region,
+		const cv::Mat& templ, float threshold = 0.7,
+		const cv::Mat& mask = cv::Mat());
+	std::optional<Rect> locate_template(const cv::Mat& source,
 		const cv::Mat& templ, float threshold = 0.7,
 		const cv::Mat& mask = cv::Mat());
 
-	std::vector<Rect> LocateAllTemplate(const Rect& region,
+	std::vector<Rect> locate_all_template(const Rect& region,
 		const cv::Mat& templ, float threshold = 0.7,
 		const cv::Mat& mask = cv::Mat());
-	std::vector<Rect> LocateAllTemplate(const cv::Mat& source,
+	std::vector<Rect> locate_all_template(const cv::Mat& source,
 		const cv::Mat& templ, float threshold = 0.7,
 		const cv::Mat& mask = cv::Mat());
 
-	bool MatchTemplate(const Rect& region, const cv::Mat& templ,
+	bool match_template(const Rect& region, const cv::Mat& templ,
 		float threshold = 0.7, const cv::Mat& mask = cv::Mat());
-	bool MatchTemplate(const cv::Mat& source, const cv::Mat& templ,
+	bool match_template(const cv::Mat& source, const cv::Mat& templ,
 		float threshold = 0.7, const cv::Mat& mask = cv::Mat());
 
-	cv::Mat GetMask(const cv::Mat& image, const Color& color, float variance);
-	cv::Mat GetMask(const Rect& region, const Color& color, float variance);
+	cv::Mat get_mask(const cv::Mat& image, const Color& color, float variance);
+	cv::Mat get_mask(const Rect& region, const Color& color, float variance);
 
-	void GetHandle(int timeout = 60, bool verbose = 0);
-	cv::Mat Screenshot(const Rect& region = Rect(0, 0, 0, 0));
+	void get_handle(int timeout = 60, bool verbose = 0);
+	cv::Mat screenshot(const Rect& region = Rect(0, 0, 0, 0));
 
-	void SetTesseractImage(const cv::Mat& image);
+	void set_tesseract_image(const cv::Mat& image);
 
 	inline std::ostream& operator<<(std::ostream& os, Point& point)
 	{
@@ -99,43 +98,54 @@ namespace asa::window
 				   r.y, r.width, r.height);
 	}
 
-	bool SetForeground();
-	bool SetForegroundButHidden();
-	bool HasCrashedPopup();
+	bool set_foreground();
+	bool set_foreground_but_hidden();
+	bool has_crashed_popup();
 
-	void SetMousePos(const Point&);
-	void SetMousePos(int x, int y);
-	void ClickAt(const Point&, controls::MouseButton, ms delay = ms(50));
+	void set_mouse_pos(const Point&);
+	void set_mouse_pos(int x, int y);
+	void click_at(const Point&, controls::MouseButton,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(50));
 
-	void Down(const settings::ActionMapping&, ms delay = ms(10));
-	void Up(const settings::ActionMapping&, ms delay = ms(10));
-	void Press(const settings::ActionMapping&, bool catchCursor = false,
-		ms delay = ms(50));
+	void down(const settings::ActionMapping&,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void up(const settings::ActionMapping&,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void press(const settings::ActionMapping&, bool catch_cursor = false,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(50));
 
-	void Down(const std::string& key, ms delay = ms(0));
-	void Up(const std::string& key, ms delay = ms(0));
-	void Press(
-		const std::string& key, bool catchCursor = false, ms delay = ms(0));
+	void down(const std::string& key,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(0));
+	void up(const std::string& key,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(0));
+	void press(const std::string& key, bool catch_cursor = false,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(0));
 
-	void PostDown(const settings::ActionMapping&, ms delay = ms(10));
-	void PostUp(const settings::ActionMapping&, ms delay = ms(10));
-	void PostPress(const settings::ActionMapping&, bool catchCursor = false,
-		ms delay = ms(50));
+	void post_down(const settings::ActionMapping&,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void post_up(const settings::ActionMapping&,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void post_press(const settings::ActionMapping&, bool catch_cursor = false,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(50));
 
-	void PostKeyDown(const std::string& key, ms delay = ms(0));
-	void PostKeyUp(const std::string& key, ms delay = ms(0));
-	void PostKeyPress(
-		const std::string& key, bool catchCursor = false, ms delay = ms(0));
+	void post_key_down(const std::string& key,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(0));
+	void post_key_up(const std::string& key,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(0));
+	void post_key_press(const std::string& key, bool catch_cursor = false,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(0));
 
-	void PostChar(char c);
+	void post_char(char c);
 
-	void PostMouseDown(controls::MouseButton, ms delay = ms(10));
-	void PostMouseUp(controls::MouseButton, ms delay = ms(10));
-	void PostMousePress(
-		controls::MouseButton, bool catchCursor = false, ms delay = ms(100));
-	void PostMousePressAt(const Point&, controls::MouseButton);
+	void post_mouse_down(controls::MouseButton,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void post_mouse_up(controls::MouseButton,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+	void post_mouse_press(controls::MouseButton, bool catch_cursor = false,
+		std::chrono::milliseconds delay = std::chrono::milliseconds(100));
+	void post_mouse_press_at(const Point&, controls::MouseButton);
 
-	void ResetCursor(POINT& previousPosition);
+	void reset_cursor(POINT& previousPosition);
 
 
 }

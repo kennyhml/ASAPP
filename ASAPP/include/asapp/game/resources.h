@@ -5,13 +5,12 @@
 
 namespace asa::resources
 {
-
-	bool Init();
-	cv::Mat LoadResource(std::filesystem::path path);
+	bool init();
+	cv::Mat load_resource(std::filesystem::path path);
 
 	namespace interfaces
 	{
-		bool InitInterfaces();
+		bool init();
 		inline cv::Mat cb_arrowdown;
 		inline cv::Mat regions;
 		inline cv::Mat lay_on;
@@ -23,9 +22,10 @@ namespace asa::resources
 		inline cv::Mat refresh;
 
 	}
+
 	namespace text
 	{
-		bool InitText();
+		bool init();
 		inline cv::Mat added;
 		inline cv::Mat removed;
 		inline cv::Mat day;
