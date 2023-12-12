@@ -11,21 +11,20 @@ namespace asa::interfaces
 	{
 	protected:
 		std::array<components::Button, 12> results;
-		window::Rect dayTime{ 1570, 77, 272, 54 };
-		components::Button confirmButton{ 1461, 931, 367, 60, 10 };
+		window::Rect day_time{ 1570, 77, 272, 54 };
+		components::Button confirm_button{ 1461, 931, 367, 60, 10 };
 
 	public:
 		BaseTravelMap();
 
+		virtual bool is_open() const override;
+		virtual bool can_confirm_target();
+		virtual bool has_result();
+		virtual bool is_result_selected(int index);
 
-		virtual bool IsOpen() const override;
-		virtual bool CanConfirmTarget();
-		virtual bool HasResult();
-		virtual bool IsResultSelected(int index);
+		virtual int count_results();
 
-		virtual int CountResults();
-
-		virtual void SelectResult(int index = 0);
-		virtual void GoTo(const std::string& destination) = 0;
+		virtual void select_result(int index = 0);
+		virtual void go_to(const std::string& destination) = 0;
 	};
 }

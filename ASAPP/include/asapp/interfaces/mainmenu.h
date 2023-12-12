@@ -9,16 +9,16 @@ namespace asa::interfaces
 	private:
 		components::Button esc{ 1732, 87, 82, 34 };
 		components::Button accept{ 764, 710, 376, 42 };
-		components::Button joinLastSession{ 823, 924, 273, 51 };
-		components::Button startButton{ 772, 826, 377, 70 };
+		components::Button join_last_session_button{ 823, 924, 273, 51 };
+		components::Button start_button{ 772, 826, 377, 70 };
 
 	public:
-		bool IsOpen() const override;
-		bool GotConnectionTimeout() const;
+		bool is_open() const override;
+		bool got_connection_timeout() const;
 
-		void AcceptPopup();
-		void Start();
-		void JoinLastSession();
+		void accept_popup();
+		void start();
+		void join_last_session();
 	};
 
 	inline MainMenu* gMainMenu = new MainMenu();

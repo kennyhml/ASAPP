@@ -7,15 +7,15 @@ namespace asa::interfaces
 	class ModeSelect final : public IInterface
 	{
 	private:
-		components::Button joinGameButton{ 540, 247, 383, 640 };
-		components::Button createOrResumeGameButton{ 997, 251, 382, 634 };
-		components::Button modsListButton{ 1449, 247, 396, 647 };
-		components::Button backButton{ 893, 946, 135, 36 };
+		components::Button join_game_button{ 540, 247, 383, 640 };
+		components::Button create_or_resume_game_button{ 997, 251, 382, 634 };
+		components::Button mods_list_button{ 1449, 247, 396, 647 };
+		components::Button back_button{ 893, 946, 135, 36 };
 
 	public:
-		bool IsOpen() const;
+		bool is_open() const;
 
-		void JoinGame();
+		void join_game();
 	};
 
 	inline ModeSelect* gModeSelect = new ModeSelect();

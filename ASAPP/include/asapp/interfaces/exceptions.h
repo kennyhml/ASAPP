@@ -4,7 +4,7 @@
 #include <format>
 #include <typeinfo>
 
-namespace asa::interfaces::exceptions
+namespace asa::interfaces
 {
 	class InterfaceError : public std::exception
 	{
@@ -12,8 +12,8 @@ namespace asa::interfaces::exceptions
 		std::string info;
 
 	public:
-		InterfaceError(const IInterface* _interface, std::string info);
-		InterfaceError(const IInterface* _interface);
+		InterfaceError(const IInterface* t_interface, std::string t_info);
+		InterfaceError(const IInterface* t_interface);
 
 		const char* what() const noexcept override;
 	};
@@ -21,19 +21,19 @@ namespace asa::interfaces::exceptions
 	class InterfaceNotOpenedError : public InterfaceError
 	{
 	public:
-		InterfaceNotOpenedError(const IInterface* _interface);
+		InterfaceNotOpenedError(const IInterface* t_interface);
 	};
 
 	class InterfaceNotClosedError : public InterfaceError
 	{
 	public:
-		InterfaceNotClosedError(const IInterface* _interface);
+		InterfaceNotClosedError(const IInterface* t_interface);
 	};
 
 	class ReceivingRemoteInventoryTimeoutError : public InterfaceError
 	{
 	public:
-		ReceivingRemoteInventoryTimeoutError(const IInterface* _interface);
+		ReceivingRemoteInventoryTimeoutError(const IInterface* t_interface);
 	};
 
 }

@@ -1,18 +1,21 @@
 #include "asapp/interfaces/interfacemanager.h"
 
-bool asa::interfaces::InterfaceManager::IsOpen() const
+
+namespace asa::interfaces
 {
-	window::Color xColor(169, 246, 254);
-	cv::Mat masked = window::GetMask(this->closeButton.area, xColor, 25);
+	bool InterfaceManager::is_open() const
+	{
+		window::Color xColor(169, 246, 254);
+		cv::Mat masked = window::get_mask(close_button.area, xColor, 25);
 
-	return cv::countNonZero(masked) > 20;
-}
+		return cv::countNonZero(masked) > 20;
+	}
 
+	bool InterfaceManager::TabButton::is_selected() const
+	{
+		window::Color selectedColor(210, 229, 240);
+		auto masked = window::get_mask(area, selectedColor, 25);
 
-bool asa::interfaces::InterfaceManager::TabButton::IsSelected() const
-{
-	window::Color selectedColor(210, 229, 240);
-	auto masked = window::GetMask(this->area, selectedColor, 25);
-
-	return cv::countNonZero(masked) > 50;
+		return cv::countNonZero(masked) > 50;
+	}
 }

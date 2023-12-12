@@ -18,9 +18,9 @@ namespace asa::interfaces
 
 		PlayerInfo info{};
 
-		InvTabButton inventoryTab{ 177, 118, 183, 47 };
-		InvTabButton cosmeticsTab{ 358, 120, 184, 46 };
-		InvTabButton craftingTab{ 542, 120, 183, 45 };
+		InvTabButton inventory_tab{ 177, 118, 183, 47 };
+		InvTabButton cosmetics_tab{ 358, 120, 184, 46 };
+		InvTabButton crafting_tab{ 542, 120, 183, 45 };
 
 		void open();
 		void switch_to(Tab tab);
@@ -29,5 +29,6 @@ namespace asa::interfaces
 		void equip(items::Item* item, PlayerInfo::Slot slot);
 	};
 
-	inline LocalInventory* gLocalinventory = new LocalInventory();
+	inline std::unique_ptr<LocalInventory> local_inventory =
+		std::make_unique<LocalInventory>();
 }

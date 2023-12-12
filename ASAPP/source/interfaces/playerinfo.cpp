@@ -3,89 +3,94 @@
 #include "asapp/game/globals.h"
 #include <stdexcept>
 
-using namespace asa::interfaces;
-
-bool PlayerInfo::IsOpen() const
+namespace asa::interfaces
 {
-	window::Color textColor(188, 244, 255);
-	auto mask = window::GetMask(this->you.area, textColor, 20);
-	return cv::countNonZero(mask) > 60;
-}
-
-const bool PlayerInfo::HasEquipped(items::Item* item, Slot slot)
-{
-	if (item && (!item->type == item->EQUIPPABLE)) {
-		throw std::invalid_argument(
-			std::format("Item '{}' cannot be equipped.", item->name));
+	bool PlayerInfo::is_open() const
+	{
+		window::Color textColor(188, 244, 255);
+		auto mask = window::get_mask(you.area, textColor, 20);
+		return cv::countNonZero(mask) > 60;
 	}
 
-	GearSlot gearSlot = this->gearSlots[slot];
-	const auto roi = item ? gearSlot : gearSlot.GetSlotDescriptionArea();
+	const bool PlayerInfo::has_equipped(items::Item* item, Slot slot)
+	{
+		if (item && (!item->type == item->EQUIPPABLE)) {
+			throw std::invalid_argument(
+				std::format("Item '{}' cannot be equipped.", item->name));
+		}
 
-	if (!item) {
-		auto mask = window::GetMask(roi, window::Color(223, 250, 255), 20);
-		return cv::countNonZero(mask) < 30;
-	}
-	else {
-		return window::MatchTemplate(
-			roi, item->GetInventoryIcon(), 0.7, item->GetInventoryIconMask());
-	}
-}
+		GearSlot gear_slot = gear_slots[slot];
+		const auto roi = item ? gear_slot
+							  : gear_slot.get_slot_description_area();
 
-void PlayerInfo::Unequip(Slot slot)
-{
-	const auto& gearSlot = this->gearSlots[slot];
-	while (this->HasEquipped(nullptr, slot)) {
-		auto point = gearSlot.GetRandLocation(5);
-		if (globals::useWindowInput) {
-			window::ClickAt(point, controls::LEFT);
-			sleep_for(std::chrono::milliseconds(5));
-			window::ClickAt(point, controls::LEFT);
+		if (!item) {
+			auto mask = window::get_mask(roi, window::Color(223, 250, 255), 20);
+			return cv::countNonZero(mask) < 30;
 		}
 		else {
-			window::SetMousePos(point);
-			sleep_for(std::chrono::milliseconds(15));
-			for (int i = 0; i < 3; i++) {
-				controls::Press(settings::use);
-			}
+			return window::match_template(roi, item->GetInventoryIcon(), 0.7,
+				item->GetInventoryIconMask());
 		}
-		sleep_for(std::chrono::milliseconds(10));
 	}
-}
 
-void PlayerInfo::UnequipAll()
-{
-	bool anyLeft = true;
-	while (anyLeft) {
-		anyLeft = false;
-
-		for (const auto& slot : gearSlots) {
-
-			auto point = slot.GetRandLocation(5);
+	void PlayerInfo::unequip(Slot slot)
+	{
+		const auto& gear_slot = gear_slots[slot];
+		while (has_equipped(nullptr, slot)) {
+			auto point = gear_slot.get_random_location(5);
 			if (globals::useWindowInput) {
-				window::ClickAt(slot.GetRandLocation(5), controls::LEFT);
+				window::click_at(point, controls::LEFT);
 				sleep_for(std::chrono::milliseconds(5));
-				window::ClickAt(slot.GetRandLocation(5), controls::LEFT);
+				window::click_at(point, controls::LEFT);
 			}
 			else {
-				window::SetMousePos(point);
+				window::set_mouse_pos(point);
 				sleep_for(std::chrono::milliseconds(15));
 				for (int i = 0; i < 3; i++) {
-					controls::Press(settings::use);
+					controls::press(settings::use);
 				}
 			}
-			sleep_for(std::chrono::milliseconds(100));
+			sleep_for(std::chrono::milliseconds(10));
 		}
-		sleep_for(std::chrono::milliseconds(1000));
-		int i = 0;
-		anyLeft = std::any_of(
-			gearSlots.begin(), gearSlots.end(), [&i, this](GearSlot slot) {
-				return this->HasEquipped(nullptr, static_cast<Slot>(i++));
-			});
 	}
-}
 
-const asa::items::Item* PlayerInfo::GetEquippedItem(Slot slot)
-{
-	return nullptr;
+	void PlayerInfo::unequip_all()
+	{
+		bool any_let = true;
+		while (any_let) {
+			any_let = false;
+
+			for (const auto& slot : gear_slots) {
+
+				auto point = slot.get_random_location(5);
+				if (globals::useWindowInput) {
+					window::click_at(
+						slot.get_random_location(5), controls::LEFT);
+					sleep_for(std::chrono::milliseconds(5));
+					window::click_at(
+						slot.get_random_location(5), controls::LEFT);
+				}
+				else {
+					window::set_mouse_pos(point);
+					sleep_for(std::chrono::milliseconds(15));
+					for (int i = 0; i < 3; i++) {
+						controls::press(settings::use);
+					}
+				}
+				sleep_for(std::chrono::milliseconds(100));
+			}
+			sleep_for(std::chrono::milliseconds(1000));
+			int i = 0;
+			any_let = std::any_of(gear_slots.begin(), gear_slots.end(),
+				[&i, this](GearSlot slot) {
+					return has_equipped(nullptr, static_cast<Slot>(i++));
+				});
+		}
+	}
+
+	const asa::items::Item* PlayerInfo::get_equipped_item(Slot slot)
+	{
+		return nullptr;
+	}
+
 }

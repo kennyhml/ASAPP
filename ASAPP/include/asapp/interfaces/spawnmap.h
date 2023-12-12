@@ -11,17 +11,17 @@ namespace asa::interfaces
 	private:
 		components::SearchBar searchbar{ 93, 941, 240, 50 };
 
-		components::Button newSurvivorButton{ 1210, 948, 244, 42 };
-		components::Button regionsButton{ 176, 129, 176, 52 };
-		components::Button bedsButton{ 351, 132, 129, 48 };
+		components::Button new_survivor_button{ 1210, 948, 244, 42 };
+		components::Button regions_button{ 176, 129, 176, 52 };
+		components::Button beds_button{ 351, 132, 129, 48 };
 
 	public:
-		bool IsOpen() const override;
+		bool is_open() const override;
 
-		void SpawnAt(int regionIndex = 0);
-		void SpawnAt(const std::string& bed);
+		void spawn_at(int region_index = 0);
+		void spawn_at(const std::string& bed);
 
-		virtual void GoTo(const std::string& destination);
+		virtual void go_to(const std::string& destination);
 	};
 
 	inline SpawnMap* gSpawnMap = new SpawnMap();

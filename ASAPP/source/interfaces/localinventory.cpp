@@ -4,70 +4,75 @@
 #include "asapp/game/settings.h"
 #include "asapp/interfaces/exceptions.h"
 
-void asa::interfaces::LocalInventory::Open()
+namespace asa::interfaces
 {
-	auto start = std::chrono::system_clock::now();
-	while (!this->IsOpen()) {
-		window::Press(settings::showMyInventory, true);
-		if (util::Await(
-				[this]() { return this->IsOpen(); }, std::chrono::seconds(5))) {
+	void LocalInventory::open()
+	{
+		auto start = std::chrono::system_clock::now();
+		while (!is_open()) {
+			window::press(settings::show_my_inventory, true);
+			if (util::await(
+					[this]() { return is_open(); }, std::chrono::seconds(5))) {
+				break;
+			}
+
+			if (util::timedout(start, std::chrono::seconds(30))) {
+				throw InterfaceNotOpenedError(this);
+			}
+		}
+	}
+
+	void LocalInventory::switch_to(Tab tab)
+	{
+		InvTabButton* button = nullptr;
+		switch (tab) {
+		case Tab::INVENTORY:
+			button = &inventory_tab;
+			break;
+		case Tab::COSMETICS:
+			button = &cosmetics_tab;
+			break;
+		case Tab::CRAFTING:
+			button = &crafting_tab;
 			break;
 		}
+		assert(button != nullptr);
 
-		if (util::Timedout(start, std::chrono::seconds(30))) {
-			throw exceptions::InterfaceNotOpenedError(this);
+		auto start = std::chrono::system_clock::now();
+		while (!button->is_selected()) {
+			button->press();
+			if (util::await([button]() { return button->is_selected(); },
+					std::chrono::seconds(5))) {
+				return;
+			}
+
+			if (util::timedout(start, std::chrono::seconds(30))) {
+				throw InterfaceError(
+					this, "Failed to open tab " + std::to_string(tab));
+			}
 		}
 	}
-}
-
-void asa::interfaces::LocalInventory::SwitchTo(Tab tab)
-{
-	InvTabButton* button = nullptr;
-	switch (tab) {
-	case Tab::INVENTORY:
-		button = &inventoryTab;
-		break;
-	case Tab::COSMETICS:
-		button = &cosmeticsTab;
-		break;
-	case Tab::CRAFTING:
-		button = &craftingTab;
-		break;
-	}
-	assert(button != nullptr);
-
-	auto start = std::chrono::system_clock::now();
-	while (!button->IsSelected()) {
-		button->Press();
-		if (util::Await([button]() { return button->IsSelected(); },
-				std::chrono::seconds(5))) {
-			return;
+	void LocalInventory::equip(items::Item* item, PlayerInfo::Slot slot)
+	{
+		bool searched = false;
+		if (!has(item, false)) {
+			searched = true;
+			if (!has(item, true)) {
+				throw std::runtime_error(std::format(
+					"No '{}' in local player inventory", item->name));
+			}
 		}
 
-		if (util::Timedout(start, std::chrono::seconds(30))) {
-			throw exceptions::InterfaceError(
-				this, "Failed to open tab " + std::to_string(tab));
-		}
-	}
-}
-void asa::interfaces::LocalInventory::Equip(
-	items::Item* item, PlayerInfo::Slot slot)
-{
-	bool searched = false;
-	if (!this->Has(item, false)) {
-		searched = true;
-		if (!this->Has(item, true)) {
-			throw std::runtime_error(
-				std::format("No '{}' in local player inventory", item->name));
-		}
+		const Slot* itemLocation = find_item(item, searched);
+		select_slot(*itemLocation);
+
+		do {
+			window::press(settings::action_mappings::use);
+		} while (!util::await(
+			[this, item, slot]() { return info.has_equipped(item, slot); },
+			std::chrono::seconds(5)));
 	}
 
-	const Slot* itemLocation = this->FindItem(item, searched);
-	this->SelectSlot(*itemLocation);
 
-	do {
-		window::Press(settings::actionMappings::use);
-	} while (!util::Await(
-		[this, item, slot]() { return this->info.HasEquipped(item, slot); },
-		std::chrono::seconds(5)));
+
 }

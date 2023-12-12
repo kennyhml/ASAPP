@@ -9,14 +9,14 @@ namespace asa::interfaces
 		using BaseTravelMap::BaseTravelMap;
 
 	private:
-		components::Button setDefaultButton{ 1210, 948, 245, 43 };
+		components::Button set_default_button{ 1210, 948, 245, 43 };
 
 	public:
 		components::SearchBar searchbar{ 307, 946, 226, 43 };
-		void Close();
-		void SetSelectedAsDefault();
+		void close();
+		void set_selected_as_default();
 
-		void GoTo(const std::string& destination);
+		void go_to(const std::string& destination);
 	};
 
 	inline TeleportMap* gTeleportMap = new TeleportMap();

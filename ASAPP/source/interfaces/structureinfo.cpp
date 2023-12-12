@@ -1,21 +1,22 @@
 #include "asapp/interfaces/containerinfo.h"
 
-using namespace asa::interfaces;
-
-const float ContainerInfo::GetFillLevel()
+namespace asa::interfaces
 {
-	auto roi = this->slotsBar;
-	roi.y -= 5;
+	float ContainerInfo::get_fill_level()
+	{
+		auto roi = slots_bar;
+		roi.y -= 5;
 
-	auto masked = window::GetMask(roi, window::Color(1, 156, 136), 10);
-	int greenPixels = cv::countNonZero(masked);
+		auto masked = window::get_mask(roi, window::Color(1, 156, 136), 10);
+		int greenPixels = cv::countNonZero(masked);
 
-	return float(greenPixels) / float(this->slotsBar.width);
+		return float(greenPixels) / float(slots_bar.width);
+	}
+
+	int ContainerInfo::get_max_weight()
+	{
+		return std::numeric_limits<float>::infinity();
+	}
+
+	int ContainerInfo::get_current_weight() { return 0; }
 }
-
-const int ContainerInfo::GetMaxWeight()
-{
-	return std::numeric_limits<float>::infinity();
-}
-
-const int ContainerInfo::GetCurrentWeight() { return 0; }

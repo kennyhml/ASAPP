@@ -12,7 +12,7 @@ namespace asa::interfaces
 		components::SearchBar searchbar{ 301, 940, 245, 51 };
 
 	public:
-		void Close();
+		void close();
 		virtual void go_to(const std::string& destination);
 	};
 

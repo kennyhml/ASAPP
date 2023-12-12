@@ -12,22 +12,22 @@ namespace asa::interfaces
 			TabButton(int x) : Button(x, 53, 47, 48){};
 
 			using Button::Button;
-			bool IsSelected() const;
+			bool is_selected() const;
 		};
 
 	public:
-		components::Button closeButton{ 1784, 50, 32, 31 };
+		components::Button close_button{ 1784, 50, 32, 31 };
 
-		TabButton inventoryTabButton{ 794 };
-		TabButton engramsTabButton{ 851 };
-		TabButton tribeTabButton{ 908 };
-		TabButton trackingTabButton{ 965 };
-		TabButton notesTabButton{ 1022 };
-		TabButton mapTabButton{ 1079 };
+		TabButton inventory_tab_button{ 794 };
+		TabButton engrams_tab_button{ 851 };
+		TabButton tribe_tab_button{ 908 };
+		TabButton tracking_tab_button{ 965 };
+		TabButton notes_tab_button{ 1022 };
+		TabButton map_tab_button{ 1079 };
 
-		IInterface* GetOpenInterface() const;
+		IInterface* get_open_interface() const;
 
-		virtual bool IsOpen() const;
+		virtual bool is_open() const;
 	};
 
 	inline InterfaceManager* gInterfaceManager = new InterfaceManager();

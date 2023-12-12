@@ -2,52 +2,53 @@
 #include "../util/util.h"
 #include "asapp/game/resources.h"
 
-using namespace asa::interfaces;
-
-bool MainMenu::IsOpen() const
+namespace asa::interfaces
 {
-	return window::MatchTemplate(
-		this->joinLastSession.area, resources::interfaces::join_last_session);
-}
-
-bool MainMenu::GotConnectionTimeout() const
-{
-	return window::MatchTemplate(
-		this->accept.area, resources::interfaces::accept);
-}
-
-void MainMenu::AcceptPopup()
-{
-	if (!this->GotConnectionTimeout()) {
-		return;
+	bool MainMenu::is_open() const
+	{
+		return window::match_template(join_last_session_button.area,
+			resources::interfaces::join_last_session);
 	}
 
-	do {
-		this->accept.Press();
-	} while (!util::Await([this]() { return !this->GotConnectionTimeout(); },
-		std::chrono::seconds(5)));
-}
-
-void MainMenu::Start()
-{
-	if (!this->IsOpen()) {
-		return;
+	bool MainMenu::got_connection_timeout() const
+	{
+		return window::match_template(
+			accept.area, resources::interfaces::accept);
 	}
 
-	do {
-		this->startButton.Press();
-	} while (!util::Await(
-		[this]() { return !this->IsOpen(); }, std::chrono::seconds(5)));
-}
+	void MainMenu::accept_popup()
+	{
+		if (!got_connection_timeout()) {
+			return;
+		}
 
-void MainMenu::JoinLastSession()
-{
-	if (!this->IsOpen()) {
-		return;
+		do {
+			accept.press();
+		} while (!util::await([this]() { return !got_connection_timeout(); },
+			std::chrono::seconds(5)));
 	}
 
-	do {
-		this->joinLastSession.Press();
-	} while (!util::Await(
-		[this]() { return !this->IsOpen(); }, std::chrono::seconds(5)));
+	void MainMenu::start()
+	{
+		if (!is_open()) {
+			return;
+		}
+		do {
+			start_button.press();
+		} while (!util::await(
+			[this]() { return !is_open(); }, std::chrono::seconds(5)));
+	}
+
+	void MainMenu::join_last_session()
+	{
+		if (!is_open()) {
+			return;
+		}
+		do {
+			join_last_session_button.press();
+		} while (!util::await(
+			[this]() { return !is_open(); }, std::chrono::seconds(5)));
+	}
+
+
 }

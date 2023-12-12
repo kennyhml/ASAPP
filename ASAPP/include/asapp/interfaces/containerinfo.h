@@ -8,22 +8,22 @@ namespace asa::interfaces
 	{
 
 	private:
-		window::Rect slotsBar{ 768, 548, 382, 6 };
+		window::Rect slots_bar{ 768, 548, 382, 6 };
 
 	public:
-		virtual bool IsOpen() const { return true; }
+		virtual bool is_open() const { return true; }
 
-		virtual const int GetMaxHealth() { return 0; };
-		virtual const int GetCurrentHealth() { return 0; };
+		virtual int get_max_health() { return 0; };
+		virtual int get_current_health() { return 0; };
 
-		virtual const int GetMaxSlots() { return 0; };
-		virtual const int GetCurrentSlots() { return 0; };
-		virtual const float GetFillLevel();
+		virtual int get_max_slots() { return 0; };
+		virtual int get_current_slots() { return 0; };
+		virtual float get_fill_level();
 
-		virtual const int GetMaxWeight();
-		virtual const int GetCurrentWeight();
+		virtual int get_max_weight();
+		virtual int get_current_weight();
 
-		virtual const std::string GetOwner() { return "Rawr"; }
-		virtual const std::string GetName() { return "Rawr"; }
+		virtual std::string get_owner() { return ""; }
+		virtual std::string get_name() { return ""; }
 	};
 }

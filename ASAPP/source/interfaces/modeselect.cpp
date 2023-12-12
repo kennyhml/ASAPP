@@ -1,24 +1,24 @@
 #include "asapp/interfaces/modeselect.h"
 #include "../util/util.h"
 #include "asapp/game/resources.h"
-using namespace asa::interfaces;
 
 
-bool ModeSelect::IsOpen() const
+namespace asa::interfaces
 {
-	return window::MatchTemplate(
-		this->backButton.area, resources::interfaces::back);
-}
-
-
-void ModeSelect::JoinGame()
-{
-	if (!this->IsOpen()) {
-		return;
+	bool ModeSelect::is_open() const
+	{
+		return window::match_template(
+			back_button.area, resources::interfaces::back);
 	}
 
-	do {
-		this->joinGameButton.Press();
-	} while (!util::Await(
-		[this]() { return !this->IsOpen(); }, std::chrono::seconds(5)));
+	void ModeSelect::join_game()
+	{
+		if (!is_open()) {
+			return;
+		}
+		do {
+			join_game_button.press();
+		} while (!util::await(
+			[this]() { return !is_open(); }, std::chrono::seconds(5)));
+	}
 }

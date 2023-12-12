@@ -2,39 +2,40 @@
 #include "../core/wrappers.h"
 #include "asapp/game/resources.h"
 
-bool asa::interfaces::SpawnMap::IsOpen() const
-{
-	return window::MatchTemplate(
-		this->regionsButton.area, resources::interfaces::regions);
-}
 
-void asa::interfaces::SpawnMap::SpawnAt(int regionIndex)
+namespace asa::interfaces
 {
-	this->regionsButton.Press();
-	sleep_for(std::chrono::milliseconds(200));
-
-	this->results[regionIndex].Press();
-	while (!this->CanConfirmTarget()) {
+	bool SpawnMap::is_open() const
+	{
+		return window::match_template(
+			regions_button.area, resources::interfaces::regions);
 	}
-	this->confirmButton.Press();
-}
 
-void asa::interfaces::SpawnMap::SpawnAt(const std::string& bed)
-{
-	this->bedsButton.Press();
-	sleep_for(std::chrono::milliseconds(200));
+	void SpawnMap::spawn_at(int regionIndex)
+	{
+		regions_button.press();
+		sleep_for(std::chrono::milliseconds(200));
 
-	this->searchbar.SearchFor(bed);
-	sleep_for(std::chrono::milliseconds(400));
-	this->SelectResult();
-
-	while (!this->CanConfirmTarget()) {
+		results[regionIndex].press();
+		while (!can_confirm_target()) {
+		}
+		confirm_button.press();
 	}
-	this->confirmButton.Press();
-	this->searchbar.SetTextCleared();
-}
 
-void asa::interfaces::SpawnMap::GoTo(const std::string& dest)
-{
-	return SpawnAt(dest);
+	void SpawnMap::spawn_at(const std::string& bed)
+	{
+		beds_button.press();
+		sleep_for(std::chrono::milliseconds(200));
+
+		searchbar.search_for(bed);
+		sleep_for(std::chrono::milliseconds(400));
+		select_result();
+
+		while (!can_confirm_target()) {
+		}
+		confirm_button.press();
+		searchbar.set_text_cleared();
+	}
+
+	void SpawnMap::go_to(const std::string& dest) { return spawn_at(dest); }
 }
