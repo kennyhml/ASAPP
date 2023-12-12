@@ -1,5 +1,5 @@
 #include "asapp/interfaces/playerinfo.h"
-#include "../core/wrappers.h"
+#include "asapp/core/state.h"
 #include "asapp/game/globals.h"
 #include <stdexcept>
 
@@ -40,17 +40,17 @@ namespace asa::interfaces
 			auto point = gear_slot.get_random_location(5);
 			if (globals::useWindowInput) {
 				window::click_at(point, controls::LEFT);
-				sleep_for(std::chrono::milliseconds(5));
+				core::sleep_for(std::chrono::milliseconds(5));
 				window::click_at(point, controls::LEFT);
 			}
 			else {
 				window::set_mouse_pos(point);
-				sleep_for(std::chrono::milliseconds(15));
+				core::sleep_for(std::chrono::milliseconds(15));
 				for (int i = 0; i < 3; i++) {
 					controls::press(settings::use);
 				}
 			}
-			sleep_for(std::chrono::milliseconds(10));
+			core::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
 
@@ -66,20 +66,20 @@ namespace asa::interfaces
 				if (globals::useWindowInput) {
 					window::click_at(
 						slot.get_random_location(5), controls::LEFT);
-					sleep_for(std::chrono::milliseconds(5));
+					core::sleep_for(std::chrono::milliseconds(5));
 					window::click_at(
 						slot.get_random_location(5), controls::LEFT);
 				}
 				else {
 					window::set_mouse_pos(point);
-					sleep_for(std::chrono::milliseconds(15));
+					core::sleep_for(std::chrono::milliseconds(15));
 					for (int i = 0; i < 3; i++) {
 						controls::press(settings::use);
 					}
 				}
-				sleep_for(std::chrono::milliseconds(100));
+				core::sleep_for(std::chrono::milliseconds(100));
 			}
-			sleep_for(std::chrono::milliseconds(1000));
+			core::sleep_for(std::chrono::milliseconds(1000));
 			int i = 0;
 			any_let = std::any_of(gear_slots.begin(), gear_slots.end(),
 				[&i, this](GearSlot slot) {

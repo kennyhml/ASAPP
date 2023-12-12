@@ -1,7 +1,7 @@
 #include "asapp/entities/localplayer.h"
-#include "../core/wrappers.h"
 #include "../interfaces/hud.h"
 #include "../util/util.h"
+#include "asapp/core/state.h"
 #include "asapp/entities/exceptions.h"
 #include "asapp/game/settings.h"
 #include "asapp/game/window.h"
@@ -128,16 +128,16 @@ namespace asa::entities
 
 		get_inventory()->open();
 		controls::mouse_press(controls::LEFT);
-		sleep_for(std::chrono::milliseconds(100));
+		core::sleep_for(std::chrono::milliseconds(100));
 		inventory->select_slot(0);
 
 		std::cout << "\t[-] Waiting for implant cooldown... ";
-		sleep_for(std::chrono::seconds(6));
+		core::sleep_for(std::chrono::seconds(6));
 		std::cout << "Done." << std::endl;
 
 		do {
 			window::press(settings::use);
-			sleep_for(std::chrono::seconds(3));
+			core::sleep_for(std::chrono::seconds(3));
 
 		} while (is_alive());
 		std::cout << "\t[-] Suicided successfully." << std::endl;
@@ -208,9 +208,9 @@ namespace asa::entities
 		}
 		prone();
 
-		sleep_for(std::chrono::milliseconds(300));
+		core::sleep_for(std::chrono::milliseconds(300));
 		access(bed);
-		sleep_for(std::chrono::milliseconds(300));
+		core::sleep_for(std::chrono::milliseconds(300));
 
 		bed.map->go_to(bed.name);
 		pass_travel_screen();
@@ -224,7 +224,7 @@ namespace asa::entities
 		if (!isDefault) {
 			look_fully_down();
 			access(tp);
-			sleep_for(std::chrono::milliseconds(500));
+			core::sleep_for(std::chrono::milliseconds(500));
 			tp.map->go_to(tp.name);
 			util::await(
 				[]() { return !interfaces::hud->can_default_teleport(); },
@@ -249,9 +249,9 @@ namespace asa::entities
 					std::chrono::seconds(3))) {
 				window::up(settings::use);
 			}
-			sleep_for(std::chrono::milliseconds(200));
+			core::sleep_for(std::chrono::milliseconds(200));
 		}
-		sleep_for(std::chrono::seconds(1));
+		core::sleep_for(std::chrono::seconds(1));
 		bed.action_wheel.select_lay_on();
 		window::up(settings::use);
 	}
@@ -259,30 +259,30 @@ namespace asa::entities
 	void LocalPlayer::get_off_bed()
 	{
 		window::press(settings::use);
-		sleep_for(std::chrono::seconds(3));
+		core::sleep_for(std::chrono::seconds(3));
 	}
 
 	void LocalPlayer::turn_right(int degrees, std::chrono::milliseconds delay)
 	{
 		controls::turn_degrees(degrees, 0);
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 	void LocalPlayer::turn_left(int degrees, std::chrono::milliseconds delay)
 	{
 		controls::turn_degrees(-degrees, 0);
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void LocalPlayer::turn_up(int degrees, std::chrono::milliseconds delay)
 	{
 		controls::turn_degrees(0, -degrees);
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void LocalPlayer::turn_down(int degrees, std::chrono::milliseconds delay)
 	{
 		controls::turn_degrees(0, degrees);
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void LocalPlayer::equip(
@@ -291,7 +291,7 @@ namespace asa::entities
 		bool wasInventoryOpen = inventory->is_open();
 		if (!wasInventoryOpen) {
 			get_inventory()->open();
-			sleep_for(std::chrono::milliseconds(500));
+			core::sleep_for(std::chrono::milliseconds(500));
 		}
 
 		get_inventory()->equip(item, slot);
@@ -305,7 +305,7 @@ namespace asa::entities
 		bool wasInventoryOpen = get_inventory()->is_open();
 		if (!wasInventoryOpen) {
 			get_inventory()->open();
-			sleep_for(std::chrono::milliseconds(500));
+			core::sleep_for(std::chrono::milliseconds(500));
 		}
 		get_inventory()->info.unequip(slot);
 		if (!wasInventoryOpen) {
@@ -327,7 +327,7 @@ namespace asa::entities
 			}
 		}
 
-		sleep_for(std::chrono::seconds(1));
+		core::sleep_for(std::chrono::seconds(1));
 	}
 
 	void LocalPlayer::pass_teleport_screen(bool allowAccessFlag)
@@ -362,7 +362,7 @@ namespace asa::entities
 		for (int i = 0; i < 10; i++) {
 			turn_down(18, std::chrono::milliseconds(10));
 		}
-		sleep_for(std::chrono::milliseconds(300));
+		core::sleep_for(std::chrono::milliseconds(300));
 	}
 
 	void LocalPlayer::look_fully_up()
@@ -370,7 +370,7 @@ namespace asa::entities
 		for (int i = 0; i < 10; i++) {
 			turn_up(18, std::chrono::milliseconds(10));
 		}
-		sleep_for(std::chrono::milliseconds(300));
+		core::sleep_for(std::chrono::milliseconds(300));
 	}
 
 }

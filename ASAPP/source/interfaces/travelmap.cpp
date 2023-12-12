@@ -1,6 +1,6 @@
 #include "asapp/interfaces/travelmap.h"
-#include "../core/wrappers.h"
 #include "../util/util.h"
+#include "asapp/core/state.h"
 #include "asapp/interfaces/exceptions.h"
 
 namespace asa::interfaces
@@ -25,19 +25,19 @@ namespace asa::interfaces
 	{
 		std::cout << "[+] Traveling to '" << destination << "'..." << std::endl;
 		searchbar.search_for(destination);
-		sleep_for(std::chrono::milliseconds(300));
+		core::sleep_for(std::chrono::milliseconds(300));
 
 		select_result();
 
 		std::cout << "\t[-] Waiting for fast travel to go off cooldown...";
 		while (!can_confirm_target()) {
-			sleep_for(std::chrono::milliseconds(50));
+			core::sleep_for(std::chrono::milliseconds(50));
 		}
 		std::cout << " Done." << std::endl;
 
 		while (is_open()) {
 			confirm_button.press();
-			sleep_for(std::chrono::milliseconds(500));
+			core::sleep_for(std::chrono::milliseconds(500));
 		}
 		std::cout << "\t[-] Traveled to '" << destination << "'." << std::endl;
 

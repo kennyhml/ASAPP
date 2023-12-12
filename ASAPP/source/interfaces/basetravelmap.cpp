@@ -1,6 +1,6 @@
 #include "asapp/interfaces/basetravelmap.h"
-#include "../core/wrappers.h"
 #include "../util/util.h"
+#include "asapp/core/state.h"
 #include "asapp/game/globals.h"
 #include "asapp/game/resources.h"
 #include <algorithm>

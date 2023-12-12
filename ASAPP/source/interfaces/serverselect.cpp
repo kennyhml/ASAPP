@@ -1,6 +1,6 @@
 #include "asapp/interfaces/serverselect.h"
-#include "../core/wrappers.h"
 #include "../util/util.h"
+#include "asapp/core/state.h"
 #include "asapp/game/resources.h"
 
 namespace asa::interfaces
@@ -60,18 +60,18 @@ namespace asa::interfaces
 	{
 		std::cout << "[+] Joining server " << serverName << "..." << std::endl;
 		searchbar.search_for(serverName);
-		sleep_for(std::chrono::seconds(3));
+		core::sleep_for(std::chrono::seconds(3));
 
 		while (!is_best_result_selected()) {
 			best_result.press();
-			sleep_for(std::chrono::milliseconds(300));
+			core::sleep_for(std::chrono::milliseconds(300));
 		}
 
 
 		std::cout << "\t[-] Best search result selected." << std::endl;
 		while (!is_joining_server()) {
 			join_button.press();
-			sleep_for(std::chrono::seconds(1));
+			core::sleep_for(std::chrono::seconds(1));
 		}
 		std::cout << "\t[-] Now joining session..." << std::endl;
 		if (!util::await(
@@ -85,7 +85,7 @@ namespace asa::interfaces
 	void ServerSelect::refresh()
 	{
 		refresh_button.press();
-		sleep_for(std::chrono::seconds(1));
+		core::sleep_for(std::chrono::seconds(1));
 	}
 
 

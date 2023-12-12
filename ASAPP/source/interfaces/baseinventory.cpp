@@ -1,6 +1,6 @@
 #include "asapp/interfaces/baseinventory.h"
-#include "../core/wrappers.h"
 #include "../util/util.h"
+#include "asapp/core/state.h"
 #include "asapp/game/controls.h"
 #include "asapp/game/resources.h"
 #include "asapp/interfaces/exceptions.h"
@@ -221,10 +221,10 @@ namespace asa::interfaces
 		this->select_slot(slot);
 		window::post_mouse_press_at(
 			slot.get_random_location(5), controls::LEFT);
-		sleep_for(std::chrono::milliseconds(10));
+		core::sleep_for(std::chrono::milliseconds(10));
 		window::press(
 			settings::transfer_item, false, std::chrono::milliseconds(15));
-		sleep_for(std::chrono::milliseconds(50));
+		core::sleep_for(std::chrono::milliseconds(50));
 	}
 
 	void BaseInventory::take_slot(int index) { take_slot(this->slots[index]); }
@@ -249,7 +249,7 @@ namespace asa::interfaces
 	{
 		window::Point location = slot.get_random_location(5);
 		window::set_mouse_pos(location);
-		sleep_for(std::chrono::milliseconds(50));
+		core::sleep_for(std::chrono::milliseconds(50));
 	}
 
 	void BaseInventory::select_slot(int index)
@@ -269,7 +269,7 @@ namespace asa::interfaces
 	{
 		if (item) {
 			this->search_bar.search_for(item->name);
-			sleep_for(std::chrono::milliseconds(50));
+			core::sleep_for(std::chrono::milliseconds(50));
 		}
 
 		this->transfer_all_button.press();
@@ -282,7 +282,7 @@ namespace asa::interfaces
 		const std::string& term, BaseInventory* tar)
 	{
 		this->search_bar.search_for(term);
-		sleep_for(std::chrono::milliseconds(50));
+		core::sleep_for(std::chrono::milliseconds(50));
 
 		return this->transfer_all(nullptr, tar);
 	}
@@ -292,7 +292,7 @@ namespace asa::interfaces
 	{
 		if (search) {
 			this->search_bar.search_for(item->name);
-			sleep_for(std::chrono::milliseconds(50));
+			core::sleep_for(std::chrono::milliseconds(50));
 		}
 
 		int i = 0;

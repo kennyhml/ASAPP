@@ -1,5 +1,5 @@
 #include "asapp/interfaces/actionwheel.h"
-#include "../core/wrappers.h"
+#include "asapp/core/state.h"
 #include "asapp/game/resources.h"
 
 namespace asa::interfaces
@@ -25,7 +25,7 @@ namespace asa::interfaces
 		auto randPoint = matchLoc.value().get_random_location(5);
 		window::set_mouse_pos(
 			this->area.x + randPoint.x, this->area.y + randPoint.y);
-		sleep_for(std::chrono::milliseconds(400));
+		core::sleep_for(std::chrono::milliseconds(400));
 		controls::mouse_press(controls::LEFT);
 	}
 }

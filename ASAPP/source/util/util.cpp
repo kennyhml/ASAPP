@@ -1,6 +1,6 @@
 #define WIN32_LEAN_AND_MEAN
 #include "util.h"
-#include "../core/wrappers.h"
+#include "asapp/core/state.h"
 #include <Windows.h>
 #include <string>
 
@@ -19,7 +19,7 @@ namespace util
 			if (elapsed_time >= timeout) {
 				return false;
 			}
-			asa::sleep_for(std::chrono::milliseconds(5));
+			asa::core::sleep_for(std::chrono::milliseconds(5));
 		}
 		return true;
 	}

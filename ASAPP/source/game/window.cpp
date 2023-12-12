@@ -1,7 +1,7 @@
 #include "asapp/game/window.h"
-#include "../core/wrappers.h"
 #include "../util/util.h"
 #include "asapp/core/config.h"
+#include "asapp/core/state.h"
 #include "asapp/game/globals.h"
 #include <chrono>
 #include <fstream>
@@ -80,7 +80,7 @@ namespace asa::window
 	std::optional<Rect> locate_template(const cv::Mat& source,
 		const cv::Mat& templ, float threshold, const cv::Mat& mask)
 	{
-		check_state();
+		core::check_state();
 
 		cv::Mat result;
 		if (mask.empty()) {
@@ -291,7 +291,7 @@ namespace asa::window
 
 		if (!globals::useWindowInput) {
 			set_mouse_pos(position);
-			sleep_for(delay);
+			core::sleep_for(delay);
 			controls::mouse_press(button);
 		}
 		else {
@@ -371,13 +371,13 @@ namespace asa::window
 	{
 		PostMessageW(
 			hWnd, WM_KEYDOWN, controls::get_virtual_keycode(key), NULL);
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void post_key_up(const std::string& key, std::chrono::milliseconds delay)
 	{
 		PostMessageW(hWnd, WM_KEYUP, controls::get_virtual_keycode(key), NULL);
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void post_key_press(const std::string& key, bool catchCursor,
@@ -419,7 +419,7 @@ namespace asa::window
 			PostMessageW(hWnd, WM_XBUTTONDOWN, MK_XBUTTON2, NULL);
 			break;
 		}
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void post_mouse_up(
@@ -443,7 +443,7 @@ namespace asa::window
 			PostMessageW(hWnd, WM_XBUTTONUP, MK_XBUTTON2, NULL);
 			break;
 		}
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void post_mouse_press(controls::MouseButton button, bool catchCursor,
@@ -467,7 +467,7 @@ namespace asa::window
 	{
 		if (GetForegroundWindow() != hWnd) {
 			set_foreground();
-			sleep_for(std::chrono::milliseconds(100));
+			core::sleep_for(std::chrono::milliseconds(100));
 		}
 
 		LPARAM lParam = MAKELPARAM(position.x, position.y);

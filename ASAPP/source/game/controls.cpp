@@ -1,5 +1,5 @@
 #include "asapp/game/controls.h"
-#include "../core/wrappers.h"
+#include "asapp/core/state.h"
 #include <algorithm>
 
 namespace asa::controls
@@ -125,7 +125,7 @@ namespace asa::controls
 		}
 
 		SendInput(1, &input, sizeof(INPUT));
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void mouse_up(MouseButton button, std::chrono::milliseconds delay)
@@ -143,22 +143,22 @@ namespace asa::controls
 		}
 
 		SendInput(1, &input, sizeof(INPUT));
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void mouse_press(MouseButton button, std::chrono::milliseconds delay)
 	{
 		mouse_down(button);
-		sleep_for(delay);
+		core::sleep_for(delay);
 		mouse_up(button);
 	}
 
 	void mouse_combination_press(MouseButton button, std::string key)
 	{
 		key_down(key);
-		sleep_for(std::chrono::milliseconds(20));
+		core::sleep_for(std::chrono::milliseconds(20));
 		mouse_press(button);
-		sleep_for(std::chrono::milliseconds(20));
+		core::sleep_for(std::chrono::milliseconds(20));
 		key_up(key);
 	}
 
@@ -210,7 +210,7 @@ namespace asa::controls
 		}
 
 		SendInput(1, &input, sizeof(INPUT));
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void key_up(std::string key, std::chrono::milliseconds delay)
@@ -230,13 +230,13 @@ namespace asa::controls
 		}
 
 		SendInput(1, &input, sizeof(INPUT));
-		sleep_for(delay);
+		core::sleep_for(delay);
 	}
 
 	void key_press(std::string key, std::chrono::milliseconds delay)
 	{
 		key_down(key);
-		sleep_for(delay);
+		core::sleep_for(delay);
 		key_up(key);
 	}
 

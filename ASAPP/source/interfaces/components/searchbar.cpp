@@ -1,6 +1,6 @@
 #include "asapp/interfaces/components/searchbar.h"
-#include "../../core/wrappers.h"
 #include "../../util/util.h"
+#include "asapp/core/state.h"
 #include "asapp/game/controls.h"
 #include "asapp/game/globals.h"
 
@@ -25,7 +25,7 @@ namespace asa::interfaces::components
 	void SearchBar::search_for(std::string term)
 	{
 		this->press();
-		sleep_for(std::chrono::milliseconds(200));
+		core::sleep_for(std::chrono::milliseconds(200));
 		this->searching = true;
 
 		if (!globals::useWindowInput) {
@@ -46,7 +46,7 @@ namespace asa::interfaces::components
 			return this->search_for(term);
 		}
 
-		sleep_for(std::chrono::milliseconds(50));
+		core::sleep_for(std::chrono::milliseconds(50));
 		window::press("enter");
 
 		searching = false;
@@ -76,11 +76,11 @@ namespace asa::interfaces::components
 		}
 		else {
 			controls::key_combination_press("Ctrl", "a");
-			sleep_for(std::chrono::milliseconds(40));
+			core::sleep_for(std::chrono::milliseconds(40));
 			controls::key_press("Delete");
 		}
 
-		sleep_for(std::chrono::milliseconds(50));
+		core::sleep_for(std::chrono::milliseconds(50));
 		window::press("enter");
 
 		this->set_text_cleared();

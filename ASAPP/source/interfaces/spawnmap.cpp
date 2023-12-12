@@ -1,5 +1,5 @@
 #include "asapp/interfaces/spawnmap.h"
-#include "../core/wrappers.h"
+#include "asapp/core/state.h"
 #include "asapp/game/resources.h"
 
 
@@ -14,7 +14,7 @@ namespace asa::interfaces
 	void SpawnMap::spawn_at(int regionIndex)
 	{
 		regions_button.press();
-		sleep_for(std::chrono::milliseconds(200));
+		core::sleep_for(std::chrono::milliseconds(200));
 
 		results[regionIndex].press();
 		while (!can_confirm_target()) {
@@ -25,10 +25,10 @@ namespace asa::interfaces
 	void SpawnMap::spawn_at(const std::string& bed)
 	{
 		beds_button.press();
-		sleep_for(std::chrono::milliseconds(200));
+		core::sleep_for(std::chrono::milliseconds(200));
 
 		searchbar.search_for(bed);
-		sleep_for(std::chrono::milliseconds(400));
+		core::sleep_for(std::chrono::milliseconds(400));
 		select_result();
 
 		while (!can_confirm_target()) {
