@@ -60,18 +60,18 @@ void ServerSelect::JoinServer(const std::string& serverName)
 {
 	std::cout << "[+] Joining server " << serverName << "..." << std::endl;
 	this->searchbar.SearchFor(serverName);
-	SleepFor(std::chrono::seconds(3));
+	sleep_for(std::chrono::seconds(3));
 
 	while (!this->IsBestResultSelected()) {
 		this->bestResult.Press();
-		SleepFor(std::chrono::milliseconds(300));
+		sleep_for(std::chrono::milliseconds(300));
 	}
 
 
 	std::cout << "\t[-] Best search result selected." << std::endl;
 	while (!this->IsJoiningServer()) {
 		this->joinButton.Press();
-		SleepFor(std::chrono::seconds(1));
+		sleep_for(std::chrono::seconds(1));
 	}
 	std::cout << "\t[-] Now joining session..." << std::endl;
 	if (!util::Await(
@@ -84,5 +84,5 @@ void ServerSelect::JoinServer(const std::string& serverName)
 void ServerSelect::Refresh()
 {
 	this->refreshButton.Press();
-	SleepFor(std::chrono::seconds(1));
+	sleep_for(std::chrono::seconds(1));
 }

@@ -11,7 +11,7 @@ bool asa::interfaces::SpawnMap::IsOpen() const
 void asa::interfaces::SpawnMap::SpawnAt(int regionIndex)
 {
 	this->regionsButton.Press();
-	SleepFor(std::chrono::milliseconds(200));
+	sleep_for(std::chrono::milliseconds(200));
 
 	this->results[regionIndex].Press();
 	while (!this->CanConfirmTarget()) {
@@ -22,10 +22,10 @@ void asa::interfaces::SpawnMap::SpawnAt(int regionIndex)
 void asa::interfaces::SpawnMap::SpawnAt(const std::string& bed)
 {
 	this->bedsButton.Press();
-	SleepFor(std::chrono::milliseconds(200));
+	sleep_for(std::chrono::milliseconds(200));
 
 	this->searchbar.SearchFor(bed);
-	SleepFor(std::chrono::milliseconds(400));
+	sleep_for(std::chrono::milliseconds(400));
 	this->SelectResult();
 
 	while (!this->CanConfirmTarget()) {

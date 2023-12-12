@@ -11,7 +11,7 @@ namespace asa::interfaces::components
 	Button::Button(window::Rect t_area, int t_padding = 2)
 		: padding(t_padding), IInterfaceComponent(t_area){};
 
-	void Button::Press()
+	void Button::press()
 	{
 		auto loc = area.get_random_location(padding);
 

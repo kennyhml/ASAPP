@@ -9,102 +9,104 @@
 
 namespace asa::interfaces
 {
-	const int MAX_ITEMS_PER_PAGE = 36;
+	inline const int MAX_ITEMS_PER_PAGE = 36;
 
 	class BaseInventory : public IInterface
 	{
 	protected:
 		struct ManagementButton : components::Button
 		{
-			ManagementButton(int x, int y) : Button(x, y, 45, 45){};
+			ManagementButton(int t_x, int t_y) : Button(t_x, t_y, 45, 45){};
 
-			[[nodiscard]] bool IsToggled() const;
-			[[nodiscard]] bool IsAvailable() const;
+			[[nodiscard]] bool is_toggled() const;
+			[[nodiscard]] bool is_available() const;
 		};
 
 		struct InvTabButton : components::Button
 		{
 			using components::Button::Button;
 
-			[[nodiscard]] bool IsSelected() const;
-			[[nodiscard]] bool Exists() const;
+			[[nodiscard]] bool is_selected() const;
+			[[nodiscard]] bool exists() const;
 		};
 
 		struct Slot : window::Rect
 		{
 			Slot() : Slot(0, 0){};
-			Slot(int x, int y) : Rect{ x, y, 86, 87 } {};
+			Slot(int t_x, int t_y) : Rect{ t_x, t_y, 86, 87 } {};
 
-			[[nodiscard]] bool HasItem() const;
-			[[nodiscard]] bool HasItem(items::Item* item) const;
+			[[nodiscard]] bool has_item() const;
+			[[nodiscard]] bool has_item(items::Item* item) const;
 		};
 
-		ManagementButton transferAllButton;
-		ManagementButton dropAllButton;
-		ManagementButton newFolderButton;
-		ManagementButton autoStackButton;
-		ManagementButton folderViewButton;
+		ManagementButton transfer_all_button;
+		ManagementButton drop_all_button;
+		ManagementButton new_folder_button;
+		ManagementButton auto_stack_button;
+		ManagementButton folder_view_button;
 
-		bool isRemoteInventory;
+		bool is_remote_inventory;
 		window::Rect area;
-		window::Rect recvRemoteInventoryArea{ 1340, 511, 295, 34 };
+		window::Rect recv_remote_inventory_area{ 1340, 511, 295, 34 };
 
 	public:
-		BaseInventory(bool isRemote);
+		BaseInventory(bool is_remote);
 
 		enum Tab
 		{
 			INVENTORY,
 		};
 
-		components::ComboBox itemFilter;
-		components::SearchBar searchBar;
+		components::ComboBox item_filter;
+		components::SearchBar search_bar;
 
-		window::Rect itemArea;
+		window::Rect item_area;
 
 		std::array<Slot, 36> slots;
 
-		window::Rect GetArea() const;
+		window::Rect get_area() const;
 
-		bool IsReceivingRemoteInventory() const;
-		void ReceiveRemoteInventory(std::chrono::seconds timeout) const;
+		bool is_receiving_remote_inventory() const;
+		void receive_remote_inventory(std::chrono::seconds timeout) const;
 
 		virtual bool is_open() const override;
-		virtual bool Has(items::Item* item, bool search = false);
-		virtual bool CountStacks(
-			items::Item* item, int& stacksOut, bool search = false);
+		virtual bool has(items::Item* item, bool search = false);
+		virtual bool count_stacks(
+			items::Item* item, int& stacks_out, bool search = false);
 
-		virtual const Slot* FindItem(
-			items::Item*, bool isSearched = false, bool searchFor = false);
+		virtual const Slot* find_item(
+			items::Item*, bool is_searched = false, bool search_for = false);
 
-		virtual void Popcorn(items::Item* item);
-		virtual void Popcorn(items::Item* item, int stacks);
-		virtual void Popcorn(items::Item* item, int stacks, int& stacksDropped);
-		virtual void PopcornSlots(int slots);
+		virtual void popcorn(items::Item* item);
+		virtual void popcorn(items::Item* item, int stacks);
+		virtual void popcorn(
+			items::Item* item, int stacks, int& stacks_dropped);
+		virtual void popcorn_slots(int slots);
 
-		virtual void TakeSlot(Slot slot);
-		virtual void TakeSlot(int index);
+		virtual void take_slot(Slot slot);
+		virtual void take_slot(int index);
 
 		void close();
 
-		void SelectSlot(Slot slot);
-		void SelectSlot(int index);
+		void select_slot(Slot slot);
+		void select_slot(int index);
 
-		void DropAll();
+		void drop_all();
 
-		void TransferAll(items::Item* = nullptr, BaseInventory* tar = nullptr);
-		void TransferAll(const std::string& term, BaseInventory* tar = nullptr);
+		void transfer_all(items::Item* = nullptr, BaseInventory* tar = nullptr);
+		void transfer_all(
+			const std::string& term, BaseInventory* tar = nullptr);
 
-		void Transfer(items::Item*, int amount = 1, BaseInventory* = nullptr,
+		void transfer(items::Item*, int amount = 1, BaseInventory* = nullptr,
 			bool search = true);
 
-		void SetFilter();
-		void MakeNewFolder(std::string folderName);
-		void AutoStack();
-		void ToggleFolderView();
+		void set_filter();
+		void make_new_folder(std::string folder_name);
+		void auto_stack();
+		void toggle_folder_view();
 
 	private:
-		void InitSlots(const window::Point& origin);
+		void init_slots(const window::Point& origin);
 	};
 
 }

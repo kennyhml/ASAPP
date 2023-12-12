@@ -5,293 +5,302 @@
 #include "asapp/game/resources.h"
 #include "asapp/interfaces/exceptions.h"
 
-using namespace asa::interfaces;
-
-
-BaseInventory::BaseInventory(bool r)
-	: area(r ? 1179 : 149, 94, 591, 827), isRemoteInventory(r),
-	  itemFilter(r ? 1205 : 175, 841, 552, 42),
-	  searchBar(r ? 1207 : 177, 176, 142, 44),
-	  transferAllButton(r ? 1388 : 366, 176),
-	  dropAllButton(r ? 1436 : 413, 176), newFolderButton(r ? 1531 : 509, 176),
-	  autoStackButton(r ? 1579 : 557, 176),
-	  folderViewButton(r ? 1652 : 629, 176),
-	  itemArea(r ? 1205 : 178, 239, 552, 588)
+namespace asa::interfaces
 {
-	this->InitSlots({ r ? 1205 : 178, 239 });
-};
+	BaseInventory::BaseInventory(bool r)
+		: area(r ? 1179 : 149, 94, 591, 827), is_remote_inventory(r),
+		  item_filter(r ? 1205 : 175, 841, 552, 42),
+		  search_bar(r ? 1207 : 177, 176, 142, 44),
+		  transfer_all_button(r ? 1388 : 366, 176),
+		  drop_all_button(r ? 1436 : 413, 176),
+		  new_folder_button(r ? 1531 : 509, 176),
+		  auto_stack_button(r ? 1579 : 557, 176),
+		  folder_view_button(r ? 1652 : 629, 176),
+		  item_area(r ? 1205 : 178, 239, 552, 588)
+	{
+		init_slots({ r ? 1205 : 178, 239 });
+	};
 
-[[nodiscard]] bool BaseInventory::ManagementButton::IsToggled() const
-{
-	window::Color toggledColor(128, 231, 255);
-	auto masked = window::GetMask(this->area, toggledColor, 10);
-	return cv::countNonZero(masked) > 30;
-}
-
-[[nodiscard]] bool BaseInventory::ManagementButton::IsAvailable() const
-{
-	window::Color baseColor(0, 140, 171);
-	auto masked = window::GetMask(this->area, baseColor, 10);
-	return cv::countNonZero(masked) > 20;
-}
-
-[[nodiscard]] bool BaseInventory::InvTabButton::IsSelected() const
-{
-	window::Color selectedColor(188, 244, 255);
-	auto masked = window::GetMask(this->area, selectedColor, 10);
-	return cv::countNonZero(masked) > 100;
-}
-
-[[nodiscard]] bool BaseInventory::InvTabButton::Exists() const
-{
-	window::Color inactiveColor(80, 141, 155);
-	auto masked = window::GetMask(this->area, inactiveColor, 10);
-	return cv::countNonZero(masked) > 100 || this->IsSelected();
-}
-
-[[nodiscard]] bool BaseInventory::Slot::HasItem() const
-{
-	auto roi = window::Rect(this->x + 46, this->y + 69, 42, 14);
-	window::Color weightTextCol(128, 231, 255);
-
-	cv::Mat masked = window::GetMask(roi, weightTextCol, 35);
-	return cv::countNonZero(masked) > 10;
-}
-
-[[nodiscard]] bool BaseInventory::Slot::HasItem(items::Item* item) const
-{
-	if (!item) {
-		return this->HasItem();
-	}
-	return window::MatchTemplate(
-		*this, item->GetInventoryIcon(), 0.7, item->GetInventoryIconMask());
-}
-
-bool BaseInventory::IsReceivingRemoteInventory() const
-{
-	if (!this->isRemoteInventory) {
-		return false;
+	[[nodiscard]] bool BaseInventory::ManagementButton::is_toggled() const
+	{
+		window::Color toggled_color(128, 231, 255);
+		auto masked = window::get_mask(this->area, toggled_color, 10);
+		return cv::countNonZero(masked) > 30;
 	}
 
-	window::Color textColor(191, 243, 255);
-	auto mask = window::GetMask(this->recvRemoteInventoryArea, textColor, 25);
-	return cv::countNonZero(mask) > 100;
-}
-
-void BaseInventory::ReceiveRemoteInventory(std::chrono::seconds timeout) const
-{
-	auto start = std::chrono::system_clock::now();
-
-	if (!util::Await([this]() { return !this->IsReceivingRemoteInventory(); },
-			timeout)) {
-		throw exceptions::ReceivingRemoteInventoryTimeoutError(this);
-	}
-}
-
-bool BaseInventory::IsOpen() const
-{
-	return window::MatchTemplate(
-		this->itemFilter.area, resources::interfaces::cb_arrowdown, 0.9);
-}
-
-bool BaseInventory::Has(items::Item* item, bool search)
-{
-	if (search) {
-		this->searchBar.SearchFor(item->name);
-		Sleep(100);
+	[[nodiscard]] bool BaseInventory::ManagementButton::is_available() const
+	{
+		window::Color base_color(0, 140, 171);
+		auto masked = window::get_mask(this->area, base_color, 10);
+		return cv::countNonZero(masked) > 20;
 	}
 
-	// if an items query isnt ambigious, i.e when we enter the item name
-	// ONLY the item can show up, just check the first slot for efficiency.
-	if (search && !item->hasAmbigiousQuery) {
-		return this->slots[0].HasItem(item);
+	[[nodiscard]] bool BaseInventory::InvTabButton::is_selected() const
+	{
+		window::Color selected_color(188, 244, 255);
+		auto masked = window::get_mask(this->area, selected_color, 10);
+		return cv::countNonZero(masked) > 100;
 	}
 
-	return window::MatchTemplate(this->itemArea, item->GetInventoryIcon(), 0.7,
-		item->GetInventoryIconMask());
-}
-
-bool BaseInventory::CountStacks(items::Item* item, int& stacksOut, bool search)
-{
-	if (search && !this->Has(item)) {
-		this->searchBar.SearchFor(item->name);
-		Sleep(100);
+	[[nodiscard]] bool BaseInventory::InvTabButton::exists() const
+	{
+		window::Color inactive_color(80, 141, 155);
+		auto masked = window::get_mask(this->area, inactive_color, 10);
+		return cv::countNonZero(masked) > 100 || this->is_selected();
 	}
 
-	auto matches = window::LocateAllTemplate(this->itemArea,
-		item->GetInventoryIcon(), 0.9, item->GetInventoryIconMask());
+	[[nodiscard]] bool BaseInventory::Slot::has_item() const
+	{
+		auto roi = window::Rect(this->x + 46, this->y + 69, 42, 14);
+		window::Color weight_text_col(128, 231, 255);
 
-	if (matches.empty()) {
-		stacksOut = 0;
-		return true;
+		cv::Mat masked = window::get_mask(roi, weight_text_col, 35);
+		return cv::countNonZero(masked) > 10;
 	}
-	stacksOut = matches.size();
-	return stacksOut != MAX_ITEMS_PER_PAGE;
-}
 
-const BaseInventory::Slot* BaseInventory::FindItem(
-	items::Item* item, bool isSearched, bool searchFor)
-{
-	if (!item->hasAmbigiousQuery && (isSearched || searchFor)) {
-		if (searchFor) {
-			this->searchBar.SearchFor(item->name);
+	[[nodiscard]] bool BaseInventory::Slot::has_item(items::Item* item) const
+	{
+		if (!item) {
+			return this->has_item();
 		}
-		return this->slots[0].HasItem(item) ? &this->slots[0] : nullptr;
+		return window::match_template(
+			*this, item->GetInventoryIcon(), 0.7, item->GetInventoryIconMask());
 	}
 
-	if (searchFor) {
-		this->searchBar.SearchFor(item->name);
-	}
-	for (const Slot& slot : this->slots) {
-		if (slot.HasItem(item)) {
-			return &slot;
+	bool BaseInventory::is_receiving_remote_inventory() const
+	{
+		if (!this->is_remote_inventory) {
+			return false;
 		}
-		else if (!slot.HasItem()) {
-			return nullptr;
+
+		window::Color text_color(191, 243, 255);
+		auto mask = window::get_mask(
+			this->recv_remote_inventory_area, text_color, 25);
+		return cv::countNonZero(mask) > 100;
+	}
+
+	void BaseInventory::receive_remote_inventory(
+		std::chrono::seconds timeout) const
+	{
+		auto start = std::chrono::system_clock::now();
+
+		if (!util::await(
+				[this]() { return !this->is_receiving_remote_inventory(); },
+				timeout)) {
+			throw exceptions::ReceivingRemoteInventoryTimeoutError(this);
 		}
 	}
-	return nullptr;
-}
-asa::window::Rect BaseInventory::GetArea() const { return this->area; }
 
-void BaseInventory::InitSlots(const window::Point& origin)
-{
-	int x = origin.x;
-	int y = origin.y;
-
-	for (int i = 0; i < 6; i++) {
-		for (int j = 0; j < 6; j++) {
-			this->slots[(i * 6) + j] = Slot(x + (j * 93), y + (i * 93));
-		}
-	}
-}
-
-void BaseInventory::Popcorn(items::Item* item)
-{
-	int tmp{ 0 };
-	this->Popcorn(item, -1, tmp);
-}
-
-void BaseInventory::Popcorn(items::Item* item, int stacks)
-{
-	int tmp{ 0 };
-	this->Popcorn(item, stacks, tmp);
-}
-
-void BaseInventory::Popcorn(items::Item* item, int stacks, int& stacksDropped)
-{
-	int dropped = 0;
-
-	if (!this->searchBar.TextIsEntered()) {
-		this->searchBar.SearchFor(item->name);
+	bool BaseInventory::is_open() const
+	{
+		return window::match_template(
+			this->item_filter.area, resources::interfaces::cb_arrowdown, 0.9);
 	}
 
-	while (this->slots[0].HasItem(item) && (dropped < stacks || stacks == -1)) {
-		for (int i = 0; i < 4; i++) {
-			window::SetMousePos(this->slots[i].GetRandLocation(5));
-			Sleep(20);
-			controls::KeyPress(settings::actionMappings::dropItem.key);
+	bool BaseInventory::has(items::Item* item, bool search)
+	{
+		if (search) {
+			this->search_bar.search_for(item->name);
 			Sleep(100);
-			dropped++;
+		}
+
+		// if an items query isnt ambigious, i.e when we enter the item name
+		// ONLY the item can show up, just check the first slot for
+		// efficiency.
+		if (search && !item->has_ambigious_query) {
+			return this->slots[0].has_item(item);
+		}
+
+		return window::match_template(this->item_area, item->GetInventoryIcon(),
+			0.7, item->GetInventoryIconMask());
+	}
+
+	bool BaseInventory::count_stacks(
+		items::Item* item, int& stacks_out, bool search)
+	{
+		if (search && !this->has(item)) {
+			this->search_bar.search_for(item->name);
+			Sleep(100);
+		}
+
+		auto matches = window::locate_all_template(this->item_area,
+			item->GetInventoryIcon(), 0.9, item->GetInventoryIconMask());
+
+		if (matches.empty()) {
+			stacks_out = 0;
+			return true;
+		}
+		stacks_out = matches.size();
+		return stacks_out != MAX_ITEMS_PER_PAGE;
+	}
+
+	const BaseInventory::Slot* BaseInventory::find_item(
+		items::Item* item, bool is_searched, bool search_for)
+	{
+		if (!item->has_ambigious_query && (is_searched || search_for)) {
+			if (search_for) {
+				this->search_bar.search_for(item->name);
+			}
+			return this->slots[0].has_item(item) ? &this->slots[0] : nullptr;
+		}
+
+		if (search_for) {
+			this->search_bar.search_for(item->name);
+		}
+		for (const Slot& slot : this->slots) {
+			if (slot.has_item(item)) {
+				return &slot;
+			}
+			else if (!slot.has_item()) {
+				return nullptr;
+			}
+		}
+		return nullptr;
+	}
+	asa::window::Rect BaseInventory::get_area() const { return this->area; }
+
+	void BaseInventory::init_slots(const window::Point& origin)
+	{
+		int x = origin.x;
+		int y = origin.y;
+
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j < 6; j++) {
+				this->slots[(i * 6) + j] = Slot(x + (j * 93), y + (i * 93));
+			}
 		}
 	}
 
-	stacksDropped = dropped;
-}
-
-
-void BaseInventory::PopcornSlots(int slots)
-{
-	for (int slot = slots - 1; slot >= 0; slot--) {
-		window::SetMousePos(this->slots[slot].GetRandLocation(5));
-		Sleep(20);
-		controls::KeyPress(settings::actionMappings::dropItem.key);
-		Sleep(100);
+	void BaseInventory::popcorn(items::Item* item)
+	{
+		int tmp{ 0 };
+		this->popcorn(item, -1, tmp);
 	}
-}
 
-void BaseInventory::TakeSlot(Slot slot)
-{
-	this->SelectSlot(slot);
-	window::PostMousePressAt(slot.GetRandLocation(5), controls::LEFT);
-	SleepFor(std::chrono::milliseconds(10));
-	window::Press(settings::transferItem, false, std::chrono::milliseconds(15));
-	SleepFor(std::chrono::milliseconds(50));
-}
+	void BaseInventory::popcorn(items::Item* item, int stacks)
+	{
+		int tmp{ 0 };
+		this->popcorn(item, stacks, tmp);
+	}
 
-void BaseInventory::TakeSlot(int index) { TakeSlot(this->slots[index]); }
+	void BaseInventory::popcorn(
+		items::Item* item, int stacks, int& stacks_dropped)
+	{
+		int dropped = 0;
 
-void BaseInventory::Close()
-{
-	auto start = std::chrono::system_clock::now();
-	while (this->IsOpen()) {
-		window::Press("esc", true);
-		if (util::Await([this]() { return !this->IsOpen(); },
-				std::chrono::seconds(5))) {
-			return;
+		if (!this->search_bar.is_text_entered()) {
+			this->search_bar.search_for(item->name);
 		}
 
-		if (util::Timedout(start, std::chrono::seconds(30))) {
-			throw exceptions::InterfaceNotClosedError(this);
+		while (this->slots[0].has_item(item) &&
+			   (dropped < stacks || stacks == -1)) {
+			for (int i = 0; i < 4; i++) {
+				window::set_mouse_pos(this->slots[i].get_random_location(5));
+				Sleep(20);
+				controls::key_press(settings::action_mappings::drop_item.key);
+				Sleep(100);
+				dropped++;
+			}
+		}
+
+		stacks_dropped = dropped;
+	}
+
+	void BaseInventory::popcorn_slots(int slots)
+	{
+		for (int slot = slots - 1; slot >= 0; slot--) {
+			window::set_mouse_pos(this->slots[slot].get_random_location(5));
+			Sleep(20);
+			controls::key_press(settings::action_mappings::drop_item.key);
+			Sleep(100);
 		}
 	}
-}
 
-void BaseInventory::SelectSlot(Slot slot)
-{
-	window::Point location = slot.GetRandLocation(5);
-	window::SetMousePos(location);
-	SleepFor(std::chrono::milliseconds(50));
-}
-
-void BaseInventory::SelectSlot(int index)
-{
-	return this->SelectSlot(this->slots[index]);
-}
-
-void BaseInventory::DropAll()
-{
-	this->dropAllButton.Press();
-	this->searchBar.SetTextCleared();
-	Sleep(200);
-	// TO DO: Wait for the items to be dropped
-}
-
-void BaseInventory::TransferAll(items::Item* item, BaseInventory* tar)
-{
-	if (item) {
-		this->searchBar.SearchFor(item->name);
-		SleepFor(std::chrono::milliseconds(50));
+	void BaseInventory::take_slot(Slot slot)
+	{
+		this->select_slot(slot);
+		window::post_mouse_press_at(
+			slot.get_random_location(5), controls::LEFT);
+		sleep_for(std::chrono::milliseconds(10));
+		window::press(
+			settings::transfer_item, false, std::chrono::milliseconds(15));
+		sleep_for(std::chrono::milliseconds(50));
 	}
 
-	this->transferAllButton.Press();
-	this->searchBar.SetTextCleared();
-	Sleep(200);
-	// TO DO: Wait for the items to be transferred
-}
+	void BaseInventory::take_slot(int index) { take_slot(this->slots[index]); }
 
-void BaseInventory::TransferAll(const std::string& term, BaseInventory* tar)
-{
+	void BaseInventory::close()
+	{
+		auto start = std::chrono::system_clock::now();
+		while (this->is_open()) {
+			window::press("esc", true);
+			if (util::await([this]() { return !this->is_open(); },
+					std::chrono::seconds(5))) {
+				return;
+			}
 
-	this->searchBar.SearchFor(term);
-	SleepFor(std::chrono::milliseconds(50));
-
-	return this->TransferAll(nullptr, tar);
-}
-
-void BaseInventory::Transfer(
-	items::Item* item, int amount, BaseInventory*, bool search)
-{
-	if (search) {
-		this->searchBar.SearchFor(item->name);
-		SleepFor(std::chrono::milliseconds(50));
-	}
-
-	int i = 0;
-	while (auto slot = this->FindItem(item, search)) {
-		if (i++ > amount && amount != 0) {
-			break;
+			if (util::timedout(start, std::chrono::seconds(30))) {
+				throw exceptions::InterfaceNotClosedError(this);
+			}
 		}
-		this->TakeSlot(*slot);
+	}
+
+	void BaseInventory::select_slot(Slot slot)
+	{
+		window::Point location = slot.get_random_location(5);
+		window::set_mouse_pos(location);
+		sleep_for(std::chrono::milliseconds(50));
+	}
+
+	void BaseInventory::select_slot(int index)
+	{
+		return select_slot(this->slots[index]);
+	}
+
+	void BaseInventory::drop_all()
+	{
+		this->drop_all_button.press();
+		this->search_bar.set_text_cleared();
+		Sleep(200);
+		// TO DO: Wait for the items to be dropped
+	}
+
+	void BaseInventory::transfer_all(items::Item* item, BaseInventory* tar)
+	{
+		if (item) {
+			this->search_bar.search_for(item->name);
+			sleep_for(std::chrono::milliseconds(50));
+		}
+
+		this->transfer_all_button.press();
+		this->search_bar.set_text_cleared();
+		Sleep(200);
+		// TO DO: Wait for the items to be transferred
+	}
+
+	void BaseInventory::transfer_all(
+		const std::string& term, BaseInventory* tar)
+	{
+		this->search_bar.search_for(term);
+		sleep_for(std::chrono::milliseconds(50));
+
+		return this->transfer_all(nullptr, tar);
+	}
+
+	void BaseInventory::transfer(
+		items::Item* item, int amount, BaseInventory*, bool search)
+	{
+		if (search) {
+			this->search_bar.search_for(item->name);
+			sleep_for(std::chrono::milliseconds(50));
+		}
+
+		int i = 0;
+		while (auto slot = this->find_item(item, search)) {
+			if (i++ > amount && amount != 0) {
+				break;
+			}
+			this->take_slot(*slot);
+		}
 	}
 }

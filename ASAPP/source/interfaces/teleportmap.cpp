@@ -22,7 +22,7 @@ void asa::interfaces::TeleportMap::Close()
 void asa::interfaces::TeleportMap::SetSelectedAsDefault()
 {
 	while (!this->CanConfirmTarget()) {
-		SleepFor(std::chrono::milliseconds(50));
+		sleep_for(std::chrono::milliseconds(50));
 	}
 
 	this->setDefaultButton.Press();
@@ -32,19 +32,19 @@ void asa::interfaces::TeleportMap::GoTo(const std::string& destination)
 {
 	std::cout << "[+] Teleporting to '" << destination << "'..." << std::endl;
 	this->searchbar.SearchFor(destination);
-	SleepFor(std::chrono::milliseconds(400));
+	sleep_for(std::chrono::milliseconds(400));
 
 	this->SelectResult();
 
 	std::cout << "\t[-] Waiting for teleport to go off cooldown...";
 	while (!this->CanConfirmTarget()) {
-		SleepFor(std::chrono::milliseconds(50));
+		sleep_for(std::chrono::milliseconds(50));
 	}
 	std::cout << " Done." << std::endl;
 
 	while (this->IsOpen()) {
 		this->confirmButton.Press();
-		SleepFor(std::chrono::milliseconds(200));
+		sleep_for(std::chrono::milliseconds(200));
 	}
 	std::cout << "\t[-] Teleported to '" << destination << "'." << std::endl;
 	this->searchbar.SetTextCleared();

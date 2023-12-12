@@ -13,7 +13,7 @@ namespace asa::interfaces::components
 		Button(window::Rect t_area, int t_padding = 2);
 		Button(int t_x, int t_y, int t_width, int t_height, int t_padding = 2);
 
-		virtual void Press();
+		virtual void press();
 
 		std::chrono::system_clock::time_point get_last_press() const
 		{

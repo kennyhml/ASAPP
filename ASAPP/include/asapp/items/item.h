@@ -27,18 +27,18 @@ namespace asa::items
 		};
 
 		std::string name;
-		std::string iconPath;
+		std::string icon_path;
 		cv::Mat icon;
 		ItemType type;
 
 		float weight;
 		int stackSize;
 
-		bool canPutInHotbar;
-		bool hasSpoilTimer;
-		bool hasDurability;
-		bool requiresEngram;
-		bool hasAmbigiousQuery;
+		bool can_put_in_hotbar;
+		bool has_spoil_timer;
+		bool has_durability;
+		bool requires_engram;
+		bool has_ambigious_query;
 
 		const cv::Mat& GetInventoryIcon();
 		const cv::Mat& GetInventoryIconMask();

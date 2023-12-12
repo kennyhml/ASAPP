@@ -16,14 +16,13 @@ namespace asa::interfaces
 			WEIGHT,
 		};
 
-		virtual const int GetMaxHealth() = 0;
-		virtual const int GetCurrentHealth() = 0;
+		virtual int get_max_health() = 0;
+		virtual int get_current_health() = 0;
 
-		virtual const int GetMaxWeight() = 0;
-		virtual const int GetCurrentWeight() = 0;
+		virtual int get_max_weight() = 0;
+		virtual int get_current_weight() = 0;
 
-		virtual const std::string GetOwner() = 0;
-		virtual const std::string GetName() = 0;
+		virtual std::string get_owner() = 0;
+		virtual std::string get_name() = 0;
 	};
-
 }
