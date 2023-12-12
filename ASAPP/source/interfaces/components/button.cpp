@@ -1,15 +1,25 @@
 #include "asapp/interfaces/components/button.h"
 #include "asapp/game/controls.h"
 
-using namespace asa::interfaces;
-
-void components::Button::Press()
+namespace asa::interfaces::components
 {
+	Button::Button(
+		int t_x, int t_y, int t_width, int t_height, int t_padding = 2)
+		: padding(t_padding),
+		  IInterfaceComponent(t_x, t_y, t_width, t_height){};
 
-	auto loc = this->area.GetRandLocation(this->borderPadding);
+	Button::Button(window::Rect t_area, int t_padding = 2)
+		: padding(t_padding), IInterfaceComponent(t_area){};
 
-	window::PostMousePressAt(loc, controls::MouseButton::LEFT);
+	void Button::Press()
+	{
+		auto loc = area.get_random_location(padding);
 
-	this->lastPressed = std::chrono::system_clock::now();
-	this->lastButtonPress = lastPressed;
-};
+		window::post_mouse_press_at(loc, controls::MouseButton::LEFT);
+
+		last_pressed = std::chrono::system_clock::now();
+		last_button_press = last_pressed;
+	};
+
+
+}

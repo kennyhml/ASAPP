@@ -6,9 +6,9 @@ namespace asa::interfaces::components
 	struct IInterfaceComponent
 	{
 		IInterfaceComponent() : IInterfaceComponent(0, 0, 0, 0){};
-		IInterfaceComponent(window::Rect area) : area(area){};
-		IInterfaceComponent(int x, int y, int width, int height)
-			: area(window::Rect(x, y, width, height)){};
+		IInterfaceComponent(window::Rect t_area) : area(t_area){};
+		IInterfaceComponent(int t_x, int t_y, int t_width, int t_height)
+			: area(window::Rect(t_x, t_y, t_width, t_height)){};
 
 		window::Rect area;
 	};

@@ -2,10 +2,10 @@
 
 namespace asa::entities
 {
-	EntityError::EntityError(const BaseEntity* entity)
+	EntityError::EntityError(const BaseEntity* t_entity)
 		: entity(entity), info("Unspecified EntityError"){};
 
-	EntityError::EntityError(const BaseEntity* entity, std::string info)
+	EntityError::EntityError(const BaseEntity* t_entity, std::string t_info)
 		: entity(entity), info("EntityError: " + info){};
 
 	const char* EntityError::what() const noexcept { return info.c_str(); }

@@ -20,6 +20,6 @@ namespace asa::entities
 	protected:
 		std::string name;
 		std::unique_ptr<interfaces::BaseInventory> inventory;
-		interfaces::ActionWheel actionWheel;
+		interfaces::ActionWheel action_wheel;
 	};
 }

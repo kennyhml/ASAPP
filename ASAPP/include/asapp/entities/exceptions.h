@@ -12,8 +12,8 @@ namespace asa::entities
 		const BaseEntity* entity;
 
 	public:
-		EntityError(const BaseEntity*);
-		EntityError(const BaseEntity*, std::string info);
+		EntityError(const BaseEntity* t_entity);
+		EntityError(const BaseEntity* t_entity, std::string t_info);
 
 		const BaseEntity* get_entity() const { return entity; };
 		const char* what() const noexcept override;

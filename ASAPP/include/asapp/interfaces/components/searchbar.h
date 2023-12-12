@@ -8,21 +8,21 @@ namespace asa::interfaces::components
 	{
 		using IInterfaceComponent::IInterfaceComponent;
 
-		virtual void Press() const;
-		virtual void SearchFor(std::string term);
-		void DeleteSearch();
+		virtual void press() const;
+		virtual void search_for(std::string term);
+		void delete_search();
 
-		void SetTextCleared() { this->isTextEntered = false; }
-		bool GetLastSearchedTerm(std::string& termOut) const { return 1; };
-		bool IsSearching() const { return this->isSearching; }
-		bool TextIsEntered() const { return this->isTextEntered; }
+		void set_text_cleared() { text_entered = false; }
+		bool get_last_searched_term(std::string& term_out) const { return 1; }
+		bool is_searching() const { return searching; }
+		bool is_text_entered() const { return text_entered; }
 
 	protected:
-		std::string lastSearchedTerm = "";
-		bool isSearching{ false };
-		bool isTextEntered{ false };
+		std::string last_searched_term = "";
+		bool searching{ false };
+		bool text_entered{ false };
 
-		bool HasTextEntered();
-		bool HasBlinkingCursor() const;
+		bool has_text_entered();
+		bool has_blinking_cursor() const;
 	};
 }

@@ -4,85 +4,85 @@
 #include "asapp/game/controls.h"
 #include "asapp/game/globals.h"
 
-using namespace asa::interfaces::components;
-
-
-bool SearchBar::HasTextEntered()
+namespace asa::interfaces::components
 {
-	window::Color textColor(134, 234, 255);
+	bool SearchBar::has_text_entered()
+	{
+		static window::Color text_color(134, 234, 255);
 
-	auto mask = window::GetMask(this->area, textColor, 30);
-	return cv::countNonZero(mask) > 50;
-}
-
-bool SearchBar::HasBlinkingCursor() const
-{
-	window::Color textColor(134, 234, 255);
-
-	auto mask = window::GetMask(this->area, textColor, 30);
-	return cv::countNonZero(mask) > 15;
-}
-
-void SearchBar::SearchFor(std::string term)
-{
-	this->Press();
-	SleepFor(std::chrono::milliseconds(200));
-	this->isSearching = true;
-
-	if (!globals::useWindowInput) {
-		util::SetClipboard(term);
-		controls::KeyCombinationPress("ctrl", "v");
+		auto mask = get_mask(this->area, text_color, 30);
+		return cv::countNonZero(mask) > 50;
 	}
-	else {
-		for (auto c : term) {
-			if (globals::useWindowInput) {
-				window::PostChar(c);
+
+	bool SearchBar::has_blinking_cursor() const
+	{
+		static window::Color text_color(134, 234, 255);
+
+		auto mask = get_mask(this->area, text_color, 30);
+		return cv::countNonZero(mask) > 15;
+	}
+
+	void SearchBar::search_for(std::string term)
+	{
+		this->press();
+		sleep_for(std::chrono::milliseconds(200));
+		this->searching = true;
+
+		if (!globals::useWindowInput) {
+			util::set_clipboard(term);
+			controls::key_combination_press("ctrl", "v");
+		}
+		else {
+			for (auto c : term) {
+				if (globals::useWindowInput) {
+					window::post_char(c);
+				}
 			}
 		}
-	}
 
-	if (!util::Await([this]() { return this->HasTextEntered(); },
-			std::chrono::seconds(5))) {
-		std::cerr << "[!] Failed to search, trying again..." << std::endl;
-		return this->SearchFor(term);
-	}
-
-	SleepFor(std::chrono::milliseconds(50));
-	window::Press("enter");
-
-	this->isSearching = false;
-	this->lastSearchedTerm = term;
-	this->isTextEntered = true;
-}
-
-void SearchBar::Press() const
-{
-	window::Point loc = this->area.GetRandLocation(8);
-
-	do {
-		window::PostMousePressAt(loc, controls::LEFT);
-	} while (!util::Await([this]() { return this->HasBlinkingCursor(); },
-		std::chrono::milliseconds(500)));
-}
-
-void asa::interfaces::components::SearchBar::DeleteSearch()
-{
-	this->Press();
-
-	if (globals::useWindowInput) {
-		for (int i = 0; i < lastSearchedTerm.size(); i++) {
-			window::PostKeyPress("BackSpace", false);
-			window::PostKeyPress("Delete", false);
+		if (!util::await([this]() { return this->has_text_entered(); },
+				std::chrono::seconds(5))) {
+			std::cerr << "[!] Failed to search, trying again..." << std::endl;
+			return this->search_for(term);
 		}
-	}
-	else {
-		controls::KeyCombinationPress("Ctrl", "a");
-		SleepFor(std::chrono::milliseconds(40));
-		controls::KeyPress("Delete");
+
+		sleep_for(std::chrono::milliseconds(50));
+		window::press("enter");
+
+		searching = false;
+		last_searched_term = term;
+		text_entered = true;
 	}
 
-	SleepFor(std::chrono::milliseconds(50));
-	window::Press("enter");
+	void SearchBar::press() const
+	{
+		window::Point loc = this->area.get_random_location(8);
 
-	this->SetTextCleared();
+		do {
+			post_mouse_press_at(loc, controls::LEFT);
+		} while (!util::await([this]() { return this->has_blinking_cursor(); },
+			std::chrono::milliseconds(500)));
+	}
+
+	void SearchBar::delete_search()
+	{
+		this->press();
+
+		if (globals::useWindowInput) {
+			for (int i = 0; i < last_searched_term.size(); i++) {
+				window::post_key_press("BackSpace", false);
+				window::post_key_press("Delete", false);
+			}
+		}
+		else {
+			controls::key_combination_press("Ctrl", "a");
+			sleep_for(std::chrono::milliseconds(40));
+			controls::key_press("Delete");
+		}
+
+		sleep_for(std::chrono::milliseconds(50));
+		window::press("enter");
+
+		this->set_text_cleared();
+	}
 }

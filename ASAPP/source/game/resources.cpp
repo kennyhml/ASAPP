@@ -32,7 +32,7 @@ namespace asa::resources
 		return mat;
 	}
 
-	bool Init()
+	bool init()
 	{
 		if (!is_valid_dir(core::config::assets_dir)) {
 			return false;
