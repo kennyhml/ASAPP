@@ -7,13 +7,14 @@ using namespace asa::structures;
 const CaveLootCrate::Quality CaveLootCrate::GetCrateQuality()
 {
 	if (util::IsOnlyOneBitSet(this->qualityFlags)) {
-		std::cout << "[+] Skipped determining drop quality as it is fixed."
+		std::cout << "\t[-] Skipped determining drop quality as it is fixed."
 				  << std::endl;
 		return static_cast<Quality>(this->qualityFlags);
 	}
-	std::cout << "[+] Attempting to determine quality of Cave Loot Crate with "
-				 "several options..."
-			  << std::endl;
+	std::cout
+		<< "\t[-] Attempting to determine quality of Cave Loot Crate with "
+		   "several options..."
+		<< std::endl;
 
 	auto tooltipArea = this->GetInfoArea();
 	if (!tooltipArea.has_value()) {

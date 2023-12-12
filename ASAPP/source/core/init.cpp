@@ -3,11 +3,10 @@
 #include "asapp/game/settings.h"
 #include "asapp/game/window.h"
 #include "asapp/items/items.h"
-
 #include <tesseract/baseapi.h>
 
-bool asa::Init(std::filesystem::path configPath)
+bool asa::core::init(std::filesystem::path config_path)
 {
-	return (config::Init(configPath) && resources::Init() && settings::Init() &&
-			items::Init() && window::Init());
+	return (config::set_environment(config_path) && resources::init() &&
+			settings::init() && items::init() && window::init());
 }

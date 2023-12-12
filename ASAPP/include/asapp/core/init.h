@@ -1,7 +1,7 @@
 #pragma once
 #include "config.h"
 
-namespace asa
+namespace asa::core
 {
-	bool Init(std::filesystem::path configPath);
+	bool init(std::filesystem::path from_config);
 }

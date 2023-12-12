@@ -5,68 +5,71 @@
 
 using json = nlohmann::json;
 
-bool asa::config::Init(std::filesystem::path configPath)
+namespace asa::core::config
 {
-	std::ifstream f(configPath);
-	if (!f.is_open()) {
-		std::cerr << "[!] Failed to open config at " << configPath << std::endl;
-		return false;
+	bool set_environment(std::filesystem::path config_path)
+	{
+		std::ifstream f(config_path);
+		if (!f.is_open()) {
+			std::cerr << "[!] Failed to open config at " << config_path
+					  << std::endl;
+			return false;
+		}
+		json data = json::parse(f);
+		f.close();
+
+		bool environment_set = (set_game_directory(data["gameBaseDirectory"]) &&
+								set_assets_directory(data["assetsDir"]) &&
+								set_itemdata_path(data["itemData"]) &&
+								set_tessdata_path(data["tessdataPath"]));
+		if (!environment_set) {
+			std::cerr
+				<< "[!] One or more environment variables is faulty. ASAPP "
+				   "was not initialized successfully."
+				<< std::endl;
+			return false;
+		}
+		std::cout << "[+] Environment variables set successfully." << std::endl;
+		return true;
 	}
-	json data = json::parse(f);
-	f.close();
 
-	bool environmentSet = (SetGameDirectory(data["gameBaseDirectory"]) &&
-						   SetAssetsDirectory(data["assetsDir"]) &&
-						   SetItemdataPath(data["itemData"]) &&
-						   SetTessdataPath(data["tessdataPath"]));
-
-	if (!environmentSet) {
-		std::cerr << "[!] One or more environment variables is faulty. ASAPP "
-					 "was not initialized successfully."
-				  << std::endl;
-		return false;
+	bool set_game_directory(std::filesystem::path path)
+	{
+		if (!std::filesystem::exists(path)) {
+			std::cerr << "[!] Failed to set game directory. " << path
+					  << " does not exist." << std::endl;
+		}
+		game_base_directory = path;
+		return true;
 	}
-	std::cout << "[+] Environment variables set successfully." << std::endl;
-	return true;
-}
 
-
-bool asa::config::SetGameDirectory(std::filesystem::path path)
-{
-	if (!std::filesystem::exists(path)) {
-		std::cerr << "[!] Failed to set game directory. " << path
-				  << " does not exist." << std::endl;
+	bool set_assets_directory(std::filesystem::path path)
+	{
+		if (!std::filesystem::exists(path)) {
+			std::cerr << "[!] Failed to set assets directory. " << path
+					  << " does not exist." << std::endl;
+		}
+		assets_dir = path;
+		return true;
 	}
-	gameBaseDirectory = path;
-	return true;
-}
 
-bool asa::config::SetAssetsDirectory(std::filesystem::path path)
-{
-	if (!std::filesystem::exists(path)) {
-		std::cerr << "[!] Failed to set assets directory. " << path
-				  << " does not exist." << std::endl;
+	bool set_itemdata_path(std::filesystem::path path)
+	{
+		if (!std::filesystem::exists(path)) {
+			std::cerr << "[!] Failed to set itemdata.json path. " << path
+					  << " does not exist." << std::endl;
+		}
+		itemdata_path = path;
+		return true;
 	}
-	assetsDir = path;
-	return true;
-}
 
-bool asa::config::SetItemdataPath(std::filesystem::path path)
-{
-	if (!std::filesystem::exists(path)) {
-		std::cerr << "[!] Failed to set itemdata.json path. " << path
-				  << " does not exist." << std::endl;
+	bool set_tessdata_path(std::filesystem::path path)
+	{
+		if (!std::filesystem::exists(path)) {
+			std::cerr << "[!] Failed to set Tesseract data path. " << path
+					  << " does not exist." << std::endl;
+		}
+		tessdata_path = path;
+		return true;
 	}
-	itemdataPath = path;
-	return true;
-}
-
-bool asa::config::SetTessdataPath(std::filesystem::path path)
-{
-	if (!std::filesystem::exists(path)) {
-		std::cerr << "[!] Failed to set Tesseract data path. " << path
-				  << " does not exist." << std::endl;
-	}
-	tessdataPath = path;
-	return true;
 }

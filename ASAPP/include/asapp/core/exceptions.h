@@ -1,10 +1,10 @@
 #pragma once
 #include <stdexcept>
 
-namespace asa::exceptions
+namespace asa::core
 {
-	void SetCrashAware(bool aware);
-	bool GetCrashAware();
+	void set_crash_aware(bool aware);
+	bool get_crash_aware();
 
 	class ShooterGameError : public std::exception
 	{

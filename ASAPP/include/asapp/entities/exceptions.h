@@ -15,7 +15,7 @@ namespace asa::entities::exceptions
 		EntityError(const BaseEntity*);
 		EntityError(const BaseEntity*, std::string info);
 
-		const BaseEntity* GetEntity() const { return entity; };
+		const BaseEntity* get_entity() const { return entity; };
 		const char* what() const noexcept override;
 	};
 
