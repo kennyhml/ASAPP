@@ -4,178 +4,186 @@
 #include "asapp/game/window.h"
 #include <stdexcept>
 
-using namespace asa::interfaces;
-
-bool HUD::IsBlinking(window::Rect icon, window::Color color,
-	std::chrono::milliseconds maxDuration)
+namespace asa::interfaces
 {
-	auto start = std::chrono::system_clock::now();
-	while (!util::Timedout(start, maxDuration)) {
-		auto masked = window::GetMask(icon, color, 30);
-		if (cv::countNonZero(masked) > 20) {
-			return true;
-		}
-	}
-	return false;
-}
-
-bool HUD::ItemRemoved(const window::Rect& area)
-{
-	return window::MatchTemplate(area, resources::text::removed);
-}
-
-bool HUD::ItemAdded(const window::Rect& area)
-{
-	return window::MatchTemplate(area, resources::text::added);
-}
-
-bool HUD::IsPlayerOverweight()
-{
-	return this->IsBlinking(this->weightIcon, this->blinkRedStateWeight,
-		std::chrono::milliseconds(700));
-}
-
-bool HUD::IsPlayerBrokenBones()
-{
-	return this->IsBlinking(this->healthIcon, this->blinkRedState);
-}
-
-bool HUD::IsPlayerOutOfWater()
-{
-	return this->IsBlinking(this->waterIcon, this->blinkRedState);
-}
-
-bool HUD::IsPlayerOutOfFood()
-{
-	return this->IsBlinking(this->foodIcon, this->blinkRedState);
-}
-
-bool HUD::IsPlayerSprinting() { return false; }
-
-bool HUD::CanDefaultTeleport()
-{
-	return window::MatchTemplate(
-		this->defaultTeleport, resources::text::default_teleport, 0.5);
-}
-
-bool HUD::CanFastTravel()
-{
-	return window::MatchTemplate(
-		window::Screenshot(), resources::text::fast_travel);
-}
-
-bool HUD::CanAccessInventory()
-{
-	return window::MatchTemplate(
-		window::Screenshot(), resources::text::access_inventory);
-}
-
-bool HUD::ExtendedInformationIsToggled()
-{
-	static window::Rect roi{ 14, 34, 134, 35 };
-	return window::MatchTemplate(roi, resources::text::day);
-}
-
-bool HUD::GotItemAdded(items::Item* item, window::Rect* roiOut)
-{
-	auto roi = item ? itemIconRemovedOrAddedArea : itemAddedArea;
-	if (!item) {
-		return ItemAdded(roi);
-	}
-	auto locations = window::LocateAllTemplate(
-		roi, item->GetNotificationIcon(), 0.75, item->GetNotificationMask());
-
-	for (const auto& rect : locations) {
-		window::Rect matchRoi(roi.x + rect.x + 20, roi.y + rect.y, 120, 25);
-		if (ItemAdded(matchRoi)) {
-			if (roiOut) {
-				*roiOut = matchRoi;
+	namespace
+	{
+		bool is_blinking(window::Rect icon, window::Color color,
+			std::chrono::milliseconds maxDuration)
+		{
+			auto start = std::chrono::system_clock::now();
+			while (!util::timedout(start, maxDuration)) {
+				auto masked = window::get_mask(icon, color, 30);
+				if (cv::countNonZero(masked) > 20) {
+					return true;
+				}
 			}
-			return true;
+			return false;
 		}
 	}
-	return false;
-}
 
-bool HUD::GotItemRemoved(items::Item* item, window::Rect* roiOut)
-{
-	auto roi = item ? itemIconRemovedOrAddedArea : itemRemovedArea;
-	if (!item) {
-		return ItemRemoved(roi);
+	bool HUD::item_removed(const window::Rect& area)
+	{
+		return window::match_template(area, resources::text::removed);
 	}
-	auto locations = window::LocateAllTemplate(
-		roi, item->GetNotificationIcon(), 0.75, item->GetNotificationMask());
 
-	for (const auto& rect : locations) {
-		window::Rect matchRoi(roi.x + rect.x + 20, roi.y + rect.y, 120, 25);
-		if (ItemRemoved(matchRoi)) {
-			if (roiOut) {
-				*roiOut = matchRoi;
+	bool HUD::item_added(const window::Rect& area)
+	{
+		return window::match_template(area, resources::text::added);
+	}
+
+	bool HUD::is_player_overweight()
+	{
+		return is_blinking(weight_icon, blink_red_state_weight,
+			std::chrono::milliseconds(700));
+	}
+
+	bool HUD::is_player_broken_bones()
+	{
+		return is_blinking(health_icon, blink_red_state);
+	}
+
+	bool HUD::is_player_out_of_water()
+	{
+		return is_blinking(water_icon, blink_red_state);
+	}
+
+	bool HUD::is_player_out_of_food()
+	{
+		return is_blinking(food_icon, blink_red_state);
+	}
+
+	bool HUD::is_player_sprinting() { return false; }
+
+	bool HUD::can_default_teleport()
+	{
+		return window::match_template(
+			default_teleport, resources::text::default_teleport, 0.5);
+	}
+
+	bool HUD::can_fast_travel()
+	{
+		return window::match_template(
+			window::screenshot(), resources::text::fast_travel);
+	}
+
+	bool HUD::can_access_inventory()
+	{
+		return window::match_template(
+			window::screenshot(), resources::text::access_inventory);
+	}
+
+	bool HUD::extended_information_is_toggled()
+	{
+		static window::Rect roi{ 14, 34, 134, 35 };
+		return window::match_template(roi, resources::text::day);
+	}
+
+	bool HUD::item_added(items::Item* item, window::Rect* roi_out)
+	{
+		auto roi = item ? item_icon_removed_or_added_area : item_added_area;
+		if (!item) {
+			return item_added(roi);
+		}
+		auto locations = window::locate_all_template(roi,
+			item->GetNotificationIcon(), 0.75, item->GetNotificationMask());
+
+		for (const auto& rect : locations) {
+			window::Rect match_roi(
+				roi.x + rect.x + 20, roi.y + rect.y, 120, 25);
+			if (item_added(match_roi)) {
+				if (roi_out) {
+					*roi_out = match_roi;
+				}
+				return true;
 			}
-			return true;
 		}
-	}
-	return false;
-}
-
-bool HUD::CountItemsAdded(items::Item& item, int& amountOut)
-{
-	window::Rect roi{ 0, 0, 0, 0 };
-	if (!GotItemAdded(&item, &roi)) {
 		return false;
 	}
 
-	roi = { roi.x + 85, roi.y, 100, roi.height };
+	bool HUD::item_removed(items::Item* item, window::Rect* roi_out)
+	{
+		auto roi = item ? item_icon_removed_or_added_area : item_removed_area;
+		if (!item) {
+			return item_removed(roi);
+		}
+		auto locations = window::locate_all_template(roi,
+			item->GetNotificationIcon(), 0.75, item->GetNotificationMask());
 
-	auto xLoc = window::LocateTemplate(roi, resources::text::x);
-	if (!xLoc.has_value()) {
-		std::cerr << "[!] Failed to locate x location." << std::endl;
+		for (const auto& rect : locations) {
+			window::Rect match_roi(
+				roi.x + rect.x + 20, roi.y + rect.y, 120, 25);
+			if (item_removed(match_roi)) {
+				if (roi_out) {
+					*roi_out = match_roi;
+				}
+				return true;
+			}
+		}
 		return false;
 	}
 
-	roi = { roi.x, roi.y, xLoc->x, roi.height };
-	cv::Mat mask = window::GetMask(roi, window::Color(255, 255, 255), 50);
-	window::SetTesseractImage(mask);
-	window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
-	window::tessEngine->SetVariable("tessedit_char_whitelist", "0123456789");
+	bool HUD::count_items_added(items::Item& item, int& amount_out)
+	{
+		window::Rect roi{ 0, 0, 0, 0 };
+		if (!item_added(&item, &roi)) {
+			return false;
+		}
 
-	std::string resultString = window::tessEngine->GetUTF8Text();
-	if (resultString.empty() || resultString == "\\n") {
-		std::cerr << "[!] OCR failed, no result determined." << std::endl;
-		return false;
+		roi = { roi.x + 85, roi.y, 100, roi.height };
+
+		auto x_loc = window::locate_template(roi, resources::text::x);
+		if (!x_loc.has_value()) {
+			std::cerr << "[!] Failed to locate x location." << std::endl;
+			return false;
+		}
+
+		roi = { roi.x, roi.y, x_loc->x, roi.height };
+		cv::Mat mask = window::get_mask(roi, window::Color(255, 255, 255), 50);
+		window::set_tesseract_image(mask);
+		window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
+		window::tessEngine->SetVariable(
+			"tessedit_char_whitelist", "0123456789");
+
+		std::string result_string = window::tessEngine->GetUTF8Text();
+		if (result_string.empty() || result_string == "\\n") {
+			std::cerr << "[!] OCR failed, no result determined." << std::endl;
+			return false;
+		}
+
+		amount_out = std::stoi(result_string);
+		return true;
 	}
 
-	amountOut = std::stoi(resultString);
-	return true;
-}
+	bool HUD::count_items_removed(items::Item& item, int& amount_out)
+	{
+		window::Rect roi{ 0, 0, 0, 0 };
+		if (!item_removed(&item, &roi)) {
+			return false;
+		}
 
-bool HUD::CountItemsRemoved(items::Item& item, int& amountOut)
-{
-	window::Rect roi{ 0, 0, 0, 0 };
-	if (!GotItemRemoved(&item, &roi)) {
-		return false;
+		roi = { roi.x + 110, roi.y, 100, roi.height };
+
+		auto x_loc = window::locate_template(roi, resources::text::x);
+		if (!x_loc.has_value()) {
+			std::cerr << "[!] Failed to locate x location." << std::endl;
+			return false;
+		}
+
+		roi = { roi.x, roi.y, x_loc->x, roi.height };
+		cv::Mat mask = window::get_mask(roi, window::Color(255, 255, 255), 50);
+		window::set_tesseract_image(mask);
+		window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
+		window::tessEngine->SetVariable(
+			"tessedit_char_whitelist", "0123456789");
+
+		std::string result_string = window::tessEngine->GetUTF8Text();
+		if (result_string.empty() || result_string == "\\n") {
+			std::cerr << "[!] OCR failed, no result determined." << std::endl;
+			return false;
+		}
+
+		amount_out = std::stoi(result_string);
+		return true;
 	}
-
-	roi = { roi.x + 110, roi.y, 100, roi.height };
-
-	auto xLoc = window::LocateTemplate(roi, resources::text::x);
-	if (!xLoc.has_value()) {
-		std::cerr << "[!] Failed to locate x location." << std::endl;
-		return false;
-	}
-
-	roi = { roi.x, roi.y, xLoc->x, roi.height };
-	cv::Mat mask = window::GetMask(roi, window::Color(255, 255, 255), 50);
-	window::SetTesseractImage(mask);
-	window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
-	window::tessEngine->SetVariable("tessedit_char_whitelist", "0123456789");
-
-	std::string resultString = window::tessEngine->GetUTF8Text();
-	if (resultString.empty() || resultString == "\\n") {
-		std::cerr << "[!] OCR failed, no result determined." << std::endl;
-		return false;
-	}
-
-	amountOut = std::stoi(resultString);
-	return true;
 }

@@ -47,10 +47,10 @@ namespace asa::entities
 		void get_off_bed();
 		void suicide();
 
-		void jump() { window::Press(settings::jump); }
-		void crouch() { window::Press(settings::crouch); }
-		void prone() { window::Press(settings::prone); }
-		void stand_up() { window::Press(settings::run); }
+		void jump() { window::press(settings::jump); }
+		void crouch() { window::press(settings::crouch); }
+		void prone() { window::press(settings::prone); }
+		void stand_up() { window::press(settings::run); }
 
 		void turn_right(int degree = 90,
 			std::chrono::milliseconds delay = std::chrono::milliseconds(100));

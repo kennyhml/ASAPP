@@ -7,9 +7,6 @@
 #include "asapp/game/window.h"
 #include "asapp/structures/exceptions.h"
 
-using namespace asa::entities;
-
-
 namespace asa::entities
 {
 	interfaces::LocalInventory* LocalPlayer::get_inventory() const
@@ -17,56 +14,56 @@ namespace asa::entities
 		return dynamic_cast<interfaces::LocalInventory*>(inventory.get());
 	}
 
-	bool LocalPlayer::is_alive()
+	bool LocalPlayer::is_alive() const
 	{
-		if (settings::gameUserSettings::toggleHUD.get()) {
-			window::Press(settings::showExtendedInfo);
+		if (settings::game_user_settings::toggle_hud.get()) {
+			window::press(settings::show_extended_info);
 		}
 		else {
-			window::Down(settings::showExtendedInfo);
+			window::down(settings::show_extended_info);
 		}
-		bool result = util::Await(
+		bool result = util::await(
 			[]() { return interfaces::gHUD->ExtendedInformationIsToggled(); },
 			std::chrono::milliseconds(300));
 
-		if (settings::gameUserSettings::toggleHUD.get()) {
-			window::Press(settings::showExtendedInfo);
+		if (settings::game_user_settings::toggle_hud.get()) {
+			window::press(settings::show_extended_info);
 		}
 		else {
-			window::Up(settings::showExtendedInfo);
+			window::up(settings::show_extended_info);
 		}
 		return result;
 	}
 
-	bool LocalPlayer::is_out_of_water()
+	bool LocalPlayer::is_out_of_water() const
 	{
 		return interfaces::gHUD->IsPlayerOutOfWater();
 	}
-	bool LocalPlayer::is_out_of_food()
+	bool LocalPlayer::is_out_of_food() const
 	{
 		return interfaces::gHUD->IsPlayerOutOfFood();
 	}
-	bool LocalPlayer::is_overweight()
+	bool LocalPlayer::is_overweight() const
 	{
 		return interfaces::gHUD->IsPlayerOverweight();
 	}
 
-	bool LocalPlayer::received_item(items::Item* item)
+	bool LocalPlayer::received_item(items::Item* item) const
 	{
 		return interfaces::gHUD->GotItemAdded(item, nullptr);
 	}
 
-	bool LocalPlayer::deposited_item(items::Item* item)
+	bool LocalPlayer::deposited_item(items::Item* item) const
 	{
 		return interfaces::gHUD->GotItemRemoved(item, nullptr);
 	}
 
-	bool LocalPlayer::LocalPlayer::is_in_travel_screen()
+	bool LocalPlayer::is_in_travel_screen() const
 	{
 		static window::Rect roi(94, 69, 1751, 883);
 		static window::Color white(255, 255, 255);
 
-		cv::Mat image = window::Screenshot(roi);
+		cv::Mat image = window::screenshot(roi);
 		cv::Mat gray;
 		cv::cvtColor(image, gray, cv::COLOR_BGR2GRAY);
 
@@ -75,17 +72,17 @@ namespace asa::entities
 		return mean[0] > 240.f;
 	}
 
-	bool LocalPlayer::LocalPlayer::can_access_bed()
+	bool LocalPlayer::can_access_bed() const
 	{
 		return interfaces::gHUD->CanFastTravel();
 	}
 
-	bool LocalPlayer::LocalPlayer::CanAccessInventory()
+	bool LocalPlayer::can_access_inventory() const
 	{
 		return interfaces::gHUD->CanAccessInventory();
 	}
 
-	bool LocalPlayer::LocalPlayer::CanUseDefaultTeleport()
+	bool LocalPlayer::can_use_default_teleport() const
 	{
 		return interfaces::gHUD->CanDefaultTeleport();
 	}

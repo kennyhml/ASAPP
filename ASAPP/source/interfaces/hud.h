@@ -8,55 +8,50 @@ namespace asa::interfaces
 	class HUD : public IInterface
 	{
 	public:
-		bool IsOpen() const { return true; }
+		bool is_open() const { return true; }
 
-		[[nodiscard]] bool IsMountOverweight() { return false; };
-		[[nodiscard]] bool IsMountLow() { return false; };
-		[[nodiscard]] bool IsMountOutOfFood() { return false; };
-		[[nodiscard]] bool IsMountOutOfStamina() { return false; };
-		[[nodiscard]] bool IsMountSprinting() { return false; };
+		[[nodiscard]] bool is_mount_overweight() { return false; };
+		[[nodiscard]] bool is_mount_low() { return false; };
+		[[nodiscard]] bool is_mount_out_of_food() { return false; };
+		[[nodiscard]] bool is_mount_out_of_stamina() { return false; };
+		[[nodiscard]] bool is_mount_sprinting() { return false; };
 
-		[[nodiscard]] bool IsPlayerOverweight();
-		[[nodiscard]] bool IsPlayerBrokenBones();
-		[[nodiscard]] bool IsPlayerOutOfWater();
-		[[nodiscard]] bool IsPlayerOutOfFood();
-		[[nodiscard]] bool IsPlayerSprinting();
+		[[nodiscard]] bool is_player_overweight();
+		[[nodiscard]] bool is_player_broken_bones();
+		[[nodiscard]] bool is_player_out_of_water();
+		[[nodiscard]] bool is_player_out_of_food();
+		[[nodiscard]] bool is_player_sprinting();
 
-		[[nodiscard]] bool CanDefaultTeleport();
-		[[nodiscard]] bool CanFastTravel();
-		[[nodiscard]] bool CanAccessInventory();
+		[[nodiscard]] bool can_default_teleport();
+		[[nodiscard]] bool can_fast_travel();
+		[[nodiscard]] bool can_access_inventory();
 
-		[[nodiscard]] bool ExtendedInformationIsToggled();
-		[[nodiscard]] bool GotItemAdded(items::Item*, window::Rect* roiOut);
-		[[nodiscard]] bool GotItemRemoved(items::Item*, window::Rect* roiOut);
-		[[nodiscard]] bool TransferredItemIntoDedicatedStorage();
+		[[nodiscard]] bool extended_information_is_toggled();
+		[[nodiscard]] bool item_added(items::Item*, window::Rect* roi_out);
+		[[nodiscard]] bool item_removed(items::Item*, window::Rect* roi_out);
+		[[nodiscard]] bool transferred_item_into_dedicated_storage();
 
-		bool CountItemsAdded(items::Item&, int& amountOut);
-		bool CountItemsRemoved(items::Item&, int& amountOut);
+		bool count_items_added(items::Item&, int& amountOut);
+		bool count_items_removed(items::Item&, int& amountOut);
 
 	private:
-		window::Color blinkRedState{ 109, 54, 52 };
-		window::Color blinkRedStateWeight{ 255, 45, 45 };
+		window::Color blink_red_state{ 109, 54, 52 };
+		window::Color blink_red_state_weight{ 255, 45, 45 };
 
-		window::Rect waterIcon{ 1868, 806, 34, 46 };
-		window::Rect foodIcon{ 1861, 858, 46, 41 };
-		window::Rect stamIcon{ 1872, 900, 29, 51 };
-		window::Rect healthIcon{ 1861, 953, 48, 45 };
-		window::Rect weightIcon{ 1860, 751, 51, 56 };
-		window::Rect defaultTeleport{ 866, 911, 78, 27 };
+		window::Rect water_icon{ 1868, 806, 34, 46 };
+		window::Rect food_icon{ 1861, 858, 46, 41 };
+		window::Rect stamina_icon{ 1872, 900, 29, 51 };
+		window::Rect health_icon{ 1861, 953, 48, 45 };
+		window::Rect weight_icon{ 1860, 751, 51, 56 };
+		window::Rect default_teleport{ 866, 911, 78, 27 };
 
-		[[nodiscard]] bool IsBlinking(window::Rect icon, window::Color color,
-			std::chrono::milliseconds maxDuration = std::chrono::milliseconds(
-				400));
+		[[nodiscard]] bool item_removed(const window::Rect& area);
+		[[nodiscard]] bool item_added(const window::Rect& area);
 
-		[[nodiscard]] bool ItemRemoved(const window::Rect& area);
-		[[nodiscard]] bool ItemAdded(const window::Rect& area);
-
-		window::Rect itemIconRemovedOrAddedArea{ 7, 12, 41, 1067 };
-		window::Rect itemRemovedArea{ 43, 20, 110, 1054 };
-		window::Rect itemAddedArea{ 40, 15, 85, 1063 };
-
-		window::Rect statusUpdateArea{ 844, 12, 224, 30 };
+		window::Rect item_icon_removed_or_added_area{ 7, 12, 41, 1067 };
+		window::Rect item_removed_area{ 43, 20, 110, 1054 };
+		window::Rect item_added_area{ 40, 15, 85, 1063 };
+		window::Rect status_update_area{ 844, 12, 224, 30 };
 	};
 
 	inline HUD* gHUD = new HUD();
