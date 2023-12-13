@@ -111,7 +111,7 @@ namespace asa::interfaces
 		}
 		auto locations = window::locate_all_template(roi,
 			item->get_notification_icon(), 0.75,
-			item->get_inventory_icon_mask());
+			item->get_notification_icon_mask());
 
 		for (const auto& rect : locations) {
 			window::Rect match_roi(

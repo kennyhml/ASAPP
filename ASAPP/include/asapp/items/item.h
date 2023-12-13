@@ -55,7 +55,7 @@ namespace asa::items
 		cv::Mat notification_icon_mask;
 	};
 
-	inline std::unordered_map<std::string, Item::ItemType> itemTypeMap = {
+	inline std::unordered_map<std::string, Item::ItemType> item_type_map = {
 		{ "CONSUMABLE", Item::CONSUMABLE }, { "EQUIPPABLE", Item::EQUIPPABLE },
 		{ "WEAPON", Item::WEAPON }, { "AMMO", Item::AMMO },
 		{ "STRUCTURE", Item::STRUCTURE }, { "RESOURCE", Item::RESOURCE },

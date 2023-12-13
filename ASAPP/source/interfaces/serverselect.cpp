@@ -27,8 +27,8 @@ namespace asa::interfaces
 
 	bool ServerSelect::can_join() const
 	{
-		static window::Color joinableColor(153, 77, 4);
-		auto masked = window::get_mask(join_button.area, joinableColor, 20);
+		static window::Color joinable_color(153, 77, 4);
+		auto masked = window::get_mask(join_button.area, joinable_color, 20);
 
 		return cv::countNonZero(masked) > 200;
 	}
@@ -36,9 +36,9 @@ namespace asa::interfaces
 	bool ServerSelect::can_join_last_played() const
 	{
 
-		static window::Color lastPlayedColor(142, 219, 231);
+		static window::Color last_played_color(142, 219, 231);
 		auto masked = window::get_mask(
-			join_last_played_button.area, lastPlayedColor, 20);
+			join_last_played_button.area, last_played_color, 20);
 
 		return cv::countNonZero(masked) > 50;
 	}

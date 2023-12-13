@@ -4,12 +4,12 @@
     "type": "RESOURCE",
     "recipe": {},
     "weight": 1.0,
-    "stackSize": 300,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": true
+    "stack_size": 300,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": true
   },
 
   "Metal Ingot": {
@@ -17,12 +17,12 @@
     "type": "RESOURCE",
     "recipe": {},
     "weight": 1.0,
-    "stackSize": 300,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 300,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   },
 
   "Cementing Paste": {
@@ -33,36 +33,36 @@
       "Stone": 8
     },
     "weight": 0.01,
-    "stackSize": 100,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   },
 
   "Achatina Paste": {
     "icon": "items\\resources\\CementPaste_Icon.png",
     "type": "RESOURCE",
     "weight": 0.01,
-    "stackSize": 100,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   },
   "Fiber": {
     "icon": "items\\resources\\Fiber_Icon.png",
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.01,
-    "stackSize": 300,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 300,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   },
 
   "Thatch": {
@@ -70,12 +70,12 @@
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.02,
-    "stackSize": 100,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": true
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": true
   },
 
   "Wood": {
@@ -83,12 +83,12 @@
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.05,
-    "stackSize": 100,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": true
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": true
   },
 
   "Stone": {
@@ -96,12 +96,12 @@
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.5,
-    "stackSize": 100,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": true
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": true
   },
 
   "Flint": {
@@ -109,12 +109,12 @@
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.05,
-    "stackSize": 100,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   },
 
   "Gunpowder": {
@@ -125,12 +125,12 @@
       "Sparkpowder": 1
     },
     "weight": 0.1,
-    "stackSize": 100,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   },
 
   "Sparkpowder": {
@@ -141,12 +141,12 @@
       "Stone": 1
     },
     "weight": 0.1,
-    "stackSize": 100,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   },
 
   "Obsidian": {
@@ -155,12 +155,12 @@
     "recipe": {
     },
     "weight": 1.0,
-    "stackSize": 100,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   },
 
   "Polymer": {
@@ -171,12 +171,12 @@
       "Obsidian": 2
     },
     "weight": 0.25,
-    "stackSize": 100,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": true
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": true
   },
 
   "Organic Polymer": {
@@ -184,12 +184,12 @@
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.25,
-    "stackSize": 20,
-    "canPutInHotbar": true,
-    "hasSpoilTimer": true,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 20,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   },
 
   "Mejoberry": {
@@ -197,12 +197,12 @@
     "type": "CONSUMABLE",
     "recipe": {},
     "weight": 0.1,
-    "stackSize": 100,
-    "canPutInHotbar": true,
-    "hasSpoilTimer": true,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": true
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": true
   },
 
   "Element": {
@@ -210,12 +210,12 @@
     "type": "RESOURCE",
     "recipe": {},
     "weight": 0.01,
-    "stackSize": 100,
-    "canPutInHotbar": true,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": true
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": true
   },
 
   "Element Shard": {
@@ -223,12 +223,12 @@
     "type": "RESOURCE",
     "recipe": { "Element": 0.01 },
     "weight": 0.05,
-    "stackSize": 1000,
-    "canPutInHotbar": false,
-    "hasSpoilTimer": false,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 1000,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   },
 
   "Medical Brew": {
@@ -239,12 +239,12 @@
       "Tintoberry": 20
     },
     "weight": 0.1,
-    "stackSize": 100,
-    "canPutInHotbar": true,
-    "hasSpoilTimer": true,
-    "hasDurability": false,
-    "requiresEngram": false,
-    "hasAmbigiousQuery": false
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
   }
 
 }

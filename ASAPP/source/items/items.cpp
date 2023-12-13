@@ -7,38 +7,38 @@
 namespace asa::items
 {
 	Item::Item(std::string name, cv::Mat icon)
-		: Item(name, icon, rawData[name]){};
+		: Item(name, icon, raw_data.at(name)){};
 
-	Item::Item(std::string name, json itemData) : name(name)
+	Item::Item(std::string name, json data) : name(name)
 	{
-		icon_path = (core::config::assets_dir / itemData["icon"]).string();
+		icon_path = (core::config::assets_dir / data.at("icon")).string();
 		icon = cv::imread(icon_path, cv::IMREAD_UNCHANGED);
 		if (icon.empty()) {
 			std::cerr << "\t[!] Failure reading: '" << icon_path << "'"
 					  << std::endl;
 		}
 
-		type = itemTypeMap[itemData["type"]];
-		weight = itemData["weight"];
-		stack_size = itemData["stack_size"];
-		can_put_in_hotbar = itemData["can_put_in_hotbar"];
-		has_spoil_timer = itemData["has_spoil_timer"];
-		has_durability = itemData["has_durability"];
-		requires_engram = itemData["requires_engram"];
-		has_ambiguous_query = itemData["has_ambiguous_query"];
+		type = item_type_map[data.at("type")];
+		weight = data.at("weight");
+		stack_size = data.at("stack_size");
+		can_put_in_hotbar = data.at("can_put_in_hotbar");
+		has_spoil_timer = data.at("has_spoil_timer");
+		has_durability = data.at("has_durability");
+		requires_engram = data.at("requires_engram");
+		has_ambiguous_query = data.at("has_ambiguous_query");
 	}
 
-	Item::Item(std::string name, cv::Mat icon, json itemData) : name(name)
+	Item::Item(std::string name, cv::Mat t_icon, json data) : name(name)
 	{
-		icon = icon;
-		type = itemTypeMap[itemData["type"]];
-		weight = itemData["weight"];
-		stack_size = itemData["stack_size"];
-		can_put_in_hotbar = itemData["can_put_in_hotbar"];
-		has_spoil_timer = itemData["has_spoil_timer"];
-		has_durability = itemData["has_durability"];
-		requires_engram = itemData["requires_engram"];
-		has_ambiguous_query = itemData["has_ambiguous_query"];
+		icon = t_icon;
+		type = item_type_map[data.at("type")];
+		weight = data.at("weight");
+		stack_size = data.at("stack_size");
+		can_put_in_hotbar = data.at("can_put_in_hotbar");
+		has_spoil_timer = data.at("has_spoil_timer");
+		has_durability = data.at("has_durability");
+		requires_engram = data.at("requires_engram");
+		has_ambiguous_query = data.at("has_ambiguous_query");
 	}
 
 	const cv::Mat& Item::get_inventory_icon()
@@ -106,7 +106,7 @@ namespace asa::items
 			return false;
 		}
 
-		rawData = json::parse(f);
+		raw_data = json::parse(f);
 		f.close();
 		return true;
 	}
@@ -130,7 +130,7 @@ namespace asa::items
 
 	void load(Item*& item, std::string name)
 	{
-		if (rawData.find(name) == rawData.end()) {
+		if (raw_data.find(name) == raw_data.end()) {
 			std::cout << "[!] No item data found for: " << name << std::endl;
 			return;
 		}
@@ -140,7 +140,7 @@ namespace asa::items
 			item = nullptr;
 		}
 
-		item = new Item(name, rawData[name]);
+		item = new Item(name, raw_data.at(name));
 		std::cout << std::format("\t[-] Loaded predef. item '{}'. Icon: '{}'",
 						 item->name, item->icon_path)
 				  << std::endl;
@@ -164,6 +164,4 @@ namespace asa::items
 
 		return true;
 	}
-
-
 }

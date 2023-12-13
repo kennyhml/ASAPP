@@ -32,7 +32,7 @@ namespace asa::window
 		}
 	}
 
-	bool Init()
+	bool init()
 	{
 		tessEngine = new tesseract::TessBaseAPI();
 
@@ -355,7 +355,7 @@ namespace asa::window
 			: post_key_up(input.key, delay);
 	}
 
-	void PostPress(const settings::ActionMapping& input, bool catchCursor,
+	void post_press(const settings::ActionMapping& input, bool catchCursor,
 		std::chrono::milliseconds delay)
 	{
 		if (controls::is_mouse_input(input)) {

@@ -7,7 +7,7 @@ using json = nlohmann::json;
 
 namespace asa::items
 {
-	inline json rawData = NULL;
+	inline json raw_data = NULL;
 
 	bool init();
 	bool load_raw_data();
@@ -33,7 +33,6 @@ namespace asa::items
 		inline Item* thatch = nullptr;
 		inline Item* wood = nullptr;
 		inline Item* gasmask = nullptr;
-
 	}
 
 }
