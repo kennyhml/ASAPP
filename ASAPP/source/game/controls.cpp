@@ -78,7 +78,6 @@ namespace asa::controls
 		return mapping.at(key);
 	}
 
-
 	bool is_mouse_input(const settings::ActionMapping& input)
 	{
 		return input.key.find("Mouse") != std::string::npos;

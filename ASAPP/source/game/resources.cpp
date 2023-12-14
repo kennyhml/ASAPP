@@ -50,6 +50,7 @@ namespace asa::resources
 	{
 		auto dir = core::config::assets_dir / "interfaces";
 		if (!is_valid_dir(dir)) {
+			std::cout << dir << " not found" << std::endl;
 			return false;
 		}
 
@@ -69,6 +70,7 @@ namespace asa::resources
 	{
 		auto dir = core::config::assets_dir / "text";
 		if (!is_valid_dir(dir)) {
+			std::cout << dir << " not found" << std::endl;
 			return false;
 		}
 

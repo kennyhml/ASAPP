@@ -29,6 +29,8 @@ namespace asa::settings
 					  << std::endl;
 			return false;
 		}
+
+		return true;
 	}
 
 	std::ostream& action_mappings::operator<<(
@@ -173,6 +175,7 @@ namespace asa::settings
 			}
 		}
 		VERBOSE_LOG("[+] Input.ini parsed, mappings mapped.")
+		return true;
 	}
 
 	bool game_user_settings::load_user_settings(bool verbose)
