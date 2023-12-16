@@ -43,6 +43,7 @@ namespace asa::window
 		}
 		std::cout << "[+] Tesseract engine initialized successfully."
 				  << std::endl;
+		return true;
 	}
 
 	void Color::to_range(int v, cv::Scalar& low, cv::Scalar& high) const

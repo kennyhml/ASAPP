@@ -72,6 +72,8 @@ namespace asa::entities
 		void look_fully_down();
 		void look_fully_up();
 
+		float get_water_amount() const;
+
 	private:
 		void pass_travel_screen(bool in = true, bool out = true);
 		void pass_teleport_screen(bool allowAccessFlag = false);

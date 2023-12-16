@@ -189,4 +189,35 @@ namespace asa::interfaces
 		amount_out = std::stoi(result_string);
 		return true;
 	}
+
+	float HUD::get_water_amount() const
+	{
+		static window::Rect roi(1885, 806, 1, 43);
+		static window::Color full(111, 150, 155);
+
+		cv::Mat masked = window::get_mask(roi, full, 30);
+
+		cv::imshow("mask", masked);
+		cv::waitKey(0);
+
+		int amount_filled = cv::countNonZero(masked);
+		return (float(amount_filled) / float(roi.height));
+	}
+
+	float HUD::get_food_amount() const
+	{
+		return 0;
+	}
+
+	float HUD::get_weight_amount() const
+	{
+		return 0;
+	}
+
+
+
+
+
+
+
 }

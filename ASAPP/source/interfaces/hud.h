@@ -34,6 +34,10 @@ namespace asa::interfaces
 		bool count_items_added(items::Item&, int& amountOut);
 		bool count_items_removed(items::Item&, int& amountOut);
 
+		float get_water_amount() const;
+		float get_food_amount() const;
+		float get_weight_amount() const;
+
 	private:
 		window::Color blink_red_state{ 109, 54, 52 };
 		window::Color blink_red_state_weight{ 255, 45, 45 };

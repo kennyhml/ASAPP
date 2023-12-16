@@ -372,4 +372,9 @@ namespace asa::entities
 		core::sleep_for(std::chrono::milliseconds(300));
 	}
 
+	float LocalPlayer::get_water_amount() const
+	{
+		return interfaces::hud->get_water_amount();
+	}
+
 }
