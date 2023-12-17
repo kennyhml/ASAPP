@@ -152,6 +152,19 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
+  "Fertilizer": {
+    "icon": "items\\resources\\Fertilizer_Icon.png",
+    "type": "RESOURCE",
+    "recipe": {
+    },
+    "weight": 0.1,
+    "stack_size": 1,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": true,
+    "requires_engram": false,
+    "has_ambiguous_query": true
+  },
   "Polymer": {
     "icon": "items\\resources\\Polymer_Icon.png",
     "type": "RESOURCE",
@@ -280,7 +293,7 @@
     "requires_engram": false,
     "has_ambiguous_query": true
   },
-  "Carrot Seed": {
+  "Rockarrot Seed": {
     "icon": "items\\consumables\\CarrotSeed_Icon.png",
     "type": "CONSUMABLE",
     "recipe": {},

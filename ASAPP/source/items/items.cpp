@@ -146,6 +146,7 @@ namespace asa::items
         load(stone, "Stone");
         load(thatch, "Thatch");
         load(wood, "Wood");
+        load(fertilizer, "Fertilizer");
 
         return true;
     }

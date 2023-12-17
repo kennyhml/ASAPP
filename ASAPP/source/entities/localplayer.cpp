@@ -203,13 +203,15 @@ namespace asa::entities
 
 	void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
 	{
-		for (int i = 0; i < 10; i++) {
-			turn_down(18, std::chrono::milliseconds(10));
-		}
+		if (!bed._interface->is_open()) {
+			for (int i = 0; i < 10; i++) {
+				turn_down(18, std::chrono::milliseconds(10));
+			}
 
-		core::sleep_for(std::chrono::milliseconds(300));
-		access(bed);
-		core::sleep_for(std::chrono::milliseconds(300));
+			core::sleep_for(std::chrono::milliseconds(300));
+			access(bed);
+			core::sleep_for(std::chrono::milliseconds(300));
+		}
 
 		bed.map->go_to(bed.name);
 		pass_travel_screen();

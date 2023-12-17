@@ -92,6 +92,7 @@ namespace asa::interfaces
 		void select_slot(int index);
 
 		void drop_all();
+		void drop_all(asa::items::Item* item);
 
 		void transfer_all(items::Item* = nullptr, BaseInventory* tar = nullptr);
 		void transfer_all(
