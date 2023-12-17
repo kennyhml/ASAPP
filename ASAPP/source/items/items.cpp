@@ -118,7 +118,7 @@ namespace asa::items
 			return false;
 		}
 		std::cout << "[+] Initializing predefined items..." << std::endl;
-		if (!resources::init()) {
+		if (!resources::init() || !consumables::init()) {
 			return false;
 		}
 
@@ -164,4 +164,17 @@ namespace asa::items
 
 		return true;
 	}
+
+	bool consumables::init()
+	{
+		load(longrass, "Longrass");
+		load(savoroot, "Savoroot");
+		load(citronal, "Citronal");
+		load(rockarrot, "Rockarrot");
+
+		return true;
+	}
+
+
+	
 }

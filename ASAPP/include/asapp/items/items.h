@@ -35,4 +35,14 @@ namespace asa::items
 		inline Item* gasmask = nullptr;
 	}
 
+	namespace consumables
+	{
+		bool init();
+		inline Item* longrass = nullptr;
+		inline Item* rockarrot = nullptr;
+		inline Item* citronal = nullptr;
+		inline Item* savoroot = nullptr;
+
+	}
+
 }

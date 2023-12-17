@@ -245,6 +245,54 @@
     "has_durability": false,
     "requires_engram": false,
     "has_ambiguous_query": false
-  }
-
+  },
+  
+  "Longrass": {
+    "icon": "items\\consumables\\Longrass_Icon.png",
+    "type": "CONSUMABLE",
+    "recipe": {},
+    "weight": 0.1,
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
+  },
+  "Citronal": {
+    "icon": "items\\consumables\\Citronal_Icon.png",
+    "type": "CONSUMABLE",
+    "recipe": {},
+    "weight": 0.1,
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
+  },  
+  "Savroot": {
+  "icon": "items\\consumables\\Savroot_Icon.png",
+  "type": "CONSUMABLE",
+  "recipe": {},
+  "weight": 0.1,
+  "stack_size": 100,
+  "can_put_in_hotbar": true,
+  "has_spoil_timer": true,
+  "has_durability": false,
+  "requires_engram": false,
+  "has_ambiguous_query": false
+},
+  "Rockarrot": {
+  "icon": "items\\consumables\\Rockarrot_Icon.png",
+  "type": "CONSUMABLE",
+  "recipe": {},
+  "weight": 0.1,
+  "stack_size": 100,
+  "can_put_in_hotbar": true,
+  "has_spoil_timer": true,
+  "has_durability": false,
+  "requires_engram": false,
+  "has_ambiguous_query": false
+}
 }

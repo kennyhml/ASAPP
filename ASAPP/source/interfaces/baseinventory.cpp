@@ -303,4 +303,9 @@ namespace asa::interfaces
 			this->take_slot(*slot);
 		}
 	}
+
+	void BaseInventory::auto_stack()
+	{
+		auto_stack_button.press();
+	}
 }
