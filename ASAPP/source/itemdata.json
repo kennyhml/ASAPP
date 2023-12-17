@@ -11,7 +11,6 @@
     "requires_engram": false,
     "has_ambiguous_query": true
   },
-
   "Metal Ingot": {
     "icon": "items\\resources\\MetalIngot_Icon.png",
     "type": "RESOURCE",
@@ -24,7 +23,6 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
-
   "Cementing Paste": {
     "icon": "items\\resources\\CementPaste_Icon.png",
     "type": "RESOURCE",
@@ -40,7 +38,6 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
-
   "Achatina Paste": {
     "icon": "items\\resources\\CementPaste_Icon.png",
     "type": "RESOURCE",
@@ -64,7 +61,6 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
-
   "Thatch": {
     "icon": "items\\resources\\Thatch_Icon.png",
     "type": "RESOURCE",
@@ -77,7 +73,6 @@
     "requires_engram": false,
     "has_ambiguous_query": true
   },
-
   "Wood": {
     "icon": "items\\resources\\Wood_Icon.png",
     "type": "RESOURCE",
@@ -90,7 +85,6 @@
     "requires_engram": false,
     "has_ambiguous_query": true
   },
-
   "Stone": {
     "icon": "items\\resources\\Stone_Icon.png",
     "type": "RESOURCE",
@@ -103,7 +97,6 @@
     "requires_engram": false,
     "has_ambiguous_query": true
   },
-
   "Flint": {
     "icon": "items\\resources\\Flint_Icon.png",
     "type": "RESOURCE",
@@ -116,7 +109,6 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
-
   "Gunpowder": {
     "icon": "items\\resources\\Gunpowder_Icon.png",
     "type": "RESOURCE",
@@ -132,7 +124,6 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
-
   "Sparkpowder": {
     "icon": "items\\resources\\Sparkpowder_Icon.png",
     "type": "RESOURCE",
@@ -148,7 +139,6 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
-
   "Obsidian": {
     "icon": "items\\resources\\Obsidian_Icon.png",
     "type": "RESOURCE",
@@ -162,7 +152,6 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
-
   "Polymer": {
     "icon": "items\\resources\\Polymer_Icon.png",
     "type": "RESOURCE",
@@ -178,7 +167,6 @@
     "requires_engram": false,
     "has_ambiguous_query": true
   },
-
   "Organic Polymer": {
     "icon": "items\\resources\\OrganicPolymer_Icon.png",
     "type": "RESOURCE",
@@ -191,7 +179,6 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
-
   "Mejoberry": {
     "icon": "items\\consumables\\Mejoberry_Icon.png",
     "type": "CONSUMABLE",
@@ -204,7 +191,6 @@
     "requires_engram": false,
     "has_ambiguous_query": true
   },
-
   "Element": {
     "icon": "items\\resources\\TEKElement_Icon.png",
     "type": "RESOURCE",
@@ -217,11 +203,12 @@
     "requires_engram": false,
     "has_ambiguous_query": true
   },
-
   "Element Shard": {
     "icon": "items\\resources\\TEKElementShard_Icon.png",
     "type": "RESOURCE",
-    "recipe": { "Element": 0.01 },
+    "recipe": {
+      "Element": 0.01
+    },
     "weight": 0.05,
     "stack_size": 1000,
     "can_put_in_hotbar": false,
@@ -230,7 +217,6 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
-
   "Medical Brew": {
     "icon": "items\\consumables\\HealthPotion_Icon.png",
     "type": "CONSUMABLE",
@@ -246,7 +232,6 @@
     "requires_engram": false,
     "has_ambiguous_query": false
   },
-  
   "Longrass": {
     "icon": "items\\consumables\\Longrass_Icon.png",
     "type": "CONSUMABLE",
@@ -257,7 +242,7 @@
     "has_spoil_timer": true,
     "has_durability": false,
     "requires_engram": false,
-    "has_ambiguous_query": false
+    "has_ambiguous_query": true
   },
   "Citronal": {
     "icon": "items\\consumables\\Citronal_Icon.png",
@@ -269,30 +254,78 @@
     "has_spoil_timer": true,
     "has_durability": false,
     "requires_engram": false,
-    "has_ambiguous_query": false
-  },  
-  "Savroot": {
-  "icon": "items\\consumables\\Savroot_Icon.png",
-  "type": "CONSUMABLE",
-  "recipe": {},
-  "weight": 0.1,
-  "stack_size": 100,
-  "can_put_in_hotbar": true,
-  "has_spoil_timer": true,
-  "has_durability": false,
-  "requires_engram": false,
-  "has_ambiguous_query": false
-},
+    "has_ambiguous_query": true
+  },
+  "Savoroot": {
+    "icon": "items\\consumables\\Savroot_Icon.png",
+    "type": "CONSUMABLE",
+    "recipe": {},
+    "weight": 0.1,
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": true
+  },
   "Rockarrot": {
-  "icon": "items\\consumables\\Rockarrot_Icon.png",
-  "type": "CONSUMABLE",
-  "recipe": {},
-  "weight": 0.1,
-  "stack_size": 100,
-  "can_put_in_hotbar": true,
-  "has_spoil_timer": true,
-  "has_durability": false,
-  "requires_engram": false,
-  "has_ambiguous_query": false
-}
+    "icon": "items\\consumables\\Rockarrot_Icon.png",
+    "type": "CONSUMABLE",
+    "recipe": {},
+    "weight": 0.1,
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": true
+  },
+  "Carrot Seed": {
+    "icon": "items\\consumables\\CarrotSeed_Icon.png",
+    "type": "CONSUMABLE",
+    "recipe": {},
+    "weight": 0.4,
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
+  },
+  "Citronal Seed": {
+    "icon": "items\\consumables\\CitronalSeed_Icon.png",
+    "type": "CONSUMABLE",
+    "recipe": {},
+    "weight": 0.4,
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
+  },
+  "Savoroot Seed": {
+    "icon": "items\\consumables\\SavrootSeed_Icon.png",
+    "type": "CONSUMABLE",
+    "recipe": {},
+    "weight": 0.4,
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
+  },
+  "Longrass Seed": {
+    "icon": "items\\consumables\\LongrassSeed_Icon.png",
+    "type": "CONSUMABLE",
+    "recipe": {},
+    "weight": 0.4,
+    "stack_size": 100,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": true,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false
+  }
 }
