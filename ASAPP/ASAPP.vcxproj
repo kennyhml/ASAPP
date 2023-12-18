@@ -1,270 +1,273 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
-      <Configuration>Debug</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
-      <Configuration>Release</Configuration>
-      <Platform>Win32</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
-      <Configuration>Debug</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
-      <Configuration>Release</Configuration>
-      <Platform>x64</Platform>
-    </ProjectConfiguration>
-  </ItemGroup>
-  <PropertyGroup Label="Globals">
-    <VCProjectVersion>17.0</VCProjectVersion>
-    <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{9f91f771-c9ce-4103-afbb-423c9851f1b9}</ProjectGuid>
-    <RootNamespace>ASAPP</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
-  </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-  </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\ASAPP\build\lib\</OutDir>
-    <IntDir>$(SolutionDir)\ASAPP\build\lib\intermediates\</IntDir>
-    <IncludePath>C:\opencv\build\include;$(SolutionDir)ASAPP\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
-    <TargetName>$(ProjectName)d</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\ASAPP\build\lib\</OutDir>
-    <IntDir>$(SolutionDir)\ASAPP\build\lib\intermediates\</IntDir>
-    <IncludePath>C:\opencv\build\include;$(SolutionDir)ASAPP\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)\ASAPP\build\lib\</OutDir>
-    <IntDir>$(SolutionDir)\ASAPP\build\lib\intermediates\</IntDir>
-    <IncludePath>C:\opencv\build\include;$(SolutionDir)ASAPP\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
-    <TargetName>$(ProjectName)d</TargetName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)\ASAPP\build\lib\</OutDir>
-    <IntDir>$(SolutionDir)\ASAPP\build\lib\intermediates\</IntDir>
-    <IncludePath>C:\opencv\build\include;$(SolutionDir)ASAPP\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opencv_world481d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opencv_world481.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opencv_world481d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
-    </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opencv_world481.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
-  </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="source\core\config.cpp" />
-    <ClCompile Include="source\core\exceptions.cpp" />
-    <ClCompile Include="source\core\state.cpp" />
-    <ClCompile Include="source\entities\baseentity.cpp" />
-    <ClCompile Include="source\entities\exceptions.cpp" />
-    <ClCompile Include="source\entities\localplayer.cpp" />
-    <ClCompile Include="source\entities\dinoent.cpp" />
-    <ClCompile Include="source\game\controls.cpp" />
-    <ClCompile Include="source\game\resources.cpp" />
-    <ClCompile Include="source\game\settings.cpp" />
-    <ClCompile Include="source\game\window.cpp" />
-    <ClCompile Include="source\core\init.cpp" />
-    <ClCompile Include="source\interfaces\actionwheel.cpp" />
-    <ClCompile Include="source\interfaces\basetravelmap.cpp" />
-    <ClCompile Include="source\interfaces\components\button.cpp" />
-    <ClCompile Include="source\interfaces\components\searchbar.cpp" />
-    <ClCompile Include="source\interfaces\exceptions.cpp" />
-    <ClCompile Include="source\interfaces\hud.cpp" />
-    <ClCompile Include="source\interfaces\interfacemanager.cpp" />
-    <ClCompile Include="source\interfaces\baseinventory.cpp" />
-    <ClCompile Include="source\interfaces\localinventory.cpp" />
-    <ClCompile Include="source\interfaces\mainmenu.cpp" />
-    <ClCompile Include="source\interfaces\modeselect.cpp" />
-    <ClCompile Include="source\interfaces\playerinfo.cpp" />
-    <ClCompile Include="source\interfaces\serverselect.cpp" />
-    <ClCompile Include="source\interfaces\spawnmap.cpp" />
-    <ClCompile Include="source\interfaces\structureinfo.cpp" />
-    <ClCompile Include="source\interfaces\teleportmap.cpp" />
-    <ClCompile Include="source\interfaces\travelmap.cpp" />
-    <ClCompile Include="source\items\items.cpp" />
-    <ClCompile Include="source\structures\cavelootcreate.cpp" />
-    <ClCompile Include="source\structures\container.cpp" />
-    <ClCompile Include="source\structures\exceptions.cpp" />
-    <ClCompile Include="source\util\util.cpp" />
-    <ClInclude Include="include\asapp\core\config.h" />
-    <ClInclude Include="include\asapp\core\state.h" />
-    <ClInclude Include="include\asapp\entities\dinoent.h" />
-    <ClInclude Include="include\asapp\entities\baseentity.h" />
-    <ClInclude Include="include\asapp\entities\entities.h" />
-    <ClInclude Include="include\asapp\entities\exceptions.h" />
-    <ClInclude Include="include\asapp\entities\localplayer.h" />
-    <ClInclude Include="include\asapp\entities\playerent.h" />
-    <ClInclude Include="include\asapp\core\exceptions.h" />
-    <ClInclude Include="include\asapp\game\controls.h" />
-    <ClInclude Include="include\asapp\game\globals.h" />
-    <ClInclude Include="include\asapp\game\resources.h" />
-    <ClInclude Include="include\asapp\game\window.h" />
-    <ClInclude Include="include\asapp\game\settings.h" />
-    <ClInclude Include="include\asapp\core\init.h" />
-    <ClInclude Include="include\asapp\interfaces\actionwheel.h" />
-    <ClInclude Include="include\asapp\interfaces\baseinfo.h" />
-    <ClInclude Include="include\asapp\interfaces\basetravelmap.h" />
-    <ClInclude Include="include\asapp\interfaces\components\combobox.h" />
-    <ClInclude Include="include\asapp\interfaces\dinoinfo.h" />
-    <ClInclude Include="include\asapp\interfaces\engrams.h" />
-    <ClInclude Include="include\asapp\interfaces\baseentityinfo.h" />
-    <ClInclude Include="include\asapp\interfaces\exceptions.h" />
-    <ClInclude Include="include\asapp\interfaces\explorernotes.h" />
-    <ClInclude Include="include\asapp\items\item.h" />
-    <ClInclude Include="include\asapp\structures\cavelootcrate.h" />
-    <ClInclude Include="include\asapp\structures\exceptions.h" />
-    <ClInclude Include="include\asapp\structures\largecropplot.h" />
-    <ClInclude Include="include\asapp\structures\mediumcropplot.h" />
-    <ClInclude Include="include\asapp\structures\simplebed.h" />
-    <ClInclude Include="include\asapp\structures\smallcropplot.h" />
-    <ClInclude Include="include\asapp\structures\teleporter.h" />
-    <ClInclude Include="source\interfaces\hud.h" />
-    <ClInclude Include="include\asapp\interfaces\interfaces.h" />
-    <ClInclude Include="include\asapp\interfaces\localinventory.h" />
-    <ClInclude Include="include\asapp\interfaces\mainmenu.h" />
-    <ClInclude Include="include\asapp\interfaces\map.h" />
-    <ClInclude Include="include\asapp\interfaces\menu.h" />
-    <ClInclude Include="include\asapp\interfaces\minimap.h" />
-    <ClInclude Include="include\asapp\interfaces\modeselect.h" />
-    <ClInclude Include="include\asapp\interfaces\playerinfo.h" />
-    <ClInclude Include="include\asapp\interfaces\serverselect.h" />
-    <ClInclude Include="include\asapp\interfaces\spawnmap.h" />
-    <ClInclude Include="include\asapp\interfaces\containerinfo.h" />
-    <ClInclude Include="include\asapp\interfaces\teleportmap.h" />
-    <ClInclude Include="include\asapp\interfaces\trackingtab.h" />
-    <ClInclude Include="include\asapp\interfaces\travelmap.h" />
-    <ClInclude Include="include\asapp\interfaces\tribemanager.h" />
-    <ClInclude Include="include\asapp\interfaces\components\button.h" />
-    <ClInclude Include="include\asapp\interfaces\iinterface.h" />
-    <ClInclude Include="include\asapp\interfaces\interfacemanager.h" />
-    <ClInclude Include="include\asapp\interfaces\baseinventory.h" />
-    <ClInclude Include="include\asapp\interfaces\components\iinterfacecomponent.h" />
-    <ClInclude Include="include\asapp\interfaces\components\searchbar.h" />
-    <ClInclude Include="include\asapp\items\items.h" />
-    <ClInclude Include="include\asapp\structures\basestructure.h" />
-    <ClInclude Include="include\asapp\structures\container.h" />
-    <ClInclude Include="include\asapp\structures\dedicatedstorage.h" />
-    <ClInclude Include="include\asapp\structures\interactablestructure.h" />
-    <ClInclude Include="source\util\util.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".clang-format" />
-    <None Include="source\itemdata.json" />
-  </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+    <ItemGroup Label="ProjectConfigurations">
+        <ProjectConfiguration Include="Debug|Win32">
+            <Configuration>Debug</Configuration>
+            <Platform>Win32</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|Win32">
+            <Configuration>Release</Configuration>
+            <Platform>Win32</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Debug|x64">
+            <Configuration>Debug</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
+        <ProjectConfiguration Include="Release|x64">
+            <Configuration>Release</Configuration>
+            <Platform>x64</Platform>
+        </ProjectConfiguration>
+    </ItemGroup>
+    <PropertyGroup Label="Globals">
+        <VCProjectVersion>17.0</VCProjectVersion>
+        <Keyword>Win32Proj</Keyword>
+        <ProjectGuid>{9f91f771-c9ce-4103-afbb-423c9851f1b9}</ProjectGuid>
+        <RootNamespace>ASAPP</RootNamespace>
+        <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    </PropertyGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+        <ConfigurationType>StaticLibrary</ConfigurationType>
+        <UseDebugLibraries>true</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <CharacterSet>Unicode</CharacterSet>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+        <ConfigurationType>StaticLibrary</ConfigurationType>
+        <UseDebugLibraries>false</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <WholeProgramOptimization>true</WholeProgramOptimization>
+        <CharacterSet>Unicode</CharacterSet>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+        <ConfigurationType>StaticLibrary</ConfigurationType>
+        <UseDebugLibraries>true</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <CharacterSet>Unicode</CharacterSet>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+        <ConfigurationType>StaticLibrary</ConfigurationType>
+        <UseDebugLibraries>false</UseDebugLibraries>
+        <PlatformToolset>v143</PlatformToolset>
+        <WholeProgramOptimization>true</WholeProgramOptimization>
+        <CharacterSet>Unicode</CharacterSet>
+    </PropertyGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+    <ImportGroup Label="ExtensionSettings">
+    </ImportGroup>
+    <ImportGroup Label="Shared">
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform"/>
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform"/>
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform"/>
+    </ImportGroup>
+    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform"/>
+    </ImportGroup>
+    <PropertyGroup Label="UserMacros"/>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+        <OutDir>$(SolutionDir)\ASAPP\build\lib\</OutDir>
+        <IntDir>$(SolutionDir)\ASAPP\build\lib\intermediates\</IntDir>
+        <IncludePath>C:\opencv\build\include;$(SolutionDir)ASAPP\include;$(IncludePath)</IncludePath>
+        <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+        <TargetName>$(ProjectName)d</TargetName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+        <OutDir>$(SolutionDir)\ASAPP\build\lib\</OutDir>
+        <IntDir>$(SolutionDir)\ASAPP\build\lib\intermediates\</IntDir>
+        <IncludePath>C:\opencv\build\include;$(SolutionDir)ASAPP\include;$(IncludePath)</IncludePath>
+        <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <OutDir>$(SolutionDir)\ASAPP\build\lib\</OutDir>
+        <IntDir>$(SolutionDir)\ASAPP\build\lib\intermediates\</IntDir>
+        <IncludePath>C:\opencv\build\include;$(SolutionDir)ASAPP\include;$(IncludePath)</IncludePath>
+        <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+        <TargetName>$(ProjectName)d</TargetName>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <OutDir>$(SolutionDir)\ASAPP\build\lib\</OutDir>
+        <IntDir>$(SolutionDir)\ASAPP\build\lib\intermediates\</IntDir>
+        <IncludePath>C:\opencv\build\include;$(SolutionDir)ASAPP\include;$(IncludePath)</IncludePath>
+        <LibraryPath>C:\opencv\build\x64\vc16\lib;$(LibraryPath)</LibraryPath>
+    </PropertyGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+        <ClCompile>
+            <WarningLevel>Level3</WarningLevel>
+            <SDLCheck>true</SDLCheck>
+            <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <LanguageStandard>stdcpp20</LanguageStandard>
+            <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+        </ClCompile>
+        <Link>
+            <SubSystem>Console</SubSystem>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+            <AdditionalDependencies>opencv_world481d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+        <ClCompile>
+            <WarningLevel>Level3</WarningLevel>
+            <FunctionLevelLinking>true</FunctionLevelLinking>
+            <IntrinsicFunctions>true</IntrinsicFunctions>
+            <SDLCheck>true</SDLCheck>
+            <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <LanguageStandard>stdcpp20</LanguageStandard>
+            <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+        </ClCompile>
+        <Link>
+            <SubSystem>Console</SubSystem>
+            <EnableCOMDATFolding>true</EnableCOMDATFolding>
+            <OptimizeReferences>true</OptimizeReferences>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+            <AdditionalDependencies>opencv_world481.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+        <ClCompile>
+            <WarningLevel>Level3</WarningLevel>
+            <SDLCheck>true</SDLCheck>
+            <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <LanguageStandard>stdcpp20</LanguageStandard>
+            <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+        </ClCompile>
+        <Link>
+            <SubSystem>Console</SubSystem>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+            <AdditionalDependencies>opencv_world481d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+        <ClCompile>
+            <WarningLevel>Level3</WarningLevel>
+            <FunctionLevelLinking>true</FunctionLevelLinking>
+            <IntrinsicFunctions>true</IntrinsicFunctions>
+            <SDLCheck>true</SDLCheck>
+            <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+            <ConformanceMode>true</ConformanceMode>
+            <LanguageStandard>stdcpp20</LanguageStandard>
+            <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+        </ClCompile>
+        <Link>
+            <SubSystem>Console</SubSystem>
+            <EnableCOMDATFolding>true</EnableCOMDATFolding>
+            <OptimizeReferences>true</OptimizeReferences>
+            <GenerateDebugInformation>true</GenerateDebugInformation>
+            <AdditionalDependencies>opencv_world481.lib;%(AdditionalDependencies)</AdditionalDependencies>
+        </Link>
+    </ItemDefinitionGroup>
+    <ItemGroup>
+        <ClCompile Include="source\core\config.cpp"/>
+        <ClCompile Include="source\core\exceptions.cpp"/>
+        <ClCompile Include="source\core\state.cpp"/>
+        <ClCompile Include="source\entities\baseentity.cpp"/>
+        <ClCompile Include="source\entities\exceptions.cpp"/>
+        <ClCompile Include="source\entities\localplayer.cpp"/>
+        <ClCompile Include="source\entities\dinoent.cpp"/>
+        <ClCompile Include="source\game\controls.cpp"/>
+        <ClCompile Include="source\game\resources.cpp"/>
+        <ClCompile Include="source\game\settings.cpp"/>
+        <ClCompile Include="source\game\window.cpp"/>
+        <ClCompile Include="source\core\init.cpp"/>
+        <ClCompile Include="source\interfaces\actionwheel.cpp"/>
+        <ClCompile Include="source\interfaces\basetravelmap.cpp"/>
+        <ClCompile Include="source\interfaces\components\button.cpp"/>
+        <ClCompile Include="source\interfaces\components\searchbar.cpp"/>
+        <ClCompile Include="source\interfaces\exceptions.cpp"/>
+        <ClCompile Include="source\interfaces\hud.cpp"/>
+        <ClCompile Include="source\interfaces\interfacemanager.cpp"/>
+        <ClCompile Include="source\interfaces\baseinventory.cpp"/>
+        <ClCompile Include="source\interfaces\localinventory.cpp"/>
+        <ClCompile Include="source\interfaces\mainmenu.cpp"/>
+        <ClCompile Include="source\interfaces\modeselect.cpp"/>
+        <ClCompile Include="source\interfaces\playerinfo.cpp"/>
+        <ClCompile Include="source\interfaces\serverselect.cpp"/>
+        <ClCompile Include="source\interfaces\spawnmap.cpp"/>
+        <ClCompile Include="source\interfaces\structureinfo.cpp"/>
+        <ClCompile Include="source\interfaces\teleportmap.cpp"/>
+        <ClCompile Include="source\interfaces\travelmap.cpp"/>
+        <ClCompile Include="source\items\item.cpp"/>
+        <ClCompile Include="source\items\itemdata.cpp"/>
+        <ClCompile Include="source\items\items.cpp"/>
+        <ClCompile Include="source\structures\cavelootcreate.cpp"/>
+        <ClCompile Include="source\structures\container.cpp"/>
+        <ClCompile Include="source\structures\exceptions.cpp"/>
+        <ClCompile Include="source\util\util.cpp"/>
+        <ClInclude Include="include\asapp\core\config.h"/>
+        <ClInclude Include="include\asapp\core\state.h"/>
+        <ClInclude Include="include\asapp\entities\dinoent.h"/>
+        <ClInclude Include="include\asapp\entities\baseentity.h"/>
+        <ClInclude Include="include\asapp\entities\entities.h"/>
+        <ClInclude Include="include\asapp\entities\exceptions.h"/>
+        <ClInclude Include="include\asapp\entities\localplayer.h"/>
+        <ClInclude Include="include\asapp\entities\playerent.h"/>
+        <ClInclude Include="include\asapp\core\exceptions.h"/>
+        <ClInclude Include="include\asapp\game\controls.h"/>
+        <ClInclude Include="include\asapp\game\globals.h"/>
+        <ClInclude Include="include\asapp\game\resources.h"/>
+        <ClInclude Include="include\asapp\game\window.h"/>
+        <ClInclude Include="include\asapp\game\settings.h"/>
+        <ClInclude Include="include\asapp\core\init.h"/>
+        <ClInclude Include="include\asapp\interfaces\actionwheel.h"/>
+        <ClInclude Include="include\asapp\interfaces\baseinfo.h"/>
+        <ClInclude Include="include\asapp\interfaces\basetravelmap.h"/>
+        <ClInclude Include="include\asapp\interfaces\components\combobox.h"/>
+        <ClInclude Include="include\asapp\interfaces\dinoinfo.h"/>
+        <ClInclude Include="include\asapp\interfaces\engrams.h"/>
+        <ClInclude Include="include\asapp\interfaces\baseentityinfo.h"/>
+        <ClInclude Include="include\asapp\interfaces\exceptions.h"/>
+        <ClInclude Include="include\asapp\interfaces\explorernotes.h"/>
+        <ClInclude Include="include\asapp\items\item.h"/>
+        <ClInclude Include="include\asapp\items\itemdata.h"/>
+        <ClInclude Include="include\asapp\structures\cavelootcrate.h"/>
+        <ClInclude Include="include\asapp\structures\exceptions.h"/>
+        <ClInclude Include="include\asapp\structures\largecropplot.h"/>
+        <ClInclude Include="include\asapp\structures\mediumcropplot.h"/>
+        <ClInclude Include="include\asapp\structures\simplebed.h"/>
+        <ClInclude Include="include\asapp\structures\smallcropplot.h"/>
+        <ClInclude Include="include\asapp\structures\teleporter.h"/>
+        <ClInclude Include="source\interfaces\hud.h"/>
+        <ClInclude Include="include\asapp\interfaces\interfaces.h"/>
+        <ClInclude Include="include\asapp\interfaces\localinventory.h"/>
+        <ClInclude Include="include\asapp\interfaces\mainmenu.h"/>
+        <ClInclude Include="include\asapp\interfaces\map.h"/>
+        <ClInclude Include="include\asapp\interfaces\menu.h"/>
+        <ClInclude Include="include\asapp\interfaces\minimap.h"/>
+        <ClInclude Include="include\asapp\interfaces\modeselect.h"/>
+        <ClInclude Include="include\asapp\interfaces\playerinfo.h"/>
+        <ClInclude Include="include\asapp\interfaces\serverselect.h"/>
+        <ClInclude Include="include\asapp\interfaces\spawnmap.h"/>
+        <ClInclude Include="include\asapp\interfaces\containerinfo.h"/>
+        <ClInclude Include="include\asapp\interfaces\teleportmap.h"/>
+        <ClInclude Include="include\asapp\interfaces\trackingtab.h"/>
+        <ClInclude Include="include\asapp\interfaces\travelmap.h"/>
+        <ClInclude Include="include\asapp\interfaces\tribemanager.h"/>
+        <ClInclude Include="include\asapp\interfaces\components\button.h"/>
+        <ClInclude Include="include\asapp\interfaces\iinterface.h"/>
+        <ClInclude Include="include\asapp\interfaces\interfacemanager.h"/>
+        <ClInclude Include="include\asapp\interfaces\baseinventory.h"/>
+        <ClInclude Include="include\asapp\interfaces\components\iinterfacecomponent.h"/>
+        <ClInclude Include="include\asapp\interfaces\components\searchbar.h"/>
+        <ClInclude Include="include\asapp\items\items.h"/>
+        <ClInclude Include="include\asapp\structures\basestructure.h"/>
+        <ClInclude Include="include\asapp\structures\container.h"/>
+        <ClInclude Include="include\asapp\structures\dedicatedstorage.h"/>
+        <ClInclude Include="include\asapp\structures\interactablestructure.h"/>
+        <ClInclude Include="source\util\util.h"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Include=".clang-format"/>
+        <None Include="source\itemdata.json"/>
+    </ItemGroup>
+    <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+    <ImportGroup Label="ExtensionTargets">
+    </ImportGroup>
 </Project>

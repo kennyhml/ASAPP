@@ -7,16 +7,19 @@
 
 namespace asa::interfaces
 {
-    BaseInventory::BaseInventory(bool r)
-        : transfer_all_button(r ? 1388 : 366, 176), drop_all_button(r ? 1436 : 413, 176),
-          new_folder_button(r ? 1531 : 509, 176),
-          auto_stack_button(r ? 1579 : 557, 176),
-          folder_view_button(r ? 1652 : 629, 176),
-          is_remote_inventory(r),
-          area(r ? 1179 : 149, 94, 591, 827),
-          item_filter(r ? 1205 : 175, 841, 552, 42),
-          search_bar(r ? 1207 : 177, 176, 142, 44),
-          item_area(r ? 1205 : 178, 239, 552, 588) { init_slots({r ? 1205 : 178, 239}); };
+    BaseInventory::BaseInventory(bool r) : transfer_all_button(r ? 1388 : 366, 176),
+                                           drop_all_button(r ? 1436 : 413, 176),
+                                           new_folder_button(r ? 1531 : 509, 176),
+                                           auto_stack_button(r ? 1579 : 557, 176),
+                                           folder_view_button(r ? 1652 : 629, 176),
+                                           is_remote_inventory(r),
+                                           area(r ? 1179 : 149, 94, 591, 827),
+                                           item_filter(r ? 1205 : 175, 841, 552, 42),
+                                           search_bar(r ? 1207 : 177, 176, 142, 44),
+                                           item_area(r ? 1205 : 178, 239, 552, 588)
+    {
+        init_slots({r ? 1205 : 178, 239});
+    };
 
     [[nodiscard]] bool BaseInventory::ManagementButton::is_toggled() const
     {
@@ -67,52 +70,46 @@ namespace asa::interfaces
         if (!this->is_remote_inventory) { return false; }
 
         window::Color text_color(191, 243, 255);
-        auto mask = get_mask(
-            this->recv_remote_inventory_area, text_color, 25);
+        auto mask = get_mask(this->recv_remote_inventory_area, text_color, 25);
         return countNonZero(mask) > 100;
     }
 
-    void BaseInventory::receive_remote_inventory(
-        std::chrono::seconds timeout) const
+    void BaseInventory::receive_remote_inventory(std::chrono::seconds timeout) const
     {
         auto start = std::chrono::system_clock::now();
 
-        if (!util::await(
-            [this]() { return !this->is_receiving_remote_inventory(); },
-            timeout)) { throw ReceivingRemoteInventoryTimeoutError(this); }
+        if (!util::await([this]() { return !this->is_receiving_remote_inventory(); },
+                         timeout)) { throw ReceivingRemoteInventoryTimeoutError(this); }
     }
 
     bool BaseInventory::is_open() const
     {
-        return match_template(
-            this->item_filter.area, resources::interfaces::cb_arrowdown, 0.9);
+        return match_template(this->item_filter.area, resources::interfaces::cb_arrowdown,
+                              0.9);
     }
 
     bool BaseInventory::has(items::Item* item, bool search)
     {
         if (search) {
-            this->search_bar.search_for(item->name);
+            this->search_bar.search_for(item->get_name());
             Sleep(100);
         }
 
         // if an items query isnt ambigious, i.e when we enter the item name
         // ONLY the item can show up, just check the first slot for
         // efficiency.
-        if (search && !item->has_ambiguous_query) {
+        if (search && !item->get_data().has_ambiguous_query) {
             return this->slots[0].has_item(item);
         }
 
-        return match_template(this->item_area,
-                              item->get_inventory_icon(), 0.7,
+        return match_template(this->item_area, item->get_inventory_icon(), 0.7,
                               item->get_inventory_icon_mask());
     }
 
-    bool BaseInventory::count_stacks(
-        items::Item* item, int& stacks_out, bool search)
+    bool BaseInventory::count_stacks(items::Item* item, int& stacks_out, bool search)
     {
-        auto matches = locate_all_template(this->item_area,
-                                           item->get_inventory_icon(), 0.9,
-                                           item->get_inventory_icon_mask());
+        auto matches = locate_all_template(this->item_area, item->get_inventory_icon(),
+                                           0.9, item->get_inventory_icon_mask());
 
         if (matches.empty()) {
             stacks_out = 0;
@@ -125,12 +122,12 @@ namespace asa::interfaces
     const BaseInventory::Slot* BaseInventory::find_item(
         items::Item* item, bool is_searched, bool search_for)
     {
-        if (!item->has_ambiguous_query && (is_searched || search_for)) {
-            if (search_for) { this->search_bar.search_for(item->name); }
+        if (!item->get_data().has_ambiguous_query && (is_searched || search_for)) {
+            if (search_for) { this->search_bar.search_for(item->get_name()); }
             return this->slots[0].has_item(item) ? &this->slots[0] : nullptr;
         }
 
-        if (search_for) { this->search_bar.search_for(item->name); }
+        if (search_for) { this->search_bar.search_for(item->get_name()); }
         for (const Slot& slot : this->slots) {
             if (slot.has_item(item)) { return &slot; }
             if (!slot.has_item()) { return nullptr; }
@@ -164,17 +161,15 @@ namespace asa::interfaces
         this->popcorn(item, stacks, tmp);
     }
 
-    void BaseInventory::popcorn(
-        items::Item* item, int stacks, int& stacks_dropped)
+    void BaseInventory::popcorn(items::Item* item, int stacks, int& stacks_dropped)
     {
         int dropped = 0;
 
         if (!this->search_bar.is_text_entered()) {
-            this->search_bar.search_for(item->name);
+            this->search_bar.search_for(item->get_name());
         }
 
-        while (this->slots[0].has_item(item) &&
-            (dropped < stacks || stacks == -1)) {
+        while (this->slots[0].has_item(item) && (dropped < stacks || stacks == -1)) {
             for (int i = 0; i < 4; i++) {
                 set_mouse_pos(this->slots[i].get_random_location(5));
                 Sleep(20);
@@ -200,11 +195,9 @@ namespace asa::interfaces
     void BaseInventory::take_slot(Slot slot)
     {
         this->select_slot(slot);
-        post_mouse_press_at(
-            slot.get_random_location(5), controls::LEFT);
+        post_mouse_press_at(slot.get_random_location(5), controls::LEFT);
         core::sleep_for(std::chrono::milliseconds(10));
-        window::press(
-            settings::transfer_item, false, std::chrono::milliseconds(15));
+        window::press(settings::transfer_item, false, std::chrono::milliseconds(15));
         core::sleep_for(std::chrono::milliseconds(50));
     }
 
@@ -243,14 +236,14 @@ namespace asa::interfaces
 
     void BaseInventory::drop_all(items::Item* item)
     {
-        search_bar.search_for(item->name);
+        search_bar.search_for(item->get_name());
         return drop_all();
     }
 
     void BaseInventory::transfer_all(items::Item* item, BaseInventory* tar)
     {
         if (item) {
-            this->search_bar.search_for(item->name);
+            this->search_bar.search_for(item->get_name());
 
 
             core::sleep_for(std::chrono::milliseconds(50));
@@ -262,8 +255,7 @@ namespace asa::interfaces
         // TO DO: Wait for the items to be transferred
     }
 
-    void BaseInventory::transfer_all(
-        const std::string& term, BaseInventory* tar)
+    void BaseInventory::transfer_all(const std::string& term, BaseInventory* tar)
     {
         this->search_bar.search_for(term);
         core::sleep_for(std::chrono::milliseconds(50));
@@ -271,11 +263,11 @@ namespace asa::interfaces
         return this->transfer_all(nullptr, tar);
     }
 
-    void BaseInventory::transfer(
-        items::Item* item, int amount, BaseInventory*, bool search)
+    void BaseInventory::transfer(items::Item* item, int amount, BaseInventory*,
+                                 bool search)
     {
         if (search) {
-            this->search_bar.search_for(item->name);
+            this->search_bar.search_for(item->get_name());
             core::sleep_for(std::chrono::milliseconds(50));
         }
 
