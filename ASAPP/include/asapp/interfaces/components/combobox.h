@@ -3,9 +3,8 @@
 
 namespace asa::interfaces::components
 {
-
-	struct ComboBox : IInterfaceComponent
-	{
-		using IInterfaceComponent::IInterfaceComponent;
-	};
+    struct ComboBox : IInterfaceComponent
+    {
+        using IInterfaceComponent::IInterfaceComponent;
+    };
 }

@@ -57,7 +57,7 @@ namespace asa::interfaces
             }
         }
 
-        const Slot* itemLocation = find_item(item, searched);
+        const components::Slot* itemLocation = find_item(item, searched);
         select_slot(*itemLocation);
 
         do { window::press(settings::action_mappings::use); }

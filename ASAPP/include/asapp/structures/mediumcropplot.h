@@ -6,7 +6,6 @@ namespace asa::structures
     class MediumCropPlot final : public Container
     {
     public:
-        MediumCropPlot(std::string name) : Container(name, 10){};
+        MediumCropPlot(std::string name) : Container(name, 10) {};
     };
 }
-

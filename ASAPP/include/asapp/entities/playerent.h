@@ -4,12 +4,8 @@
 
 namespace asa::entities
 {
-	class PlayerEnt : public BaseEntity
-	{
-		using BaseEntity::BaseEntity;
-	};
-
-
-
-
+    class PlayerEnt : public BaseEntity
+    {
+        using BaseEntity::BaseEntity;
+    };
 }

@@ -3,27 +3,25 @@
 
 namespace asa::interfaces
 {
+    class ContainerInfo : public BaseInfo
+    {
+    private:
+        window::Rect slots_bar{768, 548, 382, 6};
 
-	class ContainerInfo : public BaseInfo
-	{
+    public:
+        bool is_open() const override { return true; }
 
-	private:
-		window::Rect slots_bar{ 768, 548, 382, 6 };
+        int get_max_health() override { return 0; };
+        int get_current_health() override { return 0; };
 
-	public:
-		virtual bool is_open() const { return true; }
+        virtual int get_max_slots() { return 0; };
+        virtual int get_current_slots() { return 0; };
+        virtual float get_fill_level();
 
-		virtual int get_max_health() { return 0; };
-		virtual int get_current_health() { return 0; };
+        int get_max_weight() override;
+        int get_current_weight() override;
 
-		virtual int get_max_slots() { return 0; };
-		virtual int get_current_slots() { return 0; };
-		virtual float get_fill_level();
-
-		virtual int get_max_weight();
-		virtual int get_current_weight();
-
-		virtual std::string get_owner() { return ""; }
-		virtual std::string get_name() { return ""; }
-	};
+        std::string get_owner() override { return ""; }
+        std::string get_name() override { return ""; }
+    };
 }

@@ -49,22 +49,6 @@ namespace asa::interfaces
         return countNonZero(masked) > 100 || this->is_selected();
     }
 
-    [[nodiscard]] bool BaseInventory::Slot::has_item() const
-    {
-        auto roi = Rect(this->x + 46, this->y + 69, 42, 14);
-        window::Color weight_text_col(128, 231, 255);
-
-        cv::Mat masked = get_mask(roi, weight_text_col, 35);
-        return countNonZero(masked) > 10;
-    }
-
-    [[nodiscard]] bool BaseInventory::Slot::has_item(items::Item* item) const
-    {
-        if (!item) { return this->has_item(); }
-        return match_template(*this, item->get_inventory_icon(), 0.7,
-                              item->get_inventory_icon_mask());
-    }
-
     bool BaseInventory::is_receiving_remote_inventory() const
     {
         if (!this->is_remote_inventory) { return false; }
@@ -99,7 +83,7 @@ namespace asa::interfaces
         // ONLY the item can show up, just check the first slot for
         // efficiency.
         if (search && !item->get_data().has_ambiguous_query) {
-            return this->slots[0].has_item(item);
+            return this->slots[0].has(*item);
         }
 
         return match_template(this->item_area, item->get_inventory_icon(), 0.7,
@@ -119,18 +103,18 @@ namespace asa::interfaces
         return stacks_out != MAX_ITEMS_PER_PAGE;
     }
 
-    const BaseInventory::Slot* BaseInventory::find_item(
-        items::Item* item, bool is_searched, bool search_for)
+    const components::Slot* BaseInventory::find_item(items::Item* item, bool is_searched,
+                                                     bool search_for)
     {
         if (!item->get_data().has_ambiguous_query && (is_searched || search_for)) {
             if (search_for) { this->search_bar.search_for(item->get_name()); }
-            return this->slots[0].has_item(item) ? &this->slots[0] : nullptr;
+            return this->slots[0].has(*item) ? &this->slots[0] : nullptr;
         }
 
         if (search_for) { this->search_bar.search_for(item->get_name()); }
-        for (const Slot& slot : this->slots) {
-            if (slot.has_item(item)) { return &slot; }
-            if (!slot.has_item()) { return nullptr; }
+        for (const components::Slot& slot : this->slots) {
+            if (slot.has(*item)) { return &slot; }
+            if (slot.is_empty()) { return nullptr; }
         }
         return nullptr;
     }
@@ -144,7 +128,7 @@ namespace asa::interfaces
 
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                this->slots[(i * 6) + j] = Slot(x + (j * 93), y + (i * 93));
+                this->slots[(i * 6) + j] = components::Slot(x + (j * 93), y + (i * 93));
             }
         }
     }
@@ -169,9 +153,9 @@ namespace asa::interfaces
             this->search_bar.search_for(item->get_name());
         }
 
-        while (this->slots[0].has_item(item) && (dropped < stacks || stacks == -1)) {
+        while (this->slots[0].has(*item) && (dropped < stacks || stacks == -1)) {
             for (int i = 0; i < 4; i++) {
-                set_mouse_pos(this->slots[i].get_random_location(5));
+                set_mouse_pos(this->slots[i].area.get_random_location(5));
                 Sleep(20);
                 controls::key_press(settings::action_mappings::drop_item.key);
                 Sleep(100);
@@ -185,17 +169,17 @@ namespace asa::interfaces
     void BaseInventory::popcorn_slots(int slots)
     {
         for (int slot = slots - 1; slot >= 0; slot--) {
-            set_mouse_pos(this->slots[slot].get_random_location(5));
+            set_mouse_pos(this->slots[slot].area.get_random_location(5));
             Sleep(20);
             controls::key_press(settings::action_mappings::drop_item.key);
             Sleep(100);
         }
     }
 
-    void BaseInventory::take_slot(Slot slot)
+    void BaseInventory::take_slot(components::Slot slot)
     {
         this->select_slot(slot);
-        post_mouse_press_at(slot.get_random_location(5), controls::LEFT);
+        post_mouse_press_at(slot.area.get_random_location(5), controls::LEFT);
         core::sleep_for(std::chrono::milliseconds(10));
         window::press(settings::transfer_item, false, std::chrono::milliseconds(15));
         core::sleep_for(std::chrono::milliseconds(50));
@@ -217,9 +201,9 @@ namespace asa::interfaces
         }
     }
 
-    void BaseInventory::select_slot(Slot slot)
+    void BaseInventory::select_slot(components::Slot slot)
     {
-        window::Point location = slot.get_random_location(5);
+        window::Point location = slot.area.get_random_location(5);
         set_mouse_pos(location);
         core::sleep_for(std::chrono::milliseconds(50));
     }

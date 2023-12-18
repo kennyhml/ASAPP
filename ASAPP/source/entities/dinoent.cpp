@@ -4,6 +4,6 @@
 
 void asa::entities::DinoEnt::exit()
 {
-	inventory->close();
-	core::sleep_for(std::chrono::milliseconds(100));
+    inventory->close();
+    core::sleep_for(std::chrono::milliseconds(100));
 }

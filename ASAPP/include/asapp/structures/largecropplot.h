@@ -6,7 +6,6 @@ namespace asa::structures
     class LargeCropPlot final : public Container
     {
     public:
-        LargeCropPlot(std::string name) : Container(name, 10){};
+        LargeCropPlot(std::string name) : Container(name, 10) {};
     };
 }
-

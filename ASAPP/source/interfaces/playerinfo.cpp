@@ -20,21 +20,21 @@ namespace asa::interfaces
         }
 
         GearSlot gear_slot = gear_slots[slot];
-        const auto roi = item ? gear_slot : gear_slot.get_slot_description_area();
+        auto roi = item ? gear_slot.area : gear_slot.get_slot_description_area();
 
         if (!item) {
             auto mask = get_mask(roi, window::Color(223, 250, 255), 20);
-            return countNonZero(mask) < 30;
+            return cv::countNonZero(mask) < 30;
         }
-        return match_template(roi, item->get_inventory_icon(), 0.7,
-                              item->get_inventory_icon_mask());
+        return window::match_template(roi, item->get_inventory_icon(), 0.7,
+                                      item->get_inventory_icon_mask());
     }
 
     void PlayerInfo::unequip(Slot slot)
     {
         const auto& gear_slot = gear_slots[slot];
         while (has_equipped(nullptr, slot)) {
-            auto point = gear_slot.get_random_location(5);
+            auto point = gear_slot.area.get_random_location(5);
             if (globals::useWindowInput) {
                 click_at(point, controls::LEFT);
                 core::sleep_for(std::chrono::milliseconds(5));
@@ -56,11 +56,11 @@ namespace asa::interfaces
             any_let = false;
 
             for (const auto& slot : gear_slots) {
-                auto point = slot.get_random_location(5);
+                auto point = slot.area.get_random_location(5);
                 if (globals::useWindowInput) {
-                    click_at(slot.get_random_location(5), controls::LEFT);
+                    window::click_at(slot.area.get_random_location(5), controls::LEFT);
                     core::sleep_for(std::chrono::milliseconds(5));
-                    click_at(slot.get_random_location(5), controls::LEFT);
+                    window::click_at(slot.area.get_random_location(5), controls::LEFT);
                 }
                 else {
                     set_mouse_pos(point);

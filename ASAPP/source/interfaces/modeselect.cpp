@@ -5,20 +5,15 @@
 
 namespace asa::interfaces
 {
-	bool ModeSelect::is_open() const
-	{
-		return window::match_template(
-			back_button.area, resources::interfaces::back);
-	}
+    bool ModeSelect::is_open() const
+    {
+        return window::match_template(back_button.area, resources::interfaces::back);
+    }
 
-	void ModeSelect::join_game()
-	{
-		if (!is_open()) {
-			return;
-		}
-		do {
-			join_game_button.press();
-		} while (!util::await(
-			[this]() { return !is_open(); }, std::chrono::seconds(5)));
-	}
+    void ModeSelect::join_game()
+    {
+        if (!is_open()) { return; }
+        do { join_game_button.press(); }
+        while (!util::await([this]() { return !is_open(); }, std::chrono::seconds(5)));
+    }
 }

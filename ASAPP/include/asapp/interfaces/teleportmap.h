@@ -4,22 +4,21 @@
 
 namespace asa::interfaces
 {
-	class TeleportMap : public BaseTravelMap
-	{
-		using BaseTravelMap::BaseTravelMap;
+    class TeleportMap : public BaseTravelMap
+    {
+        using BaseTravelMap::BaseTravelMap;
 
-	private:
-		components::Button set_default_button{ 1210, 948, 245, 43 };
+    private:
+        components::Button set_default_button{1210, 948, 245, 43};
 
-	public:
-		components::SearchBar searchbar{ 307, 946, 226, 43 };
-		void close();
-		void set_selected_as_default();
+    public:
+        components::SearchBar searchbar{307, 946, 226, 43};
+        void close();
+        void set_selected_as_default();
 
-		void go_to(const std::string& destination);
-	};
+        void go_to(const std::string& destination) override;
+    };
 
 
-	inline std::unique_ptr<TeleportMap> teleport_map =
-		std::make_unique<TeleportMap>();
+    inline std::unique_ptr<TeleportMap> teleport_map = std::make_unique<TeleportMap>();
 }

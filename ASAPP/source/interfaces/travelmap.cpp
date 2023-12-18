@@ -5,44 +5,39 @@
 
 namespace asa::interfaces
 {
-	void TravelMap::close()
-	{
-		auto start = std::chrono::system_clock::now();
-		while (is_open()) {
-			window::press("esc", true);
-			if (util::await(
-					[this]() { return !is_open(); }, std::chrono::seconds(5))) {
-				return;
-			}
+    void TravelMap::close()
+    {
+        auto start = std::chrono::system_clock::now();
+        while (is_open()) {
+            window::press("esc", true);
+            if (util::await([this]() { return !is_open(); }, std::chrono::seconds(5))) {
+                return;
+            }
 
-			if (util::timedout(start, std::chrono::seconds(30))) {
-				throw InterfaceNotClosedError(this);
-			}
-		}
-	}
+            if (util::timedout(start, std::chrono::seconds(30))) {
+                throw InterfaceNotClosedError(this);
+            }
+        }
+    }
 
-	void TravelMap::go_to(const std::string& destination)
-	{
-		std::cout << "[+] Traveling to '" << destination << "'..." << std::endl;
-		searchbar.search_for(destination);
-		core::sleep_for(std::chrono::milliseconds(300));
+    void TravelMap::go_to(const std::string& destination)
+    {
+        std::cout << "[+] Traveling to '" << destination << "'..." << std::endl;
+        searchbar.search_for(destination);
+        core::sleep_for(std::chrono::milliseconds(300));
 
-		select_result();
+        select_result();
 
-		std::cout << "\t[-] Waiting for fast travel to go off cooldown...";
-		while (!can_confirm_target()) {
-			core::sleep_for(std::chrono::milliseconds(50));
-		}
-		std::cout << " Done." << std::endl;
+        std::cout << "\t[-] Waiting for fast travel to go off cooldown...";
+        while (!can_confirm_target()) { core::sleep_for(std::chrono::milliseconds(50)); }
+        std::cout << " Done." << std::endl;
 
-		while (is_open()) {
-			confirm_button.press();
-			core::sleep_for(std::chrono::milliseconds(500));
-		}
-		std::cout << "\t[-] Traveled to '" << destination << "'." << std::endl;
+        while (is_open()) {
+            confirm_button.press();
+            core::sleep_for(std::chrono::milliseconds(500));
+        }
+        std::cout << "\t[-] Traveled to '" << destination << "'." << std::endl;
 
-		searchbar.set_text_cleared();
-	}
-
-
+        searchbar.set_text_cleared();
+    }
 }

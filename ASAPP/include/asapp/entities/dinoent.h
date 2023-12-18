@@ -3,11 +3,11 @@
 
 namespace asa::entities
 {
-	class DinoEnt : public BaseEntity
-	{
-	public:
-		using BaseEntity::BaseEntity;
+    class DinoEnt : public BaseEntity
+    {
+    public:
+        using BaseEntity::BaseEntity;
 
-		void exit();
-	};
+        void exit();
+    };
 }

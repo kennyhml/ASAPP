@@ -2,9 +2,9 @@
 
 namespace asa::interfaces
 {
-	class IInterface
-	{
-	public:
-		[[nodiscard]] virtual bool is_open() const = 0;
-	};
+    class IInterface
+    {
+    public:
+        [[nodiscard]] virtual bool is_open() const = 0;
+    };
 }

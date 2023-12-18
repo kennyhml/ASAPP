@@ -1,6 +1,6 @@
 #pragma once
-#include <opencv2/imgproc.hpp>
 #include "itemdata.h"
+#include "asapp/game/resources.h"
 
 namespace asa::items
 {
