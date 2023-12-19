@@ -29,7 +29,7 @@ namespace asa::items
 
     std::string Item::info() const
     {
-        return std::format("Item(name={}, is_blueprint={}, quality={})", name_,
+        return std::format("Item(name=\"{}\", is_blueprint={}, quality={})", name_,
                            data_.is_blueprint, static_cast<int>(data_.quality));
     }
 

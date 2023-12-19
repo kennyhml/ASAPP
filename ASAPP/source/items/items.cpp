@@ -43,6 +43,8 @@ namespace asa::items
         std::vector<Item**> all_resources;
         std::vector<Item**> all_consumables;
         std::vector<Item**> all_equippables;
+        std::vector<Item**> all_weapons;
+        std::vector<Item**> all_ammos;
     }
 
     bool init()
@@ -51,7 +53,9 @@ namespace asa::items
 
         if (!load_raw_data()) { return false; }
         std::cout << "[+] Initializing predefined items...\n";
-        if (!resources::init() || !consumables::init() || !equippables::init()) {
+        if (!resources::init() || !consumables::init() || !equippables::init() || !
+            weapons::init() || !ammo::init()) {
+            std::cerr << "[!] One or more item categories failed to load\n";
             return false;
         }
 
@@ -95,11 +99,25 @@ namespace asa::items
         load(citronal_seed, "Citronal Seed", all_consumables);
         load(rockarrot_seed, "Rockarrot Seed", all_consumables);
 
+
+        load(cooked_meat, "Cooked Meat", all_consumables);
+        load(cooked_meat_jerky, "Cooked Meat Jerky", all_consumables);
+        load(prime_meat_jerky, "Prime Meat Jerky", all_consumables);
+        load(cooked_fish_meat, "Cooked Fish Meat", all_consumables);
+        load(cooked_prime_fish_meat, "Cooked Prime Fish Meat", all_consumables);
+
+        load(medical_brew, "Medical Brew", all_consumables);
+        load(energy_brew, "Energy Brew", all_consumables);
+
+        load(calien_soup, "Calien Soup", all_consumables);
+        load(enduro_stew, "Enduro Stew", all_consumables);
+        load(fria_curry, "Fria Curry", all_consumables);
+        load(focal_chili, "Focal Chili", all_consumables);
+        load(lazarus_chowder, "Lazarus Chowder", all_consumables);
         return true;
     }
 
     const std::vector<Item**>& consumables::iter() { return all_consumables; }
-
 
     bool equippables::init()
     {
@@ -108,8 +126,92 @@ namespace asa::items
         load(flak_leggings, "Flak Leggings", all_equippables);
         load(flak_gauntlets, "Flak Gauntlets", all_equippables);
         load(flak_boots, "Flak Boots", all_equippables);
+
+        load(cloth_hat, "Cloth Hat", all_equippables);
+        load(cloth_shirt, "Cloth Shirt", all_equippables);
+        load(cloth_pants, "Cloth Pants", all_equippables);
+        load(cloth_gloves, "Cloth Gloves", all_equippables);
+        load(cloth_boots, "Cloth Boots", all_equippables);
+
+        load(hide_hat, "Hide Hat", all_equippables);
+        load(hide_shirt, "Hide Shirt", all_equippables);
+        load(hide_pants, "Hide Pants", all_equippables);
+        load(hide_gloves, "Hide Gloves", all_equippables);
+        load(hide_boots, "Hide Boots", all_equippables);
+
+        load(fur_cap, "Fur Cap", all_equippables);
+        load(fur_chestpiece, "Fur Chestpiece", all_equippables);
+        load(fur_leggings, "Fur Leggings", all_equippables);
+        load(fur_gauntlets, "Fur Gauntlets", all_equippables);
+        load(fur_boots, "Fur Boots", all_equippables);
+
+        load(riot_helmet, "Riot Helmet", all_equippables);
+        load(riot_chest, "Riot Chestpiece", all_equippables);
+        load(riot_leggings, "Riot Leggings", all_equippables);
+        load(riot_gauntlets, "Riot Gauntlets", all_equippables);
+        load(riot_boots, "Riot Boots", all_equippables);
+
+        load(ghilie_mask, "Ghilie Mask", all_equippables);
+        load(ghilie_chestpiece, "Ghilie Chestpiece", all_equippables);
+        load(ghilie_leggings, "Ghilie Leggings", all_equippables);
+        load(ghilie_gauntlets, "Ghilie Gauntlets", all_equippables);
+        load(ghilie_boots, "Ghilie Boots", all_equippables);
+
+        load(wooden_shield, "Wooden Shield", all_equippables);
+        load(metal_shield, "Metal Shield", all_equippables);
+        load(riot_shield, "Riot Shield", all_equippables);
+        load(gasmask, "Gasmask", all_equippables);
         return true;
     }
 
     const std::vector<Item**>& equippables::iter() { return all_equippables; }
+
+    bool weapons::init()
+    {
+        load(metal_hatchet, "Metal Hatchet", all_weapons);
+        load(metal_pick, "Metal Pick", all_weapons);
+        load(metal_sickle, "Metal Sickle", all_weapons);
+        load(metal_pike, "Metal Pike", all_weapons);
+        load(sword, "Sword", all_weapons);
+        load(bow, "Bow", all_weapons);
+        load(wooden_club, "Wooden Club", all_weapons);
+        load(shotgun, "Shotgun", all_weapons);
+        load(longneck_rifle, "Longneck Rifle", all_weapons);
+        load(pump_action_shotgun, "Pump-Action Shotgun", all_weapons);
+        load(fabricated_sniper_rifle, "Fabricated Sniper Rifle", all_weapons);
+        load(compound_bow, "Compound Bow", all_weapons);
+        load(rocket_launcher, "Rocket Launcher", all_weapons);
+        load(assault_rifle, "Assault Rifle", all_weapons);
+        load(fabricated_pistol, "Fabricated Pistol", all_weapons);
+        load(electric_prod, "Electric Prod", all_weapons);
+        load(harpoon_launcher, "Harpoon Launcher", all_weapons);
+        load(bola, "Bola", all_weapons);
+        load(grenade, "Grenade", all_weapons);
+        load(improvised_explosive_device, "Improvised Explosive Device", all_weapons);
+        load(scissors, "Scissors", all_weapons);
+        load(magnifying_glass, "Magnifying Glass", all_weapons);
+        load(poison_grenade, "Poison Grenade", all_weapons);
+        load(smoke_grenade, "Smoke Grenade", all_weapons);
+        load(lance, "Lance", all_weapons);
+        return true;
+    }
+
+    const std::vector<Item**>& weapons::iter() { return all_weapons; }
+
+    bool ammo::init()
+    {
+        load(advanced_bullet, "Advanced Bullet", all_ammos);
+        load(advanced_rifle_bullet, "Advanced Rifle Bullet", all_ammos);
+        load(advanced_sniper_bullet, "Advanced Sniper Bullt", all_ammos);
+        load(simple_bullet, "Simple Bullet", all_ammos);
+        load(simple_rifle_ammo, "Simple Rifle Ammo", all_ammos);
+        load(simple_shotgun_ammo, "Simple Shotgun Ammo", all_ammos);
+        load(stone_arrow, "Stone Arrow", all_ammos);
+        load(tranq_arrow, "Tranq Arrow", all_ammos);
+        load(rocket_propelled_grenade, "Rocket Propelled Grenade", all_ammos);
+        load(spear_bolt, "Spear Bolt", all_ammos);
+        return true;
+    }
+
+    const std::vector<Item**>& ammo::iter() { return all_ammos; }
 }
