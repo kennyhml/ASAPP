@@ -1,7 +1,6 @@
 #include "asapp/items/item.h"
-
+#include <iostream>
 #include <opencv2/imgcodecs.hpp>
-
 #include "../util/util.h"
 #include "asapp/items/items.h"
 
@@ -22,8 +21,17 @@ namespace asa::items
         name_(std::move(t_name)),
         data_(ItemData(load_raw(name_), t_is_blueprint, t_quality))
     {
+        if (!std::filesystem::exists(data_.icon_path)) {
+            std::cerr << "[!] Invalid path: " << data_.icon_path << "\n";
+        }
         icon_ = cv::imread(data_.icon_path.string(), cv::IMREAD_UNCHANGED);
     };
+
+    std::string Item::info() const
+    {
+        return std::format("Item(name={}, is_blueprint={}, quality={})", name_,
+                           data_.is_blueprint, static_cast<int>(data_.quality));
+    }
 
     const cv::Mat& Item::get_inventory_icon()
     {

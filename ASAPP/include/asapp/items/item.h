@@ -13,6 +13,8 @@ namespace asa::items
         [[nodiscard]] const ItemData& get_data() const { return data_; }
         [[nodiscard]] const std::string& get_name() const { return name_; }
 
+        std::string info() const;
+
         const cv::Mat& get_inventory_icon();
         const cv::Mat& get_inventory_icon_mask();
         const cv::Mat& get_notification_icon();

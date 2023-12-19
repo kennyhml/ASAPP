@@ -1,344 +1,402 @@
 {
-  "Metal": {
-    "icon": "items\\resources\\MetalOre_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {},
-    "weight": 1.0,
-    "stack_size": 300,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Metal Ingot": {
-    "icon": "items\\resources\\MetalIngot_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {},
-    "weight": 1.0,
-    "stack_size": 300,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Cementing Paste": {
-    "icon": "items\\resources\\CementPaste_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {
-      "Chitin": 4,
-      "Stone": 8
+    "Metal": {
+        "icon": "items\\resources\\MetalOre_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 1.0,
+        "stack_size": 300,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
     },
-    "weight": 0.01,
-    "stack_size": 100,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Achatina Paste": {
-    "icon": "items\\resources\\CementPaste_Icon.png",
-    "type": "RESOURCE",
-    "weight": 0.01,
-    "stack_size": 100,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Fiber": {
-    "icon": "items\\resources\\Fiber_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {},
-    "weight": 0.01,
-    "stack_size": 300,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Thatch": {
-    "icon": "items\\resources\\Thatch_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {},
-    "weight": 0.02,
-    "stack_size": 100,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Wood": {
-    "icon": "items\\resources\\Wood_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {},
-    "weight": 0.05,
-    "stack_size": 100,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Stone": {
-    "icon": "items\\resources\\Stone_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {},
-    "weight": 0.5,
-    "stack_size": 100,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Flint": {
-    "icon": "items\\resources\\Flint_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {},
-    "weight": 0.05,
-    "stack_size": 100,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Gunpowder": {
-    "icon": "items\\resources\\Gunpowder_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {
-      "Charcoal": 1,
-      "Sparkpowder": 1
+    "Metal Ingot": {
+        "icon": "items\\resources\\MetalIngot_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 1.0,
+        "stack_size": 300,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
     },
-    "weight": 0.1,
-    "stack_size": 100,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Sparkpowder": {
-    "icon": "items\\resources\\Sparkpowder_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {
-      "Flint": 2,
-      "Stone": 1
+    "Cementing Paste": {
+        "icon": "items\\resources\\CementPaste_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {
+            "Chitin": 4,
+            "Stone": 8
+        },
+        "weight": 0.01,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
     },
-    "weight": 0.1,
-    "stack_size": 100,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Obsidian": {
-    "icon": "items\\resources\\Obsidian_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {
+    "Achatina Paste": {
+        "icon": "items\\resources\\CementPaste_Icon.png",
+        "type": "RESOURCE",
+        "weight": 0.01,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
     },
-    "weight": 1.0,
-    "stack_size": 100,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Fertilizer": {
-    "icon": "items\\resources\\Fertilizer_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {
+    "Fiber": {
+        "icon": "items\\resources\\Fiber_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.01,
+        "stack_size": 300,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
     },
-    "weight": 0.1,
-    "stack_size": 1,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": true,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Polymer": {
-    "icon": "items\\resources\\Polymer_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {
-      "Cementing Paste": 2,
-      "Obsidian": 2
+    "Thatch": {
+        "icon": "items\\resources\\Thatch_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.02,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
     },
-    "weight": 0.25,
-    "stack_size": 100,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Organic Polymer": {
-    "icon": "items\\resources\\OrganicPolymer_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {},
-    "weight": 0.25,
-    "stack_size": 20,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Mejoberry": {
-    "icon": "items\\consumables\\Mejoberry_Icon.png",
-    "type": "CONSUMABLE",
-    "recipe": {},
-    "weight": 0.1,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Element": {
-    "icon": "items\\resources\\TEKElement_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {},
-    "weight": 0.01,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Element Shard": {
-    "icon": "items\\resources\\TEKElementShard_Icon.png",
-    "type": "RESOURCE",
-    "recipe": {
-      "Element": 0.01
+    "Wood": {
+        "icon": "items\\resources\\Wood_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.05,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
     },
-    "weight": 0.05,
-    "stack_size": 1000,
-    "can_put_in_hotbar": false,
-    "has_spoil_timer": false,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Medical Brew": {
-    "icon": "items\\consumables\\HealthPotion_Icon.png",
-    "type": "CONSUMABLE",
-    "recipe": {
-      "Narcotic": 2,
-      "Tintoberry": 20
+    "Stone": {
+        "icon": "items\\resources\\Stone_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.5,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
     },
-    "weight": 0.1,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Longrass": {
-    "icon": "items\\consumables\\Longrass_Icon.png",
-    "type": "CONSUMABLE",
-    "recipe": {},
-    "weight": 0.1,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Citronal": {
-    "icon": "items\\consumables\\Citronal_Icon.png",
-    "type": "CONSUMABLE",
-    "recipe": {},
-    "weight": 0.1,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Savoroot": {
-    "icon": "items\\consumables\\Savroot_Icon.png",
-    "type": "CONSUMABLE",
-    "recipe": {},
-    "weight": 0.1,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Rockarrot": {
-    "icon": "items\\consumables\\Rockarrot_Icon.png",
-    "type": "CONSUMABLE",
-    "recipe": {},
-    "weight": 0.1,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": true
-  },
-  "Rockarrot Seed": {
-    "icon": "items\\consumables\\CarrotSeed_Icon.png",
-    "type": "CONSUMABLE",
-    "recipe": {},
-    "weight": 0.4,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Citronal Seed": {
-    "icon": "items\\consumables\\CitronalSeed_Icon.png",
-    "type": "CONSUMABLE",
-    "recipe": {},
-    "weight": 0.4,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Savoroot Seed": {
-    "icon": "items\\consumables\\SavrootSeed_Icon.png",
-    "type": "CONSUMABLE",
-    "recipe": {},
-    "weight": 0.4,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  },
-  "Longrass Seed": {
-    "icon": "items\\consumables\\LongrassSeed_Icon.png",
-    "type": "CONSUMABLE",
-    "recipe": {},
-    "weight": 0.4,
-    "stack_size": 100,
-    "can_put_in_hotbar": true,
-    "has_spoil_timer": true,
-    "has_durability": false,
-    "requires_engram": false,
-    "has_ambiguous_query": false
-  }
+    "Flint": {
+        "icon": "items\\resources\\Flint_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.05,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Gunpowder": {
+        "icon": "items\\resources\\Gunpowder_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {
+            "Charcoal": 1,
+            "Sparkpowder": 1
+        },
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Sparkpowder": {
+        "icon": "items\\resources\\Sparkpowder_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {
+            "Flint": 2,
+            "Stone": 1
+        },
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Obsidian": {
+        "icon": "items\\resources\\Obsidian_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 1.0,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Fertilizer": {
+        "icon": "items\\resources\\Fertilizer_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": true
+    },
+    "Polymer": {
+        "icon": "items\\resources\\Polymer_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {
+            "Cementing Paste": 2,
+            "Obsidian": 2
+        },
+        "weight": 0.25,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
+    },
+    "Organic Polymer": {
+        "icon": "items\\resources\\OrganicPolymer_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.25,
+        "stack_size": 20,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Mejoberry": {
+        "icon": "items\\consumables\\Mejoberry_Icon.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
+    },
+    "Element": {
+        "icon": "items\\resources\\TEKElement_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.01,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
+    },
+    "Element Shard": {
+        "icon": "items\\resources\\TEKElementShard_Icon.png",
+        "type": "RESOURCE",
+        "recipe": {
+            "Element": 0.01
+        },
+        "weight": 0.05,
+        "stack_size": 1000,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Medical Brew": {
+        "icon": "items\\consumables\\HealthPotion_Icon.png",
+        "type": "CONSUMABLE",
+        "recipe": {
+            "Narcotic": 2,
+            "Tintoberry": 20
+        },
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Longrass": {
+        "icon": "items\\consumables\\Longrass_Icon.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
+    },
+    "Citronal": {
+        "icon": "items\\consumables\\Citronal_Icon.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
+    },
+    "Savoroot": {
+        "icon": "items\\consumables\\Savroot_Icon.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
+    },
+    "Rockarrot": {
+        "icon": "items\\consumables\\Rockarrot_Icon.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true
+    },
+    "Rockarrot Seed": {
+        "icon": "items\\consumables\\CarrotSeed_Icon.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.4,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Citronal Seed": {
+        "icon": "items\\consumables\\CitronalSeed_Icon.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.4,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Savoroot Seed": {
+        "icon": "items\\consumables\\SavrootSeed_Icon.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.4,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Longrass Seed": {
+        "icon": "items\\consumables\\LongrassSeed_Icon.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.4,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Flak Helmet": {
+        "icon": "items\\armor\\FlakHelmet_Icon.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 4.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Flak Chestpiece": {
+        "icon": "items\\armor\\FlakShirt_Icon.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 10.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Flak Leggings": {
+        "icon": "items\\armor\\FlakPants_Icon.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 10.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Flak Gauntlets": {
+        "icon": "items\\armor\\FlakGloves_Icon.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 4.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    },
+    "Flak Boots": {
+        "icon": "items\\armor\\FlakBoots_Icon.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 4.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false
+    }
 }

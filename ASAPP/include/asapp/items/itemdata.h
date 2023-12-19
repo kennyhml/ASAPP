@@ -36,6 +36,9 @@ namespace asa::items
         explicit ItemData(json t_data, bool t_is_blueprint = false,
                           ItemQuality t_quality = BASIC);
 
+
+        std::string string() const;
+
         std::filesystem::path icon_path;
         ItemType type;
         ItemQuality quality;

@@ -10,14 +10,13 @@ namespace asa::items
     inline json raw_data = NULL;
 
     bool init();
-    bool load_raw_data();
 
     Item* get_custom_item(std::string itemName);
-    void load(Item*& item, std::string name);
 
     namespace resources
     {
         bool init();
+        const std::vector<Item**>& iter();
 
         inline Item* metal = nullptr;
         inline Item* metal_ingot = nullptr;
@@ -39,6 +38,8 @@ namespace asa::items
     namespace consumables
     {
         bool init();
+        const std::vector<Item**>& iter();
+
         inline Item* longrass = nullptr;
         inline Item* rockarrot = nullptr;
         inline Item* citronal = nullptr;
@@ -48,5 +49,17 @@ namespace asa::items
         inline Item* rockarrot_seed = nullptr;
         inline Item* citronal_seed = nullptr;
         inline Item* savoroot_seed = nullptr;
+    }
+
+    namespace equippables
+    {
+        bool init();
+        const std::vector<Item**>& iter();
+
+        inline Item* flak_helmet = nullptr;
+        inline Item* flak_chest = nullptr;
+        inline Item* flak_leggings = nullptr;
+        inline Item* flak_gauntlets = nullptr;
+        inline Item* flak_boots = nullptr;
     }
 }
