@@ -15,6 +15,19 @@ namespace asa::items
             }
             return raw_data.at(name);
         }
+
+        std::string stringify_quality(const ItemData::ItemQuality quality)
+        {
+            switch (quality) {
+            case ItemData::PRIMITIVE: return "Primitive";
+            case ItemData::RAMSHACKLE: return "Ramshackle";
+            case ItemData::APPRENTICE: return "Apprentice";
+            case ItemData::JOURNEYMAN: return "Journeyman";
+            case ItemData::MASTERCRAFT: return "Mastercraft";
+            case ItemData::ASCENDANT: return "Ascendant";
+            default: return "?";
+            }
+        }
     }
 
     Item::Item(std::string t_name, bool t_is_blueprint, ItemData::ItemQuality t_quality) :
@@ -29,8 +42,22 @@ namespace asa::items
 
     std::string Item::info() const
     {
-        return std::format("Item(name=\"{}\", is_blueprint={}, quality={})", name_,
-                           data_.is_blueprint, static_cast<int>(data_.quality));
+        switch (data_.type) {
+        case ItemData::WEAPON:
+        case ItemData::EQUIPPABLE:
+        {
+            std::string bp = data_.is_blueprint ? "Blueprint: " : "";
+            return std::format("{}{} {}", bp, stringify_quality(data_.quality), name_);
+        }
+        case ItemData::STRUCTURE:
+        case ItemData::ATTACHMENT:
+        case ItemData::AMMO:
+        {
+            std::string bp = data_.is_blueprint ? "Blueprint: " : "";
+            return std::format("{}{}", bp, name_);
+        }
+        default: return name_;
+        }
     }
 
     const cv::Mat& Item::get_inventory_icon()

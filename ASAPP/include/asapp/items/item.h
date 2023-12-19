@@ -8,7 +8,7 @@ namespace asa::items
     {
     public:
         explicit Item(std::string t_name, bool t_is_blueprint = false,
-                      ItemData::ItemQuality t_quality = ItemData::BASIC);
+                      ItemData::ItemQuality t_quality = ItemData::PRIMITIVE);
 
         [[nodiscard]] const ItemData& get_data() const { return data_; }
         [[nodiscard]] const std::string& get_name() const { return name_; }

@@ -23,7 +23,6 @@ namespace asa::items
 
         enum ItemQuality
         {
-            BASIC,
             PRIMITIVE,
             RAMSHACKLE,
             APPRENTICE,
@@ -34,10 +33,7 @@ namespace asa::items
 
     public:
         explicit ItemData(json t_data, bool t_is_blueprint = false,
-                          ItemQuality t_quality = BASIC);
-
-
-        std::string string() const;
+                          ItemQuality t_quality = PRIMITIVE);
 
         std::filesystem::path icon_path;
         ItemType type;

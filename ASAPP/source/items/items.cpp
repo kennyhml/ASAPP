@@ -47,6 +47,7 @@ namespace asa::items
         std::vector<Item**> all_ammos;
     }
 
+
     bool init()
     {
         const auto start = std::chrono::system_clock::now();
@@ -63,6 +64,14 @@ namespace asa::items
             std::chrono::system_clock::now() - start);
         std::cout << "-> Loaded all assets within " << time_taken << "\n";
         return true;
+    }
+
+    std::vector<std::vector<Item**>> iter_all()
+    {
+        return {
+            resources::iter(), consumables::iter(), equippables::iter(), weapons::iter(),
+            ammo::iter()
+        };
     }
 
     bool resources::init()
@@ -98,7 +107,6 @@ namespace asa::items
         load(savoroot_seed, "Savoroot Seed", all_consumables);
         load(citronal_seed, "Citronal Seed", all_consumables);
         load(rockarrot_seed, "Rockarrot Seed", all_consumables);
-
 
         load(cooked_meat, "Cooked Meat", all_consumables);
         load(cooked_meat_jerky, "Cooked Meat Jerky", all_consumables);
