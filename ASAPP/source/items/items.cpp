@@ -86,7 +86,7 @@ namespace asa::items
             return true;
         }
         catch (const ItemError& e) {
-            std::cerr << "[!] Failed to load resource dummies: " << e.what() << "\n";
+            std::cerr << "[!] Failed to load resource dummies. " << e.what() << "\n";
             return false;
         }
     }
@@ -123,7 +123,7 @@ namespace asa::items
             return true;
         }
         catch (const ItemError& e) {
-            std::cerr << "[!] Failed to load consumable dummies: " << e.what() << "\n";
+            std::cerr << "[!] Failed to load consumable dummies. " << e.what() << "\n";
             return false;
         }
     }
@@ -176,7 +176,7 @@ namespace asa::items
             return true;
         }
         catch (const ItemError& e) {
-            std::cerr << "[!] Failed to load equippable dummies: " << e.what() << "\n";
+            std::cerr << "[!] Failed to load equippable dummies. " << e.what() << "\n";
             return false;
         }
     }
@@ -214,7 +214,7 @@ namespace asa::items
             return true;
         }
         catch (const ItemError& e) {
-            std::cerr << "[!] Failed to load weapon dummies: " << e.what() << "\n";
+            std::cerr << "[!] Failed to load weapon dummies. " << e.what() << "\n";
             return false;
         }
     }
@@ -237,7 +237,7 @@ namespace asa::items
             return true;
         }
         catch (const ItemError& e) {
-            std::cerr << "[!] Failed to load ammo dummies: " << e.what() << "\n";
+            std::cerr << "[!] Failed to load ammo dummies. " << e.what() << "\n";
             return false;
         }
     }

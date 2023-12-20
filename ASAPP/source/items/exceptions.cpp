@@ -9,7 +9,7 @@ namespace asa::items
                                                    t_item->get_name())) {}
 
     ItemError::ItemError(const Item* t_item, const std::string& t_message) :
-        item_(t_item), info_(std::format("ItemError:  {}", t_message)) {}
+        item_(t_item), info_(std::format("ItemError: {}", t_message)) {}
 
 
     ItemDataNotFound::ItemDataNotFound(const std::string& t_item_name) : ItemError(

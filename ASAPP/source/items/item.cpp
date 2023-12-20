@@ -57,7 +57,6 @@ namespace asa::items
                                                             t_is_blueprint, t_quality))
     {
         if (!std::filesystem::exists(data_.icon_path)) {
-            std::cerr << "[!] Invalid path: " << data_.icon_path << "\n";
             throw ItemIconNotFound(data_.icon_path);
         }
         icon_ = cv::imread(data_.icon_path.string(), cv::IMREAD_UNCHANGED);
