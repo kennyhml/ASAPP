@@ -1,7 +1,7 @@
-#include "asapp/items/item.h"
 #include <iostream>
 #include <opencv2/imgcodecs.hpp>
 #include "../util/util.h"
+#include "asapp/items/item.h"
 #include "asapp/items/exceptions.h"
 #include "asapp/items/items.h"
 
@@ -14,9 +14,7 @@ namespace asa::items
 
         json load_raw(const std::string& name)
         {
-            if (raw_data.find(name) == raw_data.end()) {
-                throw std::runtime_error("Item not found: " + name);
-            }
+            if (raw_data.find(name) == raw_data.end()) { throw ItemDataNotFound(name); }
             return raw_data.at(name);
         }
 
@@ -29,8 +27,8 @@ namespace asa::items
             case ItemData::JOURNEYMAN: return "Journeyman";
             case ItemData::MASTERCRAFT: return "Mastercraft";
             case ItemData::ASCENDANT: return "Ascendant";
-            default: return "?";
             }
+            return "";
         }
 
         void convert(const cv::Mat& icon, cv::Mat& icon_rgb, cv::Mat& icon_rgba,
@@ -55,7 +53,7 @@ namespace asa::items
     Item::Item(std::string t_name, const bool t_is_blueprint,
                const ItemData::ItemQuality t_quality) : name_(std::move(t_name)),
                                                         data_(ItemData(
-                                                            load_raw(name_),
+                                                            name_, load_raw(name_),
                                                             t_is_blueprint, t_quality))
     {
         if (!std::filesystem::exists(data_.icon_path)) {
@@ -65,8 +63,8 @@ namespace asa::items
         icon_ = cv::imread(data_.icon_path.string(), cv::IMREAD_UNCHANGED);
     };
 
-    Item::Item(const Item& other, const bool t_is_blueprint,
-               const ItemData::ItemQuality t_quality) : Item(other)
+    Item::Item(const Item& t_other, const bool t_is_blueprint,
+               const ItemData::ItemQuality t_quality) : Item(t_other)
     {
         data_.is_blueprint = t_is_blueprint;
         data_.quality = t_quality;

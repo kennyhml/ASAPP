@@ -25,10 +25,16 @@ namespace asa::items
         explicit ItemIconNotFound(const std::filesystem::path&);
     };
 
-
     class ItemDataNotFound final : public ItemError
     {
     public:
         explicit ItemDataNotFound(const std::string& t_item_name);
+    };
+
+    class MissingItemDataFieldError final : public ItemError
+    {
+    public:
+        explicit MissingItemDataFieldError(const std::string& t_item_name,
+                                           const std::string& t_field_name);
     };
 }

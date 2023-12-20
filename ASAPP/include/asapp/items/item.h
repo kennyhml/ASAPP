@@ -7,13 +7,43 @@ namespace asa::items
     class Item
     {
     public:
+        /**
+         * @brief Constructs an Item object with the given parameters.
+         *
+         * @param t_name The name of the item.
+         * @param t_is_blueprint Whether the item is a blueprint or not (default = false).
+         * @param t_quality The quality of the item (default = ItemData::PRIMITIVE).
+         *
+         * @throws ItemIconNotFound if the icon file for the item does not exist.
+         */
         explicit Item(std::string t_name, bool t_is_blueprint = false,
                       ItemData::ItemQuality t_quality = ItemData::PRIMITIVE);
 
-        Item(const Item& other) = default;
-        Item(const Item& other, bool t_is_blueprint, ItemData::ItemQuality t_quality);
+        /**
+         * @brief Creates a copy of an item but as a blueprint or a different quality.
+         *
+         * @param t_other The item to copy the original data from.
+         * @param t_is_blueprint Whether the new item is a blueprint (default = false).
+         * @param t_quality The new quality of the item (default = ItemData::PRIMITIVE).
+         *
+         * @throws ItemIconNotFound if the icon file for the item does not exist.
+         */
+        Item(const Item& t_other, bool t_is_blueprint, ItemData::ItemQuality t_quality);
 
+        Item(const Item& t_other) = default;
+
+        /**
+         * @brief Gets a view at the data of the item.
+         *
+         * @return A reference to the items ItemData object.
+         */
         [[nodiscard]] const ItemData& get_data() const { return data_; }
+
+        /**
+         * @brief Gets the items (in-game) name.
+         *
+         * @return The name of the item object.
+         */
         [[nodiscard]] const std::string& get_name() const { return name_; }
 
         /** 

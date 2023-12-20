@@ -2,7 +2,6 @@
 #include <filesystem>
 #include "item.h"
 
-struct Recipe;
 using json = nlohmann::json;
 
 namespace asa::items

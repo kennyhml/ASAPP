@@ -17,4 +17,9 @@ namespace asa::items
 
     ItemIconNotFound::ItemIconNotFound(const std::filesystem::path& path) : ItemError(
         nullptr, std::format("Failed to load item icon at {}", path.string())) {}
+
+    MissingItemDataFieldError::MissingItemDataFieldError(
+        const std::string& t_item_name, const std::string& t_field_name) : ItemError(
+        nullptr,
+        std::format("Item '{}' is missing field '{}'", t_item_name, t_field_name)) {}
 }

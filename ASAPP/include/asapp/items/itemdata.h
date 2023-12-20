@@ -1,11 +1,14 @@
 #pragma once
-#include <string>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 
 namespace asa::items
 {
+    /**
+     * @class ItemData
+     * @brief Contains all relevant data of an item.
+     */
     struct ItemData
     {
     public:
@@ -32,8 +35,18 @@ namespace asa::items
         };
 
     public:
-        explicit ItemData(json t_data, bool t_is_blueprint = false,
-                          ItemQuality t_quality = PRIMITIVE);
+        /**
+         * @brief Constructs an ItemData object with the given parameters.
+         *
+         * @param t_name The name of the item.
+         * @param t_data The JSON data for the item.
+         * @param t_is_blueprint (Optional) Whether the item is a blueprint. Default false.
+         * @param t_quality (Optional) The quality of the item. Default PRIMITIVE.
+         *
+         * @return An ItemData object.
+         */
+        explicit ItemData(const std::string& t_name, const json& t_data,
+                          bool t_is_blueprint = false, ItemQuality t_quality = PRIMITIVE);
 
         std::filesystem::path icon_path;
         ItemType type;
