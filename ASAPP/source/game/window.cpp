@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <random>
+#include <opencv2/highgui.hpp>
+
 #include "../util/util.h"
 #include "asapp/core/config.h"
 #include "asapp/core/state.h"
@@ -76,17 +78,26 @@ namespace asa::window
     }
 
     std::optional<Rect> locate_template(const cv::Mat& source, const cv::Mat& templ,
-                                        float threshold, const cv::Mat& mask)
+                                        float threshold, const cv::Mat& mask,
+                                        float* highest_match, const int mode)
     {
         core::check_state();
 
         cv::Mat result;
-        if (mask.empty()) { matchTemplate(source, templ, result, cv::TM_CCOEFF_NORMED); }
-        else { matchTemplate(source, templ, result, cv::TM_CCOEFF_NORMED, mask); }
+        if (mask.empty()) { matchTemplate(source, templ, result, mode); }
+        else { matchTemplate(source, templ, result, mode, mask); }
+
 
         double min_val, max_val;
         cv::Point min_loc, max_loc;
         minMaxLoc(result, &min_val, &max_val, &min_loc, &max_loc);
+
+        if (mode == cv::TM_SQDIFF || mode == cv::TM_SQDIFF_NORMED) {
+            max_val = 1.0 - min_val;
+            max_loc = min_loc;
+        }
+
+        if (highest_match) { *highest_match = max_val; }
 
         if (max_val < threshold) { return std::nullopt; }
 

@@ -48,5 +48,7 @@ namespace asa::items
         bool has_durability;
         bool requires_engram;
         bool has_ambiguous_query;
+        bool has_armor_value;
+        bool has_damage_value;
     };
 }

@@ -35,8 +35,7 @@ namespace asa::items
             else { add_to.push_back(&item); }
 
             item = new Item(name);
-            std::cout << std::format("\t[-] Loaded predef. item '{}'. Icon: '{}'",
-                                     item->get_name(),
+            std::cout << std::format("\t[-] Loaded  '{}' -> '{}'", item->get_name(),
                                      item->get_data().icon_path.string()) << "\n";
         }
 
@@ -210,7 +209,7 @@ namespace asa::items
     {
         load(advanced_bullet, "Advanced Bullet", all_ammos);
         load(advanced_rifle_bullet, "Advanced Rifle Bullet", all_ammos);
-        load(advanced_sniper_bullet, "Advanced Sniper Bullt", all_ammos);
+        load(advanced_sniper_bullet, "Advanced Sniper Bullet", all_ammos);
         load(simple_bullet, "Simple Bullet", all_ammos);
         load(simple_rifle_ammo, "Simple Rifle Ammo", all_ammos);
         load(simple_shotgun_ammo, "Simple Shotgun Ammo", all_ammos);

@@ -24,5 +24,7 @@ namespace asa::items
         has_spoil_timer(t_data.at("has_spoil_timer")),
         has_durability(t_data.at("has_durability")),
         requires_engram(t_data.at("requires_engram")),
-        has_ambiguous_query(t_data.at("has_ambiguous_query")) {}
+        has_ambiguous_query(t_data.at("has_ambiguous_query")),
+        has_armor_value(t_data.at("has_armor_value")),
+        has_damage_value(t_data.at("has_damage_value")) {}
 };

@@ -19,6 +19,8 @@ namespace asa::resources
         inline cv::Mat back;
         inline cv::Mat join_last_session;
         inline cv::Mat refresh;
+        inline cv::Mat armor;
+        inline cv::Mat damage;
     }
 
     namespace text
@@ -32,5 +34,6 @@ namespace asa::resources
         inline cv::Mat fast_travel;
         inline cv::Mat access_inventory;
         inline cv::Mat x;
+        inline cv::Mat bp_weight;
     }
 }

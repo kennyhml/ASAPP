@@ -4,7 +4,7 @@
 #include "asapp/core/config.h"
 
 #define LOAD_RESOURCE(dir, name)                                               \
-	name = asa::resources::load_resource(dir / (std::string(#name) + ".png"));
+	name = asa::resources::load_resource(dir / (std::string(#name) + ".png"))
 
 namespace asa::resources
 {
@@ -59,6 +59,9 @@ namespace asa::resources
         LOAD_RESOURCE(dir, back);
         LOAD_RESOURCE(dir, join_last_session);
         LOAD_RESOURCE(dir, refresh);
+        LOAD_RESOURCE(dir, armor);
+        LOAD_RESOURCE(dir, damage);
+
         return true;
     }
 
@@ -78,6 +81,7 @@ namespace asa::resources
         LOAD_RESOURCE(dir, fast_travel);
         LOAD_RESOURCE(dir, access_inventory);
         LOAD_RESOURCE(dir, x);
+        LOAD_RESOURCE(dir, bp_weight);
 
         return true;
     }

@@ -195,6 +195,7 @@
         <ClCompile Include="source\interfaces\structureinfo.cpp"/>
         <ClCompile Include="source\interfaces\teleportmap.cpp"/>
         <ClCompile Include="source\interfaces\travelmap.cpp"/>
+        <ClCompile Include="source\items\exceptions.cpp"/>
         <ClCompile Include="source\items\item.cpp"/>
         <ClCompile Include="source\items\itemdata.cpp"/>
         <ClCompile Include="source\items\items.cpp"/>
@@ -227,6 +228,7 @@
         <ClInclude Include="include\asapp\interfaces\baseentityinfo.h"/>
         <ClInclude Include="include\asapp\interfaces\exceptions.h"/>
         <ClInclude Include="include\asapp\interfaces\explorernotes.h"/>
+        <ClInclude Include="include\asapp\items\exceptions.h"/>
         <ClInclude Include="include\asapp\items\item.h"/>
         <ClInclude Include="include\asapp\items\itemdata.h"/>
         <ClInclude Include="include\asapp\structures\cavelootcrate.h"/>

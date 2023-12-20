@@ -9,7 +9,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Metal Ingot": {
         "icon": "items\\resources\\MetalIngot_Icon.png",
@@ -21,7 +23,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Cementing Paste": {
         "icon": "items\\resources\\CementPaste_Icon.png",
@@ -36,7 +40,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Achatina Paste": {
         "icon": "items\\resources\\CementPaste_Icon.png",
@@ -47,7 +53,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Fiber": {
         "icon": "items\\resources\\Fiber_Icon.png",
@@ -59,7 +67,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Thatch": {
         "icon": "items\\resources\\Thatch_Icon.png",
@@ -71,7 +81,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Wood": {
         "icon": "items\\resources\\Wood_Icon.png",
@@ -83,7 +95,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Stone": {
         "icon": "items\\resources\\Stone_Icon.png",
@@ -95,7 +109,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Flint": {
         "icon": "items\\resources\\Flint_Icon.png",
@@ -107,7 +123,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Gunpowder": {
         "icon": "items\\resources\\Gunpowder_Icon.png",
@@ -122,7 +140,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Sparkpowder": {
         "icon": "items\\resources\\Sparkpowder_Icon.png",
@@ -137,7 +157,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Obsidian": {
         "icon": "items\\resources\\Obsidian_Icon.png",
@@ -149,7 +171,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Fertilizer": {
         "icon": "items\\resources\\Fertilizer_Icon.png",
@@ -161,7 +185,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Polymer": {
         "icon": "items\\resources\\Polymer_Icon.png",
@@ -176,7 +202,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Organic Polymer": {
         "icon": "items\\resources\\OrganicPolymer_Icon.png",
@@ -188,7 +216,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Mejoberry": {
         "icon": "items\\consumables\\Mejoberry_Icon.png",
@@ -200,7 +230,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Element": {
         "icon": "items\\resources\\TEKElement_Icon.png",
@@ -212,7 +244,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Element Shard": {
         "icon": "items\\resources\\TEKElementShard_Icon.png",
@@ -226,7 +260,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Medical Brew": {
         "icon": "items\\consumables\\HealthPotion_Icon.png",
@@ -241,7 +277,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Energy Brew": {
         "icon": "items\\consumables\\StaminaPotion_Icon.png",
@@ -253,7 +291,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Longrass": {
         "icon": "items\\consumables\\Longrass_Icon.png",
@@ -265,7 +305,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Citronal": {
         "icon": "items\\consumables\\Citronal_Icon.png",
@@ -277,7 +319,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Savoroot": {
         "icon": "items\\consumables\\Savroot_Icon.png",
@@ -289,7 +333,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Rockarrot": {
         "icon": "items\\consumables\\Rockarrot_Icon.png",
@@ -301,7 +347,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Rockarrot Seed": {
         "icon": "items\\consumables\\CarrotSeed_Icon.png",
@@ -313,7 +361,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Citronal Seed": {
         "icon": "items\\consumables\\CitronalSeed_Icon.png",
@@ -325,7 +375,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Savoroot Seed": {
         "icon": "items\\consumables\\SavrootSeed_Icon.png",
@@ -337,7 +389,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Longrass Seed": {
         "icon": "items\\consumables\\LongrassSeed_Icon.png",
@@ -349,7 +403,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Cooked Meat": {
         "icon": "items\\consumables\\CookedMeat_Icon.png",
@@ -361,7 +417,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Cooked Meat Jerky": {
         "icon": "items\\consumables\\Jerky_Icon.png",
@@ -373,7 +431,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Prime Meat Jerky": {
         "icon": "items\\consumables\\PrimeJerky_Icon.png",
@@ -385,7 +445,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Cooked Fish Meat": {
         "icon": "items\\consumables\\CookedFishMeat_Icon.png",
@@ -397,7 +459,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Cooked Prime Fish Meat": {
         "icon": "items\\consumables\\CookedPrimeFishMeat_Icon.png",
@@ -409,7 +473,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Calien Soup": {
         "icon": "items\\consumables\\Soup_Icon.png",
@@ -421,7 +487,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Enduro Stew": {
         "icon": "items\\consumables\\Stew_Icon.png",
@@ -433,7 +501,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Fria Curry": {
         "icon": "items\\consumables\\Curry_Icon.png",
@@ -445,7 +515,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Lazarus Chowder": {
         "icon": "items\\consumables\\Chowder_Icon.png",
@@ -457,7 +529,9 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Focal Chili": {
         "icon": "items\\consumables\\Chili_Icon.png",
@@ -469,9 +543,10 @@
         "has_spoil_timer": true,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
-
     "Wooden Shield": {
         "icon": "items\\armor\\Shield_Icon.png",
         "type": "EQUIPPABLE",
@@ -482,7 +557,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Metal Shield": {
         "icon": "items\\armor\\MetalShield_Icon.png",
@@ -494,7 +571,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Riot Shield": {
         "icon": "items\\armor\\TransparentRiotShield_Icon.png",
@@ -506,9 +585,10 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
-
     "Flak Helmet": {
         "icon": "items\\armor\\FlakHelmet_Icon.png",
         "type": "EQUIPPABLE",
@@ -519,7 +599,23 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Gasmask": {
+        "icon": "items\\armor\\GasMask_Icon.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 4.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Flak Chestpiece": {
         "icon": "items\\armor\\FlakShirt_Icon.png",
@@ -531,7 +627,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Flak Leggings": {
         "icon": "items\\armor\\FlakPants_Icon.png",
@@ -543,7 +641,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Flak Gauntlets": {
         "icon": "items\\armor\\FlakGloves_Icon.png",
@@ -555,7 +655,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Flak Boots": {
         "icon": "items\\armor\\FlakBoots_Icon.png",
@@ -567,7 +669,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Ghilie Mask": {
         "icon": "items\\armor\\GhillieHat_Icon.png",
@@ -579,7 +683,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Ghilie Chestpiece": {
         "icon": "items\\armor\\GhillieShirt_Icon.png",
@@ -591,7 +697,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Ghilie Leggings": {
         "icon": "items\\armor\\GhilliePants_Icon.png",
@@ -603,7 +711,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Ghilie Gauntlets": {
         "icon": "items\\armor\\GhillieGloves_Icon.png",
@@ -615,7 +725,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Ghilie Boots": {
         "icon": "items\\armor\\GhillieBoots_Icon.png",
@@ -627,7 +739,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Cloth Hat": {
         "icon": "items\\armor\\BurlapHat_Icon.png",
@@ -639,7 +753,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Cloth Shirt": {
         "icon": "items\\armor\\BurlapShirt_Icon.png",
@@ -651,9 +767,11 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
-    "Cloth Leggings": {
+    "Cloth Pants": {
         "icon": "items\\armor\\BurlapLegs_Icon.png",
         "type": "EQUIPPABLE",
         "recipe": {},
@@ -663,7 +781,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Cloth Gloves": {
         "icon": "items\\armor\\BurlapGloves_Icon.png",
@@ -675,7 +795,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Cloth Boots": {
         "icon": "items\\armor\\BurlapBoots_Icon.png",
@@ -687,7 +809,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Hide Hat": {
         "icon": "items\\armor\\HideHat_Icon.png",
@@ -699,7 +823,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Hide Shirt": {
         "icon": "items\\armor\\HideShirt_Icon.png",
@@ -711,7 +837,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Hide Pants": {
         "icon": "items\\armor\\HideLegs_Icon.png",
@@ -723,7 +851,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Hide Gloves": {
         "icon": "items\\armor\\HideGloves_Icon.png",
@@ -735,7 +865,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Hide Boots": {
         "icon": "items\\armor\\HideBoots_Icon.png",
@@ -747,7 +879,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Fur Cap": {
         "icon": "items\\armor\\MammothHat_Icon.png",
@@ -759,7 +893,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Fur Chestpiece": {
         "icon": "items\\armor\\MammothShirt_Icon.png",
@@ -771,7 +907,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Fur Leggings": {
         "icon": "items\\armor\\MammothLegs_Icon.png",
@@ -783,7 +921,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Fur Gauntlets": {
         "icon": "items\\armor\\MammothGloves_Icon.png",
@@ -795,7 +935,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Fur Boots": {
         "icon": "items\\armor\\MammothBoots_Icon.png",
@@ -807,7 +949,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Riot Helmet": {
         "icon": "items\\armor\\RiotHat_Icon.png",
@@ -819,7 +963,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Riot Chestpiece": {
         "icon": "items\\armor\\RiotShirt_Icon.PNG",
@@ -831,7 +977,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Riot Leggings": {
         "icon": "items\\armor\\RiotPants_Icon.PNG",
@@ -843,7 +991,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Riot Gauntlets": {
         "icon": "items\\armor\\RiotGloves_Icon.PNG",
@@ -855,7 +1005,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Riot Boots": {
         "icon": "items\\armor\\RiotBoots_Icon.PNG",
@@ -867,7 +1019,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
     },
     "Metal Hatchet": {
         "icon": "items\\weapons\\MetalHatchet_Icon.png",
@@ -879,7 +1033,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Metal Pick": {
         "icon": "items\\weapons\\MetalPick_Icon.png",
@@ -891,7 +1047,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Metal Sickle": {
         "icon": "items\\weapons\\Scythe_Icon.png",
@@ -903,7 +1061,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Metal Pike": {
         "icon": "items\\weapons\\Pike_Icon.png",
@@ -915,7 +1075,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Sword": {
         "icon": "items\\weapons\\Sword_Icon.png",
@@ -927,7 +1089,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Wooden Club": {
         "icon": "items\\weapons\\Club_Icon.png",
@@ -939,7 +1103,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Bow": {
         "icon": "items\\weapons\\Bow_Icon.png",
@@ -951,7 +1117,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Pump-Action Shotgun": {
         "icon": "items\\weapons\\MachinedShotgun_Icon.png",
@@ -963,7 +1131,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Longneck Rifle": {
         "icon": "items\\weapons\\SSR_Icon.png",
@@ -975,7 +1145,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Lance": {
         "icon": "items\\weapons\\Lance_Icon.png",
@@ -987,7 +1159,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Fabricated Sniper Rifle": {
         "icon": "items\\weapons\\MachinedSniper_Icon.png",
@@ -999,7 +1173,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Compound Bow": {
         "icon": "items\\weapons\\MachinedBow_Icon.png",
@@ -1011,7 +1187,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Rocket Launcher": {
         "icon": "items\\weapons\\RocketLauncher_Icon.png",
@@ -1023,7 +1201,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Assault Rifle": {
         "icon": "items\\weapons\\AssaultRifle_Icon.png",
@@ -1035,7 +1215,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Fabricated Pistol": {
         "icon": "items\\weapons\\MachinedPistol_Icon.png",
@@ -1047,7 +1229,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Electric Prod": {
         "icon": "items\\weapons\\ElectricProd_Icon.png",
@@ -1059,7 +1243,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Harpoon Launcher": {
         "icon": "items\\weapons\\HarpoonGun_Icon.png",
@@ -1071,7 +1257,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Shotgun": {
         "icon": "items\\weapons\\Shotgun_Icon.png",
@@ -1083,7 +1271,9 @@
         "has_spoil_timer": false,
         "has_durability": true,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": true
     },
     "Bola": {
         "icon": "items\\weapons\\Bolas_Icon.png",
@@ -1095,7 +1285,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Grenade": {
         "icon": "items\\weapons\\Grenade_Icon.png",
@@ -1107,7 +1299,23 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Rocket Propelled Grenade": {
+        "icon": "items\\weapons\\RocketLauncherAmmo_Icon.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 0.5,
+        "stack_size": 10,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Scissors": {
         "icon": "items\\weapons\\Scissors_Icon.png",
@@ -1119,9 +1327,11 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
-    "Magnifying glass": {
+    "Magnifying Glass": {
         "icon": "items\\weapons\\MagnifyingGlass_Icon.png",
         "type": "WEAPON",
         "recipe": {},
@@ -1131,7 +1341,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Improvised Explosive Device": {
         "icon": "items\\weapons\\Tripwire_Icon.png",
@@ -1143,7 +1355,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Advanced Bullet": {
         "icon": "items\\weapons\\Bullet1_Icon.png",
@@ -1155,7 +1369,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Poison Grenade": {
         "icon": "items\\weapons\\PoisonGrenade_Icon.png",
@@ -1167,7 +1383,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Smoke Grenade": {
         "icon": "items\\weapons\\SmokeGrenade_Icon.png",
@@ -1179,7 +1397,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Advanced Rifle Bullet": {
         "icon": "items\\weapons\\Bullet2_Icon.png",
@@ -1191,7 +1411,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Advanced Sniper Bullet": {
         "icon": "items\\weapons\\Bullet6_Icon.png",
@@ -1203,7 +1425,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Simple Bullet": {
         "icon": "items\\weapons\\Bullet4_Icon.png",
@@ -1215,7 +1439,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Simple Rifle Ammo": {
         "icon": "items\\weapons\\Bullet3_Icon.png",
@@ -1227,7 +1453,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Simple Shotgun Ammo": {
         "icon": "items\\weapons\\Bullet5_Icon.png",
@@ -1239,7 +1467,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": true
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Stone Arrow": {
         "icon": "items\\weapons\\Arrow_Icon.png",
@@ -1251,7 +1481,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Tranq Arrow": {
         "icon": "items\\weapons\\TranqArrow_Icon.png",
@@ -1263,7 +1495,9 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     },
     "Spear Bolt": {
         "icon": "items\\weapons\\BallistaArrow_Icon.png",
@@ -1275,6 +1509,8 @@
         "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
-        "has_ambiguous_query": false
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
     }
 }

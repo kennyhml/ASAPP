@@ -7,6 +7,7 @@
 #include <vector>
 #include <Windows.h>
 #include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
 #include <tesseract/baseapi.h>
 #include "controls.h"
 
@@ -56,7 +57,9 @@ namespace asa::window
                                         const cv::Mat& mask = cv::Mat());
     std::optional<Rect> locate_template(const cv::Mat& source, const cv::Mat& templ,
                                         float threshold = 0.7,
-                                        const cv::Mat& mask = cv::Mat());
+                                        const cv::Mat& mask = cv::Mat(),
+                                        float* highest_match = nullptr,
+                                        int mode = cv::TM_CCOEFF_NORMED);
 
     std::vector<Rect> locate_all_template(const Rect& region, const cv::Mat& templ,
                                           float threshold = 0.7,
