@@ -54,6 +54,10 @@ namespace asa::items
         inline Item* prime_meat_jerky = nullptr;
         inline Item* cooked_fish_meat = nullptr;
         inline Item* cooked_prime_fish_meat = nullptr;
+        inline Item* shadow_steak_saute = nullptr;
+        inline Item* spoiled_meat = nullptr;
+        inline Item* battle_tartare = nullptr;
+        inline Item* stimberry = nullptr;
 
         inline Item* medical_brew = nullptr;
         inline Item* energy_brew = nullptr;

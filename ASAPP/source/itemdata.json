@@ -265,7 +265,7 @@
         "has_damage_value": false
     },
     "Medical Brew": {
-        "icon": "items\\consumables\\HealthPotion_Icon.png",
+        "icon": "items\\consumables\\medical_brew.png",
         "type": "CONSUMABLE",
         "recipe": {
             "Narcotic": 2,
@@ -282,7 +282,7 @@
         "has_damage_value": false
     },
     "Energy Brew": {
-        "icon": "items\\consumables\\StaminaPotion_Icon.png",
+        "icon": "items\\consumables\\energy_brew.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,
@@ -296,7 +296,7 @@
         "has_damage_value": false
     },
     "Longrass": {
-        "icon": "items\\consumables\\Longrass_Icon.png",
+        "icon": "items\\consumables\\longrass.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,
@@ -310,7 +310,7 @@
         "has_damage_value": false
     },
     "Citronal": {
-        "icon": "items\\consumables\\Citronal_Icon.png",
+        "icon": "items\\consumables\\citronal.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,
@@ -324,7 +324,7 @@
         "has_damage_value": false
     },
     "Savoroot": {
-        "icon": "items\\consumables\\Savroot_Icon.png",
+        "icon": "items\\consumables\\savoroot.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,
@@ -338,7 +338,7 @@
         "has_damage_value": false
     },
     "Rockarrot": {
-        "icon": "items\\consumables\\Rockarrot_Icon.png",
+        "icon": "items\\consumables\\rockarrot.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,
@@ -352,7 +352,7 @@
         "has_damage_value": false
     },
     "Rockarrot Seed": {
-        "icon": "items\\consumables\\CarrotSeed_Icon.png",
+        "icon": "items\\consumables\\rockarrot_seed.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.4,
@@ -366,7 +366,7 @@
         "has_damage_value": false
     },
     "Citronal Seed": {
-        "icon": "items\\consumables\\CitronalSeed_Icon.png",
+        "icon": "items\\consumables\\citronal_seed.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.4,
@@ -380,7 +380,7 @@
         "has_damage_value": false
     },
     "Savoroot Seed": {
-        "icon": "items\\consumables\\SavrootSeed_Icon.png",
+        "icon": "items\\consumables\\savoroot_seed.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.4,
@@ -394,7 +394,7 @@
         "has_damage_value": false
     },
     "Longrass Seed": {
-        "icon": "items\\consumables\\LongrassSeed_Icon.png",
+        "icon": "items\\consumables\\longrass_seed.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.4,
@@ -408,7 +408,7 @@
         "has_damage_value": false
     },
     "Cooked Meat": {
-        "icon": "items\\consumables\\CookedMeat_Icon.png",
+        "icon": "items\\consumables\\cooked_meat.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.4,
@@ -422,7 +422,7 @@
         "has_damage_value": false
     },
     "Cooked Meat Jerky": {
-        "icon": "items\\consumables\\Jerky_Icon.png",
+        "icon": "items\\consumables\\cooked_meat_jerky.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,
@@ -436,7 +436,7 @@
         "has_damage_value": false
     },
     "Prime Meat Jerky": {
-        "icon": "items\\consumables\\PrimeJerky_Icon.png",
+        "icon": "items\\consumables\\prime_meat_jerky.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,
@@ -450,7 +450,7 @@
         "has_damage_value": false
     },
     "Cooked Fish Meat": {
-        "icon": "items\\consumables\\CookedFishMeat_Icon.png",
+        "icon": "items\\consumables\\cooked_fish_meat.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.4,
@@ -464,7 +464,7 @@
         "has_damage_value": false
     },
     "Cooked Prime Fish Meat": {
-        "icon": "items\\consumables\\CookedPrimeFishMeat_Icon.png",
+        "icon": "items\\consumables\\cooked_prime_fish_meat.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.4,
@@ -478,7 +478,7 @@
         "has_damage_value": false
     },
     "Calien Soup": {
-        "icon": "items\\consumables\\Soup_Icon.png",
+        "icon": "items\\consumables\\calien_soup.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.4,
@@ -492,7 +492,7 @@
         "has_damage_value": false
     },
     "Enduro Stew": {
-        "icon": "items\\consumables\\Stew_Icon.png",
+        "icon": "items\\consumables\\enduro_stew.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.4,
@@ -506,7 +506,7 @@
         "has_damage_value": false
     },
     "Fria Curry": {
-        "icon": "items\\consumables\\Curry_Icon.png",
+        "icon": "items\\consumables\\fria_curry.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.4,
@@ -520,7 +520,7 @@
         "has_damage_value": false
     },
     "Lazarus Chowder": {
-        "icon": "items\\consumables\\Chowder_Icon.png",
+        "icon": "items\\consumables\\lazarus_chowder.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,
@@ -534,7 +534,64 @@
         "has_damage_value": false
     },
     "Focal Chili": {
-        "icon": "items\\consumables\\Chili_Icon.png",
+        "icon": "items\\consumables\\focal_chili.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Shadow Steak Saute": {
+        "icon": "items\\consumables\\steak.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Spoiled Meat": {
+        "icon": "items\\consumables\\spoiled_meat.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Stimberry": {
+        "icon": "items\\consumables\\stimberry.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+
+    "Battle Tartare": {
+        "icon": "items\\consumables\\battle_tartare.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,

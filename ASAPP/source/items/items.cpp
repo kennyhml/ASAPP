@@ -49,10 +49,9 @@ namespace asa::items
 
         if (!load_raw_data()) { return false; }
         std::cout << "[+] Initializing item dummies...\n";
-        // if (!resources::init() || !consumables::init() || !equippables::init() || !
-        //     weapons::init() || !ammo::init()) { return false; }
+        if (!consumables::init() || !equippables::init() || !weapons::init() || !
+            ammo::init()) { return false; }
 
-        if (!equippables::init() || !weapons::init() || !ammo::init()) { return false; }
         const auto time_taken = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now() - start);
         std::cout << "-> Loaded all assets within " << time_taken << "\n";
@@ -114,6 +113,10 @@ namespace asa::items
             load(prime_meat_jerky, "Prime Meat Jerky", all_consumables);
             load(cooked_fish_meat, "Cooked Fish Meat", all_consumables);
             load(cooked_prime_fish_meat, "Cooked Prime Fish Meat", all_consumables);
+            load(shadow_steak_saute, "Shadow Steak Saute", all_consumables);
+            load(spoiled_meat, "Spoiled Meat", all_consumables);
+            load(battle_tartare, "Battle Tartare", all_consumables);
+            load(stimberry, "Stimberry", all_consumables);
 
             load(medical_brew, "Medical Brew", all_consumables);
             load(energy_brew, "Energy Brew", all_consumables);
