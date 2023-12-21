@@ -132,6 +132,59 @@ namespace asa::items
         inline Item* megaloceros_saddle = nullptr;
         inline Item* sabertooth_saddle = nullptr;
         inline Item* sarco_saddle = nullptr;
+
+        inline Item* argentavis_saddle = nullptr;
+        inline Item* baryonyx_saddle = nullptr;
+        inline Item* basilosaurus_saddle = nullptr;
+        inline Item* beelzebufo_saddle = nullptr;
+        inline Item* bronto_platform_saddle = nullptr;
+        inline Item* bronto_saddle = nullptr;
+        inline Item* carbonemys_saddle = nullptr;
+        inline Item* carcharo_saddle = nullptr;
+        inline Item* carno_saddle = nullptr;
+        inline Item* casteroides_saddle = nullptr;
+        inline Item* chalicotherium_saddle = nullptr;
+        inline Item* daeodon_saddle = nullptr;
+        inline Item* dire_bear_saddle = nullptr;
+        inline Item* doedicurus_saddle = nullptr;
+        inline Item* dunkleosteus_saddle = nullptr;
+        inline Item* equus_saddle = nullptr;
+        inline Item* gallimimus_saddle = nullptr;
+        inline Item* giganotosaurus_saddle = nullptr;
+        inline Item* ichthyosaurus_saddle = nullptr;
+        inline Item* manta_saddle = nullptr;
+        inline Item* megalania_saddle = nullptr;
+        inline Item* megalodon_tek_saddle = nullptr;
+        inline Item* megalodon_saddle = nullptr;
+        inline Item* megalosaurus_saddle = nullptr;
+        inline Item* megatherium_saddle = nullptr;
+        inline Item* mosasaur_platform_saddle = nullptr;
+        inline Item* mosasaur_saddle = nullptr;
+        inline Item* mosasaur_tek_saddle = nullptr;
+        inline Item* pachyrhinosaurus_saddle = nullptr;
+        
+        inline Item* pachy_saddle = nullptr;
+        inline Item* paracter_platform_saddle = nullptr;
+        inline Item* paracer_saddle = nullptr;
+        inline Item* parasaur_saddle = nullptr;
+        inline Item* pelagornis_saddle = nullptr;
+        inline Item* phiomia_saddle = nullptr;
+        inline Item* plesiosaurus_saddle = nullptr;
+        inline Item* procoptodon_saddle = nullptr;
+        
+        inline Item* pulmonsoscorpius_saddle = nullptr;
+        inline Item* quetz_platform_saddle = nullptr;
+        inline Item* quetz_saddle = nullptr;
+        inline Item* raptor_saddle = nullptr;
+        inline Item* rex_saddle = nullptr;
+        inline Item* rex_tek_saddle = nullptr;
+        inline Item* rhyniognatha_saddle = nullptr;
+        inline Item* spino_saddle = nullptr;
+
+
+        
+
+
     }
 
     namespace weapons
