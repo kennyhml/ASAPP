@@ -142,7 +142,7 @@ namespace asa::items
         inline Item* carbonemys_saddle = nullptr;
         inline Item* carcharo_saddle = nullptr;
         inline Item* carno_saddle = nullptr;
-        inline Item* casteroides_saddle = nullptr;
+        inline Item* castoroides_saddle = nullptr;
         inline Item* chalicotherium_saddle = nullptr;
         inline Item* daeodon_saddle = nullptr;
         inline Item* dire_bear_saddle = nullptr;
@@ -162,16 +162,14 @@ namespace asa::items
         inline Item* mosasaur_saddle = nullptr;
         inline Item* mosasaur_tek_saddle = nullptr;
         inline Item* pachyrhinosaurus_saddle = nullptr;
-
         inline Item* pachy_saddle = nullptr;
-        inline Item* paracter_platform_saddle = nullptr;
+        inline Item* paracer_platform_saddle = nullptr;
         inline Item* paracer_saddle = nullptr;
         inline Item* parasaur_saddle = nullptr;
         inline Item* pelagornis_saddle = nullptr;
         inline Item* phiomia_saddle = nullptr;
-        inline Item* plesiosaurus_saddle = nullptr;
+        inline Item* plesiosaur_saddle = nullptr;
         inline Item* procoptodon_saddle = nullptr;
-
         inline Item* pulmonsoscorpius_saddle = nullptr;
         inline Item* quetz_platform_saddle = nullptr;
         inline Item* quetz_saddle = nullptr;
