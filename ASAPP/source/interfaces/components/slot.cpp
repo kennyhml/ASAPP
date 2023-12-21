@@ -50,7 +50,7 @@ namespace asa::interfaces::components
         return countNonZero(masked) < 10;
     }
 
-    bool Slot::has(items::Item& item) const
+    bool Slot::has(items::Item& item, float* accuracy_out) const
     {
         cv::Mat mask = item.get_inventory_icon_mask();
 
@@ -60,17 +60,23 @@ namespace asa::interfaces::components
             mask(roi) = cv::Scalar(0, 0, 0);
         }
 
-        cv::imshow("source", window::screenshot(area));
+        cv::Mat source;
+        cv::Mat templ;
+
+        cv::cvtColor(window::screenshot(area), source, cv::COLOR_RGB2GRAY);
+        cv::cvtColor(item.get_inventory_icon(), templ, cv::COLOR_RGB2GRAY);
+
+        cv::imshow("src", source);
         cv::waitKey(0);
 
-        cv::imshow("template", item.get_inventory_icon());
+        cv::imshow("templ", templ);
         cv::waitKey(0);
 
         cv::imshow("mask", mask);
         cv::waitKey(0);
 
-
-        return window::match_template(area, item.get_inventory_icon(), 0.7f, mask);
+        return window::locate_template(source, templ, 0.7f, mask, accuracy_out).
+            has_value();
     }
 
     bool Slot::get_item(items::Item*& item_out, const bool verbose) const
@@ -89,30 +95,29 @@ namespace asa::interfaces::components
             for (const auto& item : iter) {
                 if (verbose) {
                     std::cout << "\r\t[-] Checking " << (*item)->get_name() << "... " <<
-                        std::setw(30) << std::flush;
+                        std::setw(20) << " " << std::flush;
                 }
 
                 const items::ItemData& item_data = (*item)->get_data();
 
+                float acc = 0.f;
                 if ((item_data.has_armor_value != has_armor) || (item_data.
                     has_damage_value != has_damage) || (item_data.stack_size == 1 &&
-                    is_multi_stack) || !has(**item)) { continue; }
+                    is_multi_stack) || !has(**item, &acc)) { continue; }
 
                 const auto time_taken = std::chrono::duration_cast<
                     std::chrono::milliseconds>(std::chrono::system_clock::now() - start);
-                if (verbose) {
-                    std::cout << std::format("\n\t[-] Determined '{}' within {}",
-                                             (*item)->get_name(), time_taken) << "\n";
-                }
+                std::cout << std::format(
+                    "\r\t[-] Determined '{}' within {} and {}% accuracy.",
+                    (*item)->get_name(), time_taken,
+                    acc * 100) << std::setw(20) << " " << std::endl;
 
                 item_out = new items::Item(*(*item), is_blueprint(item_data),
                                            get_quality());
                 return true;
             }
         }
-        if (verbose) {
-            std::cerr << "\r\t[!] Failed to determine the item." << std::endl;
-        }
+        if (verbose) { std::cerr << "\r\t[!] Failed to determine the item.\n"; }
         return false;
     }
 
@@ -131,7 +136,7 @@ namespace asa::interfaces::components
 
     bool Slot::is_stack() const
     {
-        static constexpr window::Color col(120, 218, 240);
+        static constexpr window::Color col(128, 231, 255);
 
         const auto mask = window::get_mask(get_stack_size_area(), col, 20);
         return cv::countNonZero(mask) > 30;

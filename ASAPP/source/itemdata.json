@@ -1052,7 +1052,7 @@
         "has_damage_value": true
     },
     "Metal Sickle": {
-        "icon": "items\\weapons\\Scythe_Icon.png",
+        "icon": "items\\weapons\\MetalSickle_Icon.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 2.0,

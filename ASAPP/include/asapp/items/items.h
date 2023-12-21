@@ -31,6 +31,7 @@ namespace asa::items
         inline Item* thatch = nullptr;
         inline Item* wood = nullptr;
         inline Item* fertilizer = nullptr;
+        inline Item* element = nullptr;
     }
 
     namespace consumables

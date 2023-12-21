@@ -83,6 +83,8 @@ namespace asa::items
             load(thatch, "Thatch", all_resources);
             load(wood, "Wood", all_resources);
             load(fertilizer, "Fertilizer", all_resources);
+            load(element, "Element", all_resources);
+
             return true;
         }
         catch (const ItemError& e) {

@@ -46,7 +46,7 @@ namespace asa::items
             }
             // Create the inventory icon by removing the alpha channel, care that we KEEP
             // the RGBA inventory icon seperately since we need it to create our mask.
-            cv::cvtColor(icon_rgb, icon_rgb, cv::COLOR_RGBA2RGB);
+            cv::cvtColor(icon_rgba, icon_rgb, cv::COLOR_RGBA2RGB);
         }
     }
 
@@ -102,7 +102,7 @@ namespace asa::items
 
     const cv::Mat& Item::get_inventory_icon_mask()
     {
-        if (!inv_icon_mask_.empty()) {
+        if (inv_icon_mask_.empty()) {
             if (rgba_inv_icon_.empty()) { get_inventory_icon(); }
             inv_icon_mask_ = util::mask_alpha_channel(rgba_inv_icon_);
         }
