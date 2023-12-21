@@ -412,6 +412,7 @@
         <Content Include="assets\items\saddles\tusoteuthis_saddle.png" />
         <Content Include="assets\items\saddles\woolly_rhino_saddle.png" />
         <Content Include="assets\items\saddles\yutyrannus_saddle.png" />
+        <Content Include="assets\items\weapons\flare_gun.png" />
         <Content Include="assets\text\access_inventory.png" />
         <Content Include="assets\text\added.png" />
         <Content Include="assets\text\bp_weight.png" />
@@ -426,7 +427,6 @@
     <ItemGroup>
         <Folder Include="assets\items\consumables\"/>
         <Folder Include="assets\items\resources\"/>
-        <Folder Include="assets\items\weapons\"/>
     </ItemGroup>
     <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
     <ImportGroup Label="ExtensionTargets">

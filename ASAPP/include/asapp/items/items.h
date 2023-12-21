@@ -162,7 +162,7 @@ namespace asa::items
         inline Item* mosasaur_saddle = nullptr;
         inline Item* mosasaur_tek_saddle = nullptr;
         inline Item* pachyrhinosaurus_saddle = nullptr;
-        
+
         inline Item* pachy_saddle = nullptr;
         inline Item* paracter_platform_saddle = nullptr;
         inline Item* paracer_saddle = nullptr;
@@ -171,7 +171,7 @@ namespace asa::items
         inline Item* phiomia_saddle = nullptr;
         inline Item* plesiosaurus_saddle = nullptr;
         inline Item* procoptodon_saddle = nullptr;
-        
+
         inline Item* pulmonsoscorpius_saddle = nullptr;
         inline Item* quetz_platform_saddle = nullptr;
         inline Item* quetz_saddle = nullptr;
@@ -180,11 +180,16 @@ namespace asa::items
         inline Item* rex_tek_saddle = nullptr;
         inline Item* rhyniognatha_saddle = nullptr;
         inline Item* spino_saddle = nullptr;
-
-
-        
-
-
+        inline Item* stego_saddle = nullptr;
+        inline Item* tapejara_saddle = nullptr;
+        inline Item* tapejara_tek_saddle = nullptr;
+        inline Item* terror_bird_saddle = nullptr;
+        inline Item* therizinosaurus_saddle = nullptr;
+        inline Item* thylacoleo_saddle = nullptr;
+        inline Item* trike_saddle = nullptr;
+        inline Item* tusoteuthis_saddle = nullptr;
+        inline Item* woolly_rhino_saddle = nullptr;
+        inline Item* yutyrannus_saddle = nullptr;
     }
 
     namespace weapons
