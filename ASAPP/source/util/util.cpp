@@ -57,10 +57,14 @@ namespace util
         cv::Mat copy;
         src.copyTo(copy);
 
+        if (copy.channels() != 4) { return cv::Mat::ones(copy.size(), CV_8U); }
+
         std::vector<cv::Mat> channels;
         cv::split(copy, channels);
         cv::Mat alpha_channel = channels[3];
         cv::Mat mask = (alpha_channel > 0);
+
+        if (cv::countNonZero(mask) == 0) { return cv::Mat::ones(copy.size(), CV_8U); }
         return mask;
     }
 }

@@ -46,38 +46,25 @@ namespace asa::interfaces::components
         return countNonZero(masked) < 10;
     }
 
-    bool Slot::has(items::Item& item, float* accuracy_out, bool debug) const
+    bool Slot::has(items::Item& item, float* accuracy_out) const
     {
-        cv::Mat mask = item.get_inventory_icon_mask();
+        cv::Mat source = window::screenshot(area);
+        cv::Mat templ = item.get_inventory_icon();
+        const cv::Mat mask = item.get_inventory_icon_mask();
 
-        if (item.get_data().has_armor_value || item.get_data().has_damage_value) {
-            int black_out = static_cast<int>(mask.rows * 0.20);
-            cv::Rect roi(0, 0, mask.cols, black_out);
-            mask(roi) = cv::Scalar(0, 0, 0);
+        float confidence = 0.75f;
+        switch (item.get_data().type) {
+        case items::ItemData::AMMO: confidence = 0.9f;
+            break;
+
+        case items::ItemData::EQUIPPABLE:
+        {
+            cv::cvtColor(source, source, cv::COLOR_RGB2GRAY);
+            cv::cvtColor(templ, templ, cv::COLOR_RGB2GRAY);
+            break;
         }
-
-        cv::Mat source;
-        cv::Mat templ;
-
-        if (item.get_data().has_armor_value || item.get_data().has_damage_value) {
-            cv::cvtColor(window::screenshot(area), source, cv::COLOR_RGB2GRAY);
-            cv::cvtColor(item.get_inventory_icon(), templ, cv::COLOR_RGB2GRAY);
         }
-        else {
-            source = window::screenshot(area);
-            templ = item.get_inventory_icon();
-        }
-
-        if (debug) {
-            cv::imshow("Src", source);
-            cv::waitKey(0);
-            cv::imshow("templ", templ);
-            cv::waitKey(0);
-            cv::imshow("mask", mask);
-            cv::waitKey(0);
-        }
-
-        return window::locate_template(source, templ, 0.75f, mask, accuracy_out).
+        return window::locate_template(source, templ, confidence, mask, accuracy_out).
             has_value();
     }
 

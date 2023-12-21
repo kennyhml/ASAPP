@@ -687,7 +687,7 @@
         "has_armor_value": true,
         "has_damage_value": false
     },
-    "Chitin Chestpiece": {
+    "Chitin Chest": {
         "icon": "items\\armor\\chitin_chest.png",
         "type": "EQUIPPABLE",
         "recipe": {},
@@ -1150,7 +1150,7 @@
         "has_damage_value": false
     },
     "Metal Hatchet": {
-        "icon": "items\\weapons\\MetalHatchet_Icon.png",
+        "icon": "items\\weapons\\metal_hatchet.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 2.0,
@@ -1164,7 +1164,7 @@
         "has_damage_value": true
     },
     "Metal Pick": {
-        "icon": "items\\weapons\\MetalPick_Icon.png",
+        "icon": "items\\weapons\\metal_pick.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 2.0,
@@ -1178,7 +1178,7 @@
         "has_damage_value": true
     },
     "Metal Sickle": {
-        "icon": "items\\weapons\\MetalSickle_Icon.png",
+        "icon": "items\\weapons\\metal_sickle.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 2.0,
@@ -1191,8 +1191,8 @@
         "has_armor_value": false,
         "has_damage_value": true
     },
-    "Metal Pike": {
-        "icon": "items\\weapons\\Pike_Icon.png",
+    "Pike": {
+        "icon": "items\\weapons\\pike.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 10.0,
@@ -1206,7 +1206,7 @@
         "has_damage_value": true
     },
     "Sword": {
-        "icon": "items\\weapons\\Sword_Icon.png",
+        "icon": "items\\weapons\\sword.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 5.0,
@@ -1220,7 +1220,7 @@
         "has_damage_value": true
     },
     "Wooden Club": {
-        "icon": "items\\weapons\\Club_Icon.png",
+        "icon": "items\\weapons\\wooden_club.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 2.0,
@@ -1234,7 +1234,21 @@
         "has_damage_value": true
     },
     "Bow": {
-        "icon": "items\\weapons\\Bow_Icon.png",
+        "icon": "items\\weapons\\bow.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 7.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
+    },
+    "Crossbow": {
+        "icon": "items\\weapons\\crossbow.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 7.0,
@@ -1248,7 +1262,7 @@
         "has_damage_value": true
     },
     "Pump-Action Shotgun": {
-        "icon": "items\\weapons\\MachinedShotgun_Icon.png",
+        "icon": "items\\weapons\\pump_action_shotgun.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 15.0,
@@ -1262,7 +1276,7 @@
         "has_damage_value": true
     },
     "Longneck Rifle": {
-        "icon": "items\\weapons\\Longneck_Icon.png",
+        "icon": "items\\weapons\\longneck_rifle.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 15.0,
@@ -1276,7 +1290,7 @@
         "has_damage_value": true
     },
     "Lance": {
-        "icon": "items\\weapons\\Lance_Icon.png",
+        "icon": "items\\weapons\\lance.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 20.0,
@@ -1290,7 +1304,7 @@
         "has_damage_value": true
     },
     "Fabricated Sniper Rifle": {
-        "icon": "items\\weapons\\MachinedSniper_Icon.png",
+        "icon": "items\\weapons\\fabricated_sniper_rifle.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 25.0,
@@ -1304,7 +1318,7 @@
         "has_damage_value": true
     },
     "Compound Bow": {
-        "icon": "items\\weapons\\MachinedBow_Icon.png",
+        "icon": "items\\weapons\\compound_bow.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 12.0,
@@ -1318,7 +1332,7 @@
         "has_damage_value": true
     },
     "Rocket Launcher": {
-        "icon": "items\\weapons\\RocketLauncher_Icon.png",
+        "icon": "items\\weapons\\rocket_launcher.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 12.0,
@@ -1332,7 +1346,49 @@
         "has_damage_value": false
     },
     "Assault Rifle": {
-        "icon": "items\\weapons\\AssaultRifle_Icon.png",
+        "icon": "items\\weapons\\assault_rifle.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 10.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
+    },
+    "Simple Pistol": {
+        "icon": "items\\weapons\\simple_pistol.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 10.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
+    },
+    "Slingshot": {
+        "icon": "items\\weapons\\slingshot.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 10.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
+    },
+    "Torch": {
+        "icon": "items\\weapons\\torch.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 10.0,
@@ -1346,7 +1402,7 @@
         "has_damage_value": true
     },
     "Fabricated Pistol": {
-        "icon": "items\\weapons\\MachinedPistol_Icon.png",
+        "icon": "items\\weapons\\fabricated_pistol.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 10.0,
@@ -1360,7 +1416,7 @@
         "has_damage_value": true
     },
     "Electric Prod": {
-        "icon": "items\\weapons\\ElectricProd_Icon.png",
+        "icon": "items\\weapons\\electric_prod.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 6.0,
@@ -1374,7 +1430,7 @@
         "has_damage_value": true
     },
     "Harpoon Launcher": {
-        "icon": "items\\weapons\\HarpoonGun_Icon.png",
+        "icon": "items\\weapons\\harpoon_launcher.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 10.0,
@@ -1388,7 +1444,7 @@
         "has_damage_value": true
     },
     "Shotgun": {
-        "icon": "items\\weapons\\Shotgun_Icon.png",
+        "icon": "items\\weapons\\shotgun.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 10.0,
@@ -1402,7 +1458,7 @@
         "has_damage_value": true
     },
     "Bola": {
-        "icon": "items\\weapons\\Bolas_Icon.png",
+        "icon": "items\\weapons\\bola.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 0.5,
@@ -1416,7 +1472,7 @@
         "has_damage_value": false
     },
     "Grenade": {
-        "icon": "items\\weapons\\Grenade_Icon.png",
+        "icon": "items\\weapons\\grenade.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 0.5,
@@ -1430,7 +1486,7 @@
         "has_damage_value": false
     },
     "Rocket Propelled Grenade": {
-        "icon": "items\\weapons\\RocketLauncherAmmo_Icon.png",
+        "icon": "items\\weapons\\rocket_launcher.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 0.5,
@@ -1444,7 +1500,7 @@
         "has_damage_value": false
     },
     "Scissors": {
-        "icon": "items\\weapons\\Scissors_Icon.png",
+        "icon": "items\\weapons\\scissors.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 0.5,
@@ -1458,7 +1514,91 @@
         "has_damage_value": false
     },
     "Magnifying Glass": {
-        "icon": "items\\weapons\\MagnifyingGlass_Icon.png",
+        "icon": "items\\weapons\\magnifying_glass.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 0.5,
+        "stack_size": 1,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Spyglass": {
+        "icon": "items\\weapons\\spyglass.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 0.5,
+        "stack_size": 1,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Paintbrush": {
+        "icon": "items\\weapons\\brush.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 0.5,
+        "stack_size": 1,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Flare Gun": {
+        "icon": "items\\weapons\\flare_gun.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 0.5,
+        "stack_size": 1,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Stone Hatchet": {
+        "icon": "items\\weapons\\stone_hatchet.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 0.5,
+        "stack_size": 1,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
+    },
+    "Stone Pick": {
+        "icon": "items\\weapons\\stone_pick.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 0.5,
+        "stack_size": 1,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": true
+    },
+    "C4 Detonator": {
+        "icon": "items\\weapons\\c4_detonator.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 0.5,
@@ -1472,7 +1612,21 @@
         "has_damage_value": false
     },
     "Improvised Explosive Device": {
-        "icon": "items\\weapons\\Tripwire_Icon.png",
+        "icon": "items\\weapons\\improvised_explosive_device.png",
+        "type": "WEAPON",
+        "recipe": {},
+        "weight": 0.5,
+        "stack_size": 10,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Tripwire Alarm Trap": {
+        "icon": "items\\weapons\\tripwire_alarm_trap.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 0.5,
@@ -1486,7 +1640,35 @@
         "has_damage_value": false
     },
     "Advanced Bullet": {
-        "icon": "items\\weapons\\Bullet1_Icon.png",
+        "icon": "items\\ammo\\advanced_bullet.png",
+        "type": "AMMO",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "C4 Charge": {
+        "icon": "items\\ammo\\c4_charge.png",
+        "type": "AMMO",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": true,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Metal Arrow": {
+        "icon": "items\\ammo\\metal_arrow.png",
         "type": "AMMO",
         "recipe": {},
         "weight": 0.1,
@@ -1500,7 +1682,7 @@
         "has_damage_value": false
     },
     "Poison Grenade": {
-        "icon": "items\\weapons\\PoisonGrenade_Icon.png",
+        "icon": "items\\weapons\\poison_grenade.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 0.5,
@@ -1514,7 +1696,7 @@
         "has_damage_value": false
     },
     "Smoke Grenade": {
-        "icon": "items\\weapons\\SmokeGrenade_Icon.png",
+        "icon": "items\\weapons\\smoke_grenade.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 0.5,
@@ -1528,7 +1710,7 @@
         "has_damage_value": false
     },
     "Advanced Rifle Bullet": {
-        "icon": "items\\weapons\\Bullet2_Icon.png",
+        "icon": "items\\ammo\\advanced_rifle_bullet.png",
         "type": "AMMO",
         "recipe": {},
         "weight": 0.1,
@@ -1542,7 +1724,7 @@
         "has_damage_value": false
     },
     "Advanced Sniper Bullet": {
-        "icon": "items\\weapons\\Bullet6_Icon.png",
+        "icon": "items\\ammo\\advanced_sniper_bullet.png",
         "type": "AMMO",
         "recipe": {},
         "weight": 0.1,
@@ -1556,7 +1738,7 @@
         "has_damage_value": false
     },
     "Simple Bullet": {
-        "icon": "items\\weapons\\Bullet4_Icon.png",
+        "icon": "items\\ammo\\simple_bullet.png",
         "type": "AMMO",
         "recipe": {},
         "weight": 0.1,
@@ -1570,7 +1752,7 @@
         "has_damage_value": false
     },
     "Simple Rifle Ammo": {
-        "icon": "items\\weapons\\Bullet3_Icon.png",
+        "icon": "items\\ammo\\simple_rifle_ammo.png",
         "type": "AMMO",
         "recipe": {},
         "weight": 0.1,
@@ -1584,7 +1766,7 @@
         "has_damage_value": false
     },
     "Simple Shotgun Ammo": {
-        "icon": "items\\weapons\\Bullet5_Icon.png",
+        "icon": "items\\ammo\\simple_shotgun_ammo.png",
         "type": "AMMO",
         "recipe": {},
         "weight": 0.1,
@@ -1598,7 +1780,7 @@
         "has_damage_value": false
     },
     "Stone Arrow": {
-        "icon": "items\\weapons\\Arrow_Icon.png",
+        "icon": "items\\ammo\\stone_arrow.png",
         "type": "AMMO",
         "recipe": {},
         "weight": 0.2,
@@ -1612,7 +1794,7 @@
         "has_damage_value": false
     },
     "Tranq Arrow": {
-        "icon": "items\\weapons\\TranqArrow_Icon.png",
+        "icon": "items\\ammo\\tranq_arrow.png",
         "type": "AMMO",
         "recipe": {},
         "weight": 0.2,
@@ -1626,7 +1808,7 @@
         "has_damage_value": false
     },
     "Spear Bolt": {
-        "icon": "items\\weapons\\BallistaArrow_Icon.png",
+        "icon": "items\\ammo\\spear_bolt.png",
         "type": "AMMO",
         "recipe": {},
         "weight": 0.4,
@@ -1637,6 +1819,146 @@
         "requires_engram": false,
         "has_ambiguous_query": false,
         "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Pteranodon Saddle": {
+        "icon": "items\\saddles\\pteranodon_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Araneo Saddle": {
+        "icon": "items\\saddles\\araneo_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Ankylo Saddle": {
+        "icon": "items\\saddles\\ankylo_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Diplodocus Saddle": {
+        "icon": "items\\saddles\\diplodocus_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Iguanodon Saddle": {
+        "icon": "items\\saddles\\iguanodon_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Kaprosuchus Saddle": {
+        "icon": "items\\saddles\\kaprosuchus_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Mammoth Saddle": {
+        "icon": "items\\saddles\\mammoth_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Megaloceros Saddle": {
+        "icon": "items\\saddles\\megaloceros_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Sabertooth Saddle": {
+        "icon": "items\\saddles\\sabertooth_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Sarco Saddle": {
+        "icon": "items\\saddles\\sarco_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
         "has_damage_value": false
     }
 }

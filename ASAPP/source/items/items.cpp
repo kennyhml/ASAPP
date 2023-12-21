@@ -52,7 +52,7 @@ namespace asa::items
         // if (!resources::init() || !consumables::init() || !equippables::init() || !
         //     weapons::init() || !ammo::init()) { return false; }
 
-        if (!equippables::init()) { return false; }
+        if (!equippables::init() || !weapons::init() || !ammo::init()) { return false; }
         const auto time_taken = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now() - start);
         std::cout << "-> Loaded all assets within " << time_taken << "\n";
@@ -188,7 +188,16 @@ namespace asa::items
             load(scuba_leggings, "Scuba Leggings", all_equippables);
             load(scuba_flippers, "Scuba Flippers", all_equippables);
 
-
+            load(pteranodon_saddle, "Pteranodon Saddle", all_equippables);
+            load(ankylo_saddle, "Ankylo Saddle", all_equippables);
+            load(araneo_saddle, "Araneo Saddle", all_equippables);
+            load(diplo_saddle, "Diplodocus Saddle", all_equippables);
+            load(iguanodon_saddle, "Iguanodon Saddle", all_equippables);
+            load(kapro_saddle, "Kaprosuchus Saddle", all_equippables);
+            load(mammoth_saddle, "Mammoth Saddle", all_equippables);
+            load(megaloceros_saddle, "Megaloceros Saddle", all_equippables);
+            load(sabertooth_saddle, "Sabertooth Saddle", all_equippables);
+            load(sarco_saddle, "Sarco Saddle", all_equippables);
             return true;
         }
         catch (const ItemError& e) {
@@ -205,7 +214,7 @@ namespace asa::items
             load(metal_hatchet, "Metal Hatchet", all_weapons);
             load(metal_pick, "Metal Pick", all_weapons);
             load(metal_sickle, "Metal Sickle", all_weapons);
-            load(metal_pike, "Metal Pike", all_weapons);
+            load(metal_pike, "Pike", all_weapons);
             load(sword, "Sword", all_weapons);
             load(bow, "Bow", all_weapons);
             load(wooden_club, "Wooden Club", all_weapons);
@@ -227,6 +236,16 @@ namespace asa::items
             load(poison_grenade, "Poison Grenade", all_weapons);
             load(smoke_grenade, "Smoke Grenade", all_weapons);
             load(lance, "Lance", all_weapons);
+            load(spyglass, "Spyglass", all_weapons);
+            load(torch, "Torch", all_weapons);
+            load(stone_hatchet, "Stone Hatchet", all_weapons);
+            load(stone_pick, "Stone Pick", all_weapons);
+            load(slingshot, "Slingshot", all_weapons);
+            load(flare_gun, "Flare Gun", all_weapons);
+            load(simple_pistol, "Simple Pistol", all_weapons);
+            load(paintbrush, "Paintbrush", all_weapons);
+            load(crossbow, "Crossbow", all_weapons);
+            load(c4_detonator, "C4 Detonator", all_weapons);
             return true;
         }
         catch (const ItemError& e) {
@@ -250,6 +269,8 @@ namespace asa::items
             load(tranq_arrow, "Tranq Arrow", all_ammos);
             load(rocket_propelled_grenade, "Rocket Propelled Grenade", all_ammos);
             load(spear_bolt, "Spear Bolt", all_ammos);
+            load(c4_charge, "C4 Charge", all_ammos);
+            load(metal_arrow, "Metal Arrow", all_ammos);
             return true;
         }
         catch (const ItemError& e) {

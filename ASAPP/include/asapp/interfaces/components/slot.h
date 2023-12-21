@@ -15,8 +15,7 @@ namespace asa::interfaces::components
         [[nodiscard]] window::Rect get_weight_area() const;
 
         [[nodiscard]] bool is_empty() const;
-        [[nodiscard]] bool has(items::Item& item, float* accuracy_out = nullptr,
-                               bool debug = false) const;
+        [[nodiscard]] bool has(items::Item& item, float* accuracy_out = nullptr) const;
         [[nodiscard]] bool get_item(items::Item*& item_out, bool verbose = false) const;
 
     private:

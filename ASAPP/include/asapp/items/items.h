@@ -121,6 +121,17 @@ namespace asa::items
         inline Item* scuba_tank = nullptr;
         inline Item* scuba_leggings = nullptr;
         inline Item* scuba_flippers = nullptr;
+
+        inline Item* pteranodon_saddle = nullptr;
+        inline Item* ankylo_saddle = nullptr;
+        inline Item* araneo_saddle = nullptr;
+        inline Item* diplo_saddle = nullptr;
+        inline Item* iguanodon_saddle = nullptr;
+        inline Item* kapro_saddle = nullptr;
+        inline Item* mammoth_saddle = nullptr;
+        inline Item* megaloceros_saddle = nullptr;
+        inline Item* sabertooth_saddle = nullptr;
+        inline Item* sarco_saddle = nullptr;
     }
 
     namespace weapons
@@ -153,6 +164,16 @@ namespace asa::items
         inline Item* poison_grenade = nullptr;
         inline Item* smoke_grenade = nullptr;
         inline Item* lance = nullptr;
+        inline Item* spyglass = nullptr;
+        inline Item* torch = nullptr;
+        inline Item* stone_hatchet = nullptr;
+        inline Item* stone_pick = nullptr;
+        inline Item* slingshot = nullptr;
+        inline Item* flare_gun = nullptr;
+        inline Item* simple_pistol = nullptr;
+        inline Item* paintbrush = nullptr;
+        inline Item* crossbow = nullptr;
+        inline Item* c4_detonator = nullptr;
     }
 
     namespace ammo
@@ -170,5 +191,7 @@ namespace asa::items
         inline Item* tranq_arrow = nullptr;
         inline Item* rocket_propelled_grenade = nullptr;
         inline Item* spear_bolt = nullptr;
+        inline Item* c4_charge = nullptr;
+        inline Item* metal_arrow = nullptr;
     }
 }
