@@ -1892,6 +1892,37 @@
         "has_armor_value": true,
         "has_damage_value": false
     },
+
+    "Allosaurus Saddle": {
+        "icon": "items\\saddles\\allosaurus_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },    
+    
+    "Hyaenodon Saddle": {
+        "icon": "items\\saddles\\hyaenodon_saddle.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 20,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+
     "Araneo Saddle": {
         "icon": "items\\saddles\\araneo_saddle.png",
         "type": "EQUIPPABLE",

@@ -256,6 +256,9 @@ namespace asa::items
             load(tusoteuthis_saddle, "Tusoteuthis Saddle", all_equippables);
             load(woolly_rhino_saddle, "Woolly Rhino Saddle", all_equippables);
             load(yutyrannus_saddle, "Yutyrannus Saddle", all_equippables);
+            load(allosaurus_saddle, "Allosaurus Saddle", all_equippables);
+            load(hyaenodon_saddle, "Hyaenodon Saddle", all_equippables);
+
             return true;
         }
         catch (const ItemError& e) {

@@ -192,6 +192,8 @@ namespace asa::items
         inline Item* tusoteuthis_saddle = nullptr;
         inline Item* woolly_rhino_saddle = nullptr;
         inline Item* yutyrannus_saddle = nullptr;
+        inline Item* allosaurus_saddle = nullptr;
+        inline Item* hyaenodon_saddle = nullptr;
     }
 
     namespace weapons
