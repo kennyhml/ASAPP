@@ -49,9 +49,10 @@ namespace asa::items
 
         if (!load_raw_data()) { return false; }
         std::cout << "[+] Initializing item dummies...\n";
-        if (!resources::init() || !consumables::init() || !equippables::init() || !
-            weapons::init() || !ammo::init()) { return false; }
+        // if (!resources::init() || !consumables::init() || !equippables::init() || !
+        //     weapons::init() || !ammo::init()) { return false; }
 
+        if (!equippables::init()) { return false; }
         const auto time_taken = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now() - start);
         std::cout << "-> Loaded all assets within " << time_taken << "\n";
@@ -147,6 +148,12 @@ namespace asa::items
             load(cloth_gloves, "Cloth Gloves", all_equippables);
             load(cloth_boots, "Cloth Boots", all_equippables);
 
+            load(chitin_hat, "Chitin Helmet", all_equippables);
+            load(chitin_shirt, "Chitin Chest", all_equippables);
+            load(chitin_pants, "Chitin Leggings", all_equippables);
+            load(chitin_gloves, "Chitin Gauntlets", all_equippables);
+            load(chitin_boots, "Chitin Boots", all_equippables);
+
             load(hide_hat, "Hide Hat", all_equippables);
             load(hide_shirt, "Hide Shirt", all_equippables);
             load(hide_pants, "Hide Pants", all_equippables);
@@ -175,6 +182,13 @@ namespace asa::items
             load(metal_shield, "Metal Shield", all_equippables);
             load(riot_shield, "Riot Shield", all_equippables);
             load(gasmask, "Gasmask", all_equippables);
+
+            load(scuba_mask, "Scuba Mask", all_equippables);
+            load(scuba_tank, "Scuba Tank", all_equippables);
+            load(scuba_leggings, "Scuba Leggings", all_equippables);
+            load(scuba_flippers, "Scuba Flippers", all_equippables);
+
+
             return true;
         }
         catch (const ItemError& e) {

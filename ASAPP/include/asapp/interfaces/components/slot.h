@@ -9,13 +9,14 @@ namespace asa::interfaces::components
         Slot() : Slot(0, 0) {}
         Slot(const int t_x, const int t_y) : IInterfaceComponent(t_x, t_y, 86, 87) {}
 
-        [[nodiscard]] const window::Rect& get_stack_size_area() const;
-        [[nodiscard]] const window::Rect& get_armor_or_damage_icon_area() const;
-        [[nodiscard]] const window::Rect& get_spoil_or_durability_bar_area() const;
-        [[nodiscard]] const window::Rect& get_weight_area() const;
+        [[nodiscard]] window::Rect get_stack_size_area() const;
+        [[nodiscard]] window::Rect get_armor_or_damage_icon_area() const;
+        [[nodiscard]] window::Rect get_spoil_or_durability_bar_area() const;
+        [[nodiscard]] window::Rect get_weight_area() const;
 
         [[nodiscard]] bool is_empty() const;
-        [[nodiscard]] bool has(items::Item& item, float* accuracy_out = nullptr) const;
+        [[nodiscard]] bool has(items::Item& item, float* accuracy_out = nullptr,
+                               bool debug = false) const;
         [[nodiscard]] bool get_item(items::Item*& item_out, bool verbose = false) const;
 
     private:

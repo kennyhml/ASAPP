@@ -548,7 +548,7 @@
         "has_damage_value": false
     },
     "Wooden Shield": {
-        "icon": "items\\armor\\Shield_Icon.png",
+        "icon": "items\\armor\\wooden_shield.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 15.0,
@@ -562,7 +562,7 @@
         "has_damage_value": false
     },
     "Metal Shield": {
-        "icon": "items\\armor\\MetalShield_Icon.png",
+        "icon": "items\\armor\\metal_shield.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 45.0,
@@ -576,7 +576,7 @@
         "has_damage_value": false
     },
     "Riot Shield": {
-        "icon": "items\\armor\\TransparentRiotShield_Icon.png",
+        "icon": "items\\armor\\riot_shield.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 30.0,
@@ -589,8 +589,8 @@
         "has_armor_value": false,
         "has_damage_value": false
     },
-    "Flak Helmet": {
-        "icon": "items\\armor\\FlakHelmet_Icon.png",
+    "Gasmask": {
+        "icon": "items\\armor\\gasmask.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 4.0,
@@ -603,8 +603,8 @@
         "has_armor_value": true,
         "has_damage_value": false
     },
-    "Gasmask": {
-        "icon": "items\\armor\\GasMask_Icon.png",
+    "Flak Helmet": {
+        "icon": "items\\armor\\flak_helmet.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 4.0,
@@ -618,7 +618,7 @@
         "has_damage_value": false
     },
     "Flak Chestpiece": {
-        "icon": "items\\armor\\FlakShirt_Icon.png",
+        "icon": "items\\armor\\flak_chest.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 10.0,
@@ -632,7 +632,7 @@
         "has_damage_value": false
     },
     "Flak Leggings": {
-        "icon": "items\\armor\\FlakPants_Icon.png",
+        "icon": "items\\armor\\flak_leggings.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 10.0,
@@ -646,7 +646,7 @@
         "has_damage_value": false
     },
     "Flak Gauntlets": {
-        "icon": "items\\armor\\FlakGloves_Icon.png",
+        "icon": "items\\armor\\flak_gauntlets.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 4.0,
@@ -660,7 +660,77 @@
         "has_damage_value": false
     },
     "Flak Boots": {
-        "icon": "items\\armor\\FlakBoots_Icon.png",
+        "icon": "items\\armor\\flak_boots.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 4.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Chitin Helmet": {
+        "icon": "items\\armor\\chitin_helmet.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 4.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Chitin Chestpiece": {
+        "icon": "items\\armor\\chitin_chest.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 10.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Chitin Leggings": {
+        "icon": "items\\armor\\chitin_leggings.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 10.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Chitin Gauntlets": {
+        "icon": "items\\armor\\chitin_gauntlets.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 4.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Chitin Boots": {
+        "icon": "items\\armor\\chitin_boots.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 4.0,
@@ -674,7 +744,7 @@
         "has_damage_value": false
     },
     "Ghilie Mask": {
-        "icon": "items\\armor\\GhillieHat_Icon.png",
+        "icon": "items\\armor\\ghillie_mask.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 4.0,
@@ -688,7 +758,7 @@
         "has_damage_value": false
     },
     "Ghilie Chestpiece": {
-        "icon": "items\\armor\\GhillieShirt_Icon.png",
+        "icon": "items\\armor\\ghillie_chest.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 10.0,
@@ -702,7 +772,7 @@
         "has_damage_value": false
     },
     "Ghilie Leggings": {
-        "icon": "items\\armor\\GhilliePants_Icon.png",
+        "icon": "items\\armor\\ghillie_leggings.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 10.0,
@@ -716,7 +786,7 @@
         "has_damage_value": false
     },
     "Ghilie Gauntlets": {
-        "icon": "items\\armor\\GhillieGloves_Icon.png",
+        "icon": "items\\armor\\ghillie_gauntlets.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 4.0,
@@ -730,7 +800,7 @@
         "has_damage_value": false
     },
     "Ghilie Boots": {
-        "icon": "items\\armor\\GhillieBoots_Icon.png",
+        "icon": "items\\armor\\ghillie_boots.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 4.0,
@@ -744,7 +814,7 @@
         "has_damage_value": false
     },
     "Cloth Hat": {
-        "icon": "items\\armor\\BurlapHat_Icon.png",
+        "icon": "items\\armor\\cloth_hat.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 0.2,
@@ -758,7 +828,7 @@
         "has_damage_value": false
     },
     "Cloth Shirt": {
-        "icon": "items\\armor\\BurlapShirt_Icon.png",
+        "icon": "items\\armor\\cloth_shirt.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -772,7 +842,7 @@
         "has_damage_value": false
     },
     "Cloth Pants": {
-        "icon": "items\\armor\\BurlapLegs_Icon.png",
+        "icon": "items\\armor\\cloth_pants.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -786,7 +856,7 @@
         "has_damage_value": false
     },
     "Cloth Gloves": {
-        "icon": "items\\armor\\BurlapGloves_Icon.png",
+        "icon": "items\\armor\\cloth_gloves.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 0.2,
@@ -800,7 +870,7 @@
         "has_damage_value": false
     },
     "Cloth Boots": {
-        "icon": "items\\armor\\BurlapBoots_Icon.png",
+        "icon": "items\\armor\\cloth_boots.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 0.2,
@@ -814,7 +884,7 @@
         "has_damage_value": false
     },
     "Hide Hat": {
-        "icon": "items\\armor\\HideHat_Icon.png",
+        "icon": "items\\armor\\hide_hat.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -828,7 +898,7 @@
         "has_damage_value": false
     },
     "Hide Shirt": {
-        "icon": "items\\armor\\HideShirt_Icon.png",
+        "icon": "items\\armor\\hide_shirt.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 4.0,
@@ -842,7 +912,7 @@
         "has_damage_value": false
     },
     "Hide Pants": {
-        "icon": "items\\armor\\HideLegs_Icon.png",
+        "icon": "items\\armor\\hide_pants.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -856,7 +926,7 @@
         "has_damage_value": false
     },
     "Hide Gloves": {
-        "icon": "items\\armor\\HideGloves_Icon.png",
+        "icon": "items\\armor\\hide_gloves.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -870,7 +940,7 @@
         "has_damage_value": false
     },
     "Hide Boots": {
-        "icon": "items\\armor\\HideBoots_Icon.png",
+        "icon": "items\\armor\\hide_boots.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -884,7 +954,7 @@
         "has_damage_value": false
     },
     "Fur Cap": {
-        "icon": "items\\armor\\MammothHat_Icon.png",
+        "icon": "items\\armor\\fur_cap.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -898,7 +968,7 @@
         "has_damage_value": false
     },
     "Fur Chestpiece": {
-        "icon": "items\\armor\\MammothShirt_Icon.png",
+        "icon": "items\\armor\\fur_chest.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 4.0,
@@ -912,7 +982,7 @@
         "has_damage_value": false
     },
     "Fur Leggings": {
-        "icon": "items\\armor\\MammothLegs_Icon.png",
+        "icon": "items\\armor\\fur_leggings.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -926,7 +996,7 @@
         "has_damage_value": false
     },
     "Fur Gauntlets": {
-        "icon": "items\\armor\\MammothGloves_Icon.png",
+        "icon": "items\\armor\\fur_gauntlets.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -940,7 +1010,7 @@
         "has_damage_value": false
     },
     "Fur Boots": {
-        "icon": "items\\armor\\MammothBoots_Icon.png",
+        "icon": "items\\armor\\fur_boots.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -954,7 +1024,7 @@
         "has_damage_value": false
     },
     "Riot Helmet": {
-        "icon": "items\\armor\\RiotHat_Icon.png",
+        "icon": "items\\armor\\riot_helmet.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -968,7 +1038,7 @@
         "has_damage_value": false
     },
     "Riot Chestpiece": {
-        "icon": "items\\armor\\RiotShirt_Icon.PNG",
+        "icon": "items\\armor\\riot_chest.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 4.0,
@@ -982,7 +1052,7 @@
         "has_damage_value": false
     },
     "Riot Leggings": {
-        "icon": "items\\armor\\RiotPants_Icon.PNG",
+        "icon": "items\\armor\\riot_leggings.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -996,7 +1066,7 @@
         "has_damage_value": false
     },
     "Riot Gauntlets": {
-        "icon": "items\\armor\\RiotGloves_Icon.PNG",
+        "icon": "items\\armor\\riot_gauntlets.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -1010,7 +1080,63 @@
         "has_damage_value": false
     },
     "Riot Boots": {
-        "icon": "items\\armor\\RiotBoots_Icon.PNG",
+        "icon": "items\\armor\\riot_boots.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 1.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Scuba Mask": {
+        "icon": "items\\armor\\scuba_mask.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 1.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Scuba Tank": {
+        "icon": "items\\armor\\scuba_tank.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 1.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Scuba Leggings": {
+        "icon": "items\\armor\\scuba_leggings.png",
+        "type": "EQUIPPABLE",
+        "recipe": {},
+        "weight": 1.0,
+        "stack_size": 1,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": true,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": true,
+        "has_damage_value": false
+    },
+    "Scuba Flippers": {
+        "icon": "items\\armor\\scuba_flippers.png",
         "type": "EQUIPPABLE",
         "recipe": {},
         "weight": 1.0,
@@ -1136,7 +1262,7 @@
         "has_damage_value": true
     },
     "Longneck Rifle": {
-        "icon": "items\\weapons\\SSR_Icon.png",
+        "icon": "items\\weapons\\Longneck_Icon.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 15.0,

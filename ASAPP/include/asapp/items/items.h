@@ -76,6 +76,12 @@ namespace asa::items
         inline Item* cloth_gloves = nullptr;
         inline Item* cloth_boots = nullptr;
 
+        inline Item* chitin_hat = nullptr;
+        inline Item* chitin_shirt = nullptr;
+        inline Item* chitin_pants = nullptr;
+        inline Item* chitin_gloves = nullptr;
+        inline Item* chitin_boots = nullptr;
+
         inline Item* hide_hat = nullptr;
         inline Item* hide_shirt = nullptr;
         inline Item* hide_pants = nullptr;
@@ -110,6 +116,11 @@ namespace asa::items
         inline Item* metal_shield = nullptr;
         inline Item* riot_shield = nullptr;
         inline Item* gasmask = nullptr;
+
+        inline Item* scuba_mask = nullptr;
+        inline Item* scuba_tank = nullptr;
+        inline Item* scuba_leggings = nullptr;
+        inline Item* scuba_flippers = nullptr;
     }
 
     namespace weapons

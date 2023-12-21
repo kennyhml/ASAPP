@@ -18,28 +18,24 @@ namespace asa::interfaces::components
         };
     }
 
-    const window::Rect& Slot::get_stack_size_area() const
+    window::Rect Slot::get_stack_size_area() const
     {
-        static window::Rect result(area.x + 3, area.y + 3, 30, 14);
-        return result;
+        return {area.x + 3, area.y + 3, 30, 14};
     }
 
-    const window::Rect& Slot::get_armor_or_damage_icon_area() const
+    window::Rect Slot::get_armor_or_damage_icon_area() const
     {
-        static window::Rect result(area.x + 4, area.y + 4, 18, 18);
-        return result;
+        return {area.x + 4, area.y + 4, 18, 18};
     }
 
-    const window::Rect& Slot::get_spoil_or_durability_bar_area() const
+    window::Rect Slot::get_spoil_or_durability_bar_area() const
     {
-        static window::Rect result(area.x, area.y + 83, 87, 5);
-        return result;
+        return {area.x, area.y + 83, 87, 5};
     }
 
-    const window::Rect& Slot::get_weight_area() const
+    window::Rect Slot::get_weight_area() const
     {
-        static window::Rect result(area.x + 46, area.y + 69, 42, 14);
-        return result;
+        return {area.x + 46, area.y + 69, 42, 14};
     }
 
     bool Slot::is_empty() const
@@ -50,7 +46,7 @@ namespace asa::interfaces::components
         return countNonZero(masked) < 10;
     }
 
-    bool Slot::has(items::Item& item, float* accuracy_out) const
+    bool Slot::has(items::Item& item, float* accuracy_out, bool debug) const
     {
         cv::Mat mask = item.get_inventory_icon_mask();
 
@@ -63,19 +59,25 @@ namespace asa::interfaces::components
         cv::Mat source;
         cv::Mat templ;
 
-        cv::cvtColor(window::screenshot(area), source, cv::COLOR_RGB2GRAY);
-        cv::cvtColor(item.get_inventory_icon(), templ, cv::COLOR_RGB2GRAY);
+        if (item.get_data().has_armor_value || item.get_data().has_damage_value) {
+            cv::cvtColor(window::screenshot(area), source, cv::COLOR_RGB2GRAY);
+            cv::cvtColor(item.get_inventory_icon(), templ, cv::COLOR_RGB2GRAY);
+        }
+        else {
+            source = window::screenshot(area);
+            templ = item.get_inventory_icon();
+        }
 
-        cv::imshow("src", source);
-        cv::waitKey(0);
+        if (debug) {
+            cv::imshow("Src", source);
+            cv::waitKey(0);
+            cv::imshow("templ", templ);
+            cv::waitKey(0);
+            cv::imshow("mask", mask);
+            cv::waitKey(0);
+        }
 
-        cv::imshow("templ", templ);
-        cv::waitKey(0);
-
-        cv::imshow("mask", mask);
-        cv::waitKey(0);
-
-        return window::locate_template(source, templ, 0.7f, mask, accuracy_out).
+        return window::locate_template(source, templ, 0.75f, mask, accuracy_out).
             has_value();
     }
 
@@ -107,10 +109,12 @@ namespace asa::interfaces::components
 
                 const auto time_taken = std::chrono::duration_cast<
                     std::chrono::milliseconds>(std::chrono::system_clock::now() - start);
-                std::cout << std::format(
-                    "\r\t[-] Determined '{}' within {} and {}% accuracy.",
-                    (*item)->get_name(), time_taken,
-                    acc * 100) << std::setw(20) << " " << std::endl;
+                if (verbose) {
+                    std::cout << std::format(
+                        "\r\t[-] Determined '{}' within {} and {}% accuracy.",
+                        (*item)->get_name(), time_taken,
+                        acc * 100) << std::setw(20) << " " << std::endl;
+                }
 
                 item_out = new items::Item(*(*item), is_blueprint(item_data),
                                            get_quality());
@@ -161,7 +165,7 @@ namespace asa::interfaces::components
 
     asa::items::ItemData::ItemQuality Slot::get_quality() const
     {
-        static window::Rect quality_roi(area.x + 2, area.y + 60, 6, 6);
+        const window::Rect quality_roi(area.x + 2, area.y + 60, 6, 6);
 
         for (const auto& [quality, color] : color_per_quality) {
             const auto mask = window::get_mask(quality_roi, color, 25);
