@@ -76,7 +76,7 @@ namespace asa::settings
         template <typename Type>
         struct UserSetting
         {
-            UserSetting(std::string t_name) : name(t_name)
+            explicit UserSetting(std::string t_name) : name(std::move(t_name))
             {
                 setting_value_map[name] = Type(0);
             };
@@ -84,6 +84,12 @@ namespace asa::settings
             std::string name;
 
             Type get() { return std::any_cast<Type>(setting_value_map.at(name)); }
+        };
+        
+        enum FullscreenMode : int {
+          Fullscreen = 0,
+          WindowedFullscreen = 1,
+          Windowed = 2,
         };
 
         const auto user_settings_rel_path = std::filesystem::path(
@@ -102,5 +108,7 @@ namespace asa::settings
         inline UserSetting<bool> third_person("bThirdPersonPlayer");
         inline UserSetting<bool> show_notis("bShowStatusNotificationMessages");
         inline UserSetting<bool> toggle_hud("bToggleExtendedHUDInfo");
+        
+        inline UserSetting<int> fullscreen_mode("FullscreenMode");
     }
 }

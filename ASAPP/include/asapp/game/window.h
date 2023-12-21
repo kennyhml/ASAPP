@@ -78,6 +78,8 @@ namespace asa::window
 
     void get_handle(int timeout = 60, bool verbose = false);
     cv::Mat screenshot(const Rect& region = Rect(0, 0, 0, 0));
+    
+    RECT get_window_rect();
 
     void set_tesseract_image(const cv::Mat& image);
 

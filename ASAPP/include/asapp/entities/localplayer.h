@@ -12,7 +12,7 @@ namespace asa::entities
     class LocalPlayer : public PlayerEnt
     {
     public:
-        LocalPlayer(std::unique_ptr<interfaces::LocalInventory> t_inventory) : PlayerEnt(
+        explicit LocalPlayer(std::unique_ptr<interfaces::LocalInventory> t_inventory) : PlayerEnt(
             "You", std::move(t_inventory)) {};
 
         interfaces::LocalInventory* get_inventory() const override;

@@ -201,8 +201,7 @@ namespace asa::window
         }
         while (!hWnd);
 
-        RECT rect;
-        GetWindowRect(hWnd, &rect);
+        RECT rect = get_window_rect();
         width = rect.right - rect.left;
         height = rect.bottom - rect.top;
 
@@ -212,12 +211,34 @@ namespace asa::window
         }
     }
 
+    // TODO: Paddings need to be tested on other resolutions
+    constexpr auto WINDOWED_PADDING_TOP = 31;
+    constexpr auto WINDOWED_PADDING = 8;
+
+    RECT get_window_rect()
+    {
+      RECT rect;
+      GetWindowRect(hWnd, &rect);
+      
+      if (settings::fullscreen_mode.get() == settings::FullscreenMode::Windowed) {
+        rect.left += WINDOWED_PADDING;
+        rect.top += WINDOWED_PADDING_TOP;
+        rect.right -= WINDOWED_PADDING;
+        rect.bottom -= WINDOWED_PADDING;
+      }
+      
+      return rect;
+    }
+    
     cv::Mat screenshot(const Rect& region)
     {
         SetProcessDPIAware();
 
+        // We can't use `get_window_rect` here since it needs to be the entirety of the window
+        // including the task bar so that we can resize it
         RECT rect;
         GetWindowRect(hWnd, &rect);
+
         int window_width = rect.right - rect.left;
         int window_height = rect.bottom - rect.top;
 
@@ -234,13 +255,22 @@ namespace asa::window
         auto mat = cv::Mat(window_height, window_width, CV_8UC4);
         GetDIBits(mDc, bitmap, 0, window_height, mat.data,
                   reinterpret_cast<BITMAPINFO*>(&bi), DIB_RGB_COLORS);
-
+      
         DeleteObject(bitmap);
         DeleteDC(mDc);
         ReleaseDC(hWnd, hwndDC);
 
         cv::Mat result;
         cvtColor(mat, result, cv::COLOR_RGBA2RGB);
+        
+        if (settings::fullscreen_mode.get() == settings::FullscreenMode::Windowed) {
+          result = result(cv::Rect(
+              WINDOWED_PADDING, 
+              WINDOWED_PADDING_TOP, 
+              window_width - WINDOWED_PADDING * 2, 
+              window_height - WINDOWED_PADDING_TOP - WINDOWED_PADDING
+          ));
+        }
 
         if (!region.width && !region.height) { return result; }
         return result(cv::Rect(region.x, region.y, region.width, region.height)).clone();

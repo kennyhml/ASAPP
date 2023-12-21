@@ -166,5 +166,6 @@ namespace asa::settings
             parse_user_settings(ss, verbose);
         }
         VERBOSE_LOG("[+] GameUserSettings.ini parsed.")
+        return true;
     }
 }
