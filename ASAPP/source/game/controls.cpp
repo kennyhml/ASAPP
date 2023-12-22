@@ -1,3 +1,5 @@
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
 #include "asapp/game/controls.h"
 #include <algorithm>
 #include "asapp/core/state.h"

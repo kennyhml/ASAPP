@@ -217,19 +217,19 @@ namespace asa::window
 
     RECT get_window_rect()
     {
-      RECT rect;
-      GetWindowRect(hWnd, &rect);
-      
-      if (settings::fullscreen_mode.get() == settings::FullscreenMode::Windowed) {
-        rect.left += WINDOWED_PADDING;
-        rect.top += WINDOWED_PADDING_TOP;
-        rect.right -= WINDOWED_PADDING;
-        rect.bottom -= WINDOWED_PADDING;
-      }
-      
-      return rect;
+        RECT rect;
+        GetWindowRect(hWnd, &rect);
+
+        if (settings::fullscreen_mode.get() == settings::FullscreenMode::WINDOWED) {
+            rect.left += WINDOWED_PADDING;
+            rect.top += WINDOWED_PADDING_TOP;
+            rect.right -= WINDOWED_PADDING;
+            rect.bottom -= WINDOWED_PADDING;
+        }
+
+        return rect;
     }
-    
+
     cv::Mat screenshot(const Rect& region)
     {
         SetProcessDPIAware();
@@ -255,21 +255,19 @@ namespace asa::window
         auto mat = cv::Mat(window_height, window_width, CV_8UC4);
         GetDIBits(mDc, bitmap, 0, window_height, mat.data,
                   reinterpret_cast<BITMAPINFO*>(&bi), DIB_RGB_COLORS);
-      
+
         DeleteObject(bitmap);
         DeleteDC(mDc);
         ReleaseDC(hWnd, hwndDC);
 
         cv::Mat result;
         cvtColor(mat, result, cv::COLOR_RGBA2RGB);
-        
-        if (settings::fullscreen_mode.get() == settings::FullscreenMode::Windowed) {
-          result = result(cv::Rect(
-              WINDOWED_PADDING, 
-              WINDOWED_PADDING_TOP, 
-              window_width - WINDOWED_PADDING * 2, 
-              window_height - WINDOWED_PADDING_TOP - WINDOWED_PADDING
-          ));
+
+        if (settings::fullscreen_mode.get() == settings::FullscreenMode::WINDOWED) {
+            result = result(cv::Rect(WINDOWED_PADDING, WINDOWED_PADDING_TOP,
+                                     window_width - WINDOWED_PADDING * 2,
+                                     window_height - WINDOWED_PADDING_TOP -
+                                     WINDOWED_PADDING));
         }
 
         if (!region.width && !region.height) { return result; }

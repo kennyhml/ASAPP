@@ -1,3 +1,4 @@
+#include <iostream>
 #include "asapp/interfaces/components/searchbar.h"
 #include "../../util/util.h"
 #include "asapp/core/state.h"

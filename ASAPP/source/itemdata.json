@@ -589,7 +589,6 @@
         "has_armor_value": false,
         "has_damage_value": false
     },
-
     "Battle Tartare": {
         "icon": "items\\consumables\\battle_tartare.png",
         "type": "CONSUMABLE",
@@ -1892,7 +1891,6 @@
         "has_armor_value": true,
         "has_damage_value": false
     },
-
     "Allosaurus Saddle": {
         "icon": "items\\saddles\\allosaurus_saddle.png",
         "type": "EQUIPPABLE",
@@ -1906,8 +1904,7 @@
         "has_ambiguous_query": false,
         "has_armor_value": true,
         "has_damage_value": false
-    },    
-    
+    },
     "Hyaenodon Saddle": {
         "icon": "items\\saddles\\hyaenodon_saddle.png",
         "type": "EQUIPPABLE",
@@ -1922,7 +1919,6 @@
         "has_armor_value": true,
         "has_damage_value": false
     },
-
     "Araneo Saddle": {
         "icon": "items\\saddles\\araneo_saddle.png",
         "type": "EQUIPPABLE",

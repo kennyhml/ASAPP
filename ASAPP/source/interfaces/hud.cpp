@@ -1,3 +1,4 @@
+#include <iostream>
 #include "hud.h"
 #include "../util/util.h"
 #include "asapp/game/resources.h"

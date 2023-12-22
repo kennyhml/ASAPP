@@ -1,39 +1,34 @@
 #pragma once
-#define WIN32_LEAN_AND_MEAN
-
-#include <any>
 #include <filesystem>
-#include <iostream>
 #include <string>
 #include <unordered_map>
-#include <Windows.h>
+#include <any>
 
 namespace asa::settings
 {
     bool init();
-    bool open_file(bool verbose, std::filesystem::path path, std::ifstream& fileOut);
 
     inline namespace action_mappings
     {
+        bool load_action_mappings(bool verbose = true);
+
         struct ActionMapping;
         inline std::unordered_map<std::string, ActionMapping*> input_map{};
 
-        struct ActionMapping
+        struct ActionMapping final
         {
-            explicit ActionMapping(std::string t_name) : name(t_name)
-            {
-                input_map[name] = this;
-            };
+            explicit ActionMapping(std::string t_name);
 
             std::string name;
-            bool shift{false}, ctrl{false}, alt{false}, cmd{false};
             std::string key;
+
+            bool shift{false};
+            bool ctrl{false};
+            bool alt{false};
+            bool cmd{false};
         };
 
         std::ostream& operator<<(std::ostream& os, const ActionMapping& m);
-
-        const auto inputs_rel_path = std::filesystem::path(
-            R"(ShooterGame\Saved\Config\Windows\Input.ini)");
 
         inline ActionMapping access_inventory("AccessInventory");
         inline ActionMapping crouch("Crouch");
@@ -65,35 +60,34 @@ namespace asa::settings
         inline ActionMapping toggle_tooltip("ToggleTooltip");
         inline ActionMapping jump("Jump");
         inline ActionMapping run("Run");
-
-        bool load_action_mappings(bool verbose = true);
     }
 
     inline namespace game_user_settings
     {
         inline std::unordered_map<std::string, std::any> setting_value_map{};
 
-        template <typename Type>
-        struct UserSetting
+        template <typename T>
+        struct UserSetting final
         {
-            explicit UserSetting(std::string t_name) : name(std::move(t_name))
+            explicit UserSetting(std::string t_name): name(std::move(t_name))
             {
-                setting_value_map[name] = Type(0);
-            };
+                setting_value_map[name] = T(0);
+            }
 
             std::string name;
 
-            Type get() { return std::any_cast<Type>(setting_value_map.at(name)); }
-        };
-        
-        enum FullscreenMode : int {
-          Fullscreen = 0,
-          WindowedFullscreen = 1,
-          Windowed = 2,
+            [[nodiscard]] T get() const
+            {
+                return std::any_cast<T>(setting_value_map.at(name));
+            }
         };
 
-        const auto user_settings_rel_path = std::filesystem::path(
-            R"(ShooterGame\Saved\Config\Windows\GameUserSettings.ini)");
+        enum FullscreenMode : int
+        {
+            FULLSCREEN = 0,
+            WINDOWED_FULLSCREEN = 1,
+            WINDOWED = 2,
+        };
 
         bool load_user_settings(bool verbose = true);
 
@@ -108,7 +102,7 @@ namespace asa::settings
         inline UserSetting<bool> third_person("bThirdPersonPlayer");
         inline UserSetting<bool> show_notis("bShowStatusNotificationMessages");
         inline UserSetting<bool> toggle_hud("bToggleExtendedHUDInfo");
-        
+
         inline UserSetting<int> fullscreen_mode("FullscreenMode");
     }
 }

@@ -6,6 +6,7 @@
 #include "asapp/game/settings.h"
 #include "asapp/game/window.h"
 #include "asapp/structures/exceptions.h"
+#include <iostream>
 
 namespace asa::entities
 {

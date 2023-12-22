@@ -1,7 +1,6 @@
+#include <iostream>
 #include "asapp/interfaces/components/slot.h"
-
 #include <opencv2/highgui.hpp>
-
 #include "asapp/items/items.h"
 
 namespace asa::interfaces::components

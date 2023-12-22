@@ -1,35 +1,128 @@
-#include "asapp/game/settings.h"
-#include <format>
+#include <iostream>
 #include <fstream>
 #include <sstream>
+#include <format>
+#include "asapp/game/settings.h"
 #include "asapp/core/config.h"
-#include "asapp/game/globals.h"
 
-#define VERBOSE_LOG(log)                                                       \
-	if (verbose) {                                                             \
-		std::cout << log << std::endl;                                         \
-	}
+#define VERBOSE_LOG(log)         \
+	if (verbose) { std::cout << log << "\n"; }
 
 namespace asa::settings
 {
+    namespace
+    {
+        const auto USER_SETTINGS_REL = std::filesystem::path(
+            R"(ShooterGame\Saved\Config\Windows\GameUserSettings.ini)");
+
+        const auto INPUT_SETTINGS_REL = std::filesystem::path(
+            R"(ShooterGame\Saved\Config\Windows\Input.ini)");
+        
+        bool open_file(const std::filesystem::path& path, std::ifstream& out_file)
+        {
+            if (!std::filesystem::exists(path)) {
+                std::cout << std::format("[!] Path '{}' was not found.", path.string());
+                return false;
+            }
+            out_file.open(path.c_str());
+            if (!out_file.is_open()) {
+                std::cerr << std::format("[!] Couldn't open '{}'", path.string()) << "\n";
+                return false;
+            }
+            return true;
+        }
+
+        bool parse_key_value(const std::string& token, std::string& key_out,
+                             std::string& value_out)
+        {
+            const size_t eq = token.find('=');
+            if (eq == std::string::npos) { return false; }
+
+            key_out = token.substr(0, eq);
+            // Parse out the value, example: ActionName="AccessInventory"
+            // Exclude  = and " characters from the key  ---------------
+            if (key_out == "ActionName") {
+                value_out = token.substr(eq + 2, token.length() - (key_out.length() + 3));
+            }
+            // Parse out the ending parantheses, example: Key=F)
+            else if (key_out == "Key") {
+                value_out = token.substr(eq + 1, token.length() - key_out.length() - 2);
+            }
+            else { value_out = token.substr(eq + 1); }
+            return true;
+        }
+
+        std::any convert_settings_value(const std::string& key, const std::string& value)
+        {
+            if (key == "LastJoinedSessionPerCategory") { return value; }
+            if (value.find('.') != std::string::npos) { return std::stof(value); }
+            if (value == "True" || value == "False") { return value == "True"; }
+            return std::stoi(value);
+        }
+
+        bool parse_user_settings(const std::istringstream& stream, const bool verbose)
+        {
+            auto& map = setting_value_map;
+            std::string key;
+            std::string value;
+
+            if (!parse_key_value(stream.str(), key, value)) { return false; }
+            if (!map.contains(key)) { return false; }
+            map[key] = convert_settings_value(key, value);
+            VERBOSE_LOG("\t[-] Parsed " << key << " (" << value << ")");
+            return true;
+        }
+
+        bool parse_action_mappings(std::istringstream& stream, const bool verbose)
+        {
+            auto& map = input_map;
+
+            // skip the first 16 characters 'ActionMappings=('
+            stream.seekg(16);
+
+            std::string token;
+            std::vector<std::string> tokens;
+
+            while (std::getline(stream, token, ',')) { tokens.push_back(token); }
+
+            ActionMapping* mapping = nullptr;
+
+            for (const std::string& tk : tokens) {
+                std::string key;
+                std::string value;
+                if (!parse_key_value(tk, key, value)) { continue; }
+
+                if (key == "ActionName") {
+                    if (!map.contains(value)) {
+                        return false; // we only care for some action mappings
+                    }
+                    mapping = map[value];
+                    continue;
+                }
+
+                if (!mapping) {
+                    std::cerr << std::format("[!] Couldn't parse '{}'", stream.str()) <<
+                        "\n";
+                    return false;
+                }
+
+                if (key == "bShift") { mapping->shift = (value == "True"); }
+                else if (key == "bCtrl") { mapping->ctrl = (value == "True"); }
+                else if (key == "bAlt") { mapping->alt = (value == "True"); }
+                else if (key == "bCmd") { mapping->cmd = (value == "True"); }
+                else if (key == "Key") { mapping->key = value; }
+            }
+            VERBOSE_LOG("\t[-] Parsed " << *mapping)
+            return true;
+        }
+    }
+
     bool init() { return load_user_settings() && load_action_mappings(); }
 
-    bool open_file(bool verbose, std::filesystem::path path, std::ifstream& out_file)
+    ActionMapping::ActionMapping(std::string t_name) : name(std::move(t_name))
     {
-        if (!std::filesystem::exists(path)) {
-            std::cout << std::format("[!] Path '{}' was not found.", path.string());
-            return false;
-        }
-
-        out_file.open(path.c_str());
-        if (!out_file.is_open()) {
-            std::cout << std::format("[!] Failed to open '{}'", path.string()) <<
-                std::endl;
-            return false;
-        }
-
-        return true;
-    }
+        input_map[name] = this;
+    };
 
     std::ostream& action_mappings::operator
     <<(std::ostream& os, const action_mappings::ActionMapping& m)
@@ -40,95 +133,12 @@ namespace asa::settings
             static_cast<int>(m.alt), static_cast<int>(m.cmd), m.key);
     }
 
-    static bool parse_key_value(std::string token, std::string& key_out,
-                                std::string& value_out)
-    {
-        size_t eq = token.find('=');
-        if (eq == std::string::npos) { return false; }
-
-        key_out = token.substr(0, eq);
-        // Parse out the value, example: ActionName="AccessInventory"
-        // Exclude  = and " characters from the key  ---------------
-        if (key_out == "ActionName") {
-            value_out = token.substr(eq + 2, token.length() - (key_out.length() + 3));
-        }
-        // Parse out the ending parantheses, example: Key=F)
-        else if (key_out == "Key") {
-            value_out = token.substr(eq + 1, token.length() - key_out.length() - 2);
-        }
-        else { value_out = token.substr(eq + 1); }
-        return true;
-    }
-
-    static std::any convert_settings_value(std::string key, std::string value)
-    {
-        if (key == "LastJoinedSessionPerCategory") { return value; }
-        if (value.find(".") != std::string::npos) { return std::stof(value); }
-        if (value == "True" || value == "False") { return value == "True"; }
-        return std::stoi(value);
-    }
-
-    static bool parse_user_settings(std::istringstream& stream, bool verbose)
-    {
-        auto& map = game_user_settings::setting_value_map;
-        std::string key;
-        std::string value;
-
-        if (!parse_key_value(stream.str(), key, value)) { return false; }
-        if (!map.contains(key)) { return false; }
-        map[key] = convert_settings_value(key, value);
-        VERBOSE_LOG("\t[-] Parsed " << key << " (" << value << ")");
-        return true;
-    }
-
-    static bool parse_action_mappings(std::istringstream& stream, bool verbose)
-    {
-        auto& map = action_mappings::input_map;
-
-        // skip the first 16 characters 'ActionMappings=('
-        stream.seekg(16);
-
-        std::string token;
-        std::vector<std::string> tokens;
-
-        while (std::getline(stream, token, ',')) { tokens.push_back(token); }
-
-        ActionMapping* mapping = nullptr;
-
-        for (const std::string& token : tokens) {
-            std::string key;
-            std::string value;
-            if (!parse_key_value(token, key, value)) { continue; }
-
-            if (key == "ActionName") {
-                if (!map.contains(value)) {
-                    return false; // we only care for some action mappings
-                }
-                mapping = map[value];
-                continue;
-            }
-
-            if (!mapping) {
-                std::cout << std::format("[!] Unable to parse '{}'", stream.str()) <<
-                    std::endl;
-                return false;
-            }
-
-            if (key == "bShift") { mapping->shift = (value == "True"); }
-            else if (key == "bCtrl") { mapping->ctrl = (value == "True"); }
-            else if (key == "bAlt") { mapping->alt = (value == "True"); }
-            else if (key == "bCmd") { mapping->cmd = (value == "True"); }
-            else if (key == "Key") { mapping->key = value; }
-        }
-        VERBOSE_LOG("\t[-] Parsed " << *mapping)
-        return true;
-    }
-
-    bool action_mappings::load_action_mappings(bool verbose)
+    bool action_mappings::load_action_mappings(const bool verbose)
     {
         std::ifstream file;
-        if (!open_file(verbose, core::config::game_base_directory / inputs_rel_path,
-                       file)) { return false; }
+        if (!open_file(core::config::game_base_directory / INPUT_SETTINGS_REL, file)) {
+            return false;
+        }
 
         VERBOSE_LOG("[+] Parsing Input.ini...");
         for (std::string line; std::getline(file, line);) {
@@ -141,23 +151,22 @@ namespace asa::settings
         return true;
     }
 
-    bool game_user_settings::load_user_settings(bool verbose)
+    bool game_user_settings::load_user_settings(const bool verbose)
     {
         std::ifstream file;
-        auto path = core::config::game_base_directory / user_settings_rel_path;
-
-        if (!open_file(verbose, path, file)) { return false; }
+        if (!open_file(core::config::game_base_directory / USER_SETTINGS_REL, file)) {
+            return false;
+        }
 
         VERBOSE_LOG("[+] Parsing GameUserSettings.ini...")
         bool section_found = false;
 
         for (std::string line; std::getline(file, line);) {
-            bool section_start = line.find("ShooterGame") != std::string::npos;
+            const bool section_started = line.find("ShooterGame") != std::string::npos;
             if (line.find("ServerSettings") != std::string::npos) { break; }
 
-            if (!section_found && !section_start) { continue; }
-
-            if (section_start) {
+            if (!section_found && !section_started) { continue; }
+            if (section_started) {
                 section_found = true;
                 continue;
             }
