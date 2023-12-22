@@ -1,6 +1,6 @@
 {
     "Metal": {
-        "icon": "items\\resources\\MetalOre_Icon.png",
+        "icon": "items\\resources\\metal.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 1.0,
@@ -14,7 +14,7 @@
         "has_damage_value": false
     },
     "Metal Ingot": {
-        "icon": "items\\resources\\MetalIngot_Icon.png",
+        "icon": "items\\resources\\metal_ingot.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 1.0,
@@ -27,38 +27,8 @@
         "has_armor_value": false,
         "has_damage_value": false
     },
-    "Cementing Paste": {
-        "icon": "items\\resources\\CementPaste_Icon.png",
-        "type": "RESOURCE",
-        "recipe": {
-            "Chitin": 4,
-            "Stone": 8
-        },
-        "weight": 0.01,
-        "stack_size": 100,
-        "can_put_in_hotbar": false,
-        "has_spoil_timer": false,
-        "has_durability": false,
-        "requires_engram": false,
-        "has_ambiguous_query": false,
-        "has_armor_value": false,
-        "has_damage_value": false
-    },
-    "Achatina Paste": {
-        "icon": "items\\resources\\CementPaste_Icon.png",
-        "type": "RESOURCE",
-        "weight": 0.01,
-        "stack_size": 100,
-        "can_put_in_hotbar": false,
-        "has_spoil_timer": false,
-        "has_durability": false,
-        "requires_engram": false,
-        "has_ambiguous_query": false,
-        "has_armor_value": false,
-        "has_damage_value": false
-    },
     "Fiber": {
-        "icon": "items\\resources\\Fiber_Icon.png",
+        "icon": "items\\resources\\fiber.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 0.01,
@@ -72,7 +42,7 @@
         "has_damage_value": false
     },
     "Thatch": {
-        "icon": "items\\resources\\Thatch_Icon.png",
+        "icon": "items\\resources\\thatch.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 0.02,
@@ -86,7 +56,7 @@
         "has_damage_value": false
     },
     "Wood": {
-        "icon": "items\\resources\\Wood_Icon.png",
+        "icon": "items\\resources\\wood.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 0.05,
@@ -100,7 +70,7 @@
         "has_damage_value": false
     },
     "Stone": {
-        "icon": "items\\resources\\Stone_Icon.png",
+        "icon": "items\\resources\\stone.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 0.5,
@@ -114,7 +84,7 @@
         "has_damage_value": false
     },
     "Flint": {
-        "icon": "items\\resources\\Flint_Icon.png",
+        "icon": "items\\resources\\flint.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 0.05,
@@ -128,7 +98,7 @@
         "has_damage_value": false
     },
     "Gunpowder": {
-        "icon": "items\\resources\\Gunpowder_Icon.png",
+        "icon": "items\\resources\\gunpowder.png",
         "type": "RESOURCE",
         "recipe": {
             "Charcoal": 1,
@@ -145,7 +115,7 @@
         "has_damage_value": false
     },
     "Sparkpowder": {
-        "icon": "items\\resources\\Sparkpowder_Icon.png",
+        "icon": "items\\resources\\sparkpowder.png",
         "type": "RESOURCE",
         "recipe": {
             "Flint": 2,
@@ -162,7 +132,7 @@
         "has_damage_value": false
     },
     "Obsidian": {
-        "icon": "items\\resources\\Obsidian_Icon.png",
+        "icon": "items\\resources\\obsidian.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 1.0,
@@ -176,7 +146,7 @@
         "has_damage_value": false
     },
     "Fertilizer": {
-        "icon": "items\\resources\\Fertilizer_Icon.png",
+        "icon": "items\\resources\\fertilizer.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 0.1,
@@ -190,7 +160,7 @@
         "has_damage_value": false
     },
     "Polymer": {
-        "icon": "items\\resources\\Polymer_Icon.png",
+        "icon": "items\\resources\\polymer.png",
         "type": "RESOURCE",
         "recipe": {
             "Cementing Paste": 2,
@@ -235,7 +205,7 @@
         "has_damage_value": false
     },
     "Element": {
-        "icon": "items\\resources\\TEKElement_Icon.png",
+        "icon": "items\\resources\\element.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 0.01,
@@ -2977,6 +2947,119 @@
         "stack_size": 100,
         "can_put_in_hotbar": true,
         "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Black Pearl": {
+        "icon": "items\\resources\\black_pearls.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Crystal": {
+        "icon": "items\\resources\\crystal.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Electronics": {
+        "icon": "items\\resources\\electronics.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Hide": {
+        "icon": "items\\resources\\hide.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Oil": {
+        "icon": "items\\resources\\oil.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Achatina Paste": {
+        "icon": "items\\resources\\paste.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+
+    "Cementing Paste": {
+        "icon": "items\\resources\\paste.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Silica Pearl": {
+        "icon": "items\\resources\\silica_pearls.png",
+        "type": "RESOURCE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": false,
+        "has_spoil_timer": false,
         "has_durability": false,
         "requires_engram": false,
         "has_ambiguous_query": false,

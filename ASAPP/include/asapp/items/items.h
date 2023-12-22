@@ -32,6 +32,12 @@ namespace asa::items
         inline Item* wood = nullptr;
         inline Item* fertilizer = nullptr;
         inline Item* element = nullptr;
+        inline Item* black_pearl = nullptr;
+        inline Item* silica_pearls = nullptr;
+        inline Item* crystal = nullptr;
+        inline Item* electronics = nullptr;
+        inline Item* oil = nullptr;
+        inline Item* hide = nullptr;
     }
 
     namespace consumables

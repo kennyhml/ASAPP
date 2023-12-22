@@ -50,7 +50,7 @@ namespace asa::items
         if (!load_raw_data()) { return false; }
         std::cout << "[+] Initializing item dummies...\n";
         if (!consumables::init() || !equippables::init() || !weapons::init() || !
-            ammo::init()) { return false; }
+            ammo::init() || !resources::init()) { return false; }
 
         const auto time_taken = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now() - start);
@@ -85,6 +85,12 @@ namespace asa::items
             load(fertilizer, "Fertilizer", all_resources);
             load(element, "Element", all_resources);
 
+            load(black_pearl, "Black Pearl", all_resources);
+            load(silica_pearls, "Silica Pearl", all_resources);
+            load(crystal, "Crystal", all_resources);
+            load(electronics, "Electronics", all_resources);
+            load(oil, "Oil", all_resources);
+            load(hide, "Hide", all_resources);
             return true;
         }
         catch (const ItemError& e) {
