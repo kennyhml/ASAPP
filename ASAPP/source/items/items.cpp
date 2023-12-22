@@ -117,6 +117,14 @@ namespace asa::items
             load(spoiled_meat, "Spoiled Meat", all_consumables);
             load(battle_tartare, "Battle Tartare", all_consumables);
             load(stimberry, "Stimberry", all_consumables);
+            load(mejoberry, "Mejoberry", all_consumables);
+            load(narcoberry, "Narcoberry", all_consumables);
+            load(amarberry, "Amarberry", all_consumables);
+            load(azulberry, "Azulberry", all_consumables);
+            load(cianberry, "Cianberry", all_consumables);
+            load(magenberry, "Magenberry", all_consumables);
+            load(tintoberry, "Tintoberry", all_consumables);
+            load(verdberry, "Verdberry", all_consumables);
 
             load(medical_brew, "Medical Brew", all_consumables);
             load(energy_brew, "Energy Brew", all_consumables);

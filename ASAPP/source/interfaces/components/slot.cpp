@@ -53,6 +53,7 @@ namespace asa::interfaces::components
 
         float confidence = 0.75f;
         switch (item.get_data().type) {
+        case items::ItemData::CONSUMABLE:
         case items::ItemData::AMMO: confidence = 0.9f;
             break;
 

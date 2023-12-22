@@ -207,7 +207,7 @@
         "has_damage_value": false
     },
     "Organic Polymer": {
-        "icon": "items\\resources\\OrganicPolymer_Icon.png",
+        "icon": "items\\resources\\organic_polymer.png",
         "type": "RESOURCE",
         "recipe": {},
         "weight": 0.25,
@@ -221,7 +221,7 @@
         "has_damage_value": false
     },
     "Mejoberry": {
-        "icon": "items\\consumables\\Mejoberry_Icon.png",
+        "icon": "items\\consumables\\mejoberry.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,
@@ -2943,6 +2943,20 @@
     },
     "Tintoberry": {
         "icon": "items\\consumables\\tintoberry.png",
+        "type": "CONSUMABLE",
+        "recipe": {},
+        "weight": 0.1,
+        "stack_size": 100,
+        "can_put_in_hotbar": true,
+        "has_spoil_timer": true,
+        "has_durability": false,
+        "requires_engram": false,
+        "has_ambiguous_query": false,
+        "has_armor_value": false,
+        "has_damage_value": false
+    },
+    "Narcoberry": {
+        "icon": "items\\consumables\\narcoberry.png",
         "type": "CONSUMABLE",
         "recipe": {},
         "weight": 0.1,

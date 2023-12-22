@@ -54,14 +54,22 @@ namespace asa::items
         inline Item* prime_meat_jerky = nullptr;
         inline Item* cooked_fish_meat = nullptr;
         inline Item* cooked_prime_fish_meat = nullptr;
-        inline Item* shadow_steak_saute = nullptr;
         inline Item* spoiled_meat = nullptr;
-        inline Item* battle_tartare = nullptr;
-        inline Item* stimberry = nullptr;
 
+        inline Item* stimberry = nullptr;
+        inline Item* mejoberry = nullptr;
+        inline Item* narcoberry = nullptr;
+        inline Item* amarberry = nullptr;
+        inline Item* azulberry = nullptr;
+        inline Item* cianberry = nullptr;
+        inline Item* magenberry = nullptr;
+        inline Item* tintoberry = nullptr;
+        inline Item* verdberry = nullptr;
+
+        inline Item* shadow_steak_saute = nullptr;
+        inline Item* battle_tartare = nullptr;
         inline Item* medical_brew = nullptr;
         inline Item* energy_brew = nullptr;
-
         inline Item* calien_soup = nullptr;
         inline Item* enduro_stew = nullptr;
         inline Item* fria_curry = nullptr;
