@@ -76,6 +76,14 @@ namespace asa::settings
 
             std::string name;
 
+            bool operator==(T other) const { return get() == other; }
+
+            /**
+             * @brief Retrieves the value of the setting.
+             *
+             * @tparam T The type of the setting value.
+             * @return The value of the setting.
+             */
             [[nodiscard]] T get() const
             {
                 return std::any_cast<T>(setting_value_map.at(name));

@@ -17,7 +17,7 @@ namespace asa::settings
 
         const auto INPUT_SETTINGS_REL = std::filesystem::path(
             R"(ShooterGame\Saved\Config\Windows\Input.ini)");
-        
+
         bool open_file(const std::filesystem::path& path, std::ifstream& out_file)
         {
             if (!std::filesystem::exists(path)) {
@@ -69,7 +69,7 @@ namespace asa::settings
             if (!parse_key_value(stream.str(), key, value)) { return false; }
             if (!map.contains(key)) { return false; }
             map[key] = convert_settings_value(key, value);
-            VERBOSE_LOG("\t[-] Parsed " << key << " (" << value << ")");
+            VERBOSE_LOG("\t[-] Parsed " << key << " (" << value << ")")
             return true;
         }
 
@@ -140,7 +140,7 @@ namespace asa::settings
             return false;
         }
 
-        VERBOSE_LOG("[+] Parsing Input.ini...");
+        VERBOSE_LOG("[+] Parsing Input.ini...")
         for (std::string line; std::getline(file, line);) {
             if (line.find("ActionMappings=") != std::string::npos) {
                 std::istringstream ss(line);

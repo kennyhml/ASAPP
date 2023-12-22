@@ -263,7 +263,7 @@ namespace asa::window
         cv::Mat result;
         cvtColor(mat, result, cv::COLOR_RGBA2RGB);
 
-        if (settings::fullscreen_mode.get() == settings::FullscreenMode::WINDOWED) {
+        if (settings::fullscreen_mode == settings::FullscreenMode::WINDOWED) {
             result = result(cv::Rect(WINDOWED_PADDING, WINDOWED_PADDING_TOP,
                                      window_width - WINDOWED_PADDING * 2,
                                      window_height - WINDOWED_PADDING_TOP -
