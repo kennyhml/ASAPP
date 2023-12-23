@@ -18,7 +18,7 @@ namespace asa::items
             return raw_data.at(name);
         }
 
-        std::string stringify_quality(const ItemData::ItemQuality quality)
+        std::string stringify(const ItemData::ItemQuality quality)
         {
             switch (quality) {
             case ItemData::PRIMITIVE: return "Primitive";
@@ -76,7 +76,10 @@ namespace asa::items
         case ItemData::EQUIPPABLE:
         {
             std::string bp = data_.is_blueprint ? "Blueprint: " : "";
-            return std::format("{}{} {}", bp, stringify_quality(data_.quality), name_);
+            if (data_.quality != ItemData::NONE) {
+                return std::format("{}{} {}", bp, stringify(data_.quality), name_);
+            }
+            return std::format("{}{}", bp, name_);
         }
         case ItemData::STRUCTURE:
         case ItemData::ATTACHMENT:

@@ -102,7 +102,7 @@ namespace asa::interfaces::components
         cv::Mat templ = item.get_inventory_icon();
         const cv::Mat mask = item.get_inventory_icon_mask();
 
-        // Matcho options will differ based on item category.
+        // Match options will differ based on item category.
         const auto category = item.get_data().type;
         const float conf = get_confidence_for_category(category);
         if (is_grayscale_category(category)) {
@@ -225,11 +225,12 @@ namespace asa::interfaces::components
         const window::Rect quality_roi(area.x + 2, area.y + 60, 6, 6);
 
         for (const auto& [quality, color] : color_per_quality) {
-            const auto mask = window::get_mask(quality_roi, color, 25);
-            if (cv::countNonZero(mask) > 20) { return quality; }
+            if (cv::countNonZero(window::get_mask(quality_roi, color, 25)) > 20) {
+                return quality;
+            }
         }
 
-        return items::ItemData::ItemQuality::PRIMITIVE;
+        return items::ItemData::ItemQuality::NONE;
     }
 
     Slot::PrederminationResult Slot::predetermine() const

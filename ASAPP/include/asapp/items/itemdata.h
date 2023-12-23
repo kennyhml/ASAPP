@@ -26,6 +26,7 @@ namespace asa::items
 
         enum ItemQuality
         {
+            NONE,
             PRIMITIVE,
             RAMSHACKLE,
             APPRENTICE,
