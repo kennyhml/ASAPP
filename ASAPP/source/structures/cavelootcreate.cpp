@@ -28,7 +28,7 @@ namespace asa::structures
         window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_LINE);
 
         std::string resultStr = window::tessEngine->GetUTF8Text();
-        std::cout << "\t[-] OCR result:" << resultStr;
+        std::cout << "\t[-] OCR result:" << resultStr << std::endl;
         return get_quality_from_tooltip(resultStr);
     }
 
@@ -43,24 +43,24 @@ namespace asa::structures
                             30);
     }
 
-    const CaveLootCrate::Quality CaveLootCrate::get_quality_from_tooltip(
-        std::string tooltip)
+    CaveLootCrate::Quality CaveLootCrate::get_quality_from_tooltip(
+        const std::string& tooltip)
     {
-        if (tooltip.find("SwampCaveTier1") != std::string::npos) {
-            std::cout << "\t[+] Drop determined to be blue" << std::endl;
-            return BLUE;
-        }
-        if (tooltip.find("QualityTier3") != std::string::npos || tooltip.
-            find("SwampCaveTier2") != std::string::npos) {
-            std::cout << "\t[+] Drop determined to be yellow" << std::endl;
-            return YELLOW;
-        }
-        if (tooltip.find("QualityTier4") != std::string::npos || tooltip.
-            find("SwampCaveTier3") != std::string::npos) {
-            std::cout << "\t[+] Drop determined to be red" << std::endl;
-            return RED;
-        }
+        static auto is_in_tier = [tooltip](const std::vector<std::string>& names) -> bool {
+            for (const auto &name : names) {
+                if (tooltip.find(name) != std::string::npos)
+                    return true;
+            }
+            return false;
+        };
 
+        if (is_in_tier(blue_crate_names))
+            return BLUE;
+        else if (is_in_tier(yellow_crate_names))
+            return YELLOW;
+        else if (is_in_tier(red_crate_names))
+            return RED;
+  
         return ANY;
     }
 }

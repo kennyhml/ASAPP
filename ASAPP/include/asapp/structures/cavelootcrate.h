@@ -4,6 +4,10 @@
 
 namespace asa::structures
 {
+    inline std::vector<std::string> blue_crate_names = { "SwampCaveTier1", "IceCaveTier1", "waterCaveTier1" };
+    inline std::vector<std::string> yellow_crate_names = { "QualityTier3", "SwampCaveTier2", "IceCaveTier2", "waterCaveTier2" };
+    inline std::vector<std::string> red_crate_names = { "QualityTier4", "SwampCaveTier3", "IceCaveTier3", "waterCaveTier3" };
+
     class CaveLootCrate final : public Container
     {
     public:
@@ -22,7 +26,7 @@ namespace asa::structures
 
     private:
         std::optional<asa::window::Rect> get_info_area();
-        const Quality get_quality_from_tooltip(std::string tooltip);
+        Quality get_quality_from_tooltip(const std::string& tooltip);
         int quality_flags;
     };
 }
