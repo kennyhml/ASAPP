@@ -15,6 +15,9 @@ namespace asa::interfaces::components
             {asa::items::ItemData::ASCENDANT, window::Color{2, 167, 172}}
         };
 
+        constexpr int CACHED_LOC_PADDING = 2;
+        std::unordered_map<std::string, window::Rect> cached_locs{};
+
         bool has_blueprint_variant(const items::ItemData::ItemType type)
         {
             switch (type) {
@@ -84,7 +87,18 @@ namespace asa::interfaces::components
 
     bool Slot::has(items::Item& item, float* accuracy_out) const
     {
-        cv::Mat src = window::screenshot(area);
+        const bool is_cached = cached_locs.contains(item.get_name());
+        window::Rect roi = area;
+        if (is_cached) {
+            // adjust the region of interest according to our cached rect
+            const auto cached_loc = cached_locs.at(item.get_name());
+            roi.x += cached_loc.x;
+            roi.y += cached_loc.y;
+            roi.width = cached_loc.width;
+            roi.height = cached_loc.height;
+        }
+
+        cv::Mat src = window::screenshot(roi);
         cv::Mat templ = item.get_inventory_icon();
         const cv::Mat mask = item.get_inventory_icon_mask();
 
@@ -95,7 +109,19 @@ namespace asa::interfaces::components
             cv::cvtColor(src, src, cv::COLOR_RGB2GRAY);
             cv::cvtColor(templ, templ, cv::COLOR_RGB2GRAY);
         }
-        return window::locate_template(src, templ, conf, mask, accuracy_out).has_value();
+
+        const auto match = window::locate_template(src, templ, conf, mask, accuracy_out);
+        if (!match.has_value()) { return false; }
+
+        if (!is_cached) {
+            // create a cachec location allowing some variance
+            const window::Rect cached_loc(match->x - CACHED_LOC_PADDING,
+                                          match->y - CACHED_LOC_PADDING,
+                                          match->width + (CACHED_LOC_PADDING * 2),
+                                          match->height + (CACHED_LOC_PADDING * 2));
+            cached_locs[item.get_name()] = cached_loc;
+        }
+        return true;
     }
 
     std::unique_ptr<items::Item> Slot::get_item() const

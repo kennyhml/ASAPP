@@ -39,9 +39,10 @@ namespace asa::window
 
     struct Rect
     {
+        Rect() = default;
+
         Rect(int x, int y, int width, int height) : x(x), y(y), width(width),
                                                     height(height) {};
-
         int x{0};
         int y{0};
         int width{0};
@@ -78,7 +79,7 @@ namespace asa::window
 
     void get_handle(int timeout = 60, bool verbose = false);
     cv::Mat screenshot(const Rect& region = Rect(0, 0, 0, 0), HWND window = hWnd);
-    
+
     RECT get_window_rect();
 
     void set_tesseract_image(const cv::Mat& image);
@@ -148,6 +149,6 @@ namespace asa::window
     void post_mouse_press_at(const Point&, controls::MouseButton);
 
     void reset_cursor(POINT& previousPosition);
-    
+
     void post_close();
 }
