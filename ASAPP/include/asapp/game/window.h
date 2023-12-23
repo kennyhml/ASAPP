@@ -77,7 +77,7 @@ namespace asa::window
     cv::Mat get_mask(const Rect& region, const Color& color, float variance);
 
     void get_handle(int timeout = 60, bool verbose = false);
-    cv::Mat screenshot(const Rect& region = Rect(0, 0, 0, 0));
+    cv::Mat screenshot(const Rect& region = Rect(0, 0, 0, 0), HWND window = hWnd);
     
     RECT get_window_rect();
 
@@ -148,4 +148,6 @@ namespace asa::window
     void post_mouse_press_at(const Point&, controls::MouseButton);
 
     void reset_cursor(POINT& previousPosition);
+    
+    void post_close();
 }

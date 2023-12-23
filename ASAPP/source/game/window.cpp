@@ -229,25 +229,25 @@ namespace asa::window
 
         return rect;
     }
-
-    cv::Mat screenshot(const Rect& region)
+    
+    cv::Mat screenshot(const Rect& region, HWND window)
     {
         SetProcessDPIAware();
 
         // We can't use `get_window_rect` here since it needs to be the entirety of the window
         // including the task bar so that we can resize it
         RECT rect;
-        GetWindowRect(hWnd, &rect);
+        GetWindowRect(window, &rect);
 
         int window_width = rect.right - rect.left;
         int window_height = rect.bottom - rect.top;
 
-        HDC hwndDC = GetWindowDC(hWnd);
+        HDC hwndDC = GetWindowDC(window);
         HDC mDc = CreateCompatibleDC(hwndDC);
         HBITMAP bitmap = CreateCompatibleBitmap(hwndDC, window_width, window_height);
 
         SelectObject(mDc, bitmap);
-        PrintWindow(hWnd, mDc, PW_RENDERFULLCONTENT);
+        PrintWindow(window, mDc, PW_RENDERFULLCONTENT);
 
         BITMAPINFOHEADER bi = get_bitmap_info_header(window_width, window_height, 32,
                                                      BI_RGB);
@@ -258,12 +258,12 @@ namespace asa::window
 
         DeleteObject(bitmap);
         DeleteDC(mDc);
-        ReleaseDC(hWnd, hwndDC);
+        ReleaseDC(window, hwndDC);
 
         cv::Mat result;
         cvtColor(mat, result, cv::COLOR_RGBA2RGB);
 
-        if (settings::fullscreen_mode == settings::FullscreenMode::WINDOWED) {
+        if (window == hWnd && settings::fullscreen_mode == settings::FullscreenMode::WINDOWED) {
             result = result(cv::Rect(WINDOWED_PADDING, WINDOWED_PADDING_TOP,
                                      window_width - WINDOWED_PADDING * 2,
                                      window_height - WINDOWED_PADDING_TOP -
@@ -291,13 +291,25 @@ namespace asa::window
 
     bool has_crashed_popup()
     {
-        return (FindWindowA(nullptr, "The UE-ShooterGame Game has crashed and will close")
-            != nullptr || FindWindowA(nullptr, "Crash!") != nullptr);
+        if (FindWindowExA(nullptr, nullptr, nullptr, "The UE-ShooterGame Game has crashed and will close") != nullptr) {
+            std::cout << "UE-ShooterGame crash window found" << std::endl;
+            return true;
+        } else if (FindWindowA(nullptr, "Crash!")) {
+            std::cout << "Crash window found" << std::endl;
+            return true;
+        }
+        return false;
     }
 
-    void set_mouse_pos(const Point& location) { SetCursorPos(location.x, location.y); }
+    void set_mouse_pos(const Point& location) {
+      auto r = get_window_rect();
+      SetCursorPos(location.x + r.left, location.y + r.top); 
+    }
 
-    void set_mouse_pos(int x, int y) { SetCursorPos(x, y); }
+    void set_mouse_pos(int x, int y) { 
+      auto r = get_window_rect();
+      SetCursorPos(x + r.left, y + r.top); 
+    }
 
     void click_at(const Point& position, controls::MouseButton button,
                   std::chrono::milliseconds delay)
