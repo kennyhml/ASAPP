@@ -1,5 +1,5 @@
+#include "asapp/interfaces/hud.h"
 #include <iostream>
-#include "hud.h"
 #include "../util/util.h"
 #include "asapp/game/resources.h"
 #include "asapp/game/window.h"

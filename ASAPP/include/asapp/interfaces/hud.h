@@ -1,5 +1,5 @@
 #pragma once
-#include "../../include/asapp/items/item.h"
+#include "asapp/items/item.h"
 #include "asapp/game/window.h"
 #include "asapp/interfaces/iinterface.h"
 
