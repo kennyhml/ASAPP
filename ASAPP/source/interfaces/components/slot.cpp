@@ -35,7 +35,7 @@ namespace asa::interfaces::components
             case items::ItemData::ATTACHMENT:
             case items::ItemData::AMMO: { return 0.87f; }
             case items::ItemData::WEAPON:
-            case items::ItemData::EQUIPPABLE: { return 0.75f; }
+            case items::ItemData::EQUIPPABLE: { return 0.7f; }
             default: { return 0.8f; }
             }
         }
@@ -185,8 +185,7 @@ namespace asa::interfaces::components
 
         const cv::Mat left = window::get_mask(bar, spoil_color, 20);
         const cv::Mat spoiled = window::get_mask(bar, spoiled_color, 20);
-
-        return cv::countNonZero(left | spoiled) > 20;
+        return cv::countNonZero(left | spoiled) > 100;
     }
 
     bool Slot::has_durability() const
@@ -197,8 +196,7 @@ namespace asa::interfaces::components
 
         const cv::Mat left = window::get_mask(bar, dura_color, 20);
         const cv::Mat lost = window::get_mask(bar, dura_lost_color, 20);
-
-        return cv::countNonZero(left | lost) > 20;
+        return cv::countNonZero(left | lost) > 100;
     }
 
     bool Slot::is_stack() const
