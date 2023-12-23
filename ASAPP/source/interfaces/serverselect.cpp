@@ -9,8 +9,13 @@ namespace asa::interfaces
     bool ServerSelect::is_best_result_selected()
     {
         static window::Color selectedColor(128, 64, 2);
+        static window::Color joinModsColor(135, 79, 23);
         static window::Color hoveredSelectedColor(83, 39, 1);
         cv::Mat mask = window::get_mask(best_result.area, selectedColor, 15);
+        if (cv::countNonZero(mask) > 150) { return true; }
+        
+        // If the server has mods enabled selecting it will bring a screen up
+        mask = window::get_mask(join_button_mods_popup.area, joinModsColor, 15);
         if (cv::countNonZero(mask) > 150) { return true; }
 
         mask = window::get_mask(best_result.area, hoveredSelectedColor, 15);
@@ -61,11 +66,14 @@ namespace asa::interfaces
             best_result.press();
             core::sleep_for(std::chrono::milliseconds(300));
         }
-
-
+        
         std::cout << "\t[-] Best search result selected." << std::endl;
         while (!is_joining_server()) {
-            join_button.press();
+            if (server_has_mods_enabled()) {
+                join_button_mods_popup.press();
+            } else {
+                join_button.press();
+            }
             core::sleep_for(std::chrono::seconds(1));
         }
         std::cout << "\t[-] Now joining session..." << std::endl;
@@ -79,5 +87,13 @@ namespace asa::interfaces
     {
         refresh_button.press();
         core::sleep_for(std::chrono::seconds(1));
+    }
+
+    bool ServerSelect::server_has_mods_enabled() const 
+    {
+        // If the server has mods enabled selecting it will bring a screen up
+        static window::Color joinModsColor(135, 79, 23);
+        auto mask = window::get_mask(join_button_mods_popup.area, joinModsColor, 15);
+        return cv::countNonZero(mask) > 150;
     }
 }

@@ -17,6 +17,7 @@ namespace asa::interfaces
         components::Button official_button{571, 182, 116, 49};
         components::Button refresh_button{834, 932, 275, 39};
         components::Button best_result{94, 306, 1730, 43};
+        components::Button join_button_mods_popup{266, 911, 162, 39}; // The join button if the server has mods enabled
         components::Button join_button{1615, 924, 195, 41};
         components::Button join_last_played_button{1624, 876, 178, 39};
 
@@ -27,6 +28,7 @@ namespace asa::interfaces
         bool can_join() const;
         bool can_join_last_played() const;
         bool is_joining_server() const;
+        bool server_has_mods_enabled() const;
 
         void join_server(const std::string& serverName);
         void refresh();
