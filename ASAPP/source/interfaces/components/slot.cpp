@@ -37,6 +37,17 @@ namespace asa::interfaces::components
             }
         }
 
+        float get_max_confidence_for_category(const items::ItemData::ItemType category)
+        {
+            switch (category) {
+            case items::ItemData::ARTIFACT:
+            case items::ItemData::ATTACHMENT:
+            case items::ItemData::AMMO: { return 0.9f; }
+            case items::ItemData::CONSUMABLE: { return 0.96f; }
+            default: { return 0.8f; }
+            }
+        }
+
         bool is_grayscale_category(const items::ItemData::ItemType category)
         {
             return (category == items::ItemData::EQUIPPABLE || category ==
@@ -93,13 +104,15 @@ namespace asa::interfaces::components
 
         const auto start = std::chrono::system_clock::now();
         const PrederminationResult data = predetermine();
-        bool found = false;
-
+        bool perf_match_found = false;
         items::Item* best_match = nullptr;
         float best_match_accuracy = 0.f;
 
         for (const std::vector<asa::items::Item**>& iter : items::iter_all()) {
-            if (found) { break; }
+            if (perf_match_found) { break; }
+            const float category_max_conf = get_max_confidence_for_category(
+                (*iter[0])->get_data().type);
+
             for (const auto& item : iter) {
                 float accuracy = 0.f;
                 if (!data.matches((*item)->get_data()) || !has(**item, &accuracy)) {
@@ -108,8 +121,8 @@ namespace asa::interfaces::components
                 if (accuracy > best_match_accuracy) {
                     best_match = *item;
                     best_match_accuracy = accuracy;
-                    if (accuracy > 0.97f) {
-                        found = true;
+                    if (accuracy > category_max_conf) {
+                        perf_match_found = true;
                         break;
                     }
                 }
