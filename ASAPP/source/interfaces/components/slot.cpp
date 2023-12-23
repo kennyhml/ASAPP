@@ -192,7 +192,8 @@ namespace asa::interfaces::components
         if (data.has_durability) { return !has_durability(); }
 
         // Blueprints always have 0.1 weight
-        return window::match_template(get_weight_area(), resources::text::bp_weight);
+        return window::match_template(get_weight_area(), resources::text::bp_weight,
+                                      0.9f);
     }
 
     items::ItemData::ItemQuality Slot::get_quality() const
