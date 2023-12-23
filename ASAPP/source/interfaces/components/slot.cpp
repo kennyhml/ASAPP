@@ -230,8 +230,8 @@ namespace asa::interfaces::components
 
         if ((data.stack_size == 1) && this->is_stack) { return false; }
 
-        if (data.has_spoil_timer != this->has_spoil_bar || data.has_durability != this->
-            has_durability_bar) { return false; }
+        if (data.has_spoil_timer != this->has_spoil_bar || ((data.has_durability != this->
+            has_durability_bar) && !has_blueprint_variant(data.type))) { return false; }
         return true;
     }
 
