@@ -477,4 +477,22 @@ namespace asa::window
             SetCursorPos(previousPosition.x, previousPosition.y);
         }
     }
+    
+    void post_close()
+    {
+        if (const auto hwnd = FindWindowExA(nullptr, nullptr, nullptr, "The UE-ShooterGame Game has crashed and will close"); hwnd != nullptr) {
+          std::cout << "Closed crash popup" << std::endl;
+          PostMessageW(hwnd, WM_CLOSE, 0, 0);
+        }
+  
+        if (const auto hwnd = FindWindowA(nullptr, "Crash!"); hwnd != nullptr) {
+          std::cout << "Closed crash popup" << std::endl;
+          PostMessageW(hwnd, WM_CLOSE, 0, 0);
+        }
+      
+        if (const auto hwnd = FindWindowA("UnrealWindow", "ArkAscended"); hwnd != nullptr) {
+          std::cout << "Closed game window" << std::endl;
+          PostMessageW(hwnd, WM_CLOSE, 0, 0);
+        }
+    }
 }
