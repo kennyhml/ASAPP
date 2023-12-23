@@ -132,8 +132,8 @@ namespace asa::items
             load(tintoberry, "Tintoberry", all_consumables);
             load(verdberry, "Verdberry", all_consumables);
 
-            load(medical_brew, "Medical Brew", all_consumables);
             load(energy_brew, "Energy Brew", all_consumables);
+            load(medical_brew, "Medical Brew", all_consumables);
 
             load(calien_soup, "Calien Soup", all_consumables);
             load(enduro_stew, "Enduro Stew", all_consumables);

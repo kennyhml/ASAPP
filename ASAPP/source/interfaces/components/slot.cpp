@@ -1,4 +1,3 @@
-#include <iostream>
 #include "asapp/interfaces/components/slot.h"
 #include <opencv2/highgui.hpp>
 #include "asapp/items/items.h"
@@ -8,13 +7,41 @@ namespace asa::interfaces::components
     namespace
     {
         std::unordered_map<items::ItemData::ItemQuality, window::Color> color_per_quality{
-            {asa::items::ItemData::PRIMITIVE, window::Color(130, 133, 135)},
-            {asa::items::ItemData::RAMSHACKLE, window::Color(31, 166, 36)},
-            {asa::items::ItemData::APPRENTICE, window::Color(49, 85, 176)},
-            {asa::items::ItemData::JOURNEYMAN, window::Color(102, 51, 179)},
-            {asa::items::ItemData::MASTERCRAFT, window::Color(164, 163, 28)},
-            {asa::items::ItemData::ASCENDANT, window::Color(2, 167, 172)}
+            {asa::items::ItemData::PRIMITIVE, window::Color{130, 133, 135}},
+            {asa::items::ItemData::RAMSHACKLE, window::Color{31, 166, 36}},
+            {asa::items::ItemData::APPRENTICE, window::Color{49, 85, 176}},
+            {asa::items::ItemData::JOURNEYMAN, window::Color{102, 51, 179}},
+            {asa::items::ItemData::MASTERCRAFT, window::Color{164, 163, 28}},
+            {asa::items::ItemData::ASCENDANT, window::Color{2, 167, 172}}
         };
+
+        bool has_blueprint_variant(const items::ItemData::ItemType type)
+        {
+            switch (type) {
+            case items::ItemData::ItemType::RESOURCE:
+            case items::ItemData::ItemType::ARTIFACT:
+            case items::ItemData::ItemType::CONSUMABLE: { return false; }
+            default: { return true; }
+            }
+        }
+
+        float get_confidence_for_category(const items::ItemData::ItemType category)
+        {
+            switch (category) {
+            case items::ItemData::ARTIFACT:
+            case items::ItemData::ATTACHMENT:
+            case items::ItemData::AMMO: { return 0.87f; }
+            case items::ItemData::WEAPON:
+            case items::ItemData::EQUIPPABLE: { return 0.75f; }
+            default: { return 0.8f; }
+            }
+        }
+
+        bool is_grayscale_category(const items::ItemData::ItemType category)
+        {
+            return (category == items::ItemData::EQUIPPABLE || category ==
+                items::ItemData::WEAPON);
+        }
     }
 
     window::Rect Slot::get_stack_size_area() const
@@ -39,79 +66,65 @@ namespace asa::interfaces::components
 
     bool Slot::is_empty() const
     {
-        static constexpr window::Color weight_text_color(128, 231, 255);
-
+        static constexpr window::Color weight_text_color{128, 231, 255};
         const cv::Mat masked = get_mask(get_weight_area(), weight_text_color, 35);
         return countNonZero(masked) < 10;
     }
 
     bool Slot::has(items::Item& item, float* accuracy_out) const
     {
-        cv::Mat source = window::screenshot(area);
+        cv::Mat src = window::screenshot(area);
         cv::Mat templ = item.get_inventory_icon();
         const cv::Mat mask = item.get_inventory_icon_mask();
 
-        float confidence = 0.75f;
-        switch (item.get_data().type) {
-        case items::ItemData::CONSUMABLE:
-        case items::ItemData::AMMO: confidence = 0.9f;
-            break;
-
-        case items::ItemData::EQUIPPABLE:
-        {
-            cv::cvtColor(source, source, cv::COLOR_RGB2GRAY);
+        // Matcho options will differ based on item category.
+        const auto category = item.get_data().type;
+        const float conf = get_confidence_for_category(category);
+        if (is_grayscale_category(category)) {
+            cv::cvtColor(src, src, cv::COLOR_RGB2GRAY);
             cv::cvtColor(templ, templ, cv::COLOR_RGB2GRAY);
-            break;
         }
-        }
-        return window::locate_template(source, templ, confidence, mask, accuracy_out).
-            has_value();
+        return window::locate_template(src, templ, conf, mask, accuracy_out).has_value();
     }
 
-    bool Slot::get_item(items::Item*& item_out, const bool verbose) const
+    std::unique_ptr<items::Item> Slot::get_item() const
     {
+        if (is_empty()) { return nullptr; }
+
         const auto start = std::chrono::system_clock::now();
+        const PrederminationResult data = predetermine();
+        bool found = false;
 
-        const bool has_armor = has_armor_value();
-        const bool has_damage = !has_armor && has_damage_value();
-        const bool is_multi_stack = !(has_armor || has_damage) && is_stack();
+        items::Item* best_match = nullptr;
+        float best_match_accuracy = 0.f;
 
-        if (verbose) {
-            std::cout << "[+] Attempting to recognize item, armor: " << has_armor <<
-                ", dmg: " << has_damage << ", stack: " << is_multi_stack << "\n";
-        }
         for (const std::vector<asa::items::Item**>& iter : items::iter_all()) {
+            if (found) { break; }
             for (const auto& item : iter) {
-                if (verbose) {
-                    std::cout << "\r\t[-] Checking " << (*item)->get_name() << "... " <<
-                        std::setw(20) << " " << std::flush;
+                float accuracy = 0.f;
+                if (!data.matches((*item)->get_data()) || !has(**item, &accuracy)) {
+                    continue;
                 }
-
-                const items::ItemData& item_data = (*item)->get_data();
-
-                float acc = 0.f;
-                if ((item_data.has_armor_value != has_armor) || (item_data.
-                    has_damage_value != has_damage) || (item_data.stack_size == 1 &&
-                    is_multi_stack) || !has(**item, &acc)) { continue; }
-
-                const auto time_taken = std::chrono::duration_cast<
-                    std::chrono::milliseconds>(std::chrono::system_clock::now() - start);
-                if (verbose) {
-                    std::cout << std::format(
-                        "\r\t[-] Determined '{}' within {} and {}% accuracy.",
-                        (*item)->get_name(), time_taken,
-                        acc * 100) << std::setw(20) << " " << std::endl;
+                if (accuracy > best_match_accuracy) {
+                    best_match = *item;
+                    best_match_accuracy = accuracy;
+                    if (accuracy > 0.97f) {
+                        found = true;
+                        break;
+                    }
                 }
-
-                item_out = new items::Item(*(*item), is_blueprint(item_data),
-                                           get_quality());
-                return true;
             }
         }
-        if (verbose) { std::cerr << "\r\t[!] Failed to determine the item.\n"; }
-        return false;
-    }
 
+        if (!best_match) { return nullptr; }
+
+        const auto time_taken = std::chrono::duration_cast<std::chrono::milliseconds>(
+            std::chrono::system_clock::now() - start);
+
+        return std::make_unique<items::Item>(*best_match,
+                                             is_blueprint(best_match->get_data()),
+                                             get_quality());
+    }
 
     bool Slot::has_armor_value() const
     {
@@ -125,32 +138,51 @@ namespace asa::interfaces::components
                                       asa::resources::interfaces::damage, 0.8f);
     }
 
+    bool Slot::has_spoil_timer() const
+    {
+        const auto bar = get_spoil_or_durability_bar_area();
+        static constexpr window::Color spoil_color{0, 214, 161};
+        static constexpr window::Color spoiled_color{28, 110, 73};
+
+        const cv::Mat left = window::get_mask(bar, spoil_color, 20);
+        const cv::Mat spoiled = window::get_mask(bar, spoiled_color, 20);
+
+        return cv::countNonZero(left | spoiled) > 20;
+    }
+
+    bool Slot::has_durability() const
+    {
+        const auto bar = get_spoil_or_durability_bar_area();
+        static constexpr window::Color dura_color{1, 156, 136};
+        static constexpr window::Color dura_lost_color{6, 25, 38};
+
+        const cv::Mat left = window::get_mask(bar, dura_color, 20);
+        const cv::Mat lost = window::get_mask(bar, dura_lost_color, 20);
+
+        return cv::countNonZero(left | lost) > 20;
+    }
+
     bool Slot::is_stack() const
     {
-        static constexpr window::Color col(128, 231, 255);
-
-        const auto mask = window::get_mask(get_stack_size_area(), col, 20);
+        static constexpr window::Color stack_count_color{128, 231, 255};
+        const auto bar = get_stack_size_area();
+        const auto mask = window::get_mask(bar, stack_count_color, 20);
         return cv::countNonZero(mask) > 30;
     }
 
-    bool Slot::is_blueprint(items::ItemData data) const
+    bool Slot::is_blueprint(const items::ItemData& data) const
     {
-        // if the item should have durability, the blueprint doesnt have
-        // it meaning we can check for the durability bar to determine whether
-        // we got a blueprint version or a crafted one.
-        if (data.has_durability) {
-            static constexpr window::Color col(1, 156, 136);
-            const auto roi = get_spoil_or_durability_bar_area();
-            const auto mask = window::get_mask(roi, col, 20);
-            return cv::countNonZero(mask) < 30;
-        }
+        // Consumables, artifacts or resources do not have blueprint variants.
+        if (!has_blueprint_variant(data.type)) { return false; }
 
-        // blueprints always have 0.1 weight, so if the item has it then it should
-        // be a blueprint
+        // Blueprints do not have the durability bar that the crafted variant has.
+        if (data.has_durability) { return !has_durability(); }
+
+        // Blueprints always have 0.1 weight
         return window::match_template(get_weight_area(), resources::text::bp_weight);
     }
 
-    asa::items::ItemData::ItemQuality Slot::get_quality() const
+    items::ItemData::ItemQuality Slot::get_quality() const
     {
         const window::Rect quality_roi(area.x + 2, area.y + 60, 6, 6);
 
@@ -159,6 +191,42 @@ namespace asa::interfaces::components
             if (cv::countNonZero(mask) > 20) { return quality; }
         }
 
-        return asa::items::ItemData::ItemQuality::PRIMITIVE;
+        return items::ItemData::ItemQuality::PRIMITIVE;
+    }
+
+    Slot::PrederminationResult Slot::predetermine() const
+    {
+        PrederminationResult res;
+
+        // Only one of these can be true for any item
+        if (has_armor_value()) { res.has_armor_modifier = true; }
+        else if (has_damage_value()) { res.has_damage_modifier = true; }
+        else if (is_stack()) { res.is_stack = true; }
+
+        if (has_spoil_timer()) { res.has_spoil_bar = true; }
+        else if (has_durability()) { res.has_durability_bar = true; }
+
+        return res;
+    }
+
+    bool Slot::PrederminationResult::matches(const items::ItemData& data) const
+    {
+        // check modifiers
+        if (data.has_armor_value != this->has_armor_modifier || data.has_damage_value !=
+            this->has_damage_modifier) { return false; }
+
+        if ((data.stack_size == 1) && this->is_stack) { return false; }
+
+        if (data.has_spoil_timer != this->has_spoil_bar || data.has_durability != this->
+            has_durability_bar) { return false; }
+        return true;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const Slot::PrederminationResult& d)
+    {
+        return os << std::format(
+            "Armor: {}, damage: {}, stack: {}, spoils: {}, durability: {})",
+            d.has_armor_modifier, d.has_damage_modifier, d.is_stack, d.has_spoil_bar,
+            d.has_durability_bar);
     }
 }
