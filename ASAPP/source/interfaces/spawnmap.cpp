@@ -1,6 +1,9 @@
 #include "asapp/interfaces/spawnmap.h"
 #include "asapp/core/state.h"
 #include "asapp/game/resources.h"
+#include "asapp/entities/localplayer.h"
+#include "asapp/util/util.h"
+#include "asapp/interfaces/exceptions.h"
 
 
 namespace asa::interfaces

@@ -1,5 +1,5 @@
 #include "asapp/interfaces/baseinventory.h"
-#include "../util/util.h"
+#include "asapp/util/util.h"
 #include "asapp/core/state.h"
 #include "asapp/game/controls.h"
 #include "asapp/game/resources.h"

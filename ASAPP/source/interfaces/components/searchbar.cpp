@@ -1,6 +1,6 @@
 #include <iostream>
 #include "asapp/interfaces/components/searchbar.h"
-#include "../../util/util.h"
+#include "asapp/util/util.h"
 #include "asapp/core/state.h"
 #include "asapp/game/controls.h"
 #include "asapp/game/globals.h"

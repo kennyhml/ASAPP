@@ -1,5 +1,5 @@
 #include "asapp/interfaces/localinventory.h"
-#include "../util/util.h"
+#include "asapp/util/util.h"
 #include "asapp/game/controls.h"
 #include "asapp/game/settings.h"
 #include "asapp/interfaces/exceptions.h"

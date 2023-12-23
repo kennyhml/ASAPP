@@ -5,7 +5,7 @@
 #include <random>
 #include <opencv2/highgui.hpp>
 
-#include "../util/util.h"
+#include "asapp/util/util.h"
 #include "asapp/core/config.h"
 #include "asapp/core/state.h"
 #include "asapp/game/globals.h"

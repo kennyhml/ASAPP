@@ -1,5 +1,5 @@
 #include "asapp/entities/dinoent.h"
-#include "../util/util.h"
+#include "asapp/util/util.h"
 #include "asapp/core/state.h"
 
 void asa::entities::DinoEnt::exit()

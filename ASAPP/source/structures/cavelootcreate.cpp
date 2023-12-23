@@ -1,5 +1,5 @@
+#include "asapp/util/util.h"
 #include <iostream>
-#include "../util/util.h"
 #include "asapp/game/resources.h"
 #include "asapp/structures/cavelootcrate.h"
 
