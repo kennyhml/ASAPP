@@ -9,6 +9,8 @@ namespace asa::interfaces
         using BaseTravelMap::BaseTravelMap;
 
     private:
+        void pass_spawn_screen(bool in = true);
+      
         components::SearchBar searchbar{93, 941, 240, 50};
 
         components::Button new_survivor_button{1210, 948, 244, 42};
