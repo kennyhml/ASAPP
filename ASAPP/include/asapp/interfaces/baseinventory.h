@@ -221,6 +221,28 @@ namespace asa::interfaces
          */
         void toggle_folder_view();
 
+        /**
+         * @brief Determines all items in the given slots.
+         * 
+         * @tparam Size The size of the array i.e the amount of slots to get the item of. 
+         * @param start_index The slot index to start getting the items at.
+         * @param allowed_items Whitelist of allowed items, other items are not checked.
+         * @param allowed_categories Whitelist of allowed item types, others are not checked.
+         * 
+         * @return An array of the given size containing smart pointers to the items, or null.
+         */
+        template <std::size_t Size>
+        std::array<std::unique_ptr<items::Item>, Size> get_slots(
+            const int start_index = 0, std::vector<std::string>* allowed_items = nullptr,
+            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr) const
+        {
+            std::array<std::unique_ptr<items::Item>, Size> ret{};
+            for (int i = start_index; i < (start_index + Size); i++) {
+                ret[i] = std::move(slots[start_index + i].get_item());
+            }
+            return ret;
+        }
+
     protected:
         struct ManagementButton : components::Button
         {
