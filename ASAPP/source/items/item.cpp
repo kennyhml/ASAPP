@@ -10,7 +10,8 @@ namespace asa::items
     namespace
     {
         constexpr float SCALE_INV = 0.24f;
-        constexpr float SCALE_NOFIF = 0.11f;
+        constexpr float SCALE_NOTIF = 0.44f;
+        constexpr float SCALE_NOTIF_EXPORT = 0.11f;
 
         json load_raw(const std::string& name)
         {
@@ -32,14 +33,14 @@ namespace asa::items
         }
 
         void convert(const cv::Mat& icon, cv::Mat& icon_rgb, cv::Mat& icon_rgba,
-                     const bool is_exported, const float scale)
+                     const bool resize, const float scale)
         {
             // If the asset is directley exported from the game files (such as the devkit)
             // it will be 256x256 with an alpha channel for the transparent background. For
             // 1920x1080 the ideal scale-down-factor is x0.24, if we made the item ourselves
             // (because the devkit one is bad) this step should not be done as the self
             // cropped asset wont be 256x256 to begin with.
-            if (!is_exported) { icon.copyTo(icon_rgba); }
+            if (!resize) { icon.copyTo(icon_rgba); }
             else {
                 const cv::Size new_size(icon.cols * scale, icon.rows * scale);
                 cv::resize(icon, icon_rgba, new_size, 0, 0, cv::INTER_LINEAR);
@@ -115,7 +116,8 @@ namespace asa::items
     const cv::Mat& Item::get_notification_icon()
     {
         if (notif_icon_.empty()) {
-            convert(icon_, notif_icon_, rgba_notif_icon_, is_exported(), SCALE_NOFIF);
+            const float sc = is_exported() ? SCALE_NOTIF_EXPORT : SCALE_NOTIF;
+            convert(icon_, notif_icon_, rgba_notif_icon_, true, sc);
         }
         return notif_icon_;
     }
