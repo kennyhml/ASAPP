@@ -166,8 +166,11 @@ namespace asa::interfaces
     void BaseInventory::take_slot(const components::Slot& slot)
     {
         select_slot(slot);
-        window::press(settings::transfer_item, false, std::chrono::milliseconds(15));
-        core::sleep_for(std::chrono::milliseconds(50));
+        do {
+            window::press(settings::transfer_item, false, std::chrono::milliseconds(15));
+        }
+        while (!util::await([&slot]() -> bool { return !slot.is_hovered(); },
+                            std::chrono::seconds(5)));
     }
 
     void BaseInventory::close()
@@ -189,9 +192,12 @@ namespace asa::interfaces
     {
         assert_open(__func__);
 
-        const window::Point location = slot.area.get_random_location(5);
-        window::set_mouse_pos(location);
-        core::sleep_for(std::chrono::milliseconds(50));
+        do {
+            const window::Point location = slot.area.get_random_location(5);
+            window::set_mouse_pos(location);
+        }
+        while (!util::await([slot]() -> bool { return slot.is_hovered(); },
+                            std::chrono::seconds(2)));
     }
 
     void BaseInventory::drop_all()
