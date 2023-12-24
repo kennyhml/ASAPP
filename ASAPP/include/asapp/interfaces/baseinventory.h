@@ -230,18 +230,36 @@ namespace asa::interfaces
          * @param allowed_categories Whitelist of allowed item types, others are not checked.
          * 
          * @return An array of the given size containing smart pointers to the items, or null.
+         *
+         * TODO: Multithread it so that each slot is determined in its own thread.
          */
         template <std::size_t Size>
-        std::array<std::unique_ptr<items::Item>, Size> get_items(
+        [[nodiscard]] std::array<std::unique_ptr<items::Item>, Size> get_items(
             const int start_index = 0, std::vector<std::string>* allowed_items = nullptr,
             std::vector<items::ItemData::ItemType>* allowed_categories = nullptr) const
         {
+            assert_open(__func__);
             std::array<std::unique_ptr<items::Item>, Size> ret{};
             for (int i = start_index; i < (start_index + Size); i++) {
                 ret[i] = std::move(slots[start_index + i].get_item());
             }
             return ret;
         }
+
+        /**
+         * @brief Retrieves all items from the currently visible page.
+         *
+         * @param allowed_items Whitelist of allowed items, other items are not checked.
+         * @param allowed_categories Whitelist of allowed item types, others are not checked.
+         * 
+         * @return A vector containing unique pointers to all items  in the current page.
+         *
+         * @remarks When an empty slot is encountered, the evaluation is stopped and the
+         * result is returned. Otherwise the result is returned after the 36th slot.
+         */
+        [[nodiscard]] std::vector<std::unique_ptr<items::Item>> get_current_page_items(
+            std::vector<std::string>* allowed_items = nullptr,
+            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr) const;
 
     protected:
         struct ManagementButton : components::Button

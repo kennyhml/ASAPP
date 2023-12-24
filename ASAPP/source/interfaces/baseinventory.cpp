@@ -261,4 +261,17 @@ namespace asa::interfaces
     {
         if (!is_open()) { throw InterfaceNotOpenError(std::move(for_action), this); }
     }
+
+    std::vector<std::unique_ptr<items::Item>> BaseInventory::get_current_page_items(
+        std::vector<std::string>* allowed_items,
+        std::vector<items::ItemData::ItemType>* allowed_categories) const
+    {
+        assert_open(__func__);
+        std::vector<std::unique_ptr<items::Item>> ret{};
+
+        for (int i = 0; i < MAX_ITEMS_PER_PAGE && !slots[i].is_empty(); i++) {
+            ret.push_back(slots[i].get_item());
+        }
+        return ret;
+    }
 }
