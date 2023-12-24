@@ -251,6 +251,7 @@ namespace asa::interfaces
          *
          * @param allowed_items Whitelist of allowed items, other items are not checked.
          * @param allowed_categories Whitelist of allowed item types, others are not checked.
+         * @param num_threads The number of threads to use, default 5.
          * 
          * @return A vector containing unique pointers to all items  in the current page.
          *
@@ -259,7 +260,8 @@ namespace asa::interfaces
          */
         [[nodiscard]] std::vector<std::unique_ptr<items::Item>> get_current_page_items(
             std::vector<std::string>* allowed_items = nullptr,
-            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr) const;
+            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
+            int num_threads = 5) const;
 
     protected:
         struct ManagementButton : components::Button

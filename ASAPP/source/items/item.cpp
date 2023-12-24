@@ -1,4 +1,4 @@
-#include <iostream>
+#include <mutex>
 #include <opencv2/imgcodecs.hpp>
 #include "asapp/util/util.h"
 #include "asapp/items/item.h"
@@ -96,16 +96,22 @@ namespace asa::items
         return name_;
     }
 
+    inline std::mutex inv_icon_lock;
+
     const cv::Mat& Item::get_inventory_icon()
     {
+        std::lock_guard<std::mutex> lock(inv_icon_lock);
         if (inv_icon_.empty()) {
             convert(icon_, inv_icon_, rgba_inv_icon_, is_exported(), SCALE_INV);
         }
         return inv_icon_;
     }
 
+    inline std::mutex inv_icon_mask_lock;
+
     const cv::Mat& Item::get_inventory_icon_mask()
     {
+        std::lock_guard<std::mutex> lock(inv_icon_mask_lock);
         if (inv_icon_mask_.empty()) {
             if (rgba_inv_icon_.empty()) { get_inventory_icon(); }
             inv_icon_mask_ = util::mask_alpha_channel(rgba_inv_icon_);
@@ -113,8 +119,11 @@ namespace asa::items
         return inv_icon_mask_;
     }
 
+    inline std::mutex notif_icon_lock;
+
     const cv::Mat& Item::get_notification_icon()
     {
+        std::lock_guard<std::mutex> lock(notif_icon_lock);
         if (notif_icon_.empty()) {
             const float sc = is_exported() ? SCALE_NOTIF_EXPORT : SCALE_NOTIF;
             convert(icon_, notif_icon_, rgba_notif_icon_, true, sc);
@@ -122,8 +131,11 @@ namespace asa::items
         return notif_icon_;
     }
 
+    inline std::mutex notif_icon_mask_lock;
+
     const cv::Mat& Item::get_notification_icon_mask()
     {
+        std::lock_guard<std::mutex> lock(notif_icon_mask_lock);
         if (notif_icon_mask_.empty()) {
             if (rgba_notif_icon_.empty()) { get_notification_icon(); }
             notif_icon_mask_ = util::mask_alpha_channel(rgba_notif_icon_);

@@ -20,4 +20,11 @@ namespace util
     void set_clipboard(const std::string& term);
 
     cv::Mat mask_alpha_channel(const cv::Mat& src);
+
+    template <typename Cast>
+    Cast get_elapsed(std::chrono::system_clock::time_point start)
+    {
+        return std::chrono::duration_cast<Cast>(
+            std::chrono::system_clock::now() - start);
+    }
 }

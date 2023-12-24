@@ -1,4 +1,7 @@
 #include "asapp/interfaces/baseinventory.h"
+
+#include <iostream>
+
 #include "asapp/util/util.h"
 #include "asapp/core/state.h"
 #include "asapp/game/controls.h"
@@ -264,14 +267,39 @@ namespace asa::interfaces
 
     std::vector<std::unique_ptr<items::Item>> BaseInventory::get_current_page_items(
         std::vector<std::string>* allowed_items,
-        std::vector<items::ItemData::ItemType>* allowed_categories) const
+        std::vector<items::ItemData::ItemType>* allowed_categories,
+        const int num_threads) const
     {
         assert_open(__func__);
-        std::vector<std::unique_ptr<items::Item>> ret{};
 
-        for (int i = 0; i < MAX_ITEMS_PER_PAGE && !slots[i].is_empty(); i++) {
-            ret.push_back(slots[i].get_item());
+        const auto start = std::chrono::system_clock::now();
+        std::cout << "[+] Getting all items of the current page...\n";
+        // get the amount of slots that we need to fill, this makes multithreading the
+        // determination process easier as we can assign one thread per slot from the start
+        int num_slots_refilled = 0;
+        for (const auto& slot : slots) {
+            if (slot.is_empty()) { break; }
+            num_slots_refilled++;
         }
+
+        std::cout << "\t[-] " << num_slots_refilled << " slots to be determined...\n";
+        // allocate a vector of the size we need
+        std::vector<std::unique_ptr<items::Item>> ret(num_slots_refilled);
+        std::vector<std::thread> threads;
+        threads.reserve(num_threads);
+
+        for (int i = 0; i < num_threads; i++) {
+            threads.emplace_back(
+                [this, i, &ret, num_threads, num_slots_refilled]() -> void {
+                    for (int j = i; j < num_slots_refilled; j += num_threads) {
+                        ret[j] = slots[j].get_item();
+                    }
+                });
+        }
+
+        for (auto& thread : threads) { thread.join(); }
+        std::cout << "\t[-] Finished. (" << util::get_elapsed<std::chrono::seconds>(start)
+            << ")\n";
         return ret;
     }
 }
