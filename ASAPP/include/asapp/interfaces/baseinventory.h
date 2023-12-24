@@ -1,5 +1,7 @@
 #pragma once
 #include <array>
+#include <iostream>
+#include <asapp/util/util.h>
 #include "iinterface.h"
 #include "asapp/game/window.h"
 #include "components/button.h"
@@ -228,6 +230,7 @@ namespace asa::interfaces
          * @param start_index The slot index to start getting the items at.
          * @param allowed_items Whitelist of allowed items, other items are not checked.
          * @param allowed_categories Whitelist of allowed item types, others are not checked.
+         * @param num_threads The number of threads to use, default 5.
          * 
          * @return An array of the given size containing smart pointers to the items, or null.
          *
@@ -236,13 +239,30 @@ namespace asa::interfaces
         template <std::size_t Size>
         [[nodiscard]] std::array<std::unique_ptr<items::Item>, Size> get_items(
             const int start_index = 0, std::vector<std::string>* allowed_items = nullptr,
-            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr) const
+            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
+            int num_threads = 5) const
         {
             assert_open(__func__);
-            std::array<std::unique_ptr<items::Item>, Size> ret{};
-            for (int i = start_index; i < (start_index + Size); i++) {
-                ret[i] = std::move(slots[start_index + i].get_item());
+            const auto start = std::chrono::system_clock::now();
+            std::cout << "[+] Getting items from " << start_index << " to " << start_index
+                + Size << "\n";
+
+            std::array<std::unique_ptr<items::Item>, Size> ret;
+            std::vector<std::thread> threads;
+            threads.reserve(num_threads);
+
+            for (int i = 0; i < num_threads; i++) {
+                threads.emplace_back([this, i, &ret, num_threads, start_index]() -> void {
+                    for (int j = i; j < Size; j += num_threads) {
+                        if (j > Size) { break; }
+                        ret[j] = std::move(slots[j + start_index].get_item());
+                    }
+                });
             }
+
+            for (auto& thread : threads) { thread.join(); }
+            std::cout << "\t[-] Finished. (" << util::get_elapsed<
+                std::chrono::seconds>(start) << ")\n";
             return ret;
         }
 

@@ -42,7 +42,6 @@ namespace asa::items
         std::vector<Item**> all_ammos;
     }
 
-
     bool init()
     {
         const auto start = std::chrono::system_clock::now();

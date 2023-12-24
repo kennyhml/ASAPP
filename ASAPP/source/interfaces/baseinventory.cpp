@@ -1,8 +1,4 @@
 #include "asapp/interfaces/baseinventory.h"
-
-#include <iostream>
-
-#include "asapp/util/util.h"
 #include "asapp/core/state.h"
 #include "asapp/game/controls.h"
 #include "asapp/game/resources.h"
@@ -283,7 +279,6 @@ namespace asa::interfaces
         }
 
         std::cout << "\t[-] " << num_slots_refilled << " slots to be determined...\n";
-        // allocate a vector of the size we need
         std::vector<std::unique_ptr<items::Item>> ret(num_slots_refilled);
         std::vector<std::thread> threads;
         threads.reserve(num_threads);
