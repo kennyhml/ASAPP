@@ -229,7 +229,7 @@ namespace asa::window
 
         return rect;
     }
-    
+
     cv::Mat screenshot(const Rect& region, HWND window)
     {
         SetProcessDPIAware();
@@ -263,7 +263,8 @@ namespace asa::window
         cv::Mat result;
         cvtColor(mat, result, cv::COLOR_RGBA2RGB);
 
-        if (window == hWnd && settings::fullscreen_mode == settings::FullscreenMode::WINDOWED) {
+        if (window == hWnd && settings::fullscreen_mode ==
+            settings::FullscreenMode::WINDOWED) {
             result = result(cv::Rect(WINDOWED_PADDING, WINDOWED_PADDING_TOP,
                                      window_width - WINDOWED_PADDING * 2,
                                      window_height - WINDOWED_PADDING_TOP -
@@ -291,30 +292,35 @@ namespace asa::window
 
     bool has_crashed_popup()
     {
-        if (FindWindowExA(nullptr, nullptr, nullptr, "The UE-ShooterGame Game has crashed and will close") != nullptr) {
+        if (FindWindowExA(nullptr, nullptr, nullptr,
+                          "The UE-ShooterGame Game has crashed and will close") !=
+            nullptr) {
             std::cout << "UE-ShooterGame crash window found" << std::endl;
             return true;
-        } else if (FindWindowA(nullptr, "Crash!")) {
+        }
+        if (FindWindowA(nullptr, "Crash!")) {
             std::cout << "Crash window found" << std::endl;
             return true;
         }
         return false;
     }
 
-    void set_mouse_pos(const Point& location) {
-      auto r = get_window_rect();
-      SetCursorPos(location.x + r.left, location.y + r.top); 
+    void set_mouse_pos(const Point& location)
+    {
+        auto r = get_window_rect();
+        SetCursorPos(location.x + r.left, location.y + r.top);
     }
 
-    void set_mouse_pos(int x, int y) { 
-      auto r = get_window_rect();
-      SetCursorPos(x + r.left, y + r.top); 
+    void set_mouse_pos(int x, int y)
+    {
+        auto r = get_window_rect();
+        SetCursorPos(x + r.left, y + r.top);
     }
 
     void click_at(const Point& position, controls::MouseButton button,
                   std::chrono::milliseconds delay)
     {
-        if (!globals::useWindowInput) {
+        if (!globals::use_window_input) {
             set_mouse_pos(position);
             core::sleep_for(delay);
             mouse_press(button);
@@ -324,37 +330,43 @@ namespace asa::window
 
     void down(const settings::ActionMapping& input, std::chrono::milliseconds delay)
     {
-        globals::useWindowInput ? post_down(input, delay) : controls::down(input, delay);
+        globals::use_window_input
+            ? post_down(input, delay)
+            : controls::down(input, delay);
     }
 
     void up(const settings::ActionMapping& input, std::chrono::milliseconds delay)
     {
-        globals::useWindowInput ? post_up(input, delay) : controls::release(input, delay);
+        globals::use_window_input
+            ? post_up(input, delay)
+            : controls::release(input, delay);
     }
 
     void press(const settings::ActionMapping& input, bool catchCursor,
                std::chrono::milliseconds delay)
     {
-        globals::useWindowInput
+        globals::use_window_input
             ? post_press(input, catchCursor, delay)
             : controls::press(input, delay);
     }
 
     void down(const std::string& key, std::chrono::milliseconds delay)
     {
-        globals::useWindowInput
+        globals::use_window_input
             ? post_key_down(key, delay)
             : controls::key_down(key, delay);
     }
 
     void up(const std::string& key, std::chrono::milliseconds delay)
     {
-        globals::useWindowInput ? post_key_up(key, delay) : controls::key_up(key, delay);
+        globals::use_window_input
+            ? post_key_up(key, delay)
+            : controls::key_up(key, delay);
     }
 
     void press(const std::string& key, bool catchCursor, std::chrono::milliseconds delay)
     {
-        globals::useWindowInput
+        globals::use_window_input
             ? post_key_press(key, catchCursor, delay)
             : controls::key_press(key, delay);
     }
@@ -489,22 +501,25 @@ namespace asa::window
             SetCursorPos(previousPosition.x, previousPosition.y);
         }
     }
-    
+
     void post_close()
     {
-        if (const auto hwnd = FindWindowExA(nullptr, nullptr, nullptr, "The UE-ShooterGame Game has crashed and will close"); hwnd != nullptr) {
-          std::cout << "Closed crash popup" << std::endl;
-          PostMessageW(hwnd, WM_CLOSE, 0, 0);
+        if (const auto hwnd = FindWindowExA(nullptr, nullptr, nullptr,
+                                            "The UE-ShooterGame Game has crashed and will close")
+            ; hwnd != nullptr) {
+            std::cout << "Closed crash popup" << std::endl;
+            PostMessageW(hwnd, WM_CLOSE, 0, 0);
         }
-  
+
         if (const auto hwnd = FindWindowA(nullptr, "Crash!"); hwnd != nullptr) {
-          std::cout << "Closed crash popup" << std::endl;
-          PostMessageW(hwnd, WM_CLOSE, 0, 0);
+            std::cout << "Closed crash popup" << std::endl;
+            PostMessageW(hwnd, WM_CLOSE, 0, 0);
         }
-      
-        if (const auto hwnd = FindWindowA("UnrealWindow", "ArkAscended"); hwnd != nullptr) {
-          std::cout << "Closed game window" << std::endl;
-          PostMessageW(hwnd, WM_CLOSE, 0, 0);
+
+        if (const auto hwnd = FindWindowA("UnrealWindow", "ArkAscended"); hwnd !=
+            nullptr) {
+            std::cout << "Closed game window" << std::endl;
+            PostMessageW(hwnd, WM_CLOSE, 0, 0);
         }
     }
 }

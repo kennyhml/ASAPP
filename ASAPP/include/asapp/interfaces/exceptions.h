@@ -35,4 +35,15 @@ namespace asa::interfaces
     public:
         ReceivingRemoteInventoryTimeoutError(const IInterface* t_interface);
     };
+
+    /**
+     * @brief Thrown when an action is attempted on an interface that requires
+     * the it to be open, but it was not.
+     */
+    class InterfaceNotOpenError : public InterfaceError
+    {
+    public:
+        InterfaceNotOpenError(std::string t_attempted_action,
+                              const IInterface* t_interface);
+    };
 }

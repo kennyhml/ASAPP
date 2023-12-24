@@ -2,5 +2,5 @@
 
 namespace asa::globals
 {
-    inline bool useWindowInput = false;
+    inline bool use_window_input = false;
 }

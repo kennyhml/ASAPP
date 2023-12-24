@@ -14,7 +14,7 @@ namespace asa::interfaces
         {
             using Slot::Slot;
 
-            window::Rect get_slot_description_area()
+            window::Rect get_slot_description_area() const
             {
                 return {area.x, area.y + 68, 87, 17};
             }

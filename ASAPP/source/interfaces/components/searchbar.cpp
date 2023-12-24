@@ -29,12 +29,14 @@ namespace asa::interfaces::components
         core::sleep_for(std::chrono::milliseconds(200));
         this->searching = true;
 
-        if (!globals::useWindowInput) {
+        if (!globals::use_window_input) {
             util::set_clipboard(term);
             controls::key_combination_press("ctrl", "v");
         }
         else {
-            for (auto c : term) { if (globals::useWindowInput) { window::post_char(c); } }
+            for (auto c : term) {
+                if (globals::use_window_input) { window::post_char(c); }
+            }
         }
 
         if (!util::await([this]() { return this->has_text_entered(); },
@@ -64,7 +66,7 @@ namespace asa::interfaces::components
     {
         this->press();
 
-        if (globals::useWindowInput) {
+        if (globals::use_window_input) {
             for (int i = 0; i < last_searched_term.size(); i++) {
                 window::post_key_press("BackSpace", false);
                 window::post_key_press("Delete", false);

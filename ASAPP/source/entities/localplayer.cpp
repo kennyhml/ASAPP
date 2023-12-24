@@ -276,7 +276,7 @@ namespace asa::entities
             core::sleep_for(std::chrono::milliseconds(500));
         }
 
-        get_inventory()->equip(item, slot);
+        get_inventory()->equip(*item, slot);
         if (!wasInventoryOpen) { get_inventory()->close(); }
     }
 

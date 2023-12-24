@@ -1,6 +1,5 @@
 #include "asapp/interfaces/exceptions.h"
 #include <format>
-#include "asapp/util/util.h"
 #include "asapp/interfaces/iinterface.h"
 
 namespace asa::interfaces
@@ -22,4 +21,10 @@ namespace asa::interfaces
     ReceivingRemoteInventoryTimeoutError::ReceivingRemoteInventoryTimeoutError(
         const IInterface* t_interface) : InterfaceError(
         t_interface, std::format("Timed out receing remote inventory")) {};
+
+    InterfaceNotOpenError::InterfaceNotOpenError(std::string t_attempted_action,
+                                                 const IInterface* t_interface) :
+        InterfaceError(t_interface,
+                       std::format("Attempted to execute '{}' on a closed interface",
+                                   std::move(t_attempted_action))) {}
 }
