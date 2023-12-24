@@ -49,6 +49,8 @@ namespace asa::items
         explicit ItemData(const std::string& t_name, const json& t_data,
                           bool t_is_blueprint = false, ItemQuality t_quality = PRIMITIVE);
 
+        bool operator==(const ItemData&) const = default;
+
         std::filesystem::path icon_path;
         ItemType type;
         ItemQuality quality;

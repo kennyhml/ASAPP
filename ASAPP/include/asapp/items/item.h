@@ -32,6 +32,11 @@ namespace asa::items
 
         Item(const Item& t_other) = default;
 
+        bool operator==(const Item& other) const
+        {
+            return this->name_ == other.name_ && this->data_ == other.data_;
+        }
+
         /**
          * @brief Gets a view at the data of the item.
          *
