@@ -6,94 +6,90 @@
 
 namespace asa::interfaces
 {
-    bool ServerSelect::is_best_result_selected()
+    bool ServerSelect::is_best_result_selected() const
     {
-        static window::Color selectedColor(128, 64, 2);
-        static window::Color joinModsColor(135, 79, 23);
-        static window::Color hoveredSelectedColor(83, 39, 1);
-        cv::Mat mask = window::get_mask(best_result.area, selectedColor, 15);
-        if (cv::countNonZero(mask) > 150) { return true; }
-        
-        // If the server has mods enabled selecting it will bring a screen up
-        mask = window::get_mask(join_button_mods_popup.area, joinModsColor, 15);
-        if (cv::countNonZero(mask) > 150) { return true; }
+        static constexpr window::Color selected{128, 64, 2};
+        static constexpr window::Color hovered{83, 39, 1};
+        static constexpr window::Color mods_color{135, 79, 23};
 
-        mask = window::get_mask(best_result.area, hoveredSelectedColor, 15);
-        return cv::countNonZero(mask) > 150;
+        if (cv::countNonZero(window::get_mask(best_result_.area, selected, 15)) > 150) {
+            return true;
+        }
+        // If the server has mods enabled selecting it will bring a screen up
+        if (cv::countNonZero(
+            window::get_mask(join_button_mods_popup_.area, mods_color, 15)) > 150) {
+            return true;
+        }
+        return cv::countNonZero(window::get_mask(best_result_.area, hovered, 15)) > 150;
     }
 
     bool ServerSelect::is_open() const
     {
-        return window::match_template(refresh_button.area,
+        return window::match_template(refresh_button_.area,
                                       resources::interfaces::refresh);
     }
 
     bool ServerSelect::can_join() const
     {
-        static window::Color joinable_color(153, 77, 4);
-        auto masked = window::get_mask(join_button.area, joinable_color, 20);
-
-        return cv::countNonZero(masked) > 200;
+        static constexpr window::Color joinable{153, 77, 4};
+        return cv::countNonZero(window::get_mask(join_button_.area, joinable, 20)) > 200;
     }
 
     bool ServerSelect::can_join_last_played() const
     {
-        static window::Color last_played_color(142, 219, 231);
-        auto masked = window::get_mask(join_last_played_button.area, last_played_color,
-                                       20);
-
-        return cv::countNonZero(masked) > 50;
+        static constexpr window::Color last_played_color{142, 219, 231};
+        return cv::countNonZero(
+            window::get_mask(join_last_played_button_.area, last_played_color, 20)) > 50;
     }
 
     bool ServerSelect::is_joining_server() const
     {
-        static window::Color red(255, 0, 0);
-        static window::Color text(193, 245, 255);
-        cv::Mat mask = window::get_mask(joining_text_2, red, 20);
+        static constexpr window::Color red{255, 0, 0};
+        static constexpr window::Color text{193, 245, 255};
+
+        // TODO: This could mistaken a connection timeout error for joining
+        cv::Mat mask = window::get_mask(joining_text_2_, red, 20);
         if (cv::countNonZero(mask) > 150) { return true; }
 
-        mask = window::get_mask(joining_text, text, 20);
+        mask = window::get_mask(joining_text_, text, 20);
         return cv::countNonZero(mask) > 150;
     }
 
-    void ServerSelect::join_server(const std::string& serverName)
+    void ServerSelect::join_server(const std::string& name)
     {
-        std::cout << "[+] Joining server " << serverName << "..." << std::endl;
-        searchbar.search_for(serverName);
+        std::cout << "[+] Joining server " << name << "...\n";
+        searchbar_.search_for(name);
         core::sleep_for(std::chrono::seconds(3));
 
         while (!is_best_result_selected()) {
-            best_result.press();
+            best_result_.press();
             core::sleep_for(std::chrono::milliseconds(300));
         }
-        
-        std::cout << "\t[-] Best search result selected." << std::endl;
+
+        std::cout << "\t[-] Best search result selected.\n";
         while (!is_joining_server()) {
-            if (server_has_mods_enabled()) {
-                join_button_mods_popup.press();
-            } else {
-                join_button.press();
-            }
+            if (server_has_mods_enabled()) { join_button_mods_popup_.press(); }
+            else { join_button_.press(); }
             core::sleep_for(std::chrono::seconds(1));
         }
-        std::cout << "\t[-] Now joining session..." << std::endl;
+        std::cout << "\t[-] Now joining session...\n";
         if (!util::await([this]() { return !is_open(); }, std::chrono::seconds(60))) {
             throw std::runtime_error("Failed to join server within 60 seconds.");
         }
-        std::cout << "[+] Server joined successfully." << std::endl;
+        std::cout << "[+] Server joined successfully.\n";
     }
 
     void ServerSelect::refresh()
     {
-        refresh_button.press();
+        refresh_button_.press();
         core::sleep_for(std::chrono::seconds(1));
     }
 
-    bool ServerSelect::server_has_mods_enabled() const 
+    bool ServerSelect::server_has_mods_enabled() const
     {
         // If the server has mods enabled selecting it will bring a screen up
-        static window::Color joinModsColor(135, 79, 23);
-        auto mask = window::get_mask(join_button_mods_popup.area, joinModsColor, 15);
-        return cv::countNonZero(mask) > 150;
+        static window::Color join_mods{135, 79, 23};
+        return cv::countNonZero(
+            window::get_mask(join_button_mods_popup_.area, join_mods, 15)) > 150;
     }
 }
