@@ -232,7 +232,7 @@ namespace asa::interfaces
          * @return An array of the given size containing smart pointers to the items, or null.
          */
         template <std::size_t Size>
-        std::array<std::unique_ptr<items::Item>, Size> get_slots(
+        std::array<std::unique_ptr<items::Item>, Size> get_items(
             const int start_index = 0, std::vector<std::string>* allowed_items = nullptr,
             std::vector<items::ItemData::ItemType>* allowed_categories = nullptr) const
         {
