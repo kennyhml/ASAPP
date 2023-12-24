@@ -38,11 +38,25 @@ namespace asa::interfaces::components
         [[nodiscard]] window::Rect get_weight_area() const;
 
         /**
+         * @brief Computes the rect where the weight value is displayed for this slot.
+         * 
+         * @return A rectangle containing the x, y, width and height of the weight value.
+         */
+        [[nodiscard]] window::Rect get_hovered_area() const;
+
+        /**
          * @brief Determines whether the slot is empty or has an item in it.
          * 
          * @return True if the slot is empty, false otherwise.
          */
         [[nodiscard]] bool is_empty() const;
+
+        /**
+         * @brief Computes the rect of the stack size value for this slot.
+         * 
+         * @return A rectangle containing the x, y, width and height of the stack size area.
+         */
+        [[nodiscard]] bool is_hovered() const;
 
         /**
          * @brief Determines whether a given item is located inside this slot.

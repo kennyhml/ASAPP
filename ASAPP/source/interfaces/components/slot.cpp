@@ -78,11 +78,24 @@ namespace asa::interfaces::components
         return {area.x + 46, area.y + 69, 42, 14};
     }
 
+    window::Rect Slot::get_hovered_area() const
+    {
+        return {area.x - 15, area.y - 15, area.width + 30, area.height + 30};
+    }
+
     bool Slot::is_empty() const
     {
         static constexpr window::Color weight_text_color{128, 231, 255};
         const cv::Mat masked = get_mask(get_weight_area(), weight_text_color, 35);
         return countNonZero(masked) < 10;
+    }
+
+    bool Slot::is_hovered() const
+    {
+        static constexpr window::Color hovered_white{255, 255, 255};
+        const auto roi = get_hovered_area();
+
+        return cv::countNonZero(window::get_mask(roi, hovered_white, 20)) > 100;
     }
 
     bool Slot::has(items::Item& item, float* accuracy_out) const
