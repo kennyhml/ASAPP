@@ -1,12 +1,13 @@
 #include "asapp/entities/exceptions.h"
+#include "asapp/entities/localplayer.h"
 
 namespace asa::entities
 {
     EntityError::EntityError(const BaseEntity* t_entity) :
-        info("Unspecified EntityError"), entity(entity) {};
+        info("Unspecified EntityError"), entity(t_entity) {};
 
     EntityError::EntityError(const BaseEntity* t_entity, std::string t_info) :
-        info("EntityError: " + info), entity(entity) {};
+        info("EntityError: " + std::move(t_info)), entity(t_entity) {};
 
     const char* EntityError::what() const noexcept { return info.c_str(); }
 
@@ -18,4 +19,7 @@ namespace asa::entities
 
     EntityNotMounted::EntityNotMounted(const DinoEnt* mount) : EntityError(
         mount, "Failed to mount " + mount->get_name()) {};
+
+    SuicideFailedError::SuicideFailedError() : EntityError(
+        local_player.get(), "Failed to suicide.") {}
 }

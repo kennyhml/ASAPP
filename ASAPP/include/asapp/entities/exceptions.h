@@ -36,4 +36,10 @@ namespace asa::entities
     public:
         EntityNotMounted(const DinoEnt*);
     };
+
+    class SuicideFailedError : public EntityError
+    {
+    public:
+        SuicideFailedError();
+    };
 }

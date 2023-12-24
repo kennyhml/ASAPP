@@ -35,7 +35,7 @@ namespace asa::interfaces
          * 
          * @return True if an item was removed, false otherwise.  
          */
-        [[nodiscard]] static bool item_removed(const window::Rect& area) const;
+        [[nodiscard]] static bool item_removed(const window::Rect& area);
 
         /**
          * @brief Checks whether an item was added in the given area
@@ -44,7 +44,7 @@ namespace asa::interfaces
          * 
          * @return True if an item was added, false otherwise.  
          */
-        [[nodiscard]] static bool item_added(const window::Rect& area) const;
+        [[nodiscard]] static bool item_added(const window::Rect& area);
         [[nodiscard]] bool item_added(items::Item&, window::Rect* roi_out) const;
         [[nodiscard]] bool item_removed(items::Item&, window::Rect* roi_out) const;
         [[nodiscard]] bool transferred_item_into_dedicated_storage() const;

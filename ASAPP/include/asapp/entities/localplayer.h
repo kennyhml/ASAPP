@@ -1,7 +1,6 @@
 #pragma once
 #include "playerent.h"
 #include "asapp/interfaces/localinventory.h"
-#include "asapp/interfaces/spawnmap.h"
 #include "asapp/structures/basestructure.h"
 #include "asapp/structures/container.h"
 #include "asapp/structures/simplebed.h"
@@ -12,8 +11,8 @@ namespace asa::entities
     class LocalPlayer : public PlayerEnt
     {
     public:
-        explicit LocalPlayer(std::unique_ptr<interfaces::LocalInventory> t_inventory) : PlayerEnt(
-            "You", std::move(t_inventory)) {};
+        explicit LocalPlayer(std::unique_ptr<interfaces::LocalInventory> t_inventory) :
+            PlayerEnt("You", std::move(t_inventory)) {};
 
         interfaces::LocalInventory* get_inventory() const override;
 
@@ -21,18 +20,18 @@ namespace asa::entities
         [[nodiscard]] bool is_out_of_water() const;
         [[nodiscard]] bool is_out_of_food() const;
         [[nodiscard]] bool is_overweight() const;
-        [[nodiscard]] bool received_item(items::Item* = nullptr) const;
-        [[nodiscard]] bool deposited_item(items::Item* = nullptr) const;
+        [[nodiscard]] bool received_item(items::Item&) const;
+        [[nodiscard]] bool deposited_item(items::Item&) const;
         [[nodiscard]] bool is_in_spawn_animation() const;
         [[nodiscard]] bool is_in_travel_screen() const;
         [[nodiscard]] bool can_access_bed() const;
         [[nodiscard]] bool can_access_inventory() const;
         [[nodiscard]] bool can_use_default_teleport() const;
 
-        bool deposit_into_dedi(items::Item*, int* depositedAmountOut);
-        bool withdraw_from_dedi(items::Item*, int* withdrawAmountOut);
-        bool get_amount_added(items::Item&, int& amountOut);
-        bool get_amount_removed(items::Item&, int& amountOut);
+        bool deposit_into_dedi(items::Item&, int* amount_out);
+        bool withdraw_from_dedi(items::Item&, int* amount_out);
+        bool get_amount_added(items::Item&, int& amount_out);
+        bool get_amount_removed(items::Item&, int& amount_out);
 
         bool can_access(const structures::BaseStructure&) const;
         bool can_access(const entities::BaseEntity&) const;
@@ -42,7 +41,7 @@ namespace asa::entities
         void access(const structures::InteractableStructure&) const;
 
         void fast_travel_to(const structures::SimpleBed&);
-        void teleport_to(const structures::Teleporter&, bool isDefault = false);
+        void teleport_to(const structures::Teleporter&, bool is_default = false);
         void lay_on(const structures::SimpleBed&);
         void get_off_bed();
         void suicide();

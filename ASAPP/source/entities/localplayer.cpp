@@ -47,12 +47,12 @@ namespace asa::entities
         return interfaces::hud->is_player_overweight();
     }
 
-    bool LocalPlayer::received_item(items::Item* item) const
+    bool LocalPlayer::received_item(items::Item& item) const
     {
         return interfaces::hud->item_added(item, nullptr);
     }
 
-    bool LocalPlayer::deposited_item(items::Item* item) const
+    bool LocalPlayer::deposited_item(items::Item& item) const
     {
         return interfaces::hud->item_removed(item, nullptr);
     }
@@ -86,55 +86,63 @@ namespace asa::entities
         return interfaces::hud->can_default_teleport();
     }
 
-    bool LocalPlayer::deposit_into_dedi(items::Item* item, int* depositedAmountOut)
+    bool LocalPlayer::deposit_into_dedi(items::Item& item, int* amount_out)
     {
-        auto deposited = [this, item, depositedAmountOut]() {
-            if (item && depositedAmountOut) {
-                return get_amount_removed(*item, *depositedAmountOut);
-            }
+        auto deposited = [this, &item, amount_out]() -> bool {
+            if (amount_out) { return get_amount_removed(item, *amount_out); }
             return deposited_item(item);
         };
 
-        do { window::press(settings::use); }
+        const auto start = std::chrono::system_clock::now();
+        do {
+            window::press(settings::use);
+            if (util::timedout(start, std::chrono::seconds(30))) {
+                throw structures::StructureError(
+                    nullptr, std::format("Failed to deposit '{}' into dedicated storage.",
+                                         item.get_name()));
+            }
+        }
         while (!util::await(deposited, std::chrono::seconds(5)));
-
         return true;
     }
 
-    bool LocalPlayer::withdraw_from_dedi(items::Item* item, int* withdrawnAmountOut)
+    bool LocalPlayer::withdraw_from_dedi(items::Item& item, int* amount_out)
     {
         return false;
     }
 
-    bool LocalPlayer::get_amount_added(items::Item& item, int& amountOut)
+    bool LocalPlayer::get_amount_added(items::Item& item, int& amount_out)
     {
-        return interfaces::hud->count_items_added(item, amountOut);
+        return interfaces::hud->count_items_added(item, amount_out);
     }
 
-    bool LocalPlayer::get_amount_removed(items::Item& item, int& amountOut)
+    bool LocalPlayer::get_amount_removed(items::Item& item, int& amount_out)
     {
-        return interfaces::hud->count_items_removed(item, amountOut);
+        return interfaces::hud->count_items_removed(item, amount_out);
     }
 
     void LocalPlayer::suicide()
     {
-        std::cout << "[+] Suiciding with implant..." << std::endl;
+        const auto start = std::chrono::system_clock::now();
+        std::cout << "[+] Suiciding with implant...\n";
 
         get_inventory()->open();
-        mouse_press(controls::LEFT);
+        controls::mouse_press(controls::LEFT);
         core::sleep_for(std::chrono::milliseconds(100));
         inventory->select_slot(0);
 
         std::cout << "\t[-] Waiting for implant cooldown... ";
         core::sleep_for(std::chrono::seconds(6));
-        std::cout << "Done." << std::endl;
-
+        std::cout << "Done.\n";
         do {
+            if (util::timedout(start, std::chrono::seconds(30))) {
+                throw SuicideFailedError();
+            }
             window::press(settings::use);
             core::sleep_for(std::chrono::seconds(3));
         }
         while (is_alive());
-        std::cout << "\t[-] Suicided successfully." << std::endl;
+        std::cout << "\t[-] Suicided successfully.\n";
     }
 
     bool LocalPlayer::can_access(const structures::BaseStructure&) const
@@ -149,21 +157,21 @@ namespace asa::entities
         // TODO: if ghud fails use the action wheel
     }
 
-    void LocalPlayer::access(const BaseEntity& ent) const
+    void LocalPlayer::access(const BaseEntity& entity) const
     {
-        if (ent.get_inventory()->is_open()) { return; }
+        if (entity.get_inventory()->is_open()) { return; }
 
         auto start = std::chrono::system_clock::now();
         do {
             window::press(settings::access_inventory, true);
             if (util::timedout(start, std::chrono::seconds(30))) {
-                throw EntityNotAccessed(&ent);
+                throw EntityNotAccessed(&entity);
             }
         }
-        while (!util::await([&ent]() { return ent.get_inventory()->is_open(); },
+        while (!util::await([&entity]() { return entity.get_inventory()->is_open(); },
                             std::chrono::seconds(5)));
 
-        ent.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
+        entity.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
 
     void LocalPlayer::access(const structures::Container& container) const
@@ -179,7 +187,7 @@ namespace asa::entities
     {
         if (structure._interface->is_open()) { return; }
 
-        auto start = std::chrono::system_clock::now();
+        const auto start = std::chrono::system_clock::now();
         do {
             window::press(structure.get_interact_key(), true);
             if (util::timedout(start, std::chrono::seconds(30))) {
@@ -199,16 +207,14 @@ namespace asa::entities
             access(bed);
             core::sleep_for(std::chrono::milliseconds(300));
         }
-
         bed.map->go_to(bed.name);
         pass_travel_screen();
     }
 
-    void LocalPlayer::teleport_to(const structures::Teleporter& tp, bool isDefault)
+    void LocalPlayer::teleport_to(const structures::Teleporter& tp, bool is_default)
     {
-        bool couldAccessBefore = can_access(tp);
-
-        if (!isDefault) {
+        const bool could_access_before = can_access(tp);
+        if (!is_default) {
             look_fully_down();
             access(tp);
             core::sleep_for(std::chrono::milliseconds(500));
@@ -221,7 +227,7 @@ namespace asa::entities
             while (!util::await([]() { return !interfaces::hud->can_default_teleport(); },
                                 std::chrono::seconds(5)));
         }
-        pass_teleport_screen(!couldAccessBefore);
+        pass_teleport_screen(!could_access_before);
     }
 
     void LocalPlayer::lay_on(const structures::SimpleBed& bed)

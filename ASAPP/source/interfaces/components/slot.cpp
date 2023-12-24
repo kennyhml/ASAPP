@@ -87,7 +87,7 @@ namespace asa::interfaces::components
 
     bool Slot::has(items::Item& item, float* accuracy_out) const
     {
-        const bool is_cached = cached_locs.contains(item.get_name());
+t        const bool is_cached = cached_locs.contains(item.get_name());
         window::Rect roi = area;
         if (is_cached) {
             // adjust the region of interest according to our cached rect

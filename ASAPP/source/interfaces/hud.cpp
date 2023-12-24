@@ -75,13 +75,13 @@ namespace asa::interfaces
         const std::vector<window::Rect> locations = window::locate_all_template(
             roi, item.get_notification_icon(), 0.75f, item.get_notification_icon_mask());
 
-        return std::ranges::any_of(locations.begin(), locations.end(),
-                                   [roi](const window::Rect& rect) -> bool {
-                                       return item_added({
-                                           roi.x + rect.x + 20, roi.y + rect.y - 10, 120,
-                                           25
-                                       });
-                                   });
+        auto got_added = [roi, roi_out](const window::Rect& r) -> bool {
+            const auto loc = window::Rect(roi.x + r.x + 20, roi.y + r.y - 10, 120, 25);
+            if (!item_added(loc)) { return false; }
+            if (roi_out) { *roi_out = loc; }
+            return true;
+        };
+        return std::ranges::any_of(locations.begin(), locations.end(), got_added);
     }
 
     bool HUD::item_removed(items::Item& item, window::Rect* roi_out) const
@@ -90,13 +90,13 @@ namespace asa::interfaces
         const std::vector<window::Rect> locations = window::locate_all_template(
             roi, item.get_notification_icon(), 0.75f, item.get_notification_icon_mask());
 
-        return std::ranges::any_of(locations.begin(), locations.end(),
-                                   [roi](const window::Rect& rect) -> bool {
-                                       return item_removed({
-                                           roi.x + rect.x + 20, roi.y + rect.y - 10, 120,
-                                           30
-                                       });
-                                   });
+        auto got_added = [roi, roi_out](const window::Rect& r) -> bool {
+            const auto loc = window::Rect(roi.x + r.x + 20, roi.y + r.y - 10, 120, 30);
+            if (!item_removed(loc)) { return false; }
+            if (roi_out) { *roi_out = loc; }
+            return true;
+        };
+        return std::ranges::any_of(locations.begin(), locations.end(), got_added);
     }
 
     bool HUD::count_items_added(items::Item& item, int& amount_out) const
@@ -141,7 +141,7 @@ namespace asa::interfaces
             return false;
         }
 
-        roi = {roi.x, roi.y, x_loc->x, roi.height};
+        roi = {roi.x - 3, roi.y, x_loc->x, roi.height + 3};
         cv::Mat mask = window::get_mask(roi, window::Color{255, 255, 255}, 50);
         window::set_tesseract_image(mask);
         window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_WORD);
@@ -170,12 +170,12 @@ namespace asa::interfaces
 
     float HUD::get_weight_amount() const { return 0; }
 
-    bool HUD::item_removed(const window::Rect& area) const
+    bool HUD::item_removed(const window::Rect& area)
     {
         return window::match_template(area, resources::text::removed);
     }
 
-    bool HUD::item_added(const window::Rect& area) const
+    bool HUD::item_added(const window::Rect& area)
     {
         return window::match_template(area, resources::text::added);
     }
