@@ -15,7 +15,7 @@ namespace asa::interfaces::components
             {asa::items::ItemData::ASCENDANT, window::Color{2, 167, 172}}
         };
 
-        constexpr int CACHED_LOC_PADDING = 2;
+        constexpr int CACHED_LOC_PADDING = 5;
         std::unordered_map<std::string, window::Rect> cached_locs{};
 
         bool has_blueprint_variant(const items::ItemData::ItemType type)
