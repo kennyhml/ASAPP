@@ -223,6 +223,7 @@
         <ClInclude Include="include\asapp\interfaces\basetravelmap.h"/>
         <ClInclude Include="include\asapp\interfaces\components\combobox.h"/>
         <ClInclude Include="include\asapp\interfaces\components\slot.h"/>
+        <ClInclude Include="include\asapp\interfaces\components\tooltip.h"/>
         <ClInclude Include="include\asapp\interfaces\dinoinfo.h"/>
         <ClInclude Include="include\asapp\interfaces\engrams.h"/>
         <ClInclude Include="include\asapp\interfaces\baseentityinfo.h"/>

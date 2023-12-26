@@ -1,11 +1,13 @@
 #pragma once
 #include "iinterfacecomponent.h"
+#include "tooltip.h"
 #include "asapp/items/item.h"
 
 namespace asa::interfaces::components
 {
     struct Slot : IInterfaceComponent
     {
+    public:
         Slot() : Slot(0, 0) {}
         Slot(const int t_x, const int t_y) : IInterfaceComponent(t_x, t_y, 86, 87) {}
 
@@ -43,6 +45,16 @@ namespace asa::interfaces::components
          * @return A rectangle containing the x, y, width and height of the weight value.
          */
         [[nodiscard]] window::Rect get_hovered_area() const;
+
+        /**
+         * @brief Gets the tooltip of a hovered item.
+         *
+         * @remarks If the slot is empty, a null pointer is returned immediately.
+         * @remarks The slot must be hovered and toggle tooltips on for this to succeed.
+         * 
+         * @return A pointer to the constructed tooltip or null pointer upon failure. 
+         */
+        [[nodiscard]] std::unique_ptr<ItemTooltip> get_tooltip() const;
 
         /**
          * @brief Determines whether the slot is empty or has an item in it.

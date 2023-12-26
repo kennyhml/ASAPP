@@ -1,4 +1,6 @@
 #include "asapp/interfaces/components/slot.h"
+
+#include <iostream>
 #include <opencv2/highgui.hpp>
 #include "asapp/items/items.h"
 
@@ -83,6 +85,33 @@ namespace asa::interfaces::components
         return {area.x - 15, area.y - 15, area.width + 30, area.height + 30};
     }
 
+    std::unique_ptr<ItemTooltip> Slot::get_tooltip() const
+    {
+        using contour = std::vector<cv::Point>;
+        static constexpr window::Color color{121, 244, 253};
+
+        if (is_empty() || !is_hovered()) { return nullptr; }
+        const cv::Mat mask = window::get_mask(window::Rect(0, 0, 1920, 1080), color, 10);
+        std::vector<contour> contours;
+        cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+        cv::Rect rect;
+        double max_rect = 0.0;
+        for (const auto& cont : contours) {
+            contour approxed;
+            cv::approxPolyDP(cont, approxed, 0.04 * cv::arcLength(cont, true), true);
+
+            // If the polygon has 4 vertices, it's likely a rectangle
+            if (approxed.size() != 4) { continue; }
+            if (const double area = cv::contourArea(approxed); area > max_rect) {
+                max_rect = area;
+                rect = cv::boundingRect(approxed);
+            }
+        }
+        if (rect.empty()) { return nullptr; }
+        return std::make_unique<ItemTooltip>(rect.x, rect.y, rect.width, rect.height);
+    }
+
     bool Slot::is_empty() const
     {
         static constexpr window::Color weight_text_color{128, 231, 255};
@@ -95,7 +124,7 @@ namespace asa::interfaces::components
         static constexpr window::Color hovered_white{255, 255, 255};
         const auto roi = get_hovered_area();
 
-        return cv::countNonZero(window::get_mask(roi, hovered_white, 20)) > 100;
+        return cv::countNonZero(window::get_mask(roi, hovered_white, 20)) > 200;
     }
 
     bool Slot::has(items::Item& item, float* accuracy_out) const
@@ -110,7 +139,6 @@ namespace asa::interfaces::components
             roi.width = cached_loc.width;
             roi.height = cached_loc.height;
         }
-
         cv::Mat src = window::screenshot(roi);
         cv::Mat templ = item.get_inventory_icon();
         const cv::Mat mask = item.get_inventory_icon_mask();
@@ -122,10 +150,8 @@ namespace asa::interfaces::components
             cv::cvtColor(src, src, cv::COLOR_RGB2GRAY);
             cv::cvtColor(templ, templ, cv::COLOR_RGB2GRAY);
         }
-
         const auto match = window::locate_template(src, templ, conf, mask, accuracy_out);
         if (!match.has_value()) { return false; }
-
         if (!is_cached) {
             // create a cachec location allowing some variance
             const window::Rect cached_loc(match->x - CACHED_LOC_PADDING,
@@ -140,7 +166,6 @@ namespace asa::interfaces::components
     std::unique_ptr<items::Item> Slot::get_item() const
     {
         if (is_empty()) { return nullptr; }
-
         const auto start = std::chrono::system_clock::now();
         const PrederminationResult data = predetermine();
         bool perf_match_found = false;
@@ -167,9 +192,7 @@ namespace asa::interfaces::components
                 }
             }
         }
-
         if (!best_match) { return nullptr; }
-
         const auto time_taken = std::chrono::duration_cast<std::chrono::milliseconds>(
             std::chrono::system_clock::now() - start);
 
@@ -242,7 +265,6 @@ namespace asa::interfaces::components
                 return quality;
             }
         }
-
         return items::ItemData::ItemQuality::NONE;
     }
 
@@ -254,10 +276,8 @@ namespace asa::interfaces::components
         if (has_armor_value()) { res.has_armor_modifier = true; }
         else if (has_damage_value()) { res.has_damage_modifier = true; }
         else if (is_stack()) { res.is_stack = true; }
-
         if (has_spoil_timer()) { res.has_spoil_bar = true; }
         else if (has_durability()) { res.has_durability_bar = true; }
-
         return res;
     }
 
@@ -266,9 +286,7 @@ namespace asa::interfaces::components
         // check modifiers
         if (data.has_armor_value != this->has_armor_modifier || data.has_damage_value !=
             this->has_damage_modifier) { return false; }
-
         if ((data.stack_size == 1) && this->is_stack) { return false; }
-
         if (data.has_spoil_timer != this->has_spoil_bar || ((data.has_durability != this->
             has_durability_bar) && !has_blueprint_variant(data.type))) { return false; }
         return true;
