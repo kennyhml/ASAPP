@@ -1512,7 +1512,7 @@
         "has_damage_value": false
     },
     "Rocket Propelled Grenade": {
-        "icon": "items\\weapons\\rocket_launcher.png",
+        "icon": "items\\ammo\\rocket_propelled_grenade.png",
         "type": "WEAPON",
         "recipe": {},
         "weight": 0.5,
