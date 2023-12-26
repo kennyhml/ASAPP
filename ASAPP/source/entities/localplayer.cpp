@@ -96,7 +96,7 @@ namespace asa::entities
         const auto start = std::chrono::system_clock::now();
         do {
             window::press(settings::use);
-            if (util::timedout(start, std::chrono::seconds(30))) {
+            if (util::timedout(start, std::chrono::seconds(10))) {
                 throw structures::StructureError(
                     nullptr, std::format("Failed to deposit '{}' into dedicated storage.",
                                          item.get_name()));
@@ -201,12 +201,15 @@ namespace asa::entities
     void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
     {
         if (!bed._interface->is_open()) {
-            for (int i = 0; i < 10; i++) { turn_down(18, std::chrono::milliseconds(10)); }
+            while (!interfaces::hud->can_fast_travel()) {
+                look_fully_down();
+                core::sleep_for(std::chrono::milliseconds(300));
+            }
 
-            core::sleep_for(std::chrono::milliseconds(300));
             access(bed);
             core::sleep_for(std::chrono::milliseconds(300));
         }
+
         bed.map->go_to(bed.name);
         pass_travel_screen();
     }
@@ -338,13 +341,13 @@ namespace asa::entities
 
     void LocalPlayer::look_fully_down()
     {
-        for (int i = 0; i < 10; i++) { turn_down(18, std::chrono::milliseconds(10)); }
+        for (int i = 0; i < 10; i++) { turn_down(18, std::chrono::milliseconds(20)); }
         core::sleep_for(std::chrono::milliseconds(300));
     }
 
     void LocalPlayer::look_fully_up()
     {
-        for (int i = 0; i < 10; i++) { turn_up(18, std::chrono::milliseconds(10)); }
+        for (int i = 0; i < 10; i++) { turn_up(18, std::chrono::milliseconds(20)); }
         core::sleep_for(std::chrono::milliseconds(300));
     }
 

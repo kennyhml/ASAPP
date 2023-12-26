@@ -20,7 +20,7 @@ namespace asa::interfaces::components
         static window::Color text_color(134, 234, 255);
 
         auto mask = get_mask(this->area, text_color, 30);
-        return cv::countNonZero(mask) > 15;
+        return cv::countNonZero(mask) > 10;
     }
 
     void SearchBar::search_for(std::string term)
@@ -55,11 +55,13 @@ namespace asa::interfaces::components
 
     void SearchBar::press() const
     {
+        const auto start = std::chrono::system_clock::now();
         window::Point loc = this->area.get_random_location(8);
 
         do { post_mouse_press_at(loc, controls::LEFT); }
         while (!util::await([this]() { return this->has_blinking_cursor(); },
-                            std::chrono::milliseconds(500)));
+                            std::chrono::milliseconds(500)) && !util::timedout(
+            start, std::chrono::seconds(10)));
     }
 
     void SearchBar::delete_search()
