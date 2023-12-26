@@ -233,8 +233,6 @@ namespace asa::interfaces
          * @param num_threads The number of threads to use, default 5.
          * 
          * @return An array of the given size containing smart pointers to the items, or null.
-         *
-         * TODO: Multithread it so that each slot is determined in its own thread.
          */
         template <std::size_t Size>
         [[nodiscard]] std::array<std::unique_ptr<items::Item>, Size> get_items(
