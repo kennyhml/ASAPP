@@ -3,7 +3,11 @@
 
 namespace asa::core::config
 {
-    bool set_environment(std::filesystem::path config_path);
+    bool set_environment(const std::filesystem::path& config_path);
+    bool set_environment(const std::filesystem::path& game_root_directory,
+                         const std::filesystem::path& assets,
+                         const std::filesystem::path& itemdata,
+                         const std::filesystem::path& tessdata);
 
     inline std::filesystem::path game_base_directory;
     inline std::filesystem::path assets_dir;

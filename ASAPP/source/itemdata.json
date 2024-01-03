@@ -2533,7 +2533,7 @@
         "has_armor_value": true,
         "has_damage_value": false
     },
-    "Plesiosaur Platform": {
+    "Plesiosaur Platform Saddle": {
         "icon": "items\\saddles\\plesiosaur_platform.png",
         "type": "EQUIPPABLE",
         "recipe": {},

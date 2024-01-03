@@ -7,26 +7,35 @@ using json = nlohmann::json;
 
 namespace asa::core::config
 {
-    bool set_environment(std::filesystem::path config_path)
+    bool set_environment(const std::filesystem::path& game_root_directory,
+                         const std::filesystem::path& assets,
+                         const std::filesystem::path& itemdata,
+                         const std::filesystem::path& tessdata)
+    {
+        const bool environment_set = (set_game_directory(game_root_directory) &&
+            set_assets_directory(assets) && set_itemdata_path(itemdata) &&
+            set_tessdata_path(tessdata));
+        if (!environment_set) {
+            std::cerr << "[!] One or more environment variables is faulty. ASAPP "
+                "was not initialized successfully.\n";
+            return false;
+        }
+        std::cout << "[+] Environment variables set successfully.\n";
+        return true;
+    }
+
+
+    bool set_environment(const std::filesystem::path& config_path)
     {
         std::ifstream f(config_path);
         if (!f.is_open()) {
-            std::cerr << "[!] Failed to open config at " << config_path << std::endl;
+            std::cerr << "[!] Failed to open config at " << config_path << "\n";
             return false;
         }
         json data = json::parse(f);
         f.close();
-
-        bool environment_set = (set_game_directory(data["gameBaseDirectory"]) &&
-            set_assets_directory(data["assetsDir"]) && set_itemdata_path(data["itemData"])
-            && set_tessdata_path(data["tessdataPath"]));
-        if (!environment_set) {
-            std::cerr << "[!] One or more environment variables is faulty. ASAPP "
-                "was not initialized successfully." << std::endl;
-            return false;
-        }
-        std::cout << "[+] Environment variables set successfully." << std::endl;
-        return true;
+        return set_environment(data.at("gameBaseDirectory"), data.at("assetsDir"),
+                               data.at("itemData"), data.at("tessdataPath"));
     }
 
     bool set_game_directory(std::filesystem::path path)

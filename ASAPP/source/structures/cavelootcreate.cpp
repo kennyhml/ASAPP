@@ -46,21 +46,17 @@ namespace asa::structures
     CaveLootCrate::Quality CaveLootCrate::get_quality_from_tooltip(
         const std::string& tooltip)
     {
-        static auto is_in_tier = [tooltip](const std::vector<std::string>& names) -> bool {
-            for (const auto &name : names) {
-                if (tooltip.find(name) != std::string::npos)
-                    return true;
+        auto is_in_tier = [tooltip](const std::vector<std::string>& names) -> bool {
+            for (const auto& name : names) {
+                if (tooltip.find(name) != std::string::npos) { return true; }
             }
             return false;
         };
 
-        if (is_in_tier(blue_crate_names))
-            return BLUE;
-        else if (is_in_tier(yellow_crate_names))
-            return YELLOW;
-        else if (is_in_tier(red_crate_names))
-            return RED;
-  
+        if (is_in_tier(blue_crate_names)) { return BLUE; }
+        if (is_in_tier(yellow_crate_names)) { return YELLOW; }
+        if (is_in_tier(red_crate_names)) { return RED; }
+
         return ANY;
     }
 }
