@@ -127,6 +127,12 @@ namespace asa::entities
         std::cout << "[+] Suiciding with implant...\n";
 
         get_inventory()->open();
+        if (get_inventory()->slots[0].is_empty()) {
+            std::cerr << "[!] Got glitched implant, trying again..\n";
+            get_inventory()->close();
+            return suicide();
+        }
+
         controls::mouse_press(controls::LEFT);
         core::sleep_for(std::chrono::milliseconds(100));
         inventory->select_slot(0);
