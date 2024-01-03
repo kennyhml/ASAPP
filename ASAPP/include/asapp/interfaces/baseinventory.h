@@ -143,6 +143,9 @@ namespace asa::interfaces
 
         /**
          * @brief Closes the inventory.
+         *
+         * @remarks Uses the x button instead of the esc key in order to prevent
+         * a double press in extreme cases (game froze, bad fps, bad timing...)
          */
         void close();
 
@@ -307,6 +310,7 @@ namespace asa::interfaces
         bool is_remote_inventory_;
         window::Rect area_;
         window::Rect recv_remote_inv_area_{1340, 511, 295, 34};
+        components::Button close_button_{1781, 49, 36, 33};
 
         void assert_open(std::string for_action) const;
 

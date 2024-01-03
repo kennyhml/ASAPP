@@ -177,11 +177,10 @@ namespace asa::interfaces
     {
         const auto start = std::chrono::system_clock::now();
         while (is_open()) {
-            window::press("esc", true);
+            close_button_.press();
             if (util::await([this]() { return !is_open(); }, std::chrono::seconds(5))) {
                 return;
             }
-
             if (util::timedout(start, std::chrono::seconds(30))) {
                 throw InterfaceNotClosedError(this);
             }
@@ -278,21 +277,21 @@ namespace asa::interfaces
         std::cout << "[+] Getting all items of the current page...\n";
         // get the amount of slots that we need to fill, this makes multithreading the
         // determination process easier as we can assign one thread per slot from the start
-        int num_slots_refilled = 0;
+        int num_slots_filled = 0;
         for (const auto& slot : slots) {
             if (slot.is_empty()) { break; }
-            num_slots_refilled++;
+            num_slots_filled++;
         }
 
-        std::cout << "\t[-] " << num_slots_refilled << " slots to be determined...\n";
-        std::vector<std::unique_ptr<items::Item>> ret(num_slots_refilled);
+        std::cout << "\t[-] " << num_slots_filled << " slots to be determined...\n";
+        std::vector<std::unique_ptr<items::Item>> ret(num_slots_filled);
         std::vector<std::thread> threads;
         threads.reserve(num_threads);
 
         for (int i = 0; i < num_threads; i++) {
             threads.emplace_back(
-                [this, i, &ret, num_threads, num_slots_refilled]() -> void {
-                    for (int j = i; j < num_slots_refilled; j += num_threads) {
+                [this, i, &ret, num_threads, num_slots_filled]() -> void {
+                    for (int j = i; j < num_slots_filled; j += num_threads) {
                         ret[j] = slots[j].get_item();
                     }
                 });
