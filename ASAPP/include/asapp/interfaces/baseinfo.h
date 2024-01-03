@@ -18,6 +18,7 @@ namespace asa::interfaces
 
         virtual int get_max_health() = 0;
         virtual int get_current_health() = 0;
+        virtual float get_health_percentage() = 0;
 
         virtual int get_max_weight() = 0;
         virtual int get_current_weight() = 0;

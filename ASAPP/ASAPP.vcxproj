@@ -172,6 +172,7 @@
         <ClCompile Include="source\entities\exceptions.cpp"/>
         <ClCompile Include="source\entities\localplayer.cpp"/>
         <ClCompile Include="source\entities\dinoent.cpp"/>
+        <ClCompile Include="source\game\baseentitiyinfo.cpp"/>
         <ClCompile Include="source\game\controls.cpp"/>
         <ClCompile Include="source\game\resources.cpp"/>
         <ClCompile Include="source\game\settings.cpp"/>
@@ -195,7 +196,7 @@
         <ClCompile Include="source\interfaces\structureinfo.cpp"/>
         <ClCompile Include="source\interfaces\teleportmap.cpp"/>
         <ClCompile Include="source\interfaces\travelmap.cpp"/>
-        <ClCompile Include="source\interfaces\tribemanager.cpp" />
+        <ClCompile Include="source\interfaces\tribemanager.cpp"/>
         <ClCompile Include="source\items\exceptions.cpp"/>
         <ClCompile Include="source\items\item.cpp"/>
         <ClCompile Include="source\items\itemdata.cpp"/>
@@ -203,7 +204,7 @@
         <ClCompile Include="source\structures\cavelootcreate.cpp"/>
         <ClCompile Include="source\structures\container.cpp"/>
         <ClCompile Include="source\structures\exceptions.cpp"/>
-        <ClCompile Include="source\structures\dedicatedstorage.cpp" />
+        <ClCompile Include="source\structures\dedicatedstorage.cpp"/>
         <ClCompile Include="source\util\util.cpp"/>
         <ClInclude Include="include\asapp\core\config.h"/>
         <ClInclude Include="include\asapp\core\state.h"/>

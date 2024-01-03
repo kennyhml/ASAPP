@@ -51,9 +51,10 @@ namespace asa::interfaces
 
         int get_max_health() override { return 0; }
         int get_current_health() override { return 0; }
+        float get_health_percentage() override;
 
-        int get_max_weight() override { return 0; };
-        int get_current_weight() override { return 0; };
+        int get_max_weight() override { return 0; }
+        int get_current_weight() override { return 0; }
 
         std::string get_owner() override { return ""; }
         std::string get_name() override { return ""; }
