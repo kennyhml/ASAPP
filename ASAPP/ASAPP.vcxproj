@@ -195,6 +195,7 @@
         <ClCompile Include="source\interfaces\structureinfo.cpp"/>
         <ClCompile Include="source\interfaces\teleportmap.cpp"/>
         <ClCompile Include="source\interfaces\travelmap.cpp"/>
+        <ClCompile Include="source\interfaces\tribemanager.cpp" />
         <ClCompile Include="source\items\exceptions.cpp"/>
         <ClCompile Include="source\items\item.cpp"/>
         <ClCompile Include="source\items\itemdata.cpp"/>
@@ -202,6 +203,7 @@
         <ClCompile Include="source\structures\cavelootcreate.cpp"/>
         <ClCompile Include="source\structures\container.cpp"/>
         <ClCompile Include="source\structures\exceptions.cpp"/>
+        <ClCompile Include="source\structures\dedicatedstorage.cpp" />
         <ClCompile Include="source\util\util.cpp"/>
         <ClInclude Include="include\asapp\core\config.h"/>
         <ClInclude Include="include\asapp\core\state.h"/>

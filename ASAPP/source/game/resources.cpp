@@ -61,6 +61,14 @@ namespace asa::resources
         LOAD_RESOURCE(dir, refresh);
         LOAD_RESOURCE(dir, armor);
         LOAD_RESOURCE(dir, damage);
+        LOAD_RESOURCE(dir, deposit);
+        LOAD_RESOURCE(dir, blueprint);
+        LOAD_RESOURCE(dir, blueprint_end);
+        LOAD_RESOURCE(dir, ride);
+        LOAD_RESOURCE(dir, mount_xp);
+        LOAD_RESOURCE(dir, cap);
+        LOAD_RESOURCE(dir, tribemanager);
+        LOAD_RESOURCE(dir, day_log);
 
         return true;
     }

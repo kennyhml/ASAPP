@@ -76,7 +76,7 @@ namespace asa::interfaces
             }
   
             // Server has respawned us. Now wait for the spawn animation to finish
-            core::sleep_for(std::chrono::seconds(10));
+            core::sleep_for(std::chrono::seconds(8));
   
             // Animation ended. It's safe to continue and accept input
         }

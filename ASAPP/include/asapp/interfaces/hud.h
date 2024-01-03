@@ -15,6 +15,7 @@ namespace asa::interfaces
         [[nodiscard]] bool is_mount_out_of_food() { return false; };
         [[nodiscard]] bool is_mount_out_of_stamina() { return false; };
         [[nodiscard]] bool is_mount_sprinting() { return false; };
+        bool is_mounted();
 
         [[nodiscard]] bool is_player_overweight() const;
         [[nodiscard]] bool is_player_broken_bones() const;

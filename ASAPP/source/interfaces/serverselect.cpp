@@ -57,26 +57,35 @@ namespace asa::interfaces
 
     void ServerSelect::join_server(const std::string& name)
     {
-        std::cout << "[+] Joining server " << name << "...\n";
+        std::cout << "[+] Joining server " << name << "..." << std::endl;
         searchbar_.search_for(name);
         core::sleep_for(std::chrono::seconds(3));
 
+        bool refreshed = true;
         while (!is_best_result_selected()) {
-            best_result_.press();
-            core::sleep_for(std::chrono::milliseconds(300));
+          // Don't refresh on the initial search
+          if (!refreshed) {
+            // This will also close some connection failed popups
+            std::cout << "\t[-] Refreshing server list." << std::endl;
+            refresh_button_.press();
+            core::sleep_for(std::chrono::seconds(3));
+          }
+          best_result_.press();
+          core::sleep_for(std::chrono::milliseconds(500));
+          refreshed = false;
         }
 
-        std::cout << "\t[-] Best search result selected.\n";
+        std::cout << "\t[-] Best search result selected." << std::endl;
         while (!is_joining_server()) {
             if (server_has_mods_enabled()) { join_button_mods_popup_.press(); }
             else { join_button_.press(); }
             core::sleep_for(std::chrono::seconds(1));
         }
-        std::cout << "\t[-] Now joining session...\n";
+        std::cout << "\t[-] Now joining session..." << std::endl;
         if (!util::await([this]() { return !is_open(); }, std::chrono::seconds(60))) {
             throw std::runtime_error("Failed to join server within 60 seconds.");
         }
-        std::cout << "[+] Server joined successfully.\n";
+        std::cout << "[+] Server joined successfully." << std::endl;
     }
 
     void ServerSelect::refresh()

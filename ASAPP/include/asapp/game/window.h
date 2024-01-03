@@ -27,6 +27,12 @@ namespace asa::window
         int y{0};
     };
 
+    struct Point2D
+    {
+        double x{0};
+        double y{0};
+    };
+
     struct Color
     {
         int r{0};

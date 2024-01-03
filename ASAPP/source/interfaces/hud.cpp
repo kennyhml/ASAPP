@@ -179,4 +179,21 @@ namespace asa::interfaces
     {
         return window::match_template(area, resources::text::added);
     }
+
+    bool HUD::is_mounted() 
+    {
+        if (settings::game_user_settings::toggle_hud.get()) {
+            window::press(settings::show_extended_info);
+        }
+        else { window::down(settings::show_extended_info); }
+        bool result = util::await([]() {
+            return window::match_template(window::Rect(1858, 42, 32, 32), resources::interfaces::mount_xp, 0.6);
+        }, std::chrono::milliseconds(300));
+  
+        if (settings::game_user_settings::toggle_hud.get()) {
+            window::press(settings::show_extended_info);
+        }
+        else { window::up(settings::show_extended_info); }
+        return result;
+    }
 }

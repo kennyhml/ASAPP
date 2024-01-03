@@ -46,6 +46,10 @@ namespace asa::structures
     CaveLootCrate::Quality CaveLootCrate::get_quality_from_tooltip(
         const std::string& tooltip)
     {
+        static std::vector<std::string> blue_crate_names = { "SwampCaveTier1", "IceCaveTier1", "IceCaveTierl", "waterCaveTier1", "waterCaveTierl" };
+        static std::vector<std::string> yellow_crate_names = { "QualityTier3", "SwampCaveTier2", "IceCaveTier2", "waterCaveTier2" };
+        static std::vector<std::string> red_crate_names = { "QualityTier4", "SwampCaveTier3", "IceCaveTier3", "waterCaveTier3" };
+  
         auto is_in_tier = [tooltip](const std::vector<std::string>& names) -> bool {
             for (const auto& name : names) {
                 if (tooltip.find(name) != std::string::npos) { return true; }
