@@ -38,6 +38,7 @@ namespace asa::items
         inline Item* electronics = nullptr;
         inline Item* oil = nullptr;
         inline Item* hide = nullptr;
+        inline Item* sap = nullptr;
     }
 
     namespace consumables

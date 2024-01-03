@@ -90,6 +90,8 @@ namespace asa::items
             load(electronics, "Electronics", all_resources);
             load(oil, "Oil", all_resources);
             load(hide, "Hide", all_resources);
+            load(sap, "Sap", all_resources);
+
             return true;
         }
         catch (const ItemError& e) {
