@@ -13,7 +13,7 @@ namespace asa::interfaces
 
         int get_max_health() override { return 0; };
         int get_current_health() override { return 0; };
-        float get_health_percentage() override { return 0; };
+        float get_health_level() override { return 0; };
 
         virtual int get_max_slots() { return 0; };
         virtual int get_current_slots() { return 0; };

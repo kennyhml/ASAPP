@@ -51,7 +51,7 @@ namespace asa::interfaces
 
         int get_max_health() override { return 0; }
         int get_current_health() override { return 0; }
-        float get_health_percentage() override;
+        float get_health_level() override;
 
         int get_max_weight() override { return 0; }
         int get_current_weight() override { return 0; }
@@ -59,14 +59,16 @@ namespace asa::interfaces
         std::string get_owner() override { return ""; }
         std::string get_name() override { return ""; }
 
-        virtual int get_max_stamine() { return 0; }
-        virtual int get_current_stamine() { return 0; }
+        virtual int get_max_stamina() { return 0; }
+        virtual int get_current_stamina() { return 0; }
 
         virtual int get_max_food() { return 0; }
         virtual int get_current_food() { return 0; }
+        virtual float get_food_level();
 
         virtual int get_max_water() { return 0; }
         virtual int get_current_water() { return 0; }
+        virtual float get_water_level();
 
         virtual int get_melee_multiplier() { return 0; }
         virtual int get_torpitidy() { return 0; }
