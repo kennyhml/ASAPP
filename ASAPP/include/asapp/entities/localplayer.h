@@ -75,7 +75,7 @@ namespace asa::entities
 
     private:
         void pass_travel_screen(bool in = true, bool out = true);
-        void pass_teleport_screen(bool allowAccessFlag = false);
+        void pass_teleport_screen(bool access_flag = false);
     };
 
     inline std::unique_ptr<LocalPlayer> local_player = std::make_unique<LocalPlayer>(

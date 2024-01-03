@@ -220,7 +220,7 @@ namespace asa::entities
         pass_travel_screen();
     }
 
-    void LocalPlayer::teleport_to(const structures::Teleporter& tp, bool is_default)
+    void LocalPlayer::teleport_to(const structures::Teleporter& tp, const bool is_default)
     {
         const bool could_access_before = can_access(tp);
         if (!is_default) {
@@ -321,7 +321,7 @@ namespace asa::entities
         core::sleep_for(std::chrono::seconds(1));
     }
 
-    void LocalPlayer::pass_teleport_screen(bool allowAccessFlag)
+    void LocalPlayer::pass_teleport_screen(const bool access_flag)
     {
         while (!interfaces::hud->can_default_teleport()) {
             // for long distance teleports we still enter a white screen,
@@ -330,19 +330,16 @@ namespace asa::entities
                 std::cout << "[+] Whitescreen entered upon teleport." << std::endl;
                 return pass_travel_screen(false);
             }
-            if (allowAccessFlag && can_access_inventory()) {
+            if (access_flag && can_access_inventory()) {
                 std::cout << "[+] Teleported to a container." << std::endl;
                 return;
             }
         }
-        // See whether the default teleport popup lasts for more than 1 second
-        // if it doesnt its a glitched popup that appears when the teleport has
-        // happened. Restart the procedure in that case
-        if (util::await([]() { return !interfaces::hud->can_default_teleport(); },
-                        std::chrono::milliseconds(1000))) {
-            std::cout << "[!] Glitched default teleport popup found." << std::endl;
-            return pass_teleport_screen();
-        }
+        // if (util::await([]() { return !interfaces::hud->can_default_teleport(); },
+        //                 std::chrono::milliseconds(1000))) {
+        //     std::cout << "[!] Glitched default teleport popup found." << std::endl;
+        //     return pass_teleport_screen();
+        // }
     }
 
     void LocalPlayer::look_fully_down()
