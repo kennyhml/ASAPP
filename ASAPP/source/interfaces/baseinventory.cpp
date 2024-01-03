@@ -263,7 +263,9 @@ namespace asa::interfaces
 
     void BaseInventory::assert_open(std::string for_action) const
     {
-        if (!is_open()) { throw InterfaceNotOpenError(std::move(for_action), this); }
+        if (!util::await([this]() { return is_open(); }, std::chrono::seconds(5))) {
+            throw InterfaceNotOpenError(std::move(for_action), this);
+        }
     }
 
     std::vector<std::unique_ptr<items::Item>> BaseInventory::get_current_page_items(
