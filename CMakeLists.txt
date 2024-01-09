@@ -33,3 +33,16 @@ link_directories(${OpenCV_LIB_DIR})
 
 target_include_directories(asapp PUBLIC ASAPP/include)
 target_include_directories(asapp PRIVATE ASAPP/source)
+
+# Copy resources to build folder
+add_custom_command(
+        TARGET asapp POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+        ${CMAKE_CURRENT_SOURCE_DIR}/ASAPP/source/itemdata.json
+        ${CMAKE_CURRENT_BINARY_DIR}/itemdata.json)
+
+add_custom_command(
+        TARGET asapp POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_CURRENT_SOURCE_DIR}/ASAPP/assets
+        ${CMAKE_CURRENT_BINARY_DIR}/assets)

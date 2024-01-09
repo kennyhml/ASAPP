@@ -4,9 +4,21 @@
 #include "asapp/util/util.h"
 #include <opencv2/highgui.hpp>
 #include <iostream>
+#include <regex>
 
 namespace asa::interfaces 
 {
+    TribeManager::TribeManager()
+    {
+        tribe_log_entry_types.push_back(entry_killed_destroyed = new TribeLogEntryType("Killed/Destroyed", cv::Vec3b(0, 0, 225)));
+        tribe_log_entry_types.push_back(entry_demolished = new TribeLogEntryType("Demolished", cv::Vec3b(0, 225, 225)));
+        tribe_log_entry_types.push_back(entry_tamed = new TribeLogEntryType("Tamed", cv::Vec3b(0, 225, 0)));
+        tribe_log_entry_types.push_back(entry_added_to_tribe = new TribeLogEntryType("Added to tribe", cv::Vec3b(225, 225, 0)));
+        tribe_log_entry_types.push_back(entry_kill = new TribeLogEntryType("Killed another player/dino", cv::Vec3b(225, 0, 225)));
+        tribe_log_entry_types.push_back(entry_starved_cryo = new TribeLogEntryType("Starved/Cryod", cv::Vec3b(175, 175, 175), 0.4));
+        tribe_log_entry_types.push_back(entry_group_updated = new TribeLogEntryType("Updated group", cv::Vec3b(235, 235, 235), 0.4));
+    }
+  
     bool TribeManager::is_open() const 
     {
         return match_template(tribe_manager_button.area, resources::interfaces::tribemanager);
@@ -42,7 +54,7 @@ namespace asa::interfaces
         }
     }
     
-    std::vector<std::string> TribeManager::read_tribe_log_lines() 
+    std::vector<TribeLogEntry> TribeManager::read_tribe_log_lines() 
     {
         auto ss = window::screenshot(tribe_log_area);
         
@@ -58,7 +70,7 @@ namespace asa::interfaces
             );
             
             cv::Mat crop = ss(roi);
-            if (window::match_template(crop, resources::interfaces::day_log, 0.5)) {
+            if (window::match_template(crop, resources::interfaces::day_log, 0.6)) {
                 lineMats.push_back(currentLineMats);
                 currentLineMats.clear();
             }
@@ -69,36 +81,33 @@ namespace asa::interfaces
         
         int32_t count = 0;
         int32_t countInner = 0;
-        std::vector<std::string> result;
+        std::vector<TribeLogEntry> result;
         for (auto& lines : lineMats) {
             std::stringstream lineStr;
+            std::unordered_map<TribeLogEntryType*, double> colorCounts;
             for (auto& line : lines) {
-                auto is_in_range = [](uint8_t out, uint8_t in) -> bool {
+                auto is_in_range = [](uint8_t out, uint8_t in, int32_t var) -> bool {
                     auto _in = static_cast<int32_t>(in);
                     auto _out = static_cast<int32_t>(out);
-                    return _in >= _out - 100 && _in <= _out + 100;
+                    return _in >= _out - var && _in <= _out + var;
                 };
                 
-                auto is_color = [is_in_range](const cv::Vec3b& in, const cv::Vec3b& templ) -> bool {
-                    return is_in_range(in[2], templ[2]) && is_in_range(in[1], templ[1]) && is_in_range(in[0], templ[0]);
+                auto is_color = [is_in_range](const cv::Vec3b& in, const cv::Vec3b& templ, int32_t var) -> bool {
+                    return is_in_range(in[2], templ[2], var) && is_in_range(in[1], templ[1], var) && is_in_range(in[0], templ[0], var);
                 };
                 
-                //                      B     G     R
-                auto red =    cv::Vec3b(0,    0,    225); // destroyed
-                auto yellow = cv::Vec3b(0,    225,  225); // demolished
-                auto green =  cv::Vec3b(0,    225,  0); // tamed
-                auto blue =   cv::Vec3b(225,  225,  0); // added
-                auto grey =   cv::Vec3b(175,  175,  175); // day/starved
-                auto white =  cv::Vec3b(235,  235,  235); // group
-                auto purple = cv::Vec3b(225,  0,    225); // killed
-          
-                auto all = { red, yellow, green, blue, grey, white, purple };
                 auto src = line;
                 for ( int i = 0; i < src.rows; i++ ) {
                     for ( int j = 0; j < src.cols; j++ ) {
-                        for (const auto &item : all) {
+                        for (const auto &item : tribe_log_entry_types) {
                             auto in = src.at<cv::Vec3b>(i, j);
-                            if (is_color(item, in)) {
+                            if (is_color(item->colorBGR, in, 100)) {
+                                if (colorCounts.contains(item)) {
+                                    colorCounts[item] += 1 * item->weight;
+                                } else {
+                                    colorCounts[item] = 0;
+                                }
+                              
                                 src.at<cv::Vec3b>(i, j)[2] = 255;
                                 src.at<cv::Vec3b>(i, j)[1] = 255;
                                 src.at<cv::Vec3b>(i, j)[0] = 255;
@@ -122,13 +131,20 @@ namespace asa::interfaces
             
             if (count > 0) {
                 std::string resultStr = lineStr.str();
-                for (const auto &fix : fixes) {
-                    std::size_t index;
-                    while ((index = resultStr.find(fix.first)) != std::string::npos)
-                      resultStr.replace(index, fix.first.length(), fix.second);
+  
+                // Find which entry this relates to by checking which color is most prominent in this line
+                TribeLogEntryType* type = entry_group_updated;
+                double typeCount = 0;
+                for (const auto &item : colorCounts) {
+                    if (item.second > typeCount) {
+                        type = item.first;
+                        typeCount = item.second;
+                    }
                 }
-                
-                result.push_back(resultStr);
+              
+                auto entry = parse_entry(resultStr, type);
+                std::cout << count << ": " << entry.raw << std::endl;
+                result.push_back(entry);
             }
             
             ++count;
@@ -136,5 +152,33 @@ namespace asa::interfaces
         }
         
         return result;
+    }
+    
+    TribeLogEntry TribeManager::parse_entry(const std::string& raw, TribeLogEntryType* type) 
+    {
+        std::string in = raw;
+        for (const auto &fix : fixes) {
+            std::size_t index;
+            while ((index = in.find(fix.first)) != std::string::npos) {
+                in.replace(index, fix.first.length(), fix.second);
+            }
+        }  
+        
+        TribeLogTimestamp timestamp{};
+        static const std::regex pattern(R"(Day ([0-9]+), ([0-9]+):([0-9]+):([0-9]+): (.*))");
+
+        std::string line;
+        std::smatch sm;
+        if (regex_search(in, sm, pattern)) {
+          if (sm.size() > 4) {
+            timestamp.day = stoi(sm[1]);
+            timestamp.hour = stoi(sm[2]);
+            timestamp.minute = stoi(sm[3]);
+            timestamp.second = stoi(sm[4]);
+            line = sm[5];
+          }
+        }
+        
+        return { timestamp, type, line, in };
     }
 }

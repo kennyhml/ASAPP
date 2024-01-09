@@ -3,24 +3,78 @@
 
 #include <array>
 #include <string>
+#include <utility>
 #include "iinterface.h"
 #include "components/button.h"
 #include "components/searchbar.h"
 
-namespace asa::interfaces 
+namespace asa::interfaces
 {
+    class TribeLogEntryType
+    {
+     public:
+        explicit TribeLogEntryType(std::string n, const cv::Vec3b& c, double w = 1.0) : 
+            name(std::move(n)), 
+            colorBGR(c),
+            weight(w) {}
+        
+        std::string name;
+        
+        // The color for this line in the tribe log
+        cv::Vec3b colorBGR;
+        
+        double weight;
+    };
+    
+    struct TribeLogTimestamp
+    {
+        int32_t day;
+        int32_t hour;
+        int32_t minute;
+        int32_t second;
+  
+        bool operator>(const TribeLogTimestamp& other) const {
+          int64_t stamp0 = second + (minute * 60) + (hour * 60 * 60) + (day * 24 * 60 * 60);
+          int64_t stamp1 = other.second + (other.minute * 60) + (other.hour * 60 * 60) + (other.day * 24 * 60 * 60);
+  
+          return stamp0 > stamp1;
+        }
+    };
+    
+    struct TribeLogEntry
+    {
+        TribeLogTimestamp timestamp;
+        TribeLogEntryType* type;
+        std::string message;
+        std::string raw;
+    };
+
     class TribeManager : public IInterface 
     {
        public:
+        TribeManager();
+        
         [[nodiscard]] bool is_open() const override;
       
         void open();
         
         void close();
         
-        std::vector<std::string> read_tribe_log_lines();
+        std::vector<TribeLogEntry> read_tribe_log_lines();
+        
+        TribeLogEntryType* entry_killed_destroyed;
+        TribeLogEntryType* entry_demolished;
+        TribeLogEntryType* entry_tamed;
+        TribeLogEntryType* entry_added_to_tribe;
+        TribeLogEntryType* entry_starved_cryo;
+        TribeLogEntryType* entry_group_updated;
+        TribeLogEntryType* entry_kill;
         
        private:
+        TribeLogEntry parse_entry(const std::string& raw, TribeLogEntryType* type);
+      
+        std::vector<TribeLogEntryType*> tribe_log_entry_types;
+      
         components::Button tribe_manager_button{908, 55, 52, 52};
         
         window::Rect tribe_log_area{780, 216, 380, 576};
@@ -31,14 +85,18 @@ namespace asa::interfaces
             {"\n", " "},
             {"‘", "'"},
             {"’", "'"},
+            {"\"", "'"},
             {"}", ")"},
             {"{", "("},
             {"- Lvb", "- Lvl"},
+            {"- iLvl", "- Lvl"},
             {"- Lv¥i", "- Lvl"},
+            {"- L¥l", "- Lvl"},
             {"- Lvi", "- Lvl"},
             {" - Lv ", " - Lvl "},
             {"- Lyl", "- Lvl"},
             {"- vl ", "- Lvl "},
+            {"- Lyi", "- Lvl "},
             {"kilied", "killed"},
             {"kilted", "killed"},
             {"kilfed", "killed"},
