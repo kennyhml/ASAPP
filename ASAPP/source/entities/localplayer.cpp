@@ -335,11 +335,6 @@ namespace asa::entities
                 return;
             }
         }
-        // if (util::await([]() { return !interfaces::hud->can_default_teleport(); },
-        //                 std::chrono::milliseconds(1000))) {
-        //     std::cout << "[!] Glitched default teleport popup found." << std::endl;
-        //     return pass_teleport_screen();
-        // }
     }
 
     void LocalPlayer::look_fully_down()

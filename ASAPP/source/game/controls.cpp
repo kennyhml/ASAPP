@@ -31,11 +31,8 @@ namespace asa::controls
             KeyboardMapping mapping = static_keymap;
 
             for (int i = 32; i < 128; i++) {
-                char c = static_cast<char>(i);
-                std::string character(1, c);
-                SHORT vkCode = VkKeyScanA(i);
-
-                mapping[character] = VkKeyScanA(i);
+                const char c = static_cast<char>(i);
+                mapping[std::string(1, c)] = VkKeyScanA(c);
             }
             return mapping;
         }

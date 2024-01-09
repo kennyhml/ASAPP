@@ -203,6 +203,26 @@ namespace asa::interfaces
                       BaseInventory* receiver = nullptr, bool search = true);
 
         /**
+         * @brief Transfers a given amount of rows of a given item.
+         * 
+         * @param item The item to transfer x rows of, will be searched beforehand 
+         * @param rows The estimated amounts of rows to transfer.
+         *
+         * @remark The amount of rows transferred is not checked but guessed.
+         */
+        void transfer_rows(const items::Item& item, int rows);
+
+        /**
+         * @brief Transfers rows of a given item for a given duration.
+         * 
+         * @param item The item to transfer x rows of, will be searched beforehand 
+         * @param duration The duration to transfer rows for in seconds.
+         *
+         * @remark The amount of rows transferred is not checked but guessed.
+         */
+        void transfer_rows(const items::Item& item, std::chrono::seconds duration);
+
+        /**
          * @brief Sets the item filter
          */
         void set_filter();

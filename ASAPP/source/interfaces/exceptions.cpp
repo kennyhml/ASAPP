@@ -13,7 +13,7 @@ namespace asa::interfaces
     const char* InterfaceError::what() const noexcept { return this->info.c_str(); }
 
     InterfaceNotOpenedError::InterfaceNotOpenedError(const IInterface* t_interface) :
-        InterfaceError(t_interface, std::format("Failed to access interface")) {};
+        InterfaceError(t_interface, std::format("Failed to open interface")) {};
 
     InterfaceNotClosedError::InterfaceNotClosedError(const IInterface* t_interface) :
         InterfaceError(t_interface, std::format("Failed to close interface")) {};

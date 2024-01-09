@@ -139,7 +139,11 @@ namespace asa::interfaces
     {
         assert_open(__func__);
         int dropped = 0;
-        if (!search_bar.is_text_entered()) { search_bar.search_for(item.get_name()); }
+        bool searched = false;
+        if (!search_bar.is_text_entered()) {
+            search_bar.search_for(item.get_name());
+            searched = true;
+        }
 
         while (slots[0].has(item) && (dropped < stacks || stacks == -1)) {
             for (int i = 0; i < 4; i++) {
@@ -150,6 +154,7 @@ namespace asa::interfaces
         }
 
         if (stacks_dropped) { *stacks_dropped = dropped; }
+        if (searched) { search_bar.delete_search(); }
     }
 
     void BaseInventory::popcorn(const int num_slots)
@@ -254,6 +259,41 @@ namespace asa::interfaces
             take_slot(*slot);
         }
     }
+
+    void BaseInventory::transfer_rows(const items::Item& item, const int rows)
+    {
+        search_bar.search_for(item.get_name());
+
+        window::post_mouse_press_at(slots[0].area.get_random_location(3), controls::LEFT);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < 6; j++) {
+                window::set_mouse_pos(slots[j].area.get_random_location(5));
+                window::post_press(asa::settings::transfer_item);
+                core::sleep_for(std::chrono::milliseconds(250));
+            }
+        }
+        search_bar.delete_search();
+    }
+
+    void BaseInventory::transfer_rows(const items::Item& item,
+                                      const std::chrono::seconds duration)
+    {
+        search_bar.search_for(item.get_name());
+
+        window::post_mouse_press_at(slots[0].area.get_random_location(3), controls::LEFT);
+        const auto start = std::chrono::system_clock::now();
+
+        while (!util::timedout(start, duration)) {
+            for (int j = 0; j < 6; j++) {
+                window::set_mouse_pos(slots[j].area.get_random_location(5));
+                window::post_press(asa::settings::transfer_item);
+                core::sleep_for(std::chrono::milliseconds(250));
+            }
+        }
+        search_bar.delete_search();
+    }
+
 
     void BaseInventory::auto_stack()
     {
