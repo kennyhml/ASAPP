@@ -301,6 +301,18 @@ namespace asa::interfaces
         auto_stack_button_.press();
     }
 
+    void BaseInventory::make_new_folder(const std::string& folder_name)
+    {
+        assert(folder_name.size() > 1, "Folder name must be more than 1 character.");
+        
+        new_folder_button_.press();
+        asa::core::sleep_for(std::chrono::milliseconds(500));
+
+        util::set_clipboard(folder_name);
+        controls::key_combination_press("ctrl", "v");
+        controls::key_press("enter");
+    }
+
     void BaseInventory::assert_open(std::string for_action) const
     {
         if (!util::await([this]() { return is_open(); }, std::chrono::seconds(5))) {

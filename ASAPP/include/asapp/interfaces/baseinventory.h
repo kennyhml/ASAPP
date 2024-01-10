@@ -234,7 +234,7 @@ namespace asa::interfaces
          *
          * @remarks Folder names must contain at least 2 characters.
          */
-        void make_new_folder(std::string folder_name);
+        void make_new_folder(const std::string& folder_name);
 
         /**
          * @brief Auto stack all items in the inventory.
