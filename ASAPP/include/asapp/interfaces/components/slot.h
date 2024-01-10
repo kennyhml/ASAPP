@@ -33,6 +33,13 @@ namespace asa::interfaces::components
         [[nodiscard]] window::Rect get_spoil_or_durability_bar_area() const;
 
         /**
+         * @brief Computes the rect of the folder name for this slot.
+         * 
+         * @return A rectangle containing the x, y, width and height of the folder name.
+         */
+        [[nodiscard]] window::Rect get_folder_name_area() const;
+
+        /**
          * @brief Computes the rect where the weight value is displayed for this slot.
          * 
          * @return A rectangle containing the x, y, width and height of the weight value.
@@ -63,6 +70,13 @@ namespace asa::interfaces::components
          */
         [[nodiscard]] bool is_empty() const;
 
+        /**
+         * @brief Determines whether the slot is a folder.
+         * 
+         * @return True if the slot is a folder, false otherwise.
+         */
+        [[nodiscard]] bool is_folder() const;
+     
         /**
          * @brief Computes the rect of the stack size value for this slot.
          * 

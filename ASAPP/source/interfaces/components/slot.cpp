@@ -75,6 +75,11 @@ namespace asa::interfaces::components
         return {area.x, area.y + 83, 87, 5};
     }
 
+    window::Rect Slot::get_folder_name_area() const
+    {
+        return {area.x, area.y + 65, area.width, 20};
+    }
+
     window::Rect Slot::get_weight_area() const
     {
         return {area.x + 46, area.y + 69, 42, 14};
@@ -115,8 +120,16 @@ namespace asa::interfaces::components
     bool Slot::is_empty() const
     {
         static constexpr window::Color weight_text_color{128, 231, 255};
-        const cv::Mat masked = get_mask(get_weight_area(), weight_text_color, 35);
+        const cv::Mat masked = window::get_mask(get_weight_area(), weight_text_color, 35);
         return countNonZero(masked) < 10;
+    }
+
+    bool Slot::is_folder() const
+    {
+        static constexpr window::Color folder_name_color{182, 237, 248};
+        const cv::Mat masked = window::get_mask(get_folder_name_area(), folder_name_color,
+                                                30);
+        return cv::countNonZero(masked) > 20;
     }
 
     bool Slot::is_hovered() const
