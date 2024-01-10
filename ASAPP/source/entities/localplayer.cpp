@@ -149,6 +149,38 @@ namespace asa::entities
         }
         while (is_alive());
         std::cout << "\t[-] Suicided successfully.\n";
+        reset_view_angles();
+    }
+
+    void LocalPlayer::jump()
+    {
+        if (is_proned_ || is_crouched_) {
+            is_proned_ = false;
+            is_crouched_ = false;
+            jump();
+        }
+        window::press(settings::jump);
+    }
+
+    void LocalPlayer::crouch()
+    {
+        if (!is_crouched_) { window::press(settings::crouch); }
+        is_crouched_ = true;
+        is_proned_ = false;
+    }
+
+    void LocalPlayer::prone()
+    {
+        if (!is_proned_) { window::press(settings::prone); }
+        is_proned_ = true;
+        is_crouched_ = false;
+    }
+
+    void LocalPlayer::stand_up()
+    {
+        if (is_proned_ || is_crouched_) { window::press(settings::run); }
+        is_proned_ = false;
+        is_crouched_ = false;
     }
 
     bool LocalPlayer::can_access(const structures::BaseStructure&) const
@@ -207,17 +239,14 @@ namespace asa::entities
     void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
     {
         if (!bed._interface->is_open()) {
-            while (!interfaces::hud->can_fast_travel()) {
-                look_fully_down();
-                core::sleep_for(std::chrono::milliseconds(300));
-            }
-
+            turn_down(180);
             access(bed);
             core::sleep_for(std::chrono::milliseconds(300));
         }
 
         bed.map->go_to(bed.name);
         pass_travel_screen();
+        reset_view_angles();
     }
 
     void LocalPlayer::teleport_to(const structures::Teleporter& tp, const bool is_default)
@@ -257,29 +286,52 @@ namespace asa::entities
     {
         window::press(settings::use);
         core::sleep_for(std::chrono::seconds(3));
+        reset_view_angles();
     }
 
-    void LocalPlayer::turn_right(int degrees, std::chrono::milliseconds delay)
+    void LocalPlayer::set_yaw(const int yaw)
     {
-        controls::turn_degrees(degrees, 0);
+        const int diff = ((yaw - current_yaw_) + 180) % 360 - 180;
+        diff < 0 ? turn_left(-diff) : turn_right(diff);
+        current_yaw_ = yaw;
+    }
+
+    void LocalPlayer::set_pitch(const int pitch)
+    {
+        const int diff = ((pitch - current_pitch_) + 90) % 360 - 90;
+        diff < 0 ? turn_up(-diff) : turn_down(diff);
+        current_yaw_ = pitch;
+    }
+
+    void LocalPlayer::turn_right(const int by_degrees, const ms delay)
+    {
+        const int allowed = std::min(180 - current_yaw_, by_degrees);
+        controls::turn_degrees(allowed, 0);
+        current_yaw_ += allowed;
         core::sleep_for(delay);
     }
 
-    void LocalPlayer::turn_left(int degrees, std::chrono::milliseconds delay)
+    void LocalPlayer::turn_left(const int by_degrees, const ms delay)
     {
-        controls::turn_degrees(-degrees, 0);
+        const int allowed = std::min(180 + current_yaw_, by_degrees);
+        controls::turn_degrees(-allowed, 0);
+        current_yaw_ -= allowed;
         core::sleep_for(delay);
     }
 
-    void LocalPlayer::turn_up(int degrees, std::chrono::milliseconds delay)
+    void LocalPlayer::turn_down(const int by_degrees, const ms delay)
     {
-        controls::turn_degrees(0, -degrees);
+        const int allowed = std::min(90 - current_pitch_, by_degrees);
+        controls::turn_degrees(0, allowed);
+        current_pitch_ += allowed;
         core::sleep_for(delay);
     }
 
-    void LocalPlayer::turn_down(int degrees, std::chrono::milliseconds delay)
+    void LocalPlayer::turn_up(const int by_degrees, const ms delay)
     {
-        controls::turn_degrees(0, degrees);
+        const int allowed = std::min(90 + current_pitch_, by_degrees);
+        controls::turn_degrees(0, -allowed);
+        current_pitch_ -= allowed;
         core::sleep_for(delay);
     }
 
@@ -347,10 +399,5 @@ namespace asa::entities
     {
         for (int i = 0; i < 10; i++) { turn_up(18, std::chrono::milliseconds(20)); }
         core::sleep_for(std::chrono::milliseconds(300));
-    }
-
-    float LocalPlayer::get_water_amount() const
-    {
-        return interfaces::hud->get_water_amount();
     }
 }
