@@ -239,7 +239,7 @@ namespace asa::entities
     void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
     {
         if (!bed._interface->is_open()) {
-            turn_down(180);
+            set_pitch(90);
             access(bed);
             core::sleep_for(std::chrono::milliseconds(300));
         }
