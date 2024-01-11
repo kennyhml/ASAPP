@@ -150,6 +150,8 @@ namespace asa::entities
         while (is_alive());
         std::cout << "\t[-] Suicided successfully.\n";
         reset_view_angles();
+        is_crouched_ = false;
+        is_proned_ = false;
     }
 
     void LocalPlayer::jump()
@@ -247,6 +249,8 @@ namespace asa::entities
         bed.map->go_to(bed.name);
         pass_travel_screen();
         reset_view_angles();
+        is_crouched_ = false;
+        is_proned_ = false;
     }
 
     void LocalPlayer::teleport_to(const structures::Teleporter& tp, const bool is_default)
