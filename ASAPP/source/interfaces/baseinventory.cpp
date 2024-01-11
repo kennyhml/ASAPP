@@ -304,7 +304,7 @@ namespace asa::interfaces
     void BaseInventory::make_new_folder(const std::string& folder_name)
     {
         assert(folder_name.size() > 1, "Folder name must be more than 1 character.");
-        
+
         new_folder_button_.press();
         asa::core::sleep_for(std::chrono::milliseconds(500));
 
@@ -332,7 +332,12 @@ namespace asa::interfaces
         // get the amount of slots that we need to fill, this makes multithreading the
         // determination process easier as we can assign one thread per slot from the start
         int num_slots_filled = 0;
+        int folder_offset = 0;
         for (const auto& slot : slots) {
+            if (slot.is_folder()) {
+                folder_offset++;
+                continue;
+            }
             if (slot.is_empty()) { break; }
             num_slots_filled++;
         }
@@ -344,9 +349,9 @@ namespace asa::interfaces
 
         for (int i = 0; i < num_threads; i++) {
             threads.emplace_back(
-                [this, i, &ret, num_threads, num_slots_filled]() -> void {
+                [this, i, &ret, num_threads, num_slots_filled, folder_offset]() -> void {
                     for (int j = i; j < num_slots_filled; j += num_threads) {
-                        ret[j] = slots[j].get_item();
+                        ret[j] = slots[j + folder_offset].get_item();
                     }
                 });
         }
