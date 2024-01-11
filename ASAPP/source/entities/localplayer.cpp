@@ -387,6 +387,14 @@ namespace asa::entities
                 return;
             }
         }
+        // See whether the default teleport popup lasts for more than 500ms
+        // if it doesnt its a glitched popup that appears when the teleport has
+        // happened. Restart the procedure in that case
+        if (util::await([]() { return !interfaces::hud->can_default_teleport(); },
+                        std::chrono::milliseconds(500))) {
+            std::cout << "[!] Glitched default teleport popup found." << std::endl;
+            return pass_teleport_screen();
+        }
     }
 
     void LocalPlayer::look_fully_down()
