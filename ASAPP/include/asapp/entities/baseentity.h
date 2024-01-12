@@ -7,9 +7,15 @@ namespace asa::entities
     class BaseEntity
     {
     public:
-        explicit BaseEntity(std::string t_name) : name_(std::move(t_name)) {}
-
-        virtual ~BaseEntity() = default;
+        explicit BaseEntity(std::string t_name,
+                            std::unique_ptr<interfaces::BaseInventory> t_inventory =
+                                nullptr) : name_(std::move(t_name)),
+                                           inventory_(
+                                               t_inventory
+                                                   ? std::move(t_inventory)
+                                                   : std::make_unique<
+                                                       interfaces::BaseInventory>(true)) {
+        }
 
         /**
          * @brief Gets the name of the entity.
@@ -26,8 +32,7 @@ namespace asa::entities
 
     protected:
         std::string name_;
-        std::unique_ptr<interfaces::BaseInventory> inventory_ = std::make_unique<
-            interfaces::BaseInventory>(true);
+        std::unique_ptr<interfaces::BaseInventory> inventory_;
         interfaces::ActionWheel action_wheel_;
     };
 }

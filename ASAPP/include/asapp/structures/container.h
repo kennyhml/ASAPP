@@ -33,6 +33,11 @@ namespace asa::structures
          */
         [[nodiscard]] int get_max_slots() const { return max_slots_; }
 
+        [[nodiscard]] int get_current_slots() const
+        {
+            return get_info()->get_fill_level() * max_slots_;
+        }
+
     protected:
         int max_slots_;
         std::unique_ptr<interfaces::ContainerInfo> info_;

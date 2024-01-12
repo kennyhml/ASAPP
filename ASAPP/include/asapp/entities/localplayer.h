@@ -11,7 +11,8 @@ namespace asa::entities
     class LocalPlayer : public BaseEntity
     {
     public:
-        explicit LocalPlayer() : BaseEntity("You") {}
+        explicit LocalPlayer() : BaseEntity(
+            "You", std::make_unique<interfaces::LocalInventory>()) {}
 
         /**
          * @brief Gets the local player inventory component.

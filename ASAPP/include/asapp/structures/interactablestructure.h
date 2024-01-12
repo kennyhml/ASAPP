@@ -15,8 +15,6 @@ namespace asa::structures
                                                       interface_(std::move(t_interface)),
                                                       interact_key_(t_interact_key) {}
 
-        virtual ~InteractableStructure() = default;
-
         /**
          * @brief Gets the interact action mapping to interact with the structure.
          *
