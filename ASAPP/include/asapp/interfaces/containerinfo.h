@@ -9,6 +9,13 @@ namespace asa::interfaces
         window::Rect slots_bar{768, 548, 382, 6};
 
     public:
+        enum Stat
+        {
+            HEALTH,
+            STORAGE,
+            WEIGHT
+        };
+
         bool is_open() const override { return true; }
 
         int get_max_health() override { return 0; };
