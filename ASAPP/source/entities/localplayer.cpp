@@ -219,13 +219,13 @@ namespace asa::entities
         // Accessing the inventory is the same as accessing the interface of
         // any interactable structure such as teleporters, beds etc.
         // just that we have to wait to receive the remote inventory afterwards.
-        access(static_cast<structures::InteractableStructure>(container));
+        access(static_cast<const structures::InteractableStructure&>(container));
         container.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
 
     void LocalPlayer::access(const structures::InteractableStructure& structure) const
     {
-        if (structure._interface->is_open()) { return; }
+        if (structure.get_interface()->is_open()) { return; }
 
         const auto start = std::chrono::system_clock::now();
         do {
@@ -234,19 +234,20 @@ namespace asa::entities
                 throw structures::StructureNotOpenedError(&structure);
             }
         }
-        while (!util::await([&structure]() { return structure._interface->is_open(); },
-                            std::chrono::seconds(5)));
+        while (!util::await([&structure]() {
+            return structure.get_interface()->is_open();
+        }, std::chrono::seconds(5)));
     }
 
     void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
     {
-        if (!bed._interface->is_open()) {
+        if (!bed.get_interface()->is_open()) {
             set_pitch(90);
             access(bed);
             core::sleep_for(std::chrono::milliseconds(300));
         }
 
-        bed.map->go_to(bed.name);
+        bed.get_interface()->go_to(bed.get_name());
         pass_travel_screen();
         reset_view_angles();
         is_crouched_ = false;
@@ -260,7 +261,7 @@ namespace asa::entities
             look_fully_down();
             access(tp);
             core::sleep_for(std::chrono::milliseconds(500));
-            tp.map->go_to(tp.name);
+            tp.get_interface()->go_to(tp.get_name());
             util::await([]() { return !interfaces::hud->can_default_teleport(); },
                         std::chrono::seconds(5));
         }
@@ -270,20 +271,6 @@ namespace asa::entities
                                 std::chrono::seconds(5)));
         }
         pass_teleport_screen(!could_access_before);
-    }
-
-    void LocalPlayer::lay_on(const structures::SimpleBed& bed)
-    {
-        while (!bed.action_wheel.is_open()) {
-            window::down(settings::use);
-
-            if (!util::await([&bed]() { return bed.action_wheel.is_open(); },
-                             std::chrono::seconds(3))) { window::up(settings::use); }
-            core::sleep_for(std::chrono::milliseconds(200));
-        }
-        core::sleep_for(std::chrono::seconds(1));
-        bed.action_wheel.select_lay_on();
-        window::up(settings::use);
     }
 
     void LocalPlayer::get_off_bed()

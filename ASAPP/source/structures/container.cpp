@@ -3,15 +3,16 @@
 
 namespace asa::structures
 {
-    Container::Container(std::string name, int slots, interfaces::BaseInventory* inv) :
-        InteractableStructure(name, &settings::action_mappings::access_inventory, inv),
-        max_slots(slots), inventory(inv)
-    {
-        if (!inventory) {
-            inventory = new interfaces::BaseInventory(true);
-            _interface = inventory;
-        }
-    }
-
-    int Container::get_slot_count() { return info.get_fill_level() * max_slots; }
+    Container::Container(std::string t_name, const int t_max_slots,
+                         std::unique_ptr<interfaces::BaseInventory> t_inv,
+                         std::unique_ptr<interfaces::ContainerInfo> t_info) :
+        InteractableStructure(std::move(t_name),
+                              &settings::action_mappings::access_inventory,
+                              t_inv
+                                  ? std::move(t_inv)
+                                  : std::make_unique<interfaces::BaseInventory>(true)),
+        max_slots_(t_max_slots),
+        info_(t_info
+                  ? std::move(t_info)
+                  : std::make_unique<interfaces::ContainerInfo>()) {}
 }

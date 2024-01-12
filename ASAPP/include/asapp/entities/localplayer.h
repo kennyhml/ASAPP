@@ -60,7 +60,6 @@ namespace asa::entities
 
         void fast_travel_to(const structures::SimpleBed&);
         void teleport_to(const structures::Teleporter&, bool is_default = false);
-        void lay_on(const structures::SimpleBed&);
         void get_off_bed();
         void suicide();
 

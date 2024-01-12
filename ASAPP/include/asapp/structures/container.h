@@ -7,17 +7,34 @@ namespace asa::structures
 {
     class Container : public InteractableStructure
     {
-    protected:
-        int max_slots;
-
     public:
-        Container(std::string t_name, int t_slots,
-                  interfaces::BaseInventory* inv = nullptr);
+        explicit Container(std::string t_name, int t_max_slots,
+                           std::unique_ptr<interfaces::BaseInventory> t_inv = nullptr,
+                           std::unique_ptr<interfaces::ContainerInfo> t_info = nullptr);
 
-        interfaces::ContainerInfo info;
-        interfaces::BaseInventory* inventory;
+        /**
+         * @brief Gets the inventory component of the container. 
+         */
+        [[nodiscard]] virtual interfaces::BaseInventory* get_inventory() const
+        {
+            return dynamic_cast<interfaces::BaseInventory*>(interface_.get());
+        }
 
-        int get_slot_count();
-        int get_max_slots() const { return max_slots; }
+        /**
+         * @brief Gets the info component of the container. 
+         */
+        [[nodiscard]] virtual interfaces::ContainerInfo* get_info() const
+        {
+            return info_.get();
+        }
+
+        /**
+         * @brief Gets the maximum number of slots this container can hold. 
+         */
+        [[nodiscard]] int get_max_slots() const { return max_slots_; }
+
+    protected:
+        int max_slots_;
+        std::unique_ptr<interfaces::ContainerInfo> info_;
     };
 }

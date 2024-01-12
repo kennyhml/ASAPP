@@ -1,6 +1,4 @@
-#ifndef ASAPP_INCLUDE_ASAPP_STRUCTURES_DEDICATEDSTORAGE_H_
-#define ASAPP_INCLUDE_ASAPP_STRUCTURES_DEDICATEDSTORAGE_H_
-
+#pragma once
 #include "container.h"
 #include "../interfaces/baseinventory.h"
 
@@ -8,11 +6,14 @@ namespace asa::structures
 {
     class DedicatedStorage final : public Container
     {
-       public:
-        DedicatedStorage() : Container("Dedicated Storage", 1800) {};
-      
-        bool can_deposit();
+    public:
+        DedicatedStorage() : Container("Dedicated Storage", 1800) {}
+
+        /**
+         * @brief Checks whether depositing into the dedicated storage is possible.
+         * 
+         * @return True if we can deposit items into the dedi, false otherwise.
+         */
+        [[nodiscard]] bool can_deposit() const;
     };
 }
-
-#endif //ASAPP_INCLUDE_ASAPP_STRUCTURES_DEDICATEDSTORAGE_H_

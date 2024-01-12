@@ -7,7 +7,8 @@ namespace asa::entities
     class BaseEntity
     {
     public:
-        explicit BaseEntity(std::string t_name);
+        explicit BaseEntity(std::string t_name) : name_(std::move(t_name)) {}
+
         virtual ~BaseEntity() = default;
 
         /**
@@ -25,7 +26,8 @@ namespace asa::entities
 
     protected:
         std::string name_;
-        std::unique_ptr<interfaces::BaseInventory> inventory_;
+        std::unique_ptr<interfaces::BaseInventory> inventory_ = std::make_unique<
+            interfaces::BaseInventory>(true);
         interfaces::ActionWheel action_wheel_;
     };
 }

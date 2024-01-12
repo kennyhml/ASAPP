@@ -6,15 +6,15 @@
 
 namespace asa::structures
 {
-    class SimpleBed : public InteractableStructure
+    class SimpleBed final : public InteractableStructure
     {
     public:
         explicit SimpleBed(std::string name) : InteractableStructure(
-            std::move(name), &settings::use, new interfaces::TravelMap())
-        {
-            this->map = reinterpret_cast<interfaces::TravelMap*>(_interface);
-        };
+            std::move(name), &settings::use, std::make_unique<interfaces::TravelMap>()) {}
 
-        interfaces::TravelMap* map;
+        [[nodiscard]] interfaces::TravelMap* get_interface() const override
+        {
+            return dynamic_cast<interfaces::TravelMap*>(interface_.get());
+        }
     };
 }

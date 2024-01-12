@@ -15,8 +15,9 @@ namespace asa::structures
 
     StructureNotOpenedError::StructureNotOpenedError(const BaseStructure* structure) :
         StructureError(structure,
-                       std::format("Failed to access '{}'", structure->name)) {};
+                       std::format("Failed to access '{}'", structure->get_name())) {};
 
     StructureNotClosedError::StructureNotClosedError(const BaseStructure* structure) :
-        StructureError(structure, std::format("Failed to exit '{}'", structure->name)) {};
+        StructureError(structure,
+                       std::format("Failed to exit '{}'", structure->get_name())) {};
 }
