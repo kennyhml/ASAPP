@@ -22,6 +22,7 @@ namespace asa::items
         inline Item* cementing_paste = nullptr;
         inline Item* achatina_paste = nullptr;
         inline Item* fiber = nullptr;
+        inline Item* chitin = nullptr;
         inline Item* flint = nullptr;
         inline Item* gunpowder = nullptr;
         inline Item* sparkpowder = nullptr;

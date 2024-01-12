@@ -73,6 +73,7 @@ namespace asa::items
             load(cementing_paste, "Cementing Paste", all_resources);
             load(achatina_paste, "Achatina Paste", all_resources);
             load(fiber, "Fiber", all_resources);
+            load(chitin, "Chitin", all_resources);
             load(flint, "Flint", all_resources);
             load(gunpowder, "Gunpowder", all_resources);
             load(sparkpowder, "Sparkpowder", all_resources);
