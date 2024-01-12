@@ -1,5 +1,4 @@
 #pragma once
-#include <memory>
 #include "../interfaces/actionwheel.h"
 #include "../interfaces/baseinventory.h"
 
@@ -8,19 +7,25 @@ namespace asa::entities
     class BaseEntity
     {
     public:
-        BaseEntity(std::string t_name,
-                   std::unique_ptr<interfaces::BaseInventory> t_inventory = nullptr);
+        explicit BaseEntity(std::string t_name);
+        virtual ~BaseEntity() = default;
 
-        std::string get_name() const { return name; }
+        /**
+         * @brief Gets the name of the entity.
+         */
+        [[nodiscard]] const std::string& get_name() const { return name_; }
 
-        virtual interfaces::BaseInventory* get_inventory() const
+        /**
+         * @brief Gets the inventory component of the entity.
+         */
+        [[nodiscard]] virtual interfaces::BaseInventory* get_inventory() const
         {
-            return inventory.get();
+            return inventory_.get();
         }
 
     protected:
-        std::string name;
-        std::unique_ptr<interfaces::BaseInventory> inventory;
-        interfaces::ActionWheel action_wheel;
+        std::string name_;
+        std::unique_ptr<interfaces::BaseInventory> inventory_;
+        interfaces::ActionWheel action_wheel_;
     };
 }

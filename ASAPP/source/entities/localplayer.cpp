@@ -12,7 +12,7 @@ namespace asa::entities
 {
     interfaces::LocalInventory* LocalPlayer::get_inventory() const
     {
-        return dynamic_cast<interfaces::LocalInventory*>(inventory.get());
+        return dynamic_cast<interfaces::LocalInventory*>(inventory_.get());
     }
 
     bool LocalPlayer::is_alive() const
@@ -135,7 +135,7 @@ namespace asa::entities
 
         controls::mouse_press(controls::LEFT);
         core::sleep_for(std::chrono::milliseconds(100));
-        inventory->select_slot(0);
+        inventory_->select_slot(0);
 
         std::cout << "\t[-] Waiting for implant cooldown... ";
         core::sleep_for(std::chrono::seconds(6));
@@ -220,7 +220,7 @@ namespace asa::entities
         // any interactable structure such as teleporters, beds etc.
         // just that we have to wait to receive the remote inventory afterwards.
         access(static_cast<structures::InteractableStructure>(container));
-        container.inventory->receive_remote_inventory(std::chrono::seconds(30));
+        container.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
 
     void LocalPlayer::access(const structures::InteractableStructure& structure) const
@@ -341,28 +341,28 @@ namespace asa::entities
 
     void LocalPlayer::equip(items::Item* item, interfaces::PlayerInfo::Slot slot)
     {
-        bool wasInventoryOpen = inventory->is_open();
-        if (!wasInventoryOpen) {
+        const bool was_inventory_open = inventory_->is_open();
+        if (!was_inventory_open) {
             get_inventory()->open();
             core::sleep_for(std::chrono::milliseconds(500));
         }
 
         get_inventory()->equip(*item, slot);
-        if (!wasInventoryOpen) { get_inventory()->close(); }
+        if (!was_inventory_open) { get_inventory()->close(); }
     }
 
     void LocalPlayer::unequip(interfaces::PlayerInfo::Slot slot)
     {
-        bool wasInventoryOpen = get_inventory()->is_open();
-        if (!wasInventoryOpen) {
+        bool was_inventory_open = get_inventory()->is_open();
+        if (!was_inventory_open) {
             get_inventory()->open();
             core::sleep_for(std::chrono::milliseconds(500));
         }
         get_inventory()->info.unequip(slot);
-        if (!wasInventoryOpen) { get_inventory()->close(); }
+        if (!was_inventory_open) { get_inventory()->close(); }
     }
 
-    void LocalPlayer::pass_travel_screen(bool in, bool out)
+    void LocalPlayer::pass_travel_screen(const bool in, const bool out)
     {
         if (in) {
             if (!util::await([this]() { return is_in_travel_screen(); },

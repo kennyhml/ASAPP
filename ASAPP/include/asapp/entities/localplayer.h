@@ -1,5 +1,5 @@
 #pragma once
-#include "playerent.h"
+#include "baseentity.h"
 #include "asapp/interfaces/localinventory.h"
 #include "asapp/structures/basestructure.h"
 #include "asapp/structures/container.h"
@@ -8,18 +8,36 @@
 
 namespace asa::entities
 {
-    class LocalPlayer : public PlayerEnt
+    class LocalPlayer : public BaseEntity
     {
     public:
-        explicit LocalPlayer(std::unique_ptr<interfaces::LocalInventory> t_inventory) :
-            PlayerEnt("You", std::move(t_inventory)) {}
+        explicit LocalPlayer() : BaseEntity("You") {}
 
+        /**
+         * @brief Gets the local player inventory component.
+         */
         [[nodiscard]] interfaces::LocalInventory* get_inventory() const override;
 
+        /**
+         * @brief Checks whether the local player is currently alive.
+         */
         [[nodiscard]] bool is_alive() const;
+
+        /**
+         * @brief Checks whether the local player is out of water.
+         */
         [[nodiscard]] bool is_out_of_water() const;
+
+        /**
+         * @brief Checks whether the local player is out of food.
+         */
         [[nodiscard]] bool is_out_of_food() const;
+
+        /**
+         * @brief Checks whether the local player is out of overweight.
+         */
         [[nodiscard]] bool is_overweight() const;
+
         [[nodiscard]] bool received_item(items::Item&) const;
         [[nodiscard]] bool deposited_item(items::Item&) const;
         [[nodiscard]] bool is_in_spawn_animation() const;
@@ -154,6 +172,5 @@ namespace asa::entities
         int current_pitch_ = 0; // degrees of our view bottom to top, between -90 and 90
     };
 
-    inline std::unique_ptr<LocalPlayer> local_player = std::make_unique<LocalPlayer>(
-        std::make_unique<interfaces::LocalInventory>());
+    inline std::unique_ptr<LocalPlayer> local_player = std::make_unique<LocalPlayer>();
 }
