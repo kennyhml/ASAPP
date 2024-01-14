@@ -217,7 +217,13 @@ namespace asa::interfaces
     void BaseInventory::drop_all(const items::Item& item)
     {
         search_bar.search_for(item.get_name());
-        return drop_all();
+        drop_all();
+    }
+
+    void BaseInventory::drop_all(const std::string& term)
+    {
+        search_bar.search_for(term);
+        drop_all();
     }
 
     void BaseInventory::transfer_all(BaseInventory* receiver)

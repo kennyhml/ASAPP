@@ -161,6 +161,12 @@ namespace asa::interfaces
         void drop_all(const items::Item& item);
 
         /**
+         * @brief Searches a term and drops all of the matches.
+         * @param term The term to filter and drop all for.
+         */
+        void drop_all(const std::string& term);
+
+        /**
          * @brief Transfers all items to another inventory.
          * 
          * @param receiver A pointer to the receiving inventory (optional).
