@@ -61,6 +61,14 @@ namespace asa::interfaces
         float get_weight_level() const;
         float get_health_level() const;
 
+        /**
+         * @brief Toggles extended HUD information on / off.
+         *
+         * @remark Respects the 'toggle extended hud' user setting.
+         * @remark Must be called twice, once to toggle and once to disable.
+         */
+        void toggle_extended();
+
     private:
         window::Color blink_red_state_{109, 54, 52};
         window::Color blink_red_state_weight_{255, 45, 45};
@@ -79,6 +87,8 @@ namespace asa::interfaces
 
         window::Rect dino_xp{1872, 39, 9, 36};
         window::Rect dino_weightcapped{1713, 33, 60, 33};
+
+        bool shown_ = false;
     };
 
     inline HUD* hud = new HUD();

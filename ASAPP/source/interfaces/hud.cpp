@@ -2,6 +2,8 @@
 #include "asapp/util/util.h"
 #include <iostream>
 #include <opencv2/highgui.hpp>
+
+#include "asapp/core/state.h"
 #include "asapp/game/resources.h"
 #include "asapp/game/window.h"
 
@@ -172,6 +174,23 @@ namespace asa::interfaces
         return true;
     }
 
+    void HUD::toggle_extended()
+    {
+        using namespace settings;
+
+        if (!shown_) {
+            toggle_hud.get()
+                ? window::press(show_extended_info)
+                : window::down(show_extended_info);
+            shown_ = true;
+        }
+        else {
+            toggle_hud.get()
+                ? window::press(show_extended_info)
+                : window::up(show_extended_info);
+            shown_ = false;
+        }
+    }
 
     float HUD::get_health_level() const
     {
@@ -260,19 +279,22 @@ namespace asa::interfaces
 
     bool HUD::mount_hud_available()
     {
-        static constexpr window::Color regular_color{140, 221, 179};
+        static constexpr window::Color text{255, 255, 255};
+        static window::Rect roi(1869, 48, 15, 10);
 
-        const cv::Mat mask = window::get_mask(dino_xp, regular_color, 25);
-        // if a level up is available the color will differ
-        return cv::countNonZero(mask) > 50 || mount_has_level_up();
+        toggle_extended();
+        asa::core::sleep_for(std::chrono::milliseconds(100));
+        const cv::Mat mask = window::get_mask(roi, text, 20);
+        toggle_extended();
+
+        return cv::countNonZero(mask) > 20 || mount_has_level_up();
     }
 
     bool HUD::is_mount_capped()
     {
-        static constexpr window::Color black_weight{0,0,0};
+        static constexpr window::Color black_weight{0, 0, 0};
 
         const cv::Mat mask = window::get_mask(dino_weightcapped, black_weight, 0);
         return cv::countNonZero(mask) > 950;
     }
-    
 }
