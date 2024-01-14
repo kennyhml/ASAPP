@@ -35,6 +35,11 @@ namespace asa::entities
         [[nodiscard]] bool is_out_of_food() const;
 
         /**
+         * @brief Checks whether the local player is broken bones.
+         */
+        [[nodiscard]] bool is_broken_bones() const;
+
+        /**
          * @brief Checks whether the local player is out of overweight.
          */
         [[nodiscard]] bool is_overweight() const;

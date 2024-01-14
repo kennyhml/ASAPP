@@ -42,6 +42,11 @@ namespace asa::entities
         return interfaces::hud->is_player_out_of_food();
     }
 
+    bool LocalPlayer::is_broken_bones() const
+    {
+        return interfaces::hud->is_player_broken_bones();
+    }
+    
     bool LocalPlayer::is_overweight() const
     {
         return interfaces::hud->is_player_overweight();
