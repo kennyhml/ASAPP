@@ -63,7 +63,6 @@ namespace asa::resources
         LOAD_RESOURCE(dir, damage);
         LOAD_RESOURCE(dir, deposit);
         LOAD_RESOURCE(dir, ride);
-        LOAD_RESOURCE(dir, cap);
         LOAD_RESOURCE(dir, tribemanager);
         LOAD_RESOURCE(dir, day_log);
 

@@ -17,8 +17,6 @@ namespace asa::interfaces
             const auto start = std::chrono::system_clock::now();
             while (!util::timedout(start, timeout)) {
                 cv::Mat mask = window::get_mask(icon, color, 30);
-                cv::imshow("t", mask);
-                cv::waitKey(1);
                 if (cv::countNonZero(mask) > min_matches) { return true; }
             }
             return false;

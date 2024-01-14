@@ -23,7 +23,6 @@ namespace asa::resources
         inline cv::Mat damage;
         inline cv::Mat deposit;
         inline cv::Mat ride;
-        inline cv::Mat cap;
         inline cv::Mat tribemanager;
         inline cv::Mat day_log;
     }
