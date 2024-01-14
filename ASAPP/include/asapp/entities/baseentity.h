@@ -30,6 +30,16 @@ namespace asa::entities
             return inventory_.get();
         }
 
+        /**
+         * @brief Uses the primary attack of the entity (left click) 
+         */
+        void primary_attack();
+
+        /**
+         * @brief Uses the secondary attack of the entity (right click) 
+         */
+        void secondary_attack();
+
     protected:
         std::string name_;
         std::unique_ptr<interfaces::BaseInventory> inventory_;
