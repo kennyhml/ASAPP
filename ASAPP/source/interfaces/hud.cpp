@@ -10,22 +10,39 @@ namespace asa::interfaces
     namespace
     {
         bool is_blinking(const window::Rect& icon, const window::Color& color,
+                         int min_matches = 500,
                          const std::chrono::milliseconds timeout =
                              std::chrono::milliseconds(500))
         {
             const auto start = std::chrono::system_clock::now();
             while (!util::timedout(start, timeout)) {
-                if (cv::countNonZero(window::get_mask(icon, color, 30)) > 20) {
-                    return true;
-                }
+                cv::Mat mask = window::get_mask(icon, color, 30);
+                cv::imshow("t", mask);
+                cv::waitKey(1);
+                if (cv::countNonZero(mask) > min_matches) { return true; }
             }
             return false;
+        }
+
+        cv::Rect find_max_contour(const std::vector<std::vector<cv::Point>>& contours)
+        {
+            int max_size = 0;
+            cv::Rect max_cont;
+
+            for (const auto& contour : contours) {
+                if (contourArea(contour) > max_size) {
+                    max_size = cv::contourArea(contour);
+                    max_cont = boundingRect(contour);
+                }
+            }
+
+            return max_cont;
         }
     }
 
     bool HUD::is_player_overweight() const
     {
-        return is_blinking(weight_icon_, blink_red_state_weight_,
+        return is_blinking(weight_icon_, blink_red_state_weight_, 500,
                            std::chrono::milliseconds(700));
     }
 
@@ -157,18 +174,74 @@ namespace asa::interfaces
         return true;
     }
 
-    float HUD::get_water_amount() const
+
+    float HUD::get_health_level() const
     {
-        static window::Rect roi(1885, 806, 1, 43);
-        static window::Color full{111, 150, 155};
+        static window::Rect roi(1881, 956, 9, 42);
+        const cv::Mat original_img = window::screenshot(roi);
 
-        const int amount_filled = cv::countNonZero(window::get_mask(roi, full, 30));
-        return (static_cast<float>(amount_filled) / static_cast<float>(roi.height));
+        cv::Mat grayscale;
+        cv::cvtColor(original_img, grayscale, cv::COLOR_RGB2GRAY);
+        double variance = 0.0;
+        cv::Scalar mean, stddev;
+        cv::meanStdDev(grayscale, mean, stddev);
+        variance = stddev.val[0] * stddev.val[0];
+
+        cv::Mat pix = original_img.reshape(1, original_img.total());
+        // k-means requires float32
+        pix.convertTo(pix, CV_32F);
+
+        const cv::TermCriteria criteria(
+            cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 100, 0.2);
+        const int clusters = variance > 50.f ? 2 : 1;
+        cv::Mat labels;
+        cv::Mat centers;
+        cv::kmeans(pix, clusters, labels, criteria, 3, cv::KMEANS_RANDOM_CENTERS,
+                   centers);
+
+        centers.convertTo(centers, CV_8U);
+        cv::Mat mask1 = cv::Mat::zeros(original_img.size(), CV_8U);
+        cv::Mat mask2 = cv::Mat::zeros(original_img.size(), CV_8U);
+
+        for (int i = 0; i < pix.rows; ++i) {
+            if (labels.at<int>(i, 0)) { mask1.at<uchar>(i) = 255; }
+            else { mask2.at<uchar>(i) = 255; }
+        }
+
+        cv::Mat structure = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
+        cv::morphologyEx(mask1, mask1, cv::MORPH_CLOSE, structure);
+        cv::morphologyEx(mask1, mask1, cv::MORPH_OPEN, structure);
+        cv::morphologyEx(mask2, mask2, cv::MORPH_CLOSE, structure);
+        cv::morphologyEx(mask2, mask2, cv::MORPH_OPEN, structure);
+
+        using contour = std::vector<cv::Point>;
+        std::vector<contour> contours1, contours2;
+
+        cv::findContours(mask1, contours1, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+        cv::findContours(mask2, contours2, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+        // get rid of all the noise and make sure we only got our clean rects
+        cv::Rect m1 = find_max_contour(contours1);
+        m1.width = roi.width;
+        mask1.setTo(cv::Scalar(0, 0, 0));
+        cv::rectangle(mask1, m1, {255, 255, 255}, -1);
+
+
+        cv::Rect m2 = find_max_contour(contours2);
+        m2.width = roi.width;
+        mask2.setTo(cv::Scalar(0, 0, 0));
+        cv::rectangle(mask2, m2, {255, 255, 255}, -1);
+
+
+        // make sure there is no overlap between the masks
+        if (m1.area() != roi.height * roi.width && (m2.area() != roi.height * roi.
+            width)) { mask2 = mask2 & ~mask1; }
+
+
+        // lets look at the bigger of the two masks only as it's usually more reliable.
+        cv::Mat relevant_mask = m1.area() > m2.area() ? mask1 : mask2;
+        return 0.f;
     }
-
-    float HUD::get_food_amount() const { return 0; }
-
-    float HUD::get_weight_amount() const { return 0; }
 
     bool HUD::item_removed(const window::Rect& area)
     {
@@ -180,20 +253,28 @@ namespace asa::interfaces
         return window::match_template(area, resources::text::added);
     }
 
-    bool HUD::is_mounted() 
+    bool HUD::mount_has_level_up()
     {
-        if (settings::game_user_settings::toggle_hud.get()) {
-            window::press(settings::show_extended_info);
-        }
-        else { window::down(settings::show_extended_info); }
-        bool result = util::await([]() {
-            return window::match_template(window::Rect(1858, 42, 32, 32), resources::interfaces::mount_xp, 0.6);
-        }, std::chrono::milliseconds(300));
-  
-        if (settings::game_user_settings::toggle_hud.get()) {
-            window::press(settings::show_extended_info);
-        }
-        else { window::up(settings::show_extended_info); }
-        return result;
+        static constexpr window::Color blink_color{50, 224, 239};
+
+        return is_blinking(dino_xp, blink_color, 70, std::chrono::milliseconds(700));
     }
+
+    bool HUD::mount_hud_available()
+    {
+        static constexpr window::Color regular_color{140, 221, 179};
+
+        const cv::Mat mask = window::get_mask(dino_xp, regular_color, 25);
+        // if a level up is available the color will differ
+        return cv::countNonZero(mask) > 50 || mount_has_level_up();
+    }
+
+    bool HUD::is_mount_capped()
+    {
+        static constexpr window::Color black_weight{0,0,0};
+
+        const cv::Mat mask = window::get_mask(dino_weightcapped, black_weight, 0);
+        return cv::countNonZero(mask) > 950;
+    }
+    
 }

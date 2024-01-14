@@ -15,7 +15,10 @@ namespace asa::interfaces
         [[nodiscard]] bool is_mount_out_of_food() { return false; };
         [[nodiscard]] bool is_mount_out_of_stamina() { return false; };
         [[nodiscard]] bool is_mount_sprinting() { return false; };
-        bool is_mounted();
+
+        [[nodiscard]] bool mount_hud_available();
+        [[nodiscard]] bool mount_has_level_up();
+        [[nodiscard]] bool is_mount_capped();
 
         [[nodiscard]] bool is_player_overweight() const;
         [[nodiscard]] bool is_player_broken_bones() const;
@@ -53,9 +56,10 @@ namespace asa::interfaces
         bool count_items_added(items::Item&, int& amount_out) const;
         bool count_items_removed(items::Item&, int& amount_out) const;
 
-        float get_water_amount() const;
-        float get_food_amount() const;
-        float get_weight_amount() const;
+        float get_water_level() const;
+        float get_food_level() const;
+        float get_weight_level() const;
+        float get_health_level() const;
 
     private:
         window::Color blink_red_state_{109, 54, 52};
@@ -72,6 +76,9 @@ namespace asa::interfaces
         window::Rect item_removed_area{43, 20, 110, 1054};
         window::Rect item_added_area{40, 15, 85, 1063};
         window::Rect status_update_area{844, 12, 224, 30};
+
+        window::Rect dino_xp{1872, 39, 9, 36};
+        window::Rect dino_weightcapped{1713, 33, 60, 33};
     };
 
     inline HUD* hud = new HUD();
