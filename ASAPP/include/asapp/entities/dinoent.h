@@ -8,6 +8,6 @@ namespace asa::entities
     public:
         using BaseEntity::BaseEntity;
 
-        void exit();
+        [[nodiscard]] bool is_mounted() const;
     };
 }
