@@ -5,6 +5,7 @@
 #include "asapp/structures/container.h"
 #include "asapp/structures/simplebed.h"
 #include "asapp/structures/teleporter.h"
+#include "dinoent.h"
 
 namespace asa::entities
 {
@@ -60,9 +61,11 @@ namespace asa::entities
         [[nodiscard]] bool can_access(const structures::BaseStructure&) const;
         [[nodiscard]] bool can_access(const entities::BaseEntity&) const;
 
-        void access(const entities::BaseEntity&) const;
+        void access(const BaseEntity&) const;
         void access(const structures::Container&) const;
         void access(const structures::InteractableStructure&) const;
+
+        void mount(const DinoEnt&) const;
 
         void fast_travel_to(const structures::SimpleBed&);
         void teleport_to(const structures::Teleporter&, bool is_default = false);

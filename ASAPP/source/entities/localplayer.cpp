@@ -46,7 +46,7 @@ namespace asa::entities
     {
         return interfaces::hud->is_player_broken_bones();
     }
-    
+
     bool LocalPlayer::is_overweight() const
     {
         return interfaces::hud->is_player_overweight();
@@ -242,6 +242,15 @@ namespace asa::entities
         while (!util::await([&structure]() {
             return structure.get_interface()->is_open();
         }, std::chrono::seconds(5)));
+    }
+
+    void LocalPlayer::mount(const DinoEnt& entity) const
+    {
+        if (entity.is_mounted()) { return; }
+
+        do { window::press(settings::use); }
+        while (!util::await([&entity]()-> bool { return entity.is_mounted(); },
+                            std::chrono::seconds(5)));
     }
 
     void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
