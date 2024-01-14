@@ -22,10 +22,7 @@ namespace asa::resources
         inline cv::Mat armor;
         inline cv::Mat damage;
         inline cv::Mat deposit;
-        inline cv::Mat blueprint;
-        inline cv::Mat blueprint_end;
         inline cv::Mat ride;
-        inline cv::Mat mount_xp;
         inline cv::Mat cap;
         inline cv::Mat tribemanager;
         inline cv::Mat day_log;
