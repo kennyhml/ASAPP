@@ -1,5 +1,7 @@
 #include "asapp/interfaces/craftinginventory.h"
 
+#include "asapp/core/state.h"
+
 
 namespace asa::interfaces
 {
@@ -79,14 +81,16 @@ namespace asa::interfaces
         // avoid setting a last craft timestamp if we didnt craft.
         if (!amount) { return; }
 
-        while (amount > 100) {
+        while (amount >= 100) {
             window::press("a");
             amount -= 100;
+            asa::core::sleep_for(std::chrono::milliseconds(50));
         }
 
         while (amount) {
             window::press("e");
             amount--;
+            asa::core::sleep_for(std::chrono::milliseconds(50));
         }
 
         last_craft_ = std::chrono::system_clock::now();

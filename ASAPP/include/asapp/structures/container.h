@@ -8,9 +8,9 @@ namespace asa::structures
     class Container : public InteractableStructure
     {
     public:
-        explicit Container(std::string t_name, int t_max_slots,
-                           std::unique_ptr<interfaces::BaseInventory> t_inv = nullptr,
-                           std::unique_ptr<interfaces::ContainerInfo> t_info = nullptr);
+        Container(std::string t_name, int t_max_slots,
+                  std::unique_ptr<interfaces::BaseInventory> t_inv = nullptr,
+                  std::unique_ptr<interfaces::ContainerInfo> t_info = nullptr);
 
         /**
          * @brief Gets the inventory component of the container. 
