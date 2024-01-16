@@ -105,7 +105,7 @@ namespace asa::interfaces
     {
         const window::Rect roi = item_icon_removed_or_added_area;
         const std::vector<window::Rect> locations = window::locate_all_template(
-            roi, item.get_notification_icon(), 0.75f, item.get_notification_icon_mask());
+            roi, item.get_notification_icon(), 0.65f, item.get_notification_icon_mask());
 
         auto got_added = [roi, roi_out](const window::Rect& r) -> bool {
             const auto loc = window::Rect(roi.x + r.x + 20, roi.y + r.y - 10, 120, 30);
