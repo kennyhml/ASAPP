@@ -47,6 +47,7 @@ namespace asa::interfaces::components
 
         core::sleep_for(std::chrono::milliseconds(50));
         window::press("enter");
+        window::post_mouse_press_at({955, 344}, controls::LEFT);
 
         searching = false;
         last_searched_term = term;
