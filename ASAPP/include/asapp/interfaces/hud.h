@@ -29,7 +29,7 @@ namespace asa::interfaces
         [[nodiscard]] bool can_default_teleport() const;
         [[nodiscard]] bool can_fast_travel() const;
         [[nodiscard]] bool can_access_inventory() const;
-        [[nodiscard]] bool detected_enemy() const;
+        [[nodiscard]] bool detected_enemy();
 
         [[nodiscard]] bool extended_information_is_toggled() const;
 
