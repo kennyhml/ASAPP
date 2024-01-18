@@ -305,22 +305,20 @@ namespace asa::entities
     {
         const int diff = ((pitch - current_pitch_) + 90) % 360 - 90;
         diff < 0 ? turn_up(-diff) : turn_down(diff);
-        current_yaw_ = pitch;
+        current_pitch_ = pitch;
     }
 
     void LocalPlayer::turn_right(const int by_degrees, const ms delay)
     {
-        const int allowed = std::min(180 - current_yaw_, by_degrees);
-        controls::turn_degrees(allowed, 0);
-        current_yaw_ += allowed;
+        controls::turn_degrees(by_degrees, 0);
+        current_yaw_ += by_degrees;
         core::sleep_for(delay);
     }
 
     void LocalPlayer::turn_left(const int by_degrees, const ms delay)
     {
-        const int allowed = std::min(180 + current_yaw_, by_degrees);
-        controls::turn_degrees(-allowed, 0);
-        current_yaw_ -= allowed;
+        controls::turn_degrees(-by_degrees, 0);
+        current_yaw_ -= by_degrees;
         core::sleep_for(delay);
     }
 
