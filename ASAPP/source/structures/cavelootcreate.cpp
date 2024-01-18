@@ -5,12 +5,12 @@
 
 namespace asa::structures
 {
-    const CaveLootCrate::Quality CaveLootCrate::get_crate_quality()
+    CaveLootCrate::Quality CaveLootCrate::get_crate_quality()
     {
-        if (util::is_only_one_bit_set(quality_flags)) {
+        if (util::is_only_one_bit_set(quality_flags_)) {
             std::cout << "\t[-] Skipped determining drop quality as it is fixed." <<
                 std::endl;
-            return static_cast<Quality>(quality_flags);
+            return static_cast<Quality>(quality_flags_);
         }
         std::cout << "\t[-] Attempting to determine quality of Cave Loot Crate with "
             "several options..." << std::endl;
@@ -46,10 +46,17 @@ namespace asa::structures
     CaveLootCrate::Quality CaveLootCrate::get_quality_from_tooltip(
         const std::string& tooltip)
     {
-        static std::vector<std::string> blue_crate_names = { "SwampCaveTier1", "IceCaveTier1", "IceCaveTierl", "waterCaveTier1", "waterCaveTierl" };
-        static std::vector<std::string> yellow_crate_names = { "QualityTier3", "SwampCaveTier2", "IceCaveTier2", "waterCaveTier2" };
-        static std::vector<std::string> red_crate_names = { "QualityTier4", "SwampCaveTier3", "IceCaveTier3", "waterCaveTier3" };
-  
+        static std::vector<std::string> blue_crate_names = {
+            "SwampCaveTier1", "IceCaveTier1", "IceCaveTierl", "waterCaveTier1",
+            "waterCaveTierl"
+        };
+        static std::vector<std::string> yellow_crate_names = {
+            "QualityTier3", "SwampCaveTier2", "IceCaveTier2", "waterCaveTier2"
+        };
+        static std::vector<std::string> red_crate_names = {
+            "QualityTier4", "SwampCaveTier3", "IceCaveTier3", "waterCaveTier3"
+        };
+
         auto is_in_tier = [tooltip](const std::vector<std::string>& names) -> bool {
             for (const auto& name : names) {
                 if (tooltip.find(name) != std::string::npos) { return true; }
