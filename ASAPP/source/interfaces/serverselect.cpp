@@ -58,6 +58,11 @@ namespace asa::interfaces
     void ServerSelect::join_server(const std::string& name)
     {
         std::cout << "[+] Joining server " << name << "..." << std::endl;
+        searchbar_.press();
+        core::sleep_for(std::chrono::milliseconds(100));
+        for (int i = 0; i < 10; ++i) {
+          controls::key_press("backspace", std::chrono::milliseconds(20));
+        }
         searchbar_.search_for(name);
         core::sleep_for(std::chrono::seconds(3));
 
@@ -76,10 +81,16 @@ namespace asa::interfaces
         }
 
         std::cout << "\t[-] Best search result selected." << std::endl;
+        auto start = std::chrono::system_clock::now();
         while (!is_joining_server()) {
             if (server_has_mods_enabled()) { join_button_mods_popup_.press(); }
             else { join_button_.press(); }
             core::sleep_for(std::chrono::seconds(1));
+            
+            if (util::timedout(start, std::chrono::seconds(5))) {
+              start = std::chrono::system_clock::now();
+              throw std::exception("Failed to find join server");
+            }
         }
         std::cout << "\t[-] Now joining session..." << std::endl;
         if (!util::await([this]() { return !is_open(); }, std::chrono::seconds(60))) {

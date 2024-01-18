@@ -132,14 +132,14 @@ namespace asa::interfaces
          * 
          * @param slot The slot to select.
          */
-        void select_slot(const components::Slot& slot) const;
+        void select_slot(const components::Slot& slot, bool hovered_check = true) const;
 
         /**
           * @brief Selects the given slot by index.
           * 
           * @index The index of the slot to select.
           */
-        void select_slot(const int index) const { return select_slot(slots[index]); }
+        void select_slot(const int index, bool hovered_check = true) const { return select_slot(slots[index], hovered_check); }
 
         /**
          * @brief Closes the inventory.

@@ -80,6 +80,33 @@ namespace asa::interfaces
                                       resources::text::access_inventory);
     }
 
+    bool HUD::detected_enemy() const
+    {
+        if (settings::game_user_settings::toggle_hud.get()) {
+          window::press(settings::show_extended_info);
+        }
+        else { window::down(settings::show_extended_info); }
+        core::sleep_for(std::chrono::milliseconds(100));
+        bool result = util::await([]() {
+          return window::match_template(window::screenshot(),
+                                        resources::text::detected_enemy);
+        }, std::chrono::seconds(2));
+  
+        if (settings::game_user_settings::toggle_hud.get()) {
+          window::press(settings::show_extended_info);
+        }
+        else { window::up(settings::show_extended_info); }
+        if (!result) {
+            core::sleep_for(std::chrono::milliseconds(100));
+            result = util::await([]() {
+              return window::match_template(window::screenshot(),
+                                            resources::text::detected_enemy);
+            }, std::chrono::seconds(2));
+        }
+      
+        return result;
+    }
+
     bool HUD::extended_information_is_toggled() const
     {
         static window::Rect roi{14, 34, 134, 35};

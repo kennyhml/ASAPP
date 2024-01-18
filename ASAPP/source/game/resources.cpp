@@ -86,6 +86,7 @@ namespace asa::resources
         LOAD_RESOURCE(dir, access_inventory);
         LOAD_RESOURCE(dir, x);
         LOAD_RESOURCE(dir, bp_weight);
+        LOAD_RESOURCE(dir, detected_enemy);
 
         return true;
     }

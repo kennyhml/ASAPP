@@ -34,10 +34,19 @@ namespace asa::interfaces
         int32_t second;
   
         bool operator>(const TribeLogTimestamp& other) const {
-          int64_t stamp0 = second + (minute * 60) + (hour * 60 * 60) + (day * 24 * 60 * 60);
-          int64_t stamp1 = other.second + (other.minute * 60) + (other.hour * 60 * 60) + (other.day * 24 * 60 * 60);
-  
-          return stamp0 > stamp1;
+          return to_seconds() > other.to_seconds();
+        }
+        
+        bool operator==(const TribeLogTimestamp& other) const {
+          return to_seconds() == other.to_seconds();
+        }
+
+        /// 
+        /// Turn this timestamp into a comparable int that indicates the seconds (in-game)
+        /// that have been elapsed since the start of the server
+        ///
+        [[nodiscard]] int64_t to_seconds() const {
+          return second + (minute * 60) + (hour * 60 * 60) + (day * 24 * 60 * 60);
         }
     };
     

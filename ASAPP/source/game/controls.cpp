@@ -23,7 +23,10 @@ namespace asa::controls
             {"numpadfour", VK_NUMPAD4}, {"numpadfive", VK_NUMPAD5},
             {"numpadsix", VK_NUMPAD6}, {"numpadseven", VK_NUMPAD7},
             {"numpadeight", VK_NUMPAD8}, {"NumPadnine", VK_NUMPAD9}, {"ctrl", VK_CONTROL},
-            {"esc", VK_ESCAPE}, {"space", VK_SPACE}, {"spacebar", VK_SPACE}
+            {"esc", VK_ESCAPE}, {"space", VK_SPACE}, {"spacebar", VK_SPACE},
+            {"zero", 0x30}, {"one", 0x31}, {"two", 0x32}, {"three", 0x33}, {"four", 0x34},
+            {"five", 0x35}, {"six", 0x36}, {"seven", 0x37}, {"eight", 0x38}, {"nine", 0x39},
+            {"backspace", VK_BACK}
         };
 
         KeyboardMapping GetKeyboardMapping()

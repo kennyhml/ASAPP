@@ -192,16 +192,20 @@ namespace asa::interfaces
         }
     }
 
-    void BaseInventory::select_slot(const components::Slot& slot) const
+    void BaseInventory::select_slot(const components::Slot& slot, bool hovered_check) const
     {
         assert_open(__func__);
 
-        do {
-            const window::Point location = slot.area.get_random_location(5);
-            window::set_mouse_pos(location);
+        if (hovered_check) {
+            do {
+                const window::Point location = slot.area.get_random_location(5);
+                window::set_mouse_pos(location);
+            }
+            while (!util::await([slot]() -> bool { return slot.is_hovered(); },
+                                std::chrono::seconds(2)));
+        } else {
+            window::set_mouse_pos(slot.area.get_random_location(5));
         }
-        while (!util::await([slot]() -> bool { return slot.is_hovered(); },
-                            std::chrono::seconds(2)));
     }
 
     void BaseInventory::drop_all()
