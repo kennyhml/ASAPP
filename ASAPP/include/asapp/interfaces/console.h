@@ -37,4 +37,6 @@ namespace asa::interfaces
     private:
         window::Rect bar_lower_{0, 1059, 1919, 20};
     };
+
+    inline std::unique_ptr<Console> console = std::make_unique<Console>();
 }
