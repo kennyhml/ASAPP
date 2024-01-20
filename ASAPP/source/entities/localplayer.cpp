@@ -65,7 +65,6 @@ namespace asa::entities
     bool LocalPlayer::is_in_travel_screen() const
     {
         static window::Rect roi(94, 69, 1751, 883);
-        static window::Color white(255, 255, 255);
 
         cv::Mat image = screenshot(roi);
         cv::Mat gray;
@@ -255,8 +254,27 @@ namespace asa::entities
 
     void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
     {
+        static asa::structures::Container generic_bag("Item Cache", 0);
+
         if (!bed.get_interface()->is_open()) {
             set_pitch(90);
+            asa::core::sleep_for(std::chrono::milliseconds(500));
+
+            // There could be a bag on top of the bed from previous travels / deaths.
+            if (can_access(generic_bag)) {
+                access(generic_bag);
+                // Make sure what we accessed is actually an item cache to avoid popcorning
+                // a vault or something of sorts. An item cache has no health value.
+                // If we did access a vault, we reset the pitch because the previous
+                // change in pitch was likely not picked up by the game.
+                if (generic_bag.get_info()->get_health_level() == 0.f) {
+                    generic_bag.get_inventory()->popcorn_all();
+                } else { reset_pitch(); }
+                generic_bag.get_inventory()->close();
+
+                asa::core::sleep_for(std::chrono::seconds(1));
+                return fast_travel_to(bed);
+            }
             access(bed);
             core::sleep_for(std::chrono::milliseconds(300));
         }

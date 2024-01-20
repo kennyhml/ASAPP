@@ -168,6 +168,17 @@ namespace asa::interfaces
         }
     }
 
+    void BaseInventory::popcorn_all()
+    {
+        while (!slots[0].is_empty() && is_open()) {
+            for (auto& slot : slots) {
+                if (slot.is_empty()) { break; }
+                window::set_mouse_pos(slot.area.get_random_location(5));
+                asa::window::press(asa::settings::drop_item);
+            }
+        }
+    }
+
     void BaseInventory::take_slot(const components::Slot& slot)
     {
         select_slot(slot);
@@ -192,7 +203,8 @@ namespace asa::interfaces
         }
     }
 
-    void BaseInventory::select_slot(const components::Slot& slot, bool hovered_check) const
+    void BaseInventory::select_slot(const components::Slot& slot,
+                                    bool hovered_check) const
     {
         assert_open(__func__);
 
@@ -203,9 +215,8 @@ namespace asa::interfaces
             }
             while (!util::await([slot]() -> bool { return slot.is_hovered(); },
                                 std::chrono::seconds(2)));
-        } else {
-            window::set_mouse_pos(slot.area.get_random_location(5));
         }
+        else { window::set_mouse_pos(slot.area.get_random_location(5)); }
     }
 
     void BaseInventory::drop_all()

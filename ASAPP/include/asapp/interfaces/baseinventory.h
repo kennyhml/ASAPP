@@ -114,6 +114,11 @@ namespace asa::interfaces
         virtual void popcorn(int num_slots);
 
         /**
+         * @brief Popcorns al items from the inventory. 
+         */
+        virtual void popcorn_all();
+
+        /**
          * @brief Takes the item located at a given slot.
          * 
          * @param slot The slot to take the item from.
@@ -139,7 +144,10 @@ namespace asa::interfaces
           * 
           * @index The index of the slot to select.
           */
-        void select_slot(const int index, bool hovered_check = true) const { return select_slot(slots[index], hovered_check); }
+        void select_slot(const int index, bool hovered_check = true) const
+        {
+            return select_slot(slots[index], hovered_check);
+        }
 
         /**
          * @brief Closes the inventory.
