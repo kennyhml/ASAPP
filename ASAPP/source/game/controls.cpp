@@ -26,7 +26,7 @@ namespace asa::controls
             {"esc", VK_ESCAPE}, {"space", VK_SPACE}, {"spacebar", VK_SPACE},
             {"zero", 0x30}, {"one", 0x31}, {"two", 0x32}, {"three", 0x33}, {"four", 0x34},
             {"five", 0x35}, {"six", 0x36}, {"seven", 0x37}, {"eight", 0x38}, {"nine", 0x39},
-            {"backspace", VK_BACK}
+            {"backspace", VK_BACK}, {"leftshift", VK_LSHIFT}
         };
 
         KeyboardMapping GetKeyboardMapping()
