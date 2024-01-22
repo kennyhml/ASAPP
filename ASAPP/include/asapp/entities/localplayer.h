@@ -92,6 +92,8 @@ namespace asa::entities
         bool is_crouched_ = false;
         bool is_proned_ = false;
 
+        int32_t fast_travel_attempts = 0;
+
         void pass_travel_screen(bool in = true, bool out = true);
         void pass_teleport_screen(bool access_flag = false);
 

@@ -254,11 +254,18 @@ namespace asa::entities
 
     void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
     {
-        static asa::structures::Container generic_bag("Item Cache", 0);
+        if (fast_travel_attempts >= 3) {
+            fast_travel_attempts = 0;
+            throw structures::StructureNotOpenedError(&bed);
+        }
+
+        fast_travel_attempts++;
+        
+        static structures::Container generic_bag("Item Cache", 0);
 
         if (!bed.get_interface()->is_open()) {
             set_pitch(90);
-            asa::core::sleep_for(std::chrono::milliseconds(500));
+            core::sleep_for(std::chrono::milliseconds(500));
 
             // There could be a bag on top of the bed from previous travels / deaths.
             if (can_access(generic_bag)) {
@@ -272,7 +279,7 @@ namespace asa::entities
                 } else { reset_pitch(); }
                 generic_bag.get_inventory()->close();
 
-                asa::core::sleep_for(std::chrono::seconds(1));
+                core::sleep_for(std::chrono::seconds(1));
                 return fast_travel_to(bed);
             }
             access(bed);
@@ -284,6 +291,7 @@ namespace asa::entities
         reset_view_angles();
         is_crouched_ = false;
         is_proned_ = false;
+        fast_travel_attempts = 0;
     }
 
     void LocalPlayer::teleport_to(const structures::Teleporter& tp, const bool is_default)
