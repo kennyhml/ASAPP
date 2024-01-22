@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <format>
+#include <vector>
 #include "asapp/game/settings.h"
 #include "asapp/core/config.h"
 

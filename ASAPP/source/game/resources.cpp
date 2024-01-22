@@ -1,5 +1,6 @@
 #include "asapp/game/resources.h"
 #include <iostream>
+#include <format>
 #include <opencv2/highgui.hpp>
 #include "asapp/core/config.h"
 
