@@ -324,8 +324,6 @@ namespace asa::interfaces
 
     void BaseInventory::make_new_folder(const std::string& folder_name)
     {
-        assert(folder_name.size() > 1, "Folder name must be more than 1 character.");
-
         new_folder_button_.press();
         asa::core::sleep_for(std::chrono::milliseconds(500));
 

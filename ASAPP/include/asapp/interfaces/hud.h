@@ -8,27 +8,46 @@ namespace asa::interfaces
     class HUD : public IInterface
     {
     public:
-        bool is_open() const override { return true; }
+        [[nodiscard]] bool is_open() const override
+        { return true; }
 
-        [[nodiscard]] bool is_mount_overweight() { return false; };
-        [[nodiscard]] bool is_mount_low() { return false; };
-        [[nodiscard]] bool is_mount_out_of_food() { return false; };
-        [[nodiscard]] bool is_mount_out_of_stamina() { return false; };
-        [[nodiscard]] bool is_mount_sprinting() { return false; };
+        [[nodiscard]] bool is_mount_overweight()
+        { return false; };
+
+        [[nodiscard]] bool is_mount_low()
+        { return false; };
+
+        [[nodiscard]] bool is_mount_out_of_food()
+        { return false; };
+
+        [[nodiscard]] bool is_mount_out_of_stamina()
+        { return false; };
+
+        [[nodiscard]] bool is_mount_sprinting()
+        { return false; };
 
         [[nodiscard]] bool mount_hud_available();
+
         [[nodiscard]] bool mount_has_level_up();
+
         [[nodiscard]] bool is_mount_capped();
 
         [[nodiscard]] bool is_player_overweight() const;
+
         [[nodiscard]] bool is_player_broken_bones() const;
+
         [[nodiscard]] bool is_player_out_of_water() const;
+
         [[nodiscard]] bool is_player_out_of_food() const;
+
         [[nodiscard]] bool is_player_sprinting() const;
 
         [[nodiscard]] bool can_default_teleport() const;
+
         [[nodiscard]] bool can_fast_travel() const;
+
         [[nodiscard]] bool can_access_inventory() const;
+
         [[nodiscard]] bool detected_enemy();
 
         [[nodiscard]] bool extended_information_is_toggled() const;
@@ -40,7 +59,7 @@ namespace asa::interfaces
          * 
          * @return True if an item was removed, false otherwise.  
          */
-        [[nodiscard]] static bool item_removed(const window::Rect& area);
+        [[nodiscard]] static bool item_removed(const window::Rect &area);
 
         /**
          * @brief Checks whether an item was added in the given area
@@ -49,26 +68,36 @@ namespace asa::interfaces
          * 
          * @return True if an item was added, false otherwise.  
          */
-        [[nodiscard]] static bool item_added(const window::Rect& area);
-        [[nodiscard]] bool item_added(items::Item&, window::Rect* roi_out) const;
-        [[nodiscard]] bool item_removed(items::Item&, window::Rect* roi_out) const;
+        [[nodiscard]] static bool item_added(const window::Rect &area);
+
+        [[nodiscard]] bool item_added(items::Item &, window::Rect *roi_out) const;
+
+        [[nodiscard]] bool item_removed(items::Item &, window::Rect *roi_out) const;
+
         [[nodiscard]] bool transferred_item_into_dedicated_storage() const;
 
-        bool count_items_added(items::Item&, int& amount_out) const;
-        bool count_items_removed(items::Item&, int& amount_out) const;
+        bool count_items_added(items::Item &, int &amount_out) const;
+
+        bool count_items_removed(items::Item &, int &amount_out) const;
 
         float get_water_level() const;
+
         float get_food_level() const;
+
         float get_weight_level() const;
+
         float get_health_level() const;
 
+
         /**
-         * @brief Toggles extended HUD information on / off.
+         * @brief Toggles the extended hud information to a desired state.
+         *
+         * @param on True to turn the extended hud information on, otherwise false.
+         * @param force Force toggling the state for situations where the hud cant be seen.
          *
          * @remark Respects the 'toggle extended hud' user setting.
-         * @remark Must be called twice, once to toggle and once to disable.
          */
-        void toggle_extended();
+        void toggle_extended(bool on, bool force = false);
 
     private:
         window::Color blink_red_state_{109, 54, 52};
@@ -89,8 +118,7 @@ namespace asa::interfaces
         window::Rect dino_xp{1872, 39, 9, 36};
         window::Rect dino_weightcapped{1713, 33, 60, 33};
 
-        bool shown_ = false;
+        bool extended_toggled_ = false;
     };
-
     inline HUD* hud = new HUD();
 }

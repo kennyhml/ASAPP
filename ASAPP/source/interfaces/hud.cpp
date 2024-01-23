@@ -11,10 +11,10 @@ namespace asa::interfaces
 {
     namespace
     {
-        bool is_blinking(const window::Rect& icon, const window::Color& color,
+        bool is_blinking(const window::Rect &icon, const window::Color &color,
                          int min_matches = 500,
                          const std::chrono::milliseconds timeout =
-                             std::chrono::milliseconds(500))
+                         std::chrono::milliseconds(500))
         {
             const auto start = std::chrono::system_clock::now();
             while (!util::timedout(start, timeout)) {
@@ -24,12 +24,12 @@ namespace asa::interfaces
             return false;
         }
 
-        cv::Rect find_max_contour(const std::vector<std::vector<cv::Point>>& contours)
+        cv::Rect find_max_contour(const std::vector<std::vector<cv::Point>> &contours)
         {
             int max_size = 0;
             cv::Rect max_cont;
 
-            for (const auto& contour : contours) {
+            for (const auto &contour: contours) {
                 if (contourArea(contour) > max_size) {
                     max_size = cv::contourArea(contour);
                     max_cont = boundingRect(contour);
@@ -38,6 +38,12 @@ namespace asa::interfaces
 
             return max_cont;
         }
+    }
+
+    bool HUD::extended_information_is_toggled() const
+    {
+        static window::Rect roi{14, 34, 134, 35};
+        return window::match_template(roi, resources::text::day);
     }
 
     bool HUD::is_player_overweight() const
@@ -61,7 +67,8 @@ namespace asa::interfaces
         return is_blinking(food_icon_, blink_red_state_);
     }
 
-    bool HUD::is_player_sprinting() const { return false; }
+    bool HUD::is_player_sprinting() const
+    { return false; }
 
     bool HUD::can_default_teleport() const
     {
@@ -82,38 +89,33 @@ namespace asa::interfaces
 
     bool HUD::detected_enemy()
     {
-        toggle_extended();
+        toggle_extended(true);
         core::sleep_for(std::chrono::milliseconds(100));
         bool result = util::await([]() {
-          return window::match_template(window::screenshot(),
-                                        resources::text::detected_enemy);
+            return window::match_template(window::screenshot(),
+                                          resources::text::detected_enemy);
         }, std::chrono::seconds(2));
-  
-        toggle_extended();
+
+        toggle_extended(false);
         if (!result) {
             core::sleep_for(std::chrono::milliseconds(100));
             result = util::await([]() {
-              return window::match_template(window::screenshot(),
-                                            resources::text::detected_enemy);
+                return window::match_template(window::screenshot(),
+                                              resources::text::detected_enemy);
             }, std::chrono::seconds(2));
         }
-      
+
         return result;
     }
 
-    bool HUD::extended_information_is_toggled() const
-    {
-        static window::Rect roi{14, 34, 134, 35};
-        return window::match_template(roi, resources::text::day);
-    }
-
-    bool HUD::item_added(items::Item& item, window::Rect* roi_out) const
+    bool HUD::item_added(items::Item &item, window::Rect *roi_out) const
     {
         const window::Rect roi = item_icon_removed_or_added_area;
         const std::vector<window::Rect> locations = window::locate_all_template(
-            roi, item.get_notification_icon(), 0.75f, item.get_notification_icon_mask());
+                roi, item.get_notification_icon(), 0.75f,
+                item.get_notification_icon_mask());
 
-        auto got_added = [roi, roi_out](const window::Rect& r) -> bool {
+        auto got_added = [roi, roi_out](const window::Rect &r) -> bool {
             const auto loc = window::Rect(roi.x + r.x + 20, roi.y + r.y - 10, 120, 25);
             if (!item_added(loc)) { return false; }
             if (roi_out) { *roi_out = loc; }
@@ -122,13 +124,14 @@ namespace asa::interfaces
         return std::ranges::any_of(locations.begin(), locations.end(), got_added);
     }
 
-    bool HUD::item_removed(items::Item& item, window::Rect* roi_out) const
+    bool HUD::item_removed(items::Item &item, window::Rect *roi_out) const
     {
         const window::Rect roi = item_icon_removed_or_added_area;
         const std::vector<window::Rect> locations = window::locate_all_template(
-            roi, item.get_notification_icon(), 0.65f, item.get_notification_icon_mask());
+                roi, item.get_notification_icon(), 0.65f,
+                item.get_notification_icon_mask());
 
-        auto got_added = [roi, roi_out](const window::Rect& r) -> bool {
+        auto got_added = [roi, roi_out](const window::Rect &r) -> bool {
             const auto loc = window::Rect(roi.x + r.x + 20, roi.y + r.y - 10, 120, 30);
             if (!item_removed(loc)) { return false; }
             if (roi_out) { *roi_out = loc; }
@@ -137,7 +140,7 @@ namespace asa::interfaces
         return std::ranges::any_of(locations.begin(), locations.end(), got_added);
     }
 
-    bool HUD::count_items_added(items::Item& item, int& amount_out) const
+    bool HUD::count_items_added(items::Item &item, int &amount_out) const
     {
         window::Rect roi{0, 0, 0, 0};
         if (!item_added(item, &roi)) { return false; }
@@ -166,7 +169,7 @@ namespace asa::interfaces
         return true;
     }
 
-    bool HUD::count_items_removed(items::Item& item, int& amount_out) const
+    bool HUD::count_items_removed(items::Item &item, int &amount_out) const
     {
         window::Rect roi{0, 0, 0, 0};
         if (!item_removed(item, &roi)) { return false; }
@@ -195,22 +198,22 @@ namespace asa::interfaces
         return true;
     }
 
-    void HUD::toggle_extended()
+    void HUD::toggle_extended(const bool on, const bool force)
     {
-        using namespace settings;
+        if (!force) {
+            // check if the hud is already in the state that was requested to avoid
+            // desyncing it with the expected state.
+            extended_toggled_ = extended_information_is_toggled();
+            if (extended_toggled_ == on) { return; }
+            extended_toggled_ ^= 1;
+        }
 
-        if (!shown_) {
-            toggle_hud.get()
-                ? window::press(show_extended_info)
-                : window::down(show_extended_info);
-            shown_ = true;
+        // differentiate between user setting 'toggle extended hud'
+        if (settings::toggle_hud.get()) {
+            return window::press(settings::show_extended_info);
         }
-        else {
-            toggle_hud.get()
-                ? window::press(show_extended_info)
-                : window::up(show_extended_info);
-            shown_ = false;
-        }
+        if (on) { window::down(settings::show_extended_info); }
+        else { window::up(settings::show_extended_info); }
     }
 
     float HUD::get_health_level() const
@@ -230,7 +233,7 @@ namespace asa::interfaces
         pix.convertTo(pix, CV_32F);
 
         const cv::TermCriteria criteria(
-            cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 100, 0.2);
+                cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 100, 0.2);
         const int clusters = variance > 50.f ? 2 : 1;
         cv::Mat labels;
         cv::Mat centers;
@@ -273,7 +276,7 @@ namespace asa::interfaces
 
         // make sure there is no overlap between the masks
         if (m1.area() != roi.height * roi.width && (m2.area() != roi.height * roi.
-            width)) { mask2 = mask2 & ~mask1; }
+                width)) { mask2 = mask2 & ~mask1; }
 
 
         // lets look at the bigger of the two masks only as it's usually more reliable.
@@ -281,12 +284,12 @@ namespace asa::interfaces
         return 0.f;
     }
 
-    bool HUD::item_removed(const window::Rect& area)
+    bool HUD::item_removed(const window::Rect &area)
     {
         return window::match_template(area, resources::text::removed);
     }
 
-    bool HUD::item_added(const window::Rect& area)
+    bool HUD::item_added(const window::Rect &area)
     {
         return window::match_template(area, resources::text::added);
     }
@@ -303,10 +306,10 @@ namespace asa::interfaces
         static constexpr window::Color text{255, 255, 255};
         static window::Rect roi(1869, 48, 15, 10);
 
-        toggle_extended();
+        toggle_extended(true);
         asa::core::sleep_for(std::chrono::milliseconds(100));
         const cv::Mat mask = window::get_mask(roi, text, 20);
-        toggle_extended();
+        toggle_extended(false);
 
         return cv::countNonZero(mask) > 20 || mount_has_level_up();
     }

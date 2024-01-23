@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.25)
 project(asapp)
 
-set(CMAKE_CXX_STANDARD 23)
-
 add_library(asapp STATIC
         ASAPP/source/core/config.cpp
         ASAPP/source/core/exceptions.cpp
@@ -117,6 +115,11 @@ add_library(asapp STATIC
         ASAPP/include/asapp/structures/teleporter.h
         ASAPP/include/asapp/util/util.h)
 
+set_target_properties(asapp PROPERTIES
+        CXX_STANDARD 20
+        CXX_EXTENSIONS OFF
+)
+
 find_package(Tesseract CONFIG REQUIRED)
 target_link_libraries(asapp PRIVATE Tesseract::libtesseract)
 
@@ -128,6 +131,9 @@ link_directories(${OpenCV_LIB_DIR})
 
 target_include_directories(asapp PUBLIC ASAPP/include)
 target_include_directories(asapp PRIVATE ASAPP/source)
+
+find_package(nlohmann_json CONFIG REQUIRED)
+target_link_libraries(asapp PRIVATE nlohmann_json::nlohmann_json)
 
 # Copy resources to build folder
 add_custom_command(
