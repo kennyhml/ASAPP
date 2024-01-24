@@ -17,7 +17,7 @@ namespace asa::settings
 
         struct ActionMapping final
         {
-            explicit ActionMapping(std::string t_name);
+            ActionMapping(std::string t_name, std::string t_default);
 
             std::string name;
             std::string key;
@@ -30,36 +30,37 @@ namespace asa::settings
 
         std::ostream& operator<<(std::ostream& os, const ActionMapping& m);
 
-        inline ActionMapping access_inventory("AccessInventory");
-        inline ActionMapping crouch("Crouch");
-        inline ActionMapping prone("Prone");
-        inline ActionMapping orbit_cam("OrbitCam");
-        inline ActionMapping pause_menu("PauseMenu");
-        inline ActionMapping ping("Ping");
-        inline ActionMapping poop("Poop");
-        inline ActionMapping reload("Reload");
-        inline ActionMapping show_tribe_manager("ShowTribeManager");
-        inline ActionMapping toggle_map("ToggleMap");
-        inline ActionMapping transfer_item("TransferItem");
-        inline ActionMapping use("Use");
-        inline ActionMapping use_item1("UseItem1");
-        inline ActionMapping use_item2("UseItem2");
-        inline ActionMapping use_item3("UseItem3");
-        inline ActionMapping use_item4("UseItem4");
-        inline ActionMapping use_item5("UseItem5");
-        inline ActionMapping use_item6("UseItem6");
-        inline ActionMapping use_item7("UseItem7");
-        inline ActionMapping use_item8("UseItem8");
-        inline ActionMapping use_item9("UseItem9");
-        inline ActionMapping use_item10("UseItem10");
-        inline ActionMapping show_my_inventory("ShowMyInventory");
-        inline ActionMapping drop_item("DropItem");
-        inline ActionMapping fire("Fire");
-        inline ActionMapping targeting("Targeting");
-        inline ActionMapping show_extended_info("ShowExtendedInfo");
-        inline ActionMapping toggle_tooltip("ToggleTooltip");
-        inline ActionMapping jump("Jump");
-        inline ActionMapping run("Run");
+        inline ActionMapping access_inventory("AccessInventory", "F");
+        inline ActionMapping crouch("Crouch", "C");
+        inline ActionMapping prone("Prone", "X");
+        inline ActionMapping orbit_cam("OrbitCam", "K");
+        inline ActionMapping pause_menu("PauseMenu", "Escape");
+        inline ActionMapping ping("Ping", "MiddleMouseButton");
+        inline ActionMapping poop("Poop", "Semicolon");
+        inline ActionMapping reload("Reload", "R");
+        inline ActionMapping show_tribe_manager("ShowTribeManager", "L");
+        inline ActionMapping toggle_map("ToggleMap", "M");
+        inline ActionMapping transfer_item("TransferItem", "T");
+        inline ActionMapping use("Use", "E");
+        inline ActionMapping use_item1("UseItem1", "1");
+        inline ActionMapping use_item2("UseItem2", "2");
+        inline ActionMapping use_item3("UseItem3", "3");
+        inline ActionMapping use_item4("UseItem4", "4");
+        inline ActionMapping use_item5("UseItem5", "5");
+        inline ActionMapping use_item6("UseItem6", "6");
+        inline ActionMapping use_item7("UseItem7", "7");
+        inline ActionMapping use_item8("UseItem8", "8");
+        inline ActionMapping use_item9("UseItem9", "9");
+        inline ActionMapping use_item10("UseItem10", "0");
+        inline ActionMapping show_my_inventory("ShowMyInventory", "I");
+        inline ActionMapping drop_item("DropItem", "O");
+        inline ActionMapping fire("Fire", "LeftMouseButton");
+        inline ActionMapping targeting("Targeting", "RightMouseButton");
+        inline ActionMapping show_extended_info("ShowExtendedInfo", "H");
+        inline ActionMapping toggle_tooltip("ToggleTooltip", "G");
+        inline ActionMapping jump("Jump", "Space");
+        inline ActionMapping run("Run", "LeftShift");
+        inline ActionMapping console("ConsoleKeys", "Tilde");
     }
 
     inline namespace game_user_settings

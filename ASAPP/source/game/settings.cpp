@@ -7,17 +7,17 @@
 #include "asapp/core/config.h"
 
 #define VERBOSE_LOG(log)         \
-	if (verbose) { std::cout << log << "\n"; }
+    if (verbose) { std::cout << log << "\n"; }
 
 namespace asa::settings
 {
     namespace
     {
         const auto USER_SETTINGS_REL = std::filesystem::path(
-            R"(ShooterGame\Saved\Config\Windows\GameUserSettings.ini)");
+                R"(ShooterGame\Saved\Config\Windows\GameUserSettings.ini)");
 
         const auto INPUT_SETTINGS_REL = std::filesystem::path(
-            R"(ShooterGame\Saved\Config\Windows\Input.ini)");
+                R"(ShooterGame\Saved\Config\Windows\Input.ini)");
 
         bool open_file(const std::filesystem::path& path, std::ifstream& out_file)
         {
@@ -33,8 +33,8 @@ namespace asa::settings
             return true;
         }
 
-        bool parse_key_value(const std::string& token, std::string& key_out,
-                             std::string& value_out)
+        bool parse_action_name(const std::string& token, std::string& key_out,
+                               std::string& value_out)
         {
             const size_t eq = token.find('=');
             if (eq == std::string::npos) { return false; }
@@ -44,12 +44,11 @@ namespace asa::settings
             // Exclude  = and " characters from the key  ---------------
             if (key_out == "ActionName") {
                 value_out = token.substr(eq + 2, token.length() - (key_out.length() + 3));
-            }
-            // Parse out the ending parantheses, example: Key=F)
-            else if (key_out == "Key") {
+            } else if (key_out == "Key") {
+                // Parse out the ending parantheses, example: Key=F)
                 value_out = token.substr(eq + 1, token.length() - key_out.length() - 2);
-            }
-            else { value_out = token.substr(eq + 1); }
+            } else { value_out = token.substr(eq + 1); }
+
             return true;
         }
 
@@ -67,43 +66,49 @@ namespace asa::settings
             std::string key;
             std::string value;
 
-            if (!parse_key_value(stream.str(), key, value)) { return false; }
+            if (!parse_action_name(stream.str(), key, value)) { return false; }
             if (!map.contains(key)) { return false; }
             map[key] = convert_settings_value(key, value);
             VERBOSE_LOG("\t[-] Parsed " << key << " (" << value << ")")
             return true;
         }
 
-        bool parse_action_mappings(std::istringstream& stream, const bool verbose)
+        bool parse_action_mapping(std::string& from, const bool verbose)
         {
-            auto& map = input_map;
-
-            // skip the first 16 characters 'ActionMappings=('
-            stream.seekg(16);
-
+            ActionMapping* mapping = nullptr;
+            std::istringstream stream(from);
             std::string token;
             std::vector<std::string> tokens;
 
-            while (std::getline(stream, token, ',')) { tokens.push_back(token); }
+            if (from.find("ActionMappings") != std::string::npos) {
+                // skip first 16 characters for normal mappings, e.g 'ActionMappings=('
+                stream.seekg(16);
+                // collect all the tokens inside the action mapping
+                while (std::getline(stream, token, ',')) { tokens.push_back(token); }
+            } else if (from.find("ConsoleKeys") != std::string::npos) {
+                tokens.push_back(from);
+            }
 
-            ActionMapping* mapping = nullptr;
-
-            for (const std::string& tk : tokens) {
+            for (const std::string& tk: tokens) {
                 std::string key;
                 std::string value;
-                if (!parse_key_value(tk, key, value)) { continue; }
 
+                if (!parse_action_name(tk, key, value)) { continue; }
+
+                // get the pointer to the ActionMapping that we are parsing
                 if (key == "ActionName") {
-                    if (!map.contains(value)) {
-                        return false; // we only care for some action mappings
-                    }
-                    mapping = map[value];
+                    if (!input_map.contains(value)) { return false; }
+                    mapping = input_map[value];
+                    continue;
+                } else if (key == "ConsoleKeys") {
+                    mapping = input_map[key];
+                    mapping->key = value;
                     continue;
                 }
 
                 if (!mapping) {
                     std::cerr << std::format("[!] Couldn't parse '{}'", stream.str()) <<
-                        "\n";
+                              "\n";
                     return false;
                 }
 
@@ -113,14 +118,18 @@ namespace asa::settings
                 else if (key == "bCmd") { mapping->cmd = (value == "True"); }
                 else if (key == "Key") { mapping->key = value; }
             }
+
+            if (!mapping) { return false; }
             VERBOSE_LOG("\t[-] Parsed " << *mapping)
             return true;
         }
     }
 
-    bool init() { return load_user_settings() && load_action_mappings(); }
+    bool init()
+    { return load_user_settings() && load_action_mappings(); }
 
-    ActionMapping::ActionMapping(std::string t_name) : name(std::move(t_name))
+    ActionMapping::ActionMapping(std::string t_name, std::string t_default) : name(
+            std::move(t_name)), key(std::move(t_default))
     {
         input_map[name] = this;
     };
@@ -129,9 +138,9 @@ namespace asa::settings
     <<(std::ostream& os, const action_mappings::ActionMapping& m)
     {
         return os << std::format(
-            "ActionMapping(name={}, shift={}, " "ctrl={}, alt={}, cmd={}, key={})",
-            m.name, static_cast<int>(m.shift), static_cast<int>(m.ctrl),
-            static_cast<int>(m.alt), static_cast<int>(m.cmd), m.key);
+                "ActionMapping(name={}, shift={}, " "ctrl={}, alt={}, cmd={}, key={})",
+                m.name, static_cast<int>(m.shift), static_cast<int>(m.ctrl),
+                static_cast<int>(m.alt), static_cast<int>(m.cmd), m.key);
     }
 
     bool action_mappings::load_action_mappings(const bool verbose)
@@ -143,10 +152,7 @@ namespace asa::settings
 
         VERBOSE_LOG("[+] Parsing Input.ini...")
         for (std::string line; std::getline(file, line);) {
-            if (line.find("ActionMappings=") != std::string::npos) {
-                std::istringstream ss(line);
-                parse_action_mappings(ss, verbose);
-            }
+            parse_action_mapping(line, verbose);
         }
         VERBOSE_LOG("[+] Input.ini parsed, mappings mapped.")
         return true;

@@ -11,15 +11,13 @@ namespace asa::interfaces
         static constexpr window::Color gray{140,140,140};
 
         return cv::countNonZero(window::get_mask(bar_lower_, gray, 5)) > 500; 
-
-        
     }
 
     void Console::open()
     {
         if (is_open()) { return; }
 
-        do { window::press("`"); }
+        do { window::press(settings::console); }
         while (!util::await([this]() -> bool { return is_open(); },
                             std::chrono::seconds(5)));
     }
