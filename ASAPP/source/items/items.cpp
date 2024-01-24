@@ -92,7 +92,7 @@ namespace asa::items
             load(oil, "Oil", all_resources);
             load(hide, "Hide", all_resources);
             load(sap, "Sap", all_resources);
-
+            load(charcoal, "Charcoal", all_resources);
             return true;
         }
         catch (const ItemError& e) {

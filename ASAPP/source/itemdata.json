@@ -3037,6 +3037,20 @@
     "has_armor_value": false,
     "has_damage_value": false
   },
+  "Charcoal": {
+    "icon": "items\\resources\\charcoal.png",
+    "type": "RESOURCE",
+    "recipe": {},
+    "weight": 0.2,
+    "stack_size": 100,
+    "can_put_in_hotbar": false,
+    "has_spoil_timer": false,
+    "has_durability": false,
+    "requires_engram": false,
+    "has_ambiguous_query": false,
+    "has_armor_value": false,
+    "has_damage_value": false
+  },
   "Achatina Paste": {
     "icon": "items\\resources\\paste.png",
     "type": "RESOURCE",
@@ -3093,6 +3107,4 @@
     "has_armor_value": false,
     "has_damage_value": false
   }
-
-
 }
