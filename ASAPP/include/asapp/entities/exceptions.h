@@ -5,6 +5,10 @@
 
 namespace asa::entities
 {
+    /**
+     * @brief Parent class for any exception that may be thrown while
+     * interacting with an entity.
+     */
     class EntityError : public std::exception
     {
     private:
@@ -12,34 +16,62 @@ namespace asa::entities
         const BaseEntity* entity;
 
     public:
-        EntityError(const BaseEntity* t_entity);
+        explicit EntityError(const BaseEntity* t_entity);
         EntityError(const BaseEntity* t_entity, std::string t_info);
 
-        const BaseEntity* get_entity() const { return entity; };
-        const char* what() const noexcept override;
+        /**
+         * @ Gets the pointer to the entity this error occured on.
+         */
+        [[nodiscard]] const BaseEntity* get_entity() const { return entity; };
+        [[nodiscard]] const char* what() const noexcept override;
     };
 
+    /**
+     * @brief Thrown when an entity could not be accessed.
+     */
     class EntityNotAccessed : public EntityError
     {
     public:
-        EntityNotAccessed(const BaseEntity*);
+        explicit EntityNotAccessed(const BaseEntity*);
     };
 
-    class EntityNotClosed : public EntityError
-    {
-    public:
-        EntityNotClosed(const BaseEntity*);
-    };
-
+    /**
+     * @brief Thrown when a dino entity could not be mounted.
+     */
     class EntityNotMounted : public EntityError
     {
     public:
-        EntityNotMounted(const DinoEnt*);
+        explicit EntityNotMounted(const DinoEnt*);
     };
 
+    /**
+     * @brief Thrown when our player was unable to suicide.
+     */
     class SuicideFailedError : public EntityError
     {
     public:
         SuicideFailedError();
     };
+
+    /**
+     * @brief Thrown when our player was unable to fast travel.
+     */
+    class FastTravelFailedError : public EntityError
+    {
+    public:
+        explicit FastTravelFailedError(const std::string& t_where);
+    };
+
+    /**
+     * @brief Thrown when our player was unable to teleport.
+     */
+    class TeleportFailedError : public EntityError
+    {
+    public:
+        explicit TeleportFailedError(const std::string& t_where);
+    };
+
+
+
+
 }

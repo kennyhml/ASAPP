@@ -252,11 +252,10 @@ namespace asa::entities
 
     void LocalPlayer::fast_travel_to(const structures::SimpleBed &bed)
     {
-        if (fast_travel_attempts >= 3) {
+        if (fast_travel_attempts++ >= 3) {
             fast_travel_attempts = 0;
-            throw structures::StructureNotOpenedError(&bed);
+            throw FastTravelFailedError(bed.get_name());
         }
-        fast_travel_attempts++;
 
         static structures::Container generic_bag("Item Cache", 0);
 
