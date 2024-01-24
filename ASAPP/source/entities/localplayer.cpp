@@ -16,9 +16,9 @@ namespace asa::entities
         int fast_travel_attempts = 0;
     }
 
-    interfaces::LocalInventory *LocalPlayer::get_inventory() const
+    interfaces::LocalInventory* LocalPlayer::get_inventory() const
     {
-        return dynamic_cast<interfaces::LocalInventory *>(inventory_.get());
+        return dynamic_cast<interfaces::LocalInventory*>(inventory_.get());
     }
 
     bool LocalPlayer::is_alive() const
@@ -52,12 +52,12 @@ namespace asa::entities
         return interfaces::hud->is_player_overweight();
     }
 
-    bool LocalPlayer::received_item(items::Item &item) const
+    bool LocalPlayer::received_item(items::Item& item) const
     {
         return interfaces::hud->item_added(item, nullptr);
     }
 
-    bool LocalPlayer::deposited_item(items::Item &item) const
+    bool LocalPlayer::deposited_item(items::Item& item) const
     {
         return interfaces::hud->item_removed(item, nullptr);
     }
@@ -90,7 +90,7 @@ namespace asa::entities
         return interfaces::hud->can_default_teleport();
     }
 
-    bool LocalPlayer::deposit_into_dedi(items::Item &item, int *amount_out)
+    bool LocalPlayer::deposit_into_dedi(items::Item& item, int* amount_out)
     {
         auto deposited = [this, &item, amount_out]() -> bool {
             if (amount_out) { return get_amount_removed(item, *amount_out); }
@@ -102,24 +102,25 @@ namespace asa::entities
             window::press(settings::use);
             if (util::timedout(start, std::chrono::seconds(10))) {
                 throw structures::StructureError(
-                        nullptr, std::format("Failed to deposit '{}' into dedicated storage.",
-                                             item.get_name()));
+                        nullptr,
+                        std::format("Failed to deposit '{}' into dedicated storage.",
+                                    item.get_name()));
             }
         } while (!util::await(deposited, std::chrono::seconds(5)));
         return true;
     }
 
-    bool LocalPlayer::withdraw_from_dedi(items::Item &item, int *amount_out)
+    bool LocalPlayer::withdraw_from_dedi(items::Item& item, int* amount_out)
     {
         return false;
     }
 
-    bool LocalPlayer::get_amount_added(items::Item &item, int &amount_out)
+    bool LocalPlayer::get_amount_added(items::Item& item, int& amount_out)
     {
         return interfaces::hud->count_items_added(item, amount_out);
     }
 
-    bool LocalPlayer::get_amount_removed(items::Item &item, int &amount_out)
+    bool LocalPlayer::get_amount_removed(items::Item& item, int& amount_out)
     {
         return interfaces::hud->count_items_removed(item, amount_out);
     }
@@ -189,19 +190,19 @@ namespace asa::entities
         is_crouched_ = false;
     }
 
-    bool LocalPlayer::can_access(const structures::BaseStructure &) const
+    bool LocalPlayer::can_access(const structures::BaseStructure&) const
     {
         return interfaces::hud->can_access_inventory();
         // TODO: if ghud fails use the action wheel
     }
 
-    bool LocalPlayer::can_access(const BaseEntity &) const
+    bool LocalPlayer::can_access(const BaseEntity&) const
     {
         return interfaces::hud->can_access_inventory();
         // TODO: if ghud fails use the action wheel
     }
 
-    void LocalPlayer::access(const BaseEntity &entity) const
+    void LocalPlayer::access(const BaseEntity& entity) const
     {
         if (entity.get_inventory()->is_open()) { return; }
 
@@ -217,16 +218,16 @@ namespace asa::entities
         entity.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
 
-    void LocalPlayer::access(const structures::Container &container) const
+    void LocalPlayer::access(const structures::Container& container) const
     {
         // Accessing the inventory is the same as accessing the interface of
         // any interactable structure such as teleporters, beds etc.
         // just that we have to wait to receive the remote inventory afterward.
-        access(static_cast<const structures::InteractableStructure &>(container));
+        access(static_cast<const structures::InteractableStructure&>(container));
         container.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
 
-    void LocalPlayer::access(const structures::InteractableStructure &structure) const
+    void LocalPlayer::access(const structures::InteractableStructure& structure) const
     {
         if (structure.get_interface()->is_open()) { return; }
 
@@ -241,7 +242,7 @@ namespace asa::entities
         }, std::chrono::seconds(5)));
     }
 
-    void LocalPlayer::mount(const DinoEnt &entity) const
+    void LocalPlayer::mount(const DinoEnt& entity) const
     {
         if (entity.is_mounted()) { return; }
 
@@ -250,7 +251,7 @@ namespace asa::entities
                             std::chrono::seconds(5)));
     }
 
-    void LocalPlayer::fast_travel_to(const structures::SimpleBed &bed)
+    void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
     {
         if (fast_travel_attempts++ >= 3) {
             fast_travel_attempts = 0;
@@ -282,12 +283,12 @@ namespace asa::entities
             // handle cases where we cant see anything we are accessing but
             // also arent able to access the bed.
             // TODO: Implement the action wheel as 2nd indicator we are unable to access it
-            if (!interfaces::hud->can_fast_travel()) {
+            if (!util::await([]() -> bool { return interfaces::hud->can_fast_travel(); },
+                             std::chrono::seconds(10))) {
                 reset_pitch();
                 core::sleep_for(std::chrono::seconds(3));
                 return fast_travel_to(bed);
             }
-
             access(bed);
             core::sleep_for(std::chrono::milliseconds(300));
         }
@@ -300,7 +301,7 @@ namespace asa::entities
         fast_travel_attempts = 0;
     }
 
-    void LocalPlayer::teleport_to(const structures::Teleporter &tp, const bool is_default)
+    void LocalPlayer::teleport_to(const structures::Teleporter& tp, const bool is_default)
     {
         const bool could_access_before = can_access(tp);
         if (!is_default) {
@@ -369,7 +370,7 @@ namespace asa::entities
         core::sleep_for(delay);
     }
 
-    void LocalPlayer::equip(items::Item *item, interfaces::PlayerInfo::Slot slot)
+    void LocalPlayer::equip(items::Item* item, interfaces::PlayerInfo::Slot slot)
     {
         const bool was_inventory_open = inventory_->is_open();
         if (!was_inventory_open) {
