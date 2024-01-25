@@ -65,7 +65,7 @@ namespace asa::interfaces
     bool BaseInventory::is_open() const
     {
         return window::match_template(item_filter.area,
-                                      resources::interfaces::cb_arrowdown, 0.9f);
+                                      resources::interfaces::cb_arrowdown, 0.8f);
     }
 
     bool BaseInventory::has(items::Item& item, const bool search)

@@ -291,10 +291,7 @@ namespace asa::entities
                 // TODO: Implement the action wheel as 2nd indicator we are unable to access it
                 if (!util::await([]() -> bool { return interfaces::hud->can_fast_travel(); },
                                  std::chrono::seconds(10))) {
-    
-    
                   reset_pitch();
-                  core::sleep_for(std::chrono::seconds(3));
                   return fast_travel_to(bed);
                 }
             }
