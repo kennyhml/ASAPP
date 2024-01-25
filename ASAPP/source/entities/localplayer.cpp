@@ -251,7 +251,7 @@ namespace asa::entities
                             std::chrono::seconds(5)));
     }
 
-    void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed)
+    bool LocalPlayer::fast_travel_to(const structures::SimpleBed& bed, bool instant_fail_fast_travel)
     {
         if (fast_travel_attempts++ >= 3) {
             fast_travel_attempts = 0;
@@ -280,15 +280,25 @@ namespace asa::entities
                 return fast_travel_to(bed);
             }
 
-            // handle cases where we cant see anything we are accessing but
-            // also arent able to access the bed.
-            // TODO: Implement the action wheel as 2nd indicator we are unable to access it
-            if (!util::await([]() -> bool { return interfaces::hud->can_fast_travel(); },
-                             std::chrono::seconds(10))) {
-                reset_pitch();
-                core::sleep_for(std::chrono::seconds(3));
-                return fast_travel_to(bed);
+            core::sleep_for(std::chrono::milliseconds(300));
+            if (instant_fail_fast_travel) {
+                if (!interfaces::hud->can_fast_travel()) {
+                    return false;
+                }
+            } else {
+                // handle cases where we cant see anything we are accessing but
+                // also arent able to access the bed.
+                // TODO: Implement the action wheel as 2nd indicator we are unable to access it
+                if (!util::await([]() -> bool { return interfaces::hud->can_fast_travel(); },
+                                 std::chrono::seconds(10))) {
+    
+    
+                  reset_pitch();
+                  core::sleep_for(std::chrono::seconds(3));
+                  return fast_travel_to(bed);
+                }
             }
+
             access(bed);
             core::sleep_for(std::chrono::milliseconds(300));
         }
@@ -299,6 +309,7 @@ namespace asa::entities
         is_crouched_ = false;
         is_proned_ = false;
         fast_travel_attempts = 0;
+        return true; // Fast travelled successfully
     }
 
     void LocalPlayer::teleport_to(const structures::Teleporter& tp, const bool is_default)

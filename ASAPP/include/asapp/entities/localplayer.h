@@ -67,7 +67,7 @@ namespace asa::entities
 
         void mount(const DinoEnt&) const;
 
-        void fast_travel_to(const structures::SimpleBed&);
+        bool fast_travel_to(const structures::SimpleBed&, bool instant_fail_fast_travel = false);
         void teleport_to(const structures::Teleporter&, bool is_default = false);
         void get_off_bed();
         void suicide();
