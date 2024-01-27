@@ -8,13 +8,9 @@
 #include "asapp/structures/exceptions.h"
 #include <iostream>
 
+
 namespace asa::entities
 {
-
-    namespace
-    {
-        int fast_travel_attempts = 0;
-    }
 
     interfaces::LocalInventory* LocalPlayer::get_inventory() const
     {
@@ -227,6 +223,65 @@ namespace asa::entities
         container.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
 
+    void LocalPlayer::access(const structures::SimpleBed& bed,
+                             const AccessFlags_ flags)
+    {
+        static structures::Container bag("Item Cache", 0);
+
+        if (bed.get_interface()->is_open()) { return; }
+
+        // there has to be a better way to check if both bits are set
+        const bool special_access_set = (flags & AccessFlags_AccessAbove) &&
+                                        (flags & AccessFlags_AccessBelow);
+
+        for (int attempt = 0; attempt < 3; attempt++) {
+            if (!special_access_set) {
+                handle_access_direction(flags);
+            }
+
+            // If a bag is seen, give it one second to disappear.
+            if (!util::await([this]() -> bool { return !can_access(bag); },
+                             std::chrono::seconds(1))) {
+                access(bag);
+                // Check health level to ensure its an item cache.
+                if (bag.get_info()->get_health_level() == 0.f) {
+                    bag.get_inventory()->popcorn_all();
+                } else { reset_pitch(); }
+                bag.get_inventory()->close();
+
+                core::sleep_for(std::chrono::seconds(1));
+                continue;
+            }
+
+            if (special_access_set) { set_pitch(90); }
+            if (util::await(interfaces::HUD::can_fast_travel, std::chrono::seconds(1))) {
+                break;
+            }
+            if (special_access_set) {
+                set_pitch(-90);
+                if (util::await(interfaces::HUD::can_fast_travel,
+                                std::chrono::seconds(1))) {
+                    break;
+                }
+            }
+
+            // Still unable to see the bed, either missing or not yet loaded.
+            if (flags & AccessFlags_InstantFail) {
+                throw structures::StructureNotFoundError(&bed);
+            }
+
+            // TODO: Implement the action wheel as 2nd indicator we are unable to access it
+            const auto timeout = std::chrono::seconds(10);
+            if (!util::await(interfaces::HUD::can_fast_travel, timeout)) {
+                reset_pitch();
+                continue;
+            }
+        }
+        // At this point all the specific work for beds is done, can let the
+        // general access method take over the rest.
+        access(static_cast<const structures::InteractableStructure&>(bed));
+    }
+
     void LocalPlayer::access(const structures::InteractableStructure& structure) const
     {
         if (structure.get_interface()->is_open()) { return; }
@@ -251,53 +306,14 @@ namespace asa::entities
                             std::chrono::seconds(5)));
     }
 
-    bool LocalPlayer::fast_travel_to(const structures::SimpleBed& bed, bool instant_fail_fast_travel)
+    void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed,
+                                     const AccessFlags_ access_flags,
+                                     const TravelFlags_ travel_flags)
     {
-        if (fast_travel_attempts++ >= 3) {
-            fast_travel_attempts = 0;
-            throw FastTravelFailedError(bed.get_name());
-        }
-
-        static structures::Container generic_bag("Item Cache", 0);
-
-        if (!bed.get_interface()->is_open()) {
-            set_pitch(90);
-            core::sleep_for(std::chrono::milliseconds(500));
-
-            // There could be a bag on top of the bed from previous travels / deaths.
-            if (can_access(generic_bag)) {
-                access(generic_bag);
-                // Make sure what we accessed is actually an item cache to avoid popcorning
-                // a vault or something of sorts. An item cache has no health value.
-                // If we did access a vault, we reset the pitch because the previous
-                // change in pitch was likely not picked up by the game.
-                if (generic_bag.get_info()->get_health_level() == 0.f) {
-                    generic_bag.get_inventory()->popcorn_all();
-                } else { reset_pitch(); }
-                generic_bag.get_inventory()->close();
-
-                core::sleep_for(std::chrono::seconds(1));
-                return fast_travel_to(bed);
-            }
-
-            core::sleep_for(std::chrono::milliseconds(300));
-            if (instant_fail_fast_travel) {
-                if (!interfaces::hud->can_fast_travel()) {
-                    return false;
-                }
-            } else {
-                // handle cases where we cant see anything we are accessing but
-                // also arent able to access the bed.
-                // TODO: Implement the action wheel as 2nd indicator we are unable to access it
-                if (!util::await([]() -> bool { return interfaces::hud->can_fast_travel(); },
-                                 std::chrono::seconds(10))) {
-                  reset_pitch();
-                  return fast_travel_to(bed);
-                }
-            }
-
-            access(bed);
-            core::sleep_for(std::chrono::milliseconds(300));
+        try {
+            access(bed, access_flags);
+        } catch (const std::exception& e) {
+            throw FastTravelFailedError(bed.get_name(), e.what());
         }
 
         bed.get_interface()->go_to(bed.get_name());
@@ -305,8 +321,6 @@ namespace asa::entities
         reset_view_angles();
         is_crouched_ = false;
         is_proned_ = false;
-        fast_travel_attempts = 0;
-        return true; // Fast travelled successfully
     }
 
     void LocalPlayer::teleport_to(const structures::Teleporter& tp, const bool is_default)
@@ -451,4 +465,14 @@ namespace asa::entities
         for (int i = 0; i < 10; i++) { turn_up(18, std::chrono::milliseconds(20)); }
         core::sleep_for(std::chrono::milliseconds(300));
     }
+
+    void LocalPlayer::handle_access_direction(const AccessFlags_ flags)
+    {
+        if (flags & AccessFlags_AccessBelow) { set_pitch(90); }
+        else if (flags & AccessFlags_AccessAbove) { set_pitch(-90); }
+        if (flags & AccessFlags_AccessLeft) { set_yaw(-90); }
+        else if (flags & AccessFlags_AccessRight) { set_yaw(90); }
+    }
+
+
 }

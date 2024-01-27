@@ -76,7 +76,7 @@ namespace asa::interfaces
                                       resources::text::default_teleport, 0.5);
     }
 
-    bool HUD::can_fast_travel() const
+    bool HUD::can_fast_travel()
     {
         return window::match_template(window::screenshot(), resources::text::fast_travel);
     }

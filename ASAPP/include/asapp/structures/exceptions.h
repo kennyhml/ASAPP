@@ -25,6 +25,16 @@ namespace asa::structures
         StructureNotOpenedError(const BaseStructure* structure);
     };
 
+    /**
+     * @Brief thrown when a structure was not found in access range.
+     */
+    class StructureNotFoundError : public StructureError
+    {
+    public:
+        StructureNotFoundError(const BaseStructure* structure);
+    };
+
+
     class StructureNotClosedError : public StructureError
     {
     public:

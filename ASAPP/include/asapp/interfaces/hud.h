@@ -1,4 +1,5 @@
 #pragma once
+
 #include "asapp/items/item.h"
 #include "asapp/game/window.h"
 #include "asapp/interfaces/iinterface.h"
@@ -8,23 +9,17 @@ namespace asa::interfaces
     class HUD : public IInterface
     {
     public:
-        [[nodiscard]] bool is_open() const override
-        { return true; }
+        [[nodiscard]] bool is_open() const override { return true; }
 
-        [[nodiscard]] bool is_mount_overweight()
-        { return false; };
+        [[nodiscard]] bool is_mount_overweight() { return false; };
 
-        [[nodiscard]] bool is_mount_low()
-        { return false; };
+        [[nodiscard]] bool is_mount_low() { return false; };
 
-        [[nodiscard]] bool is_mount_out_of_food()
-        { return false; };
+        [[nodiscard]] bool is_mount_out_of_food() { return false; };
 
-        [[nodiscard]] bool is_mount_out_of_stamina()
-        { return false; };
+        [[nodiscard]] bool is_mount_out_of_stamina() { return false; };
 
-        [[nodiscard]] bool is_mount_sprinting()
-        { return false; };
+        [[nodiscard]] bool is_mount_sprinting() { return false; };
 
         [[nodiscard]] bool mount_hud_available();
 
@@ -44,7 +39,7 @@ namespace asa::interfaces
 
         [[nodiscard]] bool can_default_teleport() const;
 
-        [[nodiscard]] bool can_fast_travel() const;
+        [[nodiscard]] static bool can_fast_travel();
 
         [[nodiscard]] bool can_access_inventory() const;
 
@@ -59,26 +54,26 @@ namespace asa::interfaces
          * 
          * @return True if an item was removed, false otherwise.  
          */
-        [[nodiscard]] static bool item_removed(const window::Rect &area);
+        [[nodiscard]] static bool item_removed(const window::Rect& area);
 
         /**
          * @brief Checks whether an item was added in the given area
-         * 
+         *
          * @param area The area to check whether an item was added.
          * 
          * @return True if an item was added, false otherwise.  
          */
-        [[nodiscard]] static bool item_added(const window::Rect &area);
+        [[nodiscard]] static bool item_added(const window::Rect& area);
 
-        [[nodiscard]] bool item_added(items::Item &, window::Rect *roi_out) const;
+        [[nodiscard]] bool item_added(items::Item&, window::Rect* roi_out) const;
 
-        [[nodiscard]] bool item_removed(items::Item &, window::Rect *roi_out) const;
+        [[nodiscard]] bool item_removed(items::Item&, window::Rect* roi_out) const;
 
         [[nodiscard]] bool transferred_item_into_dedicated_storage() const;
 
-        bool count_items_added(items::Item &, int &amount_out) const;
+        bool count_items_added(items::Item&, int& amount_out) const;
 
-        bool count_items_removed(items::Item &, int &amount_out) const;
+        bool count_items_removed(items::Item&, int& amount_out) const;
 
         float get_water_level() const;
 
@@ -120,5 +115,6 @@ namespace asa::interfaces
 
         bool extended_toggled_ = false;
     };
+
     inline HUD* hud = new HUD();
 }

@@ -60,6 +60,8 @@ namespace asa::entities
     {
     public:
         explicit FastTravelFailedError(const std::string& t_where);
+        FastTravelFailedError(const std::string& t_where, const std::string& t_why);
+
     };
 
     /**
@@ -69,6 +71,8 @@ namespace asa::entities
     {
     public:
         explicit TeleportFailedError(const std::string& t_where);
+        TeleportFailedError(const std::string& t_where, const std::string& t_why);
+
     };
 
 

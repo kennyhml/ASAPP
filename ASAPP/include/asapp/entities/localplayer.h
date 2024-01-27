@@ -1,4 +1,5 @@
 #pragma once
+
 #include "baseentity.h"
 #include "asapp/interfaces/localinventory.h"
 #include "asapp/structures/basestructure.h"
@@ -7,13 +8,36 @@
 #include "asapp/structures/teleporter.h"
 #include "dinoent.h"
 
+// Flags for LocalPlayer::access
+enum AccessFlags_
+{
+    AccessFlags_None = 0,
+    AccessFlags_InstantFail = 1 << 1,
+    AccessFlags_AccessAbove = 1 << 2,
+    AccessFlags_AccessBelow = 1 << 3,
+    AccessFlags_AccessLeft = 1 << 4,
+    AccessFlags_AccessRight = 1 << 5,
+
+    AccessFlags_AccessAboveOrBelow = AccessFlags_AccessAbove | AccessFlags_AccessBelow,
+    AccessFlags_Default = AccessFlags_AccessBelow,
+
+};
+
+// Flags for LocalPlayer::fast_travel_to
+enum TravelFlags_
+{
+    TravelFlags_None = 0,
+    TravelFlags_WaitForBed = 1 << 1,
+};
+
+
 namespace asa::entities
 {
     class LocalPlayer : public BaseEntity
     {
     public:
         explicit LocalPlayer() : BaseEntity(
-            "You", std::make_unique<interfaces::LocalInventory>()) {}
+                "You", std::make_unique<interfaces::LocalInventory>()) {}
 
         /**
          * @brief Gets the local player inventory component.
@@ -46,46 +70,73 @@ namespace asa::entities
         [[nodiscard]] bool is_overweight() const;
 
         [[nodiscard]] bool received_item(items::Item&) const;
+
         [[nodiscard]] bool deposited_item(items::Item&) const;
+
         [[nodiscard]] bool is_in_spawn_animation() const;
+
         [[nodiscard]] bool is_in_travel_screen() const;
+
         [[nodiscard]] bool can_access_bed() const;
+
         [[nodiscard]] bool can_access_inventory() const;
+
         [[nodiscard]] bool can_use_default_teleport() const;
 
         bool deposit_into_dedi(items::Item&, int* amount_out);
+
         bool withdraw_from_dedi(items::Item&, int* amount_out);
+
         bool get_amount_added(items::Item&, int& amount_out);
+
         bool get_amount_removed(items::Item&, int& amount_out);
 
         [[nodiscard]] bool can_access(const structures::BaseStructure&) const;
+
         [[nodiscard]] bool can_access(const entities::BaseEntity&) const;
 
         void access(const BaseEntity&) const;
+
         void access(const structures::Container&) const;
+
+        void access(const structures::SimpleBed&, AccessFlags_);
+
         void access(const structures::InteractableStructure&) const;
 
         void mount(const DinoEnt&) const;
 
-        bool fast_travel_to(const structures::SimpleBed&, bool instant_fail_fast_travel = false);
+        void fast_travel_to(const structures::SimpleBed& dst,
+                            AccessFlags_ access_flags = AccessFlags_Default,
+                            TravelFlags_ travel_flags = TravelFlags_WaitForBed);
+
         void teleport_to(const structures::Teleporter&, bool is_default = false);
+
         void get_off_bed();
+
         void suicide();
 
         void walk_forward(std::chrono::milliseconds duration);
+
         void walk_left(std::chrono::milliseconds duration);
+
         void walk_right(std::chrono::milliseconds duration);
+
         void walk_back(std::chrono::milliseconds duration);
 
         void equip(items::Item* item, interfaces::PlayerInfo::Slot target_slot);
+
         void unequip(interfaces::PlayerInfo::Slot target_slot);
 
         void look_fully_down();
+
         void look_fully_up();
 
         void jump();
+
         void crouch();
+
         void prone();
+
         void stand_up();
 
     private:
@@ -93,6 +144,7 @@ namespace asa::entities
         bool is_proned_ = false;
 
         void pass_travel_screen(bool in = true, bool out = true);
+
         void pass_teleport_screen(bool access_flag = false);
 
     public:
@@ -171,9 +223,14 @@ namespace asa::entities
         }
 
         void turn_right(int by_degrees = 90, ms delay = ms(100));
+
         void turn_left(int by_degrees = 90, ms delay = ms(100));
+
         void turn_up(int by_degrees = 90, ms delay = ms(100));
+
         void turn_down(int by_degrees = 90, ms delay = ms(100));
+
+        void handle_access_direction(AccessFlags_);
 
     private:
         int current_yaw_ = 0; // degrees of our view left and right, between -180 and 180
