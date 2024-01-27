@@ -230,9 +230,8 @@ namespace asa::entities
 
         if (bed.get_interface()->is_open()) { return; }
 
-        // there has to be a better way to check if both bits are set
-        const bool special_access_set = (flags & AccessFlags_AccessAbove) &&
-                                        (flags & AccessFlags_AccessBelow);
+        const bool special_access_set = (flags & AccessFlags_AccessAboveOrBelow) ==
+                                        AccessFlags_AccessAboveOrBelow;
 
         for (int attempt = 0; attempt < 3; attempt++) {
             if (!special_access_set) {
