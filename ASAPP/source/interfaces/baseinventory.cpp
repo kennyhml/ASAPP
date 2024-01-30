@@ -7,15 +7,16 @@
 namespace asa::interfaces
 {
     BaseInventory::BaseInventory(const bool is_remote) :
-        item_filter(is_remote ? 1205 : 175, 841, 552, 42),
-        search_bar(is_remote ? 1207 : 177, 176, 142, 44),
-        item_area(is_remote ? 1205 : 178, 239, 552, 588),
-        transfer_all_button_(is_remote ? 1388 : 366, 176),
-        drop_all_button_(is_remote ? 1436 : 413, 176),
-        new_folder_button_(is_remote ? 1531 : 509, 176),
-        auto_stack_button_(is_remote ? 1579 : 557, 176),
-        folder_view_button_(is_remote ? 1652 : 629, 176), is_remote_inventory_(is_remote),
-        area_(is_remote ? 1179 : 149, 94, 591, 827)
+            item_filter(is_remote ? 1205 : 175, 841, 552, 42),
+            search_bar(is_remote ? 1207 : 177, 176, 142, 44),
+            item_area(is_remote ? 1205 : 178, 239, 552, 588),
+            transfer_all_button_(is_remote ? 1388 : 366, 176),
+            drop_all_button_(is_remote ? 1436 : 413, 176),
+            new_folder_button_(is_remote ? 1531 : 509, 176),
+            auto_stack_button_(is_remote ? 1579 : 557, 176),
+            folder_view_button_(is_remote ? 1652 : 629, 176),
+            is_remote_inventory_(is_remote),
+            area_(is_remote ? 1179 : 149, 94, 591, 827)
     {
         init_slots({is_remote ? 1205 : 178, 239});
     };
@@ -42,7 +43,7 @@ namespace asa::interfaces
     {
         static constexpr window::Color inactive_color{80, 141, 155};
         return cv::countNonZero(get_mask(area, inactive_color, 10)) > 100 ||
-            is_selected();
+               is_selected();
     }
 
     bool BaseInventory::is_receiving_remote_inventory() const
@@ -90,7 +91,8 @@ namespace asa::interfaces
         assert_open(__func__);
 
         const auto matches = window::locate_all_template(
-            item_area, item.get_inventory_icon(), 0.9f, item.get_inventory_icon_mask());
+                item_area, item.get_inventory_icon(), 0.9f,
+                item.get_inventory_icon_mask());
 
         if (matches.empty()) {
             count_out = 0;
@@ -113,7 +115,7 @@ namespace asa::interfaces
         }
 
         if (search_for) { search_bar.search_for(item.get_name()); }
-        for (const components::Slot& slot : slots) {
+        for (const components::Slot& slot: slots) {
             if (slot.has(item)) { return &slot; }
             if (slot.is_empty()) { return nullptr; }
         }
@@ -140,7 +142,7 @@ namespace asa::interfaces
         assert_open(__func__);
         int dropped = 0;
         bool searched = false;
-        if (!search_bar.is_text_entered()) {
+        if (!search_bar.has_text_entered()) {
             search_bar.search_for(item.get_name());
             searched = true;
         }
@@ -173,8 +175,8 @@ namespace asa::interfaces
         while (!slots[0].is_empty() && is_open()) {
             constexpr auto inventory_size = 36;
             // We know there's minimum one row since slot 0 is not empty
-            int32_t total_slots = 6; 
-            
+            int32_t total_slots = 6;
+
             // A faster way to count how many items in this inventory is by reverse
             // checking them and stopping when we reach a non-empty slot
             for (int32_t i = inventory_size; i > 0; i -= 6) {
@@ -203,7 +205,7 @@ namespace asa::interfaces
                     }
                 }
             }
-            
+
             std::this_thread::sleep_for(std::chrono::milliseconds(200));
             window::post_up(settings::drop_item);
             std::this_thread::sleep_for(std::chrono::milliseconds(20));
@@ -215,9 +217,8 @@ namespace asa::interfaces
         select_slot(slot);
         do {
             window::press(settings::transfer_item, false, std::chrono::milliseconds(15));
-        }
-        while (!util::await([&slot]() -> bool { return !slot.is_hovered(); },
-                            std::chrono::seconds(5)));
+        } while (!util::await([&slot]() -> bool { return !slot.is_hovered(); },
+                              std::chrono::seconds(5)));
     }
 
     void BaseInventory::close()
@@ -243,11 +244,9 @@ namespace asa::interfaces
             do {
                 const window::Point location = slot.area.get_random_location(5);
                 window::set_mouse_pos(location);
-            }
-            while (!util::await([slot]() -> bool { return slot.is_hovered(); },
-                                std::chrono::seconds(2)));
-        }
-        else { window::set_mouse_pos(slot.area.get_random_location(5)); }
+            } while (!util::await([slot]() -> bool { return slot.is_hovered(); },
+                                  std::chrono::seconds(2)));
+        } else { window::set_mouse_pos(slot.area.get_random_location(5)); }
     }
 
     void BaseInventory::drop_all()
@@ -346,6 +345,12 @@ namespace asa::interfaces
         search_bar.delete_search();
     }
 
+    void BaseInventory::select_info_tab()
+    {
+        assert_open(__func__);
+        if (is_remote_inventory_) { them_button_.press(); }
+        else { you_button_.press(); }
+    }
 
     void BaseInventory::auto_stack()
     {
@@ -371,9 +376,9 @@ namespace asa::interfaces
     }
 
     std::vector<std::unique_ptr<items::Item>> BaseInventory::get_current_page_items(
-        std::vector<std::string>* allowed_items,
-        std::vector<items::ItemData::ItemType>* allowed_categories,
-        const int num_threads) const
+            std::vector<std::string>* allowed_items,
+            std::vector<items::ItemData::ItemType>* allowed_categories,
+            const int num_threads) const
     {
         assert_open(__func__);
 
@@ -383,7 +388,7 @@ namespace asa::interfaces
         // determination process easier as we can assign one thread per slot from the start
         int num_slots_filled = 0;
         int folder_offset = 0;
-        for (const auto& slot : slots) {
+        for (const auto& slot: slots) {
             if (slot.is_folder()) {
                 folder_offset++;
                 continue;
@@ -399,16 +404,16 @@ namespace asa::interfaces
 
         for (int i = 0; i < num_threads; i++) {
             threads.emplace_back(
-                [this, i, &ret, num_threads, num_slots_filled, folder_offset]() -> void {
-                    for (int j = i; j < num_slots_filled; j += num_threads) {
-                        ret[j] = slots[j + folder_offset].get_item();
-                    }
-                });
+                    [this, i, &ret, num_threads, num_slots_filled, folder_offset]() -> void {
+                        for (int j = i; j < num_slots_filled; j += num_threads) {
+                            ret[j] = slots[j + folder_offset].get_item();
+                        }
+                    });
         }
 
-        for (auto& thread : threads) { thread.join(); }
+        for (auto& thread: threads) { thread.join(); }
         std::cout << "\t[-] Finished. (" << util::get_elapsed<std::chrono::seconds>(start)
-            << ")\n";
+                  << ")\n";
         return ret;
     }
 }

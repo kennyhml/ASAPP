@@ -9,10 +9,29 @@ namespace asa::interfaces::components
 {
     bool SearchBar::has_text_entered()
     {
-        static window::Color text_color(134, 234, 255);
+        static constexpr window::Color text_color{134, 234, 255};
 
-        auto mask = get_mask(this->area, text_color, 30);
-        return cv::countNonZero(mask) > 50;
+        // keep track of a high and low count over the course of 500ms
+        // to then evaluate the differences between them.
+        const auto start = std::chrono::system_clock::now();
+        int high = 0;
+        int low = 0;
+
+        while (!util::timedout(start, std::chrono::milliseconds(500))) {
+            auto mask = get_mask(this->area, text_color, 30);
+            const int pixcount = cv::countNonZero(mask);
+
+            high = std::max(high, pixcount);
+            low = low ? std::min(low, pixcount) : pixcount;
+
+            // no helpful data just yet, give it longer
+            if (!(high && low) || high == low) { continue; }
+
+            // high should be character + cursor, low should be just the character
+            const int char_pixels = high - std::abs(high - low);
+            if (char_pixels > 15) { return true; }
+        }
+        return false;
     }
 
     bool SearchBar::has_blinking_cursor() const
@@ -32,9 +51,8 @@ namespace asa::interfaces::components
         if (!globals::use_window_input) {
             util::set_clipboard(term);
             controls::key_combination_press("ctrl", "v");
-        }
-        else {
-            for (auto c : term) {
+        } else {
+            for (auto c: term) {
                 if (globals::use_window_input) { window::post_char(c); }
             }
         }
@@ -63,7 +81,7 @@ namespace asa::interfaces::components
         do { post_mouse_press_at(loc, controls::LEFT); }
         while (!util::await([this]() { return this->has_blinking_cursor(); },
                             std::chrono::milliseconds(500)) && !util::timedout(
-            start, std::chrono::seconds(10)));
+                start, std::chrono::seconds(10)));
     }
 
     void SearchBar::delete_search()
@@ -75,8 +93,7 @@ namespace asa::interfaces::components
                 window::post_key_press("BackSpace", false);
                 window::post_key_press("Delete", false);
             }
-        }
-        else {
+        } else {
             controls::key_combination_press("Ctrl", "a");
             core::sleep_for(std::chrono::milliseconds(40));
             controls::key_press("Delete");

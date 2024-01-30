@@ -298,11 +298,23 @@ namespace asa::entities
 
     void LocalPlayer::mount(const DinoEnt& entity) const
     {
-        if (entity.is_mounted()) { return; }
+        interfaces::hud->toggle_extended(true);
+        asa::core::sleep_for(std::chrono::milliseconds(200));
 
-        do { window::press(settings::use); }
-        while (!util::await([&entity]() -> bool { return entity.is_mounted(); },
-                            std::chrono::seconds(5)));
+        if (entity.is_mounted()) {
+            interfaces::hud->toggle_extended(false);
+            return;
+        }
+
+        do {
+            if (entity.get_inventory()->is_open()) {
+                entity.get_inventory()->close();
+            }
+            window::press(settings::use);
+        } while (!util::await([&entity]() -> bool { return entity.is_mounted(); },
+                              std::chrono::seconds(5)));
+
+        interfaces::hud->toggle_extended(false);
     }
 
     void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed,
