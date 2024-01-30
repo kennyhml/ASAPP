@@ -1,4 +1,5 @@
 #pragma once
+
 #include <array>
 #include <iostream>
 #include <asapp/util/util.h>
@@ -227,6 +228,12 @@ namespace asa::interfaces
         void transfer_rows(const items::Item& item, int rows);
 
         /**
+         * @brief Selects the info tab i.e the THEM / STRUCTURE tab for
+         * remote inventories and the YOU tab for the local inventory.
+         */
+        void select_info_tab();
+
+        /**
          * @brief Transfers rows of a given item for a given duration.
          * 
          * @param item The item to transfer x rows of, will be searched beforehand 
@@ -271,16 +278,15 @@ namespace asa::interfaces
          * 
          * @return An array of the given size containing smart pointers to the items, or null.
          */
-        template <std::size_t Size>
+        template<std::size_t Size>
         [[nodiscard]] std::array<std::unique_ptr<items::Item>, Size> get_items(
-            const int start_index = 0, std::vector<std::string>* allowed_items = nullptr,
-            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
-            int num_threads = 5) const
+                const int start_index = 0,
+                std::vector<std::string>* allowed_items = nullptr,
+                std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
+                int num_threads = 5) const
         {
             assert_open(__func__);
             const auto start = std::chrono::system_clock::now();
-            std::cout << "[+] Getting items from " << start_index << " to " << start_index
-                + Size << "\n";
 
             std::array<std::unique_ptr<items::Item>, Size> ret;
             std::vector<std::thread> threads;
@@ -295,9 +301,7 @@ namespace asa::interfaces
                 });
             }
 
-            for (auto& thread : threads) { thread.join(); }
-            std::cout << "\t[-] Finished. (" << util::get_elapsed<
-                std::chrono::seconds>(start) << ")\n";
+            for (auto& thread: threads) { thread.join(); }
             return ret;
         }
 
@@ -314,9 +318,9 @@ namespace asa::interfaces
          * result is returned. Otherwise the result is returned after the 36th slot.
          */
         [[nodiscard]] std::vector<std::unique_ptr<items::Item>> get_current_page_items(
-            std::vector<std::string>* allowed_items = nullptr,
-            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
-            int num_threads = 5) const;
+                std::vector<std::string>* allowed_items = nullptr,
+                std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
+                int num_threads = 5) const;
 
     protected:
         struct ManagementButton : components::Button
@@ -324,6 +328,7 @@ namespace asa::interfaces
             ManagementButton(const int t_x, const int t_y) : Button(t_x, t_y, 45, 45) {}
 
             [[nodiscard]] bool is_toggled() const;
+
             [[nodiscard]] bool is_available() const;
         };
 
@@ -332,8 +337,13 @@ namespace asa::interfaces
             using Button::Button;
 
             [[nodiscard]] bool is_selected() const;
+
             [[nodiscard]] bool exists() const;
         };
+
+
+        InvTabButton you_button_{756, 122, 117, 51};
+        InvTabButton them_button_{1043, 126, 121, 48};
 
         ManagementButton transfer_all_button_;
         ManagementButton drop_all_button_;
