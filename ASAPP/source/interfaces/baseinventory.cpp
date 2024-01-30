@@ -171,11 +171,42 @@ namespace asa::interfaces
     void BaseInventory::popcorn_all()
     {
         while (!slots[0].is_empty() && is_open()) {
-            for (auto& slot : slots) {
-                if (slot.is_empty()) { break; }
-                window::set_mouse_pos(slot.area.get_random_location(5));
-                asa::window::press(asa::settings::drop_item);
+            constexpr auto inventory_size = 36;
+            // We know there's minimum one row since slot 0 is not empty
+            int32_t total_slots = 6; 
+            
+            // A faster way to count how many items in this inventory is by reverse
+            // checking them and stopping when we reach a non-empty slot
+            for (int32_t i = inventory_size; i > 0; i -= 6) {
+                const auto slot_id = i - 1;
+                // Start looking for item count by checking the last slot in every row
+                // in reverse order
+                if (!slots[slot_id].is_empty()) {
+                    // We now know there's at least this many slots
+                    total_slots = i;
+                    break;
+                }
             }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+            window::post_down(settings::drop_item);
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+            for (int32_t k = 0; k < total_slots / 6; k++) {
+                for (int32_t i = 0; i < 2; ++i) {
+                    for (int32_t j = 0; j < 6; j++) {
+                        const int32_t slot_id = i == 0 ? 5 - j : j;
+                        const auto slot = slots[slot_id];
+                        set_mouse_pos(slot.area.get_random_location(5));
+                        window::post_down(settings::drop_item);
+                        std::this_thread::sleep_for(std::chrono::milliseconds(30));
+                    }
+                }
+            }
+            
+            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+            window::post_up(settings::drop_item);
+            std::this_thread::sleep_for(std::chrono::milliseconds(20));
         }
     }
 
