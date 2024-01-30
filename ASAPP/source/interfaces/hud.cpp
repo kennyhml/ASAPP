@@ -87,6 +87,12 @@ namespace asa::interfaces
                                       resources::text::access_inventory);
     }
 
+    bool HUD::can_pick_up() const
+    {
+        return window::match_template(window::screenshot(),
+                                      resources::text::pick_up);
+    }
+
     bool HUD::detected_enemy()
     {
         toggle_extended(true);
