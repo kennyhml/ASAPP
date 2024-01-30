@@ -170,46 +170,24 @@ namespace asa::interfaces
         }
     }
 
-    void BaseInventory::popcorn_all()
+    void BaseInventory::popcorn_all(const PopcornFlags_ flags)
     {
         while (!slots[0].is_empty() && is_open()) {
-            constexpr auto inventory_size = 36;
-            // We know there's minimum one row since slot 0 is not empty
-            int32_t total_slots = 6;
-
-            // A faster way to count how many items in this inventory is by reverse
-            // checking them and stopping when we reach a non-empty slot
-            for (int32_t i = inventory_size; i > 0; i -= 6) {
-                const auto slot_id = i - 1;
-                // Start looking for item count by checking the last slot in every row
-                // in reverse order
-                if (!slots[slot_id].is_empty()) {
-                    // We now know there's at least this many slots
-                    total_slots = i;
-                    break;
-                }
-            }
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+            // for performance reason only check if the slot is empty if the
+            // last slot in the inventory is & respect the NoSlotChecks flag.
+            const bool check_empty = !(flags & PopcornFlags_NoSlotChecks) &&
+                                     slots[slots.size() - 1].is_empty();
+            
             window::post_down(settings::drop_item);
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
+            for (int i = 0; i < MAX_ITEMS_PER_PAGE; i++) {
+                const bool reached_max = i > 5 && flags & PopcornFlags_UseSingleRow;
+                if (reached_max || (check_empty && slots[i].is_empty())) { break; }
 
-            for (int32_t k = 0; k < total_slots / 6; k++) {
-                for (int32_t i = 0; i < 2; ++i) {
-                    for (int32_t j = 0; j < 6; j++) {
-                        const int32_t slot_id = i == 0 ? 5 - j : j;
-                        const auto slot = slots[slot_id];
-                        set_mouse_pos(slot.area.get_random_location(5));
-                        window::post_down(settings::drop_item);
-                        std::this_thread::sleep_for(std::chrono::milliseconds(30));
-                    }
-                }
+                window::set_mouse_pos(slots[i].area.get_random_location(5));
+                window::post_down(settings::drop_item);
             }
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
-            window::post_up(settings::drop_item);
-            std::this_thread::sleep_for(std::chrono::milliseconds(20));
         }
+        window::post_up(settings::drop_item);
     }
 
     void BaseInventory::take_slot(const components::Slot& slot)

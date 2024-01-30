@@ -10,6 +10,16 @@
 #include "components/searchbar.h"
 #include "components/slot.h"
 
+
+enum PopcornFlags_
+{
+    PopcornFlags_None = 0,
+    PopcornFlags_NoSlotChecks = 1 << 1, // disables the slot empty check for every slot
+    PopcornFlags_UseSingleRow = 1 << 2, // only use the top row to popcorn
+
+    PopcornFlags_Default = PopcornFlags_None,
+};
+
 namespace asa::interfaces
 {
     inline constexpr int MAX_ITEMS_PER_PAGE = 36;
@@ -117,7 +127,7 @@ namespace asa::interfaces
         /**
          * @brief Popcorns al items from the inventory. 
          */
-        virtual void popcorn_all();
+        void popcorn_all(PopcornFlags_ = PopcornFlags_Default);
 
         /**
          * @brief Takes the item located at a given slot.
