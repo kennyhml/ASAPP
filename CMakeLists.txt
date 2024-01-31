@@ -113,7 +113,9 @@ add_library(asapp STATIC
         ASAPP/include/asapp/structures/simplebed.h
         ASAPP/include/asapp/structures/smallcropplot.h
         ASAPP/include/asapp/structures/teleporter.h
-        ASAPP/include/asapp/util/util.h)
+        ASAPP/include/asapp/util/util.h
+        ASAPP/include/asapp/interfaces/components/tribelogmessage.h
+        ASAPP/source/interfaces/components/tribelogmessage.cpp)
 
 set_target_properties(asapp PROPERTIES
         CXX_STANDARD 20

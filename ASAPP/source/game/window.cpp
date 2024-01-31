@@ -53,7 +53,7 @@ namespace asa::window
                           std::min(255, b + v));
     }
 
-    const Point Rect::get_random_location(int padding) const
+    Point Rect::get_random_location(int padding) const
     {
         const int x_min = padding;
         const int x_max = width - padding;

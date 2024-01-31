@@ -3,7 +3,6 @@
 ColumnLimit: 80
 AlignOperands: Align
 PenaltyBreakAssignment: 6
-PenaltyBreakAssignment: 20
 PenaltyBreakBeforeFirstCallParameter: 0
 
 AccessModifierOffset: -4
