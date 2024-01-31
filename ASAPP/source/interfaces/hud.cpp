@@ -96,16 +96,16 @@ namespace asa::interfaces
     {
         toggle_extended(true);
         core::sleep_for(std::chrono::milliseconds(100));
-        bool result = util::await([]() {
-            return window::match_template(window::screenshot(),
+        bool result = util::await([this]() {
+            return window::match_template(push_notifications_,
                                           resources::text::detected_enemy);
         }, std::chrono::seconds(2));
 
         toggle_extended(false);
         if (!result) {
             core::sleep_for(std::chrono::milliseconds(100));
-            result = util::await([]() {
-                return window::match_template(window::screenshot(),
+            result = util::await([this]() {
+                return window::match_template(push_notifications_,
                                               resources::text::detected_enemy);
             }, std::chrono::seconds(2));
         }

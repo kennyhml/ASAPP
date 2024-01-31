@@ -106,6 +106,7 @@ namespace asa::interfaces
         window::Rect health_icon_{1861, 953, 48, 45};
         window::Rect weight_icon_{1860, 751, 51, 56};
         window::Rect default_teleport_{866, 911, 78, 27};
+        window::Rect push_notifications_{568, 0, 746, 1080};
 
         window::Rect item_icon_removed_or_added_area{7, 12, 41, 1067};
         window::Rect item_removed_area{43, 20, 110, 1054};
