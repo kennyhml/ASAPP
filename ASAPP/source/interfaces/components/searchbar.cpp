@@ -17,12 +17,14 @@ namespace asa::interfaces::components
         int high = 0;
         int low = 0;
 
-        while (!util::timedout(start, std::chrono::milliseconds(500))) {
+        while (!util::timedout(start, std::chrono::milliseconds(800))) {
             auto mask = get_mask(this->area, text_color, 30);
             const int pixcount = cv::countNonZero(mask);
 
             high = std::max(high, pixcount);
             low = low ? std::min(low, pixcount) : pixcount;
+
+            if (high > 100) { return true; }
 
             // no helpful data just yet, give it longer
             if (!(high && low) || high == low) { continue; }
