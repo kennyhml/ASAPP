@@ -14,26 +14,23 @@ namespace asa::interfaces::components
         // keep track of a high and low count over the course of 500ms
         // to then evaluate the differences between them.
         const auto start = std::chrono::system_clock::now();
-        int high = 0;
-        int low = 0;
-
+        int lowest = -1;
+        bool has_changed = false;
         while (!util::timedout(start, std::chrono::milliseconds(800))) {
             auto mask = get_mask(this->area, text_color, 30);
             const int pixcount = cv::countNonZero(mask);
+            if (pixcount > 100) { return true; }
 
-            high = std::max(high, pixcount);
-            low = low ? std::min(low, pixcount) : pixcount;
+            if (lowest == -1) {
+                lowest = pixcount;
+                continue;
+            }
+            has_changed = abs(lowest - pixcount) > 3;
+            lowest = std::min(lowest, pixcount);
 
-            if (high > 100) { return true; }
-
-            // no helpful data just yet, give it longer
-            if (!(high && low) || high == low) { continue; }
-
-            // high should be character + cursor, low should be just the character
-            const int char_pixels = high - std::abs(high - low);
-            if (char_pixels > 15) { return true; }
+            if (has_changed) { break; }
         }
-        return false;
+        return lowest > 15;
     }
 
     bool SearchBar::has_blinking_cursor() const
