@@ -1,7 +1,4 @@
 #pragma once
-
-#include <array>
-#include <string>
 #include "iinterface.h"
 #include "components/button.h"
 #include "components/searchbar.h"
@@ -36,11 +33,13 @@ namespace asa::interfaces
          * seperate thread, calls the given callback with the results once finished.
          *
          * @param on_finish The function to call with the update results.
+         * @param receive_for The duration to let the game receive new events in seconds.
          *
-         * @remarks What events are new and which arent is determined by their timestamp.
-         * @remarks The stored logs updated and may be used instead of a callback.
+         * @remark What events are new and which arent is determined by their timestamp.
+         * @remark The stored logs updated and may be used instead of a callback.
          */
-        void update_tribelogs(LogUpdateCallback on_finish = nullptr);
+        void update_tribelogs(const LogUpdateCallback& on_finish,
+                              std::chrono::seconds receive_for = std::chrono::seconds(1));
 
         /**
          * @brief Takes a screenshot of the current logs.
@@ -53,7 +52,6 @@ namespace asa::interfaces
         [[nodiscard]] const LogEntries& get_logs() const { return tribelog_; }
 
     private:
-
         /**
          * @brief Parses a TribeLogMessage from an image of a message.
          *
@@ -86,7 +84,7 @@ namespace asa::interfaces
          * the contents of the message must be evaluated instead.
          */
         [[nodiscard]] components::TribeLogMessage::EventType get_message_event(
-                const cv::Mat& src) const;
+            const cv::Mat& src) const;
 
         /**
          * @brief Evaluates the specific event of the message based on it's contents.
@@ -101,12 +99,12 @@ namespace asa::interfaces
         /**
          * @brief Determines the region of the timestamp in a message frame.
          *
-         * @param message The rect of the message to find the timestamp in.
+         * @param src The image of the message to find the timestamp in.
          *
          * @remark Useful as it allows us to process the timestamp individually.
          * @remark The once determined width is cached and reused next time.
          */
-        [[nodiscard]] cv::Mat crop_timestamp(const cv::Mat& source);
+        [[nodiscard]] cv::Mat crop_timestamp(const cv::Mat& src);
 
         /**
          * @brief Adds a tribelog message to the history of previous messages.
@@ -116,17 +114,20 @@ namespace asa::interfaces
          * @remarks If the size of the tribelog history exceeds 50, the last message
          * is deleted in order to make room.
          */
-        void add_message(const components::TribeLogMessage&);
+        void add_message(const components::TribeLogMessage& message);
 
         /**
          * @brief Checks whether a message is a new message based on its timestamp.
          *
          * @param msg The message to check whether it's new or previously known.
+         * @param allow_equal Allow same time days to be considered new.
          */
-        [[nodiscard]] bool is_new_message(const components::TribeLogMessage& msg) const;
+        [[nodiscard]] bool is_new_message(components::TribeLogMessage::Timestamp msg,
+                                          bool allow_equal) const;
 
 
         LogEntries tribelog_;
+        components::Button close_button_{1781, 49, 36, 33};
         components::Button tribe_manager_button{908, 55, 52, 52};
 
         int timestamp_width = 0;
