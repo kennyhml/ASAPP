@@ -12,22 +12,22 @@
 enum AccessFlags_
 {
     AccessFlags_None = 0,
-    AccessFlags_InstantFail = 1 << 1,
-    AccessFlags_AccessAbove = 1 << 2,
-    AccessFlags_AccessBelow = 1 << 3,
-    AccessFlags_AccessLeft = 1 << 4,
-    AccessFlags_AccessRight = 1 << 5,
+    AccessFlags_InstantFail = 1 << 1,   // Throw if the bed is not instantly found.
+    AccessFlags_AccessAbove = 1 << 2,   // Access the bed above.
+    AccessFlags_AccessBelow = 1 << 3,   // Access the bed below.
+    AccessFlags_AccessLeft = 1 << 4,    // Access the bed to the left.
+    AccessFlags_AccessRight = 1 << 5,   // Access the bed to the right.
 
     AccessFlags_AccessAboveOrBelow = AccessFlags_AccessAbove | AccessFlags_AccessBelow,
     AccessFlags_Default = AccessFlags_AccessBelow,
-
 };
 
 // Flags for LocalPlayer::fast_travel_to
 enum TravelFlags_
 {
     TravelFlags_None = 0,
-    TravelFlags_WaitForBed = 1 << 1,
+    TravelFlags_WaitForBeds = 1 << 1,       // Throw an exception when no beds are ready.
+    TravelFlags_NoTravelAnimation = 1 << 2, // Return when the travel animation starts.
 };
 
 
@@ -107,7 +107,7 @@ namespace asa::entities
 
         void fast_travel_to(const structures::SimpleBed& dst,
                             AccessFlags_ access_flags = AccessFlags_Default,
-                            TravelFlags_ travel_flags = TravelFlags_WaitForBed);
+                            TravelFlags_ travel_flags = TravelFlags_None);
 
         void teleport_to(const structures::Teleporter&, bool is_default = false);
 

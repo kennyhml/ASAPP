@@ -328,7 +328,10 @@ namespace asa::entities
         }
 
         bed.get_interface()->go_to(bed.get_name());
-        pass_travel_screen();
+
+        // always wait for the animation to start, dont wait for it to end if
+        // the no travel animation flag is set.
+        pass_travel_screen(true, !(travel_flags & TravelFlags_NoTravelAnimation));
         reset_view_angles();
         is_crouched_ = false;
         is_proned_ = false;
