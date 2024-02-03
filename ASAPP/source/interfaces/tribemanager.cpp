@@ -232,7 +232,7 @@ namespace asa::interfaces
     TribeLogMessage TribeManager::parse(const cv::Mat& src)
     {
         TribeLogMessage msg;
-        msg.raw_image = src;
+        msg.raw_image = src.clone();
 
         // OCR timestamp seperately so we can use different whitelists.
         cv::Mat timestamp_img = crop_timestamp(src);
