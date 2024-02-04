@@ -1,13 +1,15 @@
 #include "asapp/interfaces/tribemanager.h"
+#include "asapp/core/state.h"
 #include "asapp/game/resources.h"
 #include "asapp/interfaces/exceptions.h"
 #include "asapp/util/util.h"
-#include "asapp/core/state.h"
-#include <opencv2/highgui.hpp>
-#include <iostream>
-#include <regex>
-#include <map>
 #include <algorithm>
+#include <iostream>
+#include <map>
+#include <opencv2/highgui.hpp>
+#include <regex>
+
+#include "asapp/network/queries.h"
 
 namespace asa::interfaces
 {
@@ -32,8 +34,9 @@ namespace asa::interfaces
             {"Turret!", "Turret'!"}, {"(Pin Coded) ", "(Pin Coded)'"}
         };
 
-        // Multiple events share the same color, but this gives us a basic idea, to
-        // get the actual event the contents of the parsed message has to be looked at.
+        // Multiple events share the same color, but this gives us a basic idea,
+        // to get the actual event the contents of the parsed message has to be
+        // looked at.
         const std::map<EventType, window::Color> EVENT_COLORS = {
             {EventType::ENEMY_DINO_KILLED, {255, 0, 255}},
             {EventType::DEMOLISHED, {230, 233, 8}},
@@ -58,7 +61,8 @@ namespace asa::interfaces
 
 
         /**
-         * @brief Returns a string with all common OCR mistakes in a src string fixed.
+         * @brief Returns a string with all common OCR mistakes in a src string
+         * fixed.
          *
          * @param src The source string to find and fix the mistakes in
          */
@@ -94,7 +98,8 @@ namespace asa::interfaces
 
             const cv::Mat mask = window::get_mask(src, EVENT_COLORS.at(event), 130);
 
-            // For enemy dinos or players killed, the chance of a turret name exists
+            // For enemy dinos or players killed, the chance of a turret name
+            // exists
             if (event == EventType::ENEMY_DINO_KILLED || event ==
                 EventType::ENEMY_PLAYER_KILLED) {
                 mask |= window::get_mask(src, turret_name_color, 120);
@@ -106,6 +111,33 @@ namespace asa::interfaces
                                             CONTENT_OCR_WHITELIST);
 
             return window::tessEngine->GetUTF8Text();
+        }
+
+        std::unique_ptr<network::Server> last_server_info = nullptr;
+
+        bool refresh_server_data()
+        {
+            // nothing to do, data should still be valid.
+            if (last_server_info && !util::timedout(last_server_info->last_queried,
+                                                    std::chrono::seconds(300))) {
+                return true;
+            }
+
+            auto server = network::get_server(settings::last_session_3.get());
+            if (!server.has_value()) {
+                std::cerr << "[!] Tribelogs not checked, server not found." << std::endl;
+                last_server_info = nullptr;
+                return false;
+            }
+            last_server_info = std::make_unique<network::Server>(server.value());
+            std::cout << "[+] Refreshed: " << settings::last_session_0.get() << std::endl;
+            return true;
+        }
+
+        bool is_valid_timestamp(const TribeLogMessage::Timestamp timestamp)
+        {
+            if (!last_server_info) { return false; }
+            return std::abs(last_server_info->day - timestamp.day) < 2;
         }
     }
 
@@ -155,14 +187,9 @@ namespace asa::interfaces
         const cv::Mat logs = get_current_logs_image();
 
         std::thread([this, on_finish, logs]() -> void {
-            // If this is the first time we check we shouldnt be pushing any messages
-            // as new events as we have no previous data to base it off.
-            // It also means we should validate that the day of our first message
-            // somewhat matches the current time determined via the HUD.
+            if (!refresh_server_data()) { return; }
+
             const bool is_initial_check = tribelog_.empty();
-            // Keep track of whether we already added a new message, if we did
-            // allow messages to be added that have the exact same timestamp as
-            // our most recent addition.
             bool any_new = false;
 
             const std::vector<window::Rect> entries = collect_entries(logs);
@@ -170,7 +197,8 @@ namespace asa::interfaces
 
             for (const auto& entry : entries) {
                 const TribeLogMessage msg = parse(cv::Mat(logs, entry.to_cv()));
-                if (is_new_message(msg.timestamp, any_new)) {
+                if (is_new_message(msg.timestamp, any_new) &&
+                    is_valid_timestamp(msg.timestamp)) {
                     if (!is_initial_check) { new_.insert(new_.begin(), msg); }
                     add_message(msg);
                     any_new = true;
@@ -194,8 +222,8 @@ namespace asa::interfaces
         });
 
         std::vector<window::Rect> results;
-        // Notice that we are skipping the first occurrence because in most cases
-        // it is cut off and unreadable anyways.
+        // Notice that we are skipping the first occurrence because in most
+        // cases it is cut off and unreadable anyways.
         for (int i = 1; i < matches.size(); i++) {
             const int x = std::max(0, matches[i].x - 1);
             const int y = std::max(0, matches[i].y - 1);
@@ -236,6 +264,7 @@ namespace asa::interfaces
 
         // OCR timestamp seperately so we can use different whitelists.
         cv::Mat timestamp_img = crop_timestamp(src);
+
         msg.timestamp = parse_timestamp(timestamp_img);
         // We no longer care about the timestamp of this message, black it out.
         timestamp_img.setTo(cv::Scalar(0, 0, 0));
@@ -336,22 +365,7 @@ namespace asa::interfaces
 
     cv::Mat TribeManager::crop_timestamp(const cv::Mat& src)
     {
-        if (!timestamp_width) {
-            const cv::Mat comma_roi(src, {40, 13, 50, 3});
-            cv::Mat mask = window::get_mask(comma_roi, window::Color(186, 187, 189), 30);
-            int pix_at = 0;
-            for (int i = 0; i < mask.rows; ++i) {
-                for (int j = 0; j < mask.cols; ++j) {
-                    if (mask.at<uchar>(i, j) != 0) {
-                        pix_at = j;
-                        break;
-                    }
-                }
-                if (pix_at) { break; }
-            }
-            timestamp_width = 36 + pix_at + 85;
-        }
-
-        return {src, cv::Rect(0, 0, timestamp_width, 17)};
+        const int width = 127 + (std::to_string(last_server_info->day).length() - 1) * 10;
+        return {src, cv::Rect(0, 0, width, 17)};
     }
 }

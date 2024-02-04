@@ -125,12 +125,10 @@ namespace asa::interfaces
         [[nodiscard]] bool is_new_message(components::TribeLogMessage::Timestamp msg,
                                           bool allow_equal) const;
 
-
         LogEntries tribelog_;
         components::Button close_button_{1781, 49, 36, 33};
         components::Button tribe_manager_button{908, 55, 52, 52};
 
-        int timestamp_width = 0;
         window::Rect tribe_log_area{780, 216, 380, 576};
     };
 

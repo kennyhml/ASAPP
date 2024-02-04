@@ -20,7 +20,6 @@ namespace asa::network
             out.append(static_cast<char*>(content), total_size);
             return total_size;
         }
-
     }
 
     std::optional<Server> get_server(const std::string& server_name)
@@ -30,6 +29,11 @@ namespace asa::network
 
         std::string response;
 
+        // discard the version of the server name to avoid version mismatches.
+        const size_t version_pos = server_name.find(" - (");
+        std::string to_find = version_pos == std::string::npos
+                                  ? server_name
+                                  : server_name.substr(0, version_pos);
         // setup CURL
         curl_easy_setopt(curl, CURLOPT_URL, SERVERLIST);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_callback);
@@ -46,7 +50,7 @@ namespace asa::network
                 if (!data.contains("Name")) { continue; }
                 const std::string name = data.at("Name");
 
-                if (name.find(server_name) != std::string::npos) {
+                if (name.find(to_find) != std::string::npos) {
                     return Server::from_json(data);
                 }
             }
