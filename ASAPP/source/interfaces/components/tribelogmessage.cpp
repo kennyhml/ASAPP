@@ -14,7 +14,8 @@ namespace asa::interfaces::components
             return oss.str();
         }
 
-        std::regex TIMESTAMP_PATTERN(R"(Day ([0-9]+), ([0-9]+):([0-9]+):([0-9]+)(: (.*))?)");
+        std::regex TIMESTAMP_PATTERN(
+            R"(Day ([0-9]+), ([0-9]+):([0-9]+):([0-9]+)(: (.*))?)");
     }
 
     int64_t TribeLogMessage::Timestamp::sum() const
@@ -34,7 +35,10 @@ namespace asa::interfaces::components
     {
         std::smatch sm;
         if (regex_search(raw, sm, TIMESTAMP_PATTERN) && sm.size() > 4) {
-            return {stoi(sm[1]), stoi(sm[2]), stoi(sm[3]), stoi(sm[4])};
+            return {
+                stoi(sm[1]), std::min(23, std::stoi(sm[2])),
+                std::min(59, std::stoi(sm[3])), std::min(59, std::stoi(sm[4]))
+            };
         }
         std::cout << "[!] Failed to parse " << raw << std::endl;
         return {0, 0, 0, 0};
