@@ -72,7 +72,7 @@ namespace asa::settings
         {
             explicit UserSetting(std::string t_name): name(std::move(t_name))
             {
-                setting_value_map[name] = T(0);
+                setting_value_map[name] = T();
             }
 
             std::string name;
@@ -113,5 +113,11 @@ namespace asa::settings
         inline UserSetting<bool> toggle_hud("bToggleExtendedHUDInfo");
 
         inline UserSetting<int> fullscreen_mode("FullscreenMode");
+        inline UserSetting<int> last_joined_category("LastSessionCategoryJoined");
+
+        inline UserSetting<std::string> last_session_0("LastJoinedSessionPerCategory0");
+        inline UserSetting<std::string> last_session_1("LastJoinedSessionPerCategory1");
+        inline UserSetting<std::string> last_session_2("LastJoinedSessionPerCategory2");
+        inline UserSetting<std::string> last_session_3("LastJoinedSessionPerCategory3");
     }
 }

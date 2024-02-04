@@ -13,11 +13,13 @@ namespace asa::settings
 {
     namespace
     {
+        int session_category_count = 0;
+
         const auto USER_SETTINGS_REL = std::filesystem::path(
-                R"(ShooterGame\Saved\Config\Windows\GameUserSettings.ini)");
+            R"(ShooterGame\Saved\Config\Windows\GameUserSettings.ini)");
 
         const auto INPUT_SETTINGS_REL = std::filesystem::path(
-                R"(ShooterGame\Saved\Config\Windows\Input.ini)");
+            R"(ShooterGame\Saved\Config\Windows\Input.ini)");
 
         bool open_file(const std::filesystem::path& path, std::ifstream& out_file)
         {
@@ -44,17 +46,19 @@ namespace asa::settings
             // Exclude  = and " characters from the key  ---------------
             if (key_out == "ActionName") {
                 value_out = token.substr(eq + 2, token.length() - (key_out.length() + 3));
-            } else if (key_out == "Key") {
+            }
+            else if (key_out == "Key") {
                 // Parse out the ending parantheses, example: Key=F)
                 value_out = token.substr(eq + 1, token.length() - key_out.length() - 2);
-            } else { value_out = token.substr(eq + 1); }
+            }
+            else { value_out = token.substr(eq + 1); }
 
             return true;
         }
 
         std::any convert_settings_value(const std::string& key, const std::string& value)
         {
-            if (key == "LastJoinedSessionPerCategory") { return value; }
+            if (key.find("LastJoinedSessionPer") != std::string::npos) { return value; }
             if (value.find('.') != std::string::npos) { return std::stof(value); }
             if (value == "True" || value == "False") { return value == "True"; }
             return std::stoi(value);
@@ -67,6 +71,11 @@ namespace asa::settings
             std::string value;
 
             if (!parse_action_name(stream.str(), key, value)) { return false; }
+
+            if (key == "LastJoinedSessionPerCategory") {
+                key += std::to_string(session_category_count++);
+            }
+
             if (!map.contains(key)) { return false; }
             map[key] = convert_settings_value(key, value);
             VERBOSE_LOG("\t[-] Parsed " << key << " (" << value << ")")
@@ -85,11 +94,12 @@ namespace asa::settings
                 stream.seekg(16);
                 // collect all the tokens inside the action mapping
                 while (std::getline(stream, token, ',')) { tokens.push_back(token); }
-            } else if (from.find("ConsoleKeys") != std::string::npos) {
+            }
+            else if (from.find("ConsoleKeys") != std::string::npos) {
                 tokens.push_back(from);
             }
 
-            for (const std::string& tk: tokens) {
+            for (const std::string& tk : tokens) {
                 std::string key;
                 std::string value;
 
@@ -100,7 +110,8 @@ namespace asa::settings
                     if (!input_map.contains(value)) { return false; }
                     mapping = input_map[value];
                     continue;
-                } else if (key == "ConsoleKeys") {
+                }
+                else if (key == "ConsoleKeys") {
                     mapping = input_map[key];
                     mapping->key = value;
                     continue;
@@ -108,7 +119,7 @@ namespace asa::settings
 
                 if (!mapping) {
                     std::cerr << std::format("[!] Couldn't parse '{}'", stream.str()) <<
-                              "\n";
+                        "\n";
                     return false;
                 }
 
@@ -125,22 +136,18 @@ namespace asa::settings
         }
     }
 
-    bool init()
-    { return load_user_settings() && load_action_mappings(); }
+    bool init() { return load_user_settings() && load_action_mappings(); }
 
-    ActionMapping::ActionMapping(std::string t_name, std::string t_default) : name(
-            std::move(t_name)), key(std::move(t_default))
-    {
-        input_map[name] = this;
-    };
+    ActionMapping::ActionMapping(std::string t_name, std::string t_default) :
+        name(std::move(t_name)), key(std::move(t_default)) { input_map[name] = this; };
 
     std::ostream& action_mappings::operator
     <<(std::ostream& os, const action_mappings::ActionMapping& m)
     {
         return os << std::format(
-                "ActionMapping(name={}, shift={}, " "ctrl={}, alt={}, cmd={}, key={})",
-                m.name, static_cast<int>(m.shift), static_cast<int>(m.ctrl),
-                static_cast<int>(m.alt), static_cast<int>(m.cmd), m.key);
+            "ActionMapping(name={}, shift={}, " "ctrl={}, alt={}, cmd={}, key={})",
+            m.name, static_cast<int>(m.shift), static_cast<int>(m.ctrl),
+            static_cast<int>(m.alt), static_cast<int>(m.cmd), m.key);
     }
 
     bool action_mappings::load_action_mappings(const bool verbose)
@@ -167,6 +174,7 @@ namespace asa::settings
 
         VERBOSE_LOG("[+] Parsing GameUserSettings.ini...")
         bool section_found = false;
+        session_category_count = 0;
 
         for (std::string line; std::getline(file, line);) {
             const bool section_started = line.find("ShooterGame") != std::string::npos;
