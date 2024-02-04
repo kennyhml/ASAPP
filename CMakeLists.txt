@@ -115,7 +115,11 @@ add_library(asapp STATIC
         ASAPP/include/asapp/structures/teleporter.h
         ASAPP/include/asapp/util/util.h
         ASAPP/include/asapp/interfaces/components/tribelogmessage.h
-        ASAPP/source/interfaces/components/tribelogmessage.cpp)
+        ASAPP/source/interfaces/components/tribelogmessage.cpp
+        ASAPP/include/asapp/network/server.h
+        ASAPP/include/asapp/network/queries.h
+        ASAPP/source/network/server.cpp
+        ASAPP/source/network/queries.cpp)
 
 set_target_properties(asapp PROPERTIES
         CXX_STANDARD 20
