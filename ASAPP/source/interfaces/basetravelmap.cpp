@@ -80,7 +80,16 @@ namespace asa::interfaces
         const std::string& name, const bool wait_ready) const
     {
         auto results = get_destinations();
-        if (results.empty()) { throw DestinationNotFound(name); }
+
+        // Give it 5 seconds for the destinations to pop up in case server is
+        // lagging or something.
+        const auto start = std::chrono::system_clock::now();
+        while (results.empty()) {
+            if (util::timedout(start, std::chrono::seconds(5))) {
+                throw DestinationNotFound(name);
+            }
+            results = get_destinations();
+        }
 
         const auto it = std::ranges::find_if(
             results, [](const DestinationButton& b) -> bool { return b.is_ready(); });

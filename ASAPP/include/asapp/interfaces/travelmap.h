@@ -27,6 +27,6 @@ namespace asa::interfaces
         void go_to(const std::string& destination, bool wait_ready = false) override;
 
     private:
-        components::SearchBar searchbar{301, 940, 245, 51};
+        components::SearchBar searchbar{322, 942, 216, 46};
     };
 }

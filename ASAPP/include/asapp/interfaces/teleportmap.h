@@ -32,9 +32,7 @@ namespace asa::interfaces
          */
         [[nodiscard]] std::vector<DestinationButton> get_destinations() const override;
 
-
-        components::SearchBar searchbar{307, 946, 226, 43};
-
+        components::SearchBar searchbar{322, 942, 216, 46};
     private:
         components::Button set_default_button{1210, 948, 245, 43};
     };
