@@ -21,24 +21,22 @@ namespace asa::interfaces
         }
     }
 
-    void TravelMap::go_to(const std::string& destination)
+    void TravelMap::go_to(const std::string& destination, const bool wait_ready)
     {
-        std::cout << "[+] Traveling to '" << destination << "'..." << std::endl;
         searchbar.search_for(destination);
-        core::sleep_for(std::chrono::milliseconds(300));
+        core::sleep_for(std::chrono::milliseconds(400));
 
-        select_result();
+        DestinationButton button = get_ready_destination(destination, wait_ready);
+        button.select();
 
-        std::cout << "\t[-] Waiting for fast travel to go off cooldown...";
-        while (!can_confirm_target()) { core::sleep_for(std::chrono::milliseconds(50)); }
-        std::cout << " Done." << std::endl;
-
-        while (is_open()) {
-            confirm_button.press();
-            core::sleep_for(std::chrono::milliseconds(500));
+        if (!util::await([this]() -> bool { return can_confirm_travel(); },
+                         std::chrono::seconds(10))) {
+            throw std::exception("Travel confirmation button did not become available.");
         }
-        std::cout << "\t[-] Traveled to '" << destination << "'." << std::endl;
 
+        do { confirm_button.press(); }
+        while (!util::await([this]() -> bool { return !is_open(); },
+                            std::chrono::seconds(5)));
         searchbar.set_text_cleared();
     }
 }

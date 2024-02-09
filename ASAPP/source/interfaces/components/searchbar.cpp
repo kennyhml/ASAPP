@@ -43,6 +43,9 @@ namespace asa::interfaces::components
 
     void SearchBar::search_for(std::string term)
     {
+        if (has_text_entered()) { delete_search(); }
+
+
         this->press();
         core::sleep_for(std::chrono::milliseconds(200));
         this->searching = true;
@@ -50,8 +53,9 @@ namespace asa::interfaces::components
         if (!globals::use_window_input) {
             util::set_clipboard(term);
             controls::key_combination_press("ctrl", "v");
-        } else {
-            for (auto c: term) {
+        }
+        else {
+            for (auto c : term) {
                 if (globals::use_window_input) { window::post_char(c); }
             }
         }
@@ -80,7 +84,7 @@ namespace asa::interfaces::components
         do { post_mouse_press_at(loc, controls::LEFT); }
         while (!util::await([this]() { return this->has_blinking_cursor(); },
                             std::chrono::milliseconds(500)) && !util::timedout(
-                start, std::chrono::seconds(10)));
+            start, std::chrono::seconds(10)));
     }
 
     void SearchBar::delete_search()
@@ -92,7 +96,8 @@ namespace asa::interfaces::components
                 window::post_key_press("BackSpace", false);
                 window::post_key_press("Delete", false);
             }
-        } else {
+        }
+        else {
             controls::key_combination_press("Ctrl", "a");
             core::sleep_for(std::chrono::milliseconds(40));
             controls::key_press("Delete");

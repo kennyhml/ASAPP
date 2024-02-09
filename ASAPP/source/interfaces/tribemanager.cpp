@@ -30,8 +30,9 @@ namespace asa::interfaces
             {"kilied", "killed"}, {"kilted", "killed"}, {"kilfed", "killed"},
             {"deatht", "death!"}, {"'t", "'!"}, {"'l", "'!"}, {"  ", " "},
             {"(Pin Coded)!", "(Pin Coded)'"}, {"y'!", ")'!"}, {"Bedy", "Bed)"},
-            {"Wallt", "Wall'!"}, {"!!", "!"}, {"((", "("}, {"))", ")"},
-            {"Turret!", "Turret'!"}, {"(Pin Coded) ", "(Pin Coded)'"}
+            {"Pin Codedy", "Pin Coded)"}, {"Wallt", "Wall'!"}, {"!!", "!"}, {"((", "("},
+            {"))", ")"}, {"''", "'"}, {"Turret!", "Turret'!"},
+            {"(Pin Coded) ", "(Pin Coded)'"}
         };
 
         // Multiple events share the same color, but this gives us a basic idea,
@@ -131,6 +132,7 @@ namespace asa::interfaces
             }
             last_server_info = std::make_unique<network::Server>(server.value());
             std::cout << "[+] Refreshed: " << settings::last_session_0.get() << std::endl;
+            std::cout << "-- Day: " << last_server_info->day << std::endl;
             return true;
         }
 
@@ -187,6 +189,10 @@ namespace asa::interfaces
         const cv::Mat logs = get_current_logs_image();
 
         std::thread([this, on_finish, logs]() -> void {
+            if (!tribelog_.empty()) {
+                std::cout << "Most recent is " << tribelog_.front().timestamp.to_string() << std::endl;
+            }
+
             if (!refresh_server_data()) { return; }
 
             const bool is_initial_check = tribelog_.empty();

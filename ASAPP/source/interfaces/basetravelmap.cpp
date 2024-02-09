@@ -1,83 +1,97 @@
 #include "asapp/interfaces/basetravelmap.h"
-#include <algorithm>
-#include "asapp/util/util.h"
+#include <opencv2/highgui.hpp>
 #include "asapp/core/state.h"
-#include "asapp/game/globals.h"
+#include "asapp/util/util.h"
 #include "asapp/game/resources.h"
 
 namespace asa::interfaces
 {
-    BaseTravelMap::BaseTravelMap() : results([this]() {
-        int i = 0;
-        std::generate(results.begin(), results.end(), [&i]() mutable {
-            return components::Button(89, 195 + (i++ * 55), 459, 55, 10);
-        });
-        return results;
-    }()) {};
+    using BaseTravelMap::DestinationButton;
+
+
+    DestinationNotReady::DestinationNotReady(const std::string& t_dst_name)
+        : info_(std::format("No destination for '{}' is ready.", t_dst_name)) {}
+
+    DestinationNotFound::DestinationNotFound(const std::string& t_dst_name)
+        : info_(std::format("No destination for '{}' exists.", t_dst_name)) {}
+
+    bool DestinationButton::is_ready() const
+    {
+        const cv::Mat mask = window::get_mask(area, text_color, 30);
+        mask |= window::get_mask(area, text_selected_color, 30);
+        return cv::countNonZero(mask) > 200;
+    }
+
+    bool DestinationButton::is_on_cooldown() const
+    {
+        const cv::Mat mask = window::get_mask(area, text_cooldown_color, 30);
+        return cv::countNonZero(mask) > 200;
+    }
+
+    bool DestinationButton::is_selected() const
+    {
+        const cv::Mat mask = window::get_mask(area, selected_color, 30);
+        mask |= window::get_mask(area, hovered_selected_color, 30);
+
+        return cv::countNonZero(mask) > 300;
+    }
+
+    void DestinationButton::select()
+    {
+        do { press(); }
+        while (!util::await([this]() { return is_selected(); }, std::chrono::seconds(3)));
+    }
+
+    BaseTravelMap::BaseTravelMap()
+    {
+        for (int i = 0; i < destination_slots_.max_size(); i++) {
+            destination_slots_[i] = {89, 195 + (i * 55), 459, 55};
+        }
+    };
 
     bool BaseTravelMap::is_open() const
     {
-        return window::match_template(this->day_time, resources::interfaces::day);
+        return window::match_template(this->day_time_, resources::interfaces::day);
     }
 
-    bool BaseTravelMap::can_confirm_target()
+    bool BaseTravelMap::can_confirm_travel() const
     {
-        static window::Color ready_color(158, 88, 18);
+        static constexpr window::Color ready_color{158, 88, 18};
 
-        auto mask = window::get_mask(confirm_button.area, ready_color, 20);
+        const auto mask = window::get_mask(confirm_button.area, ready_color, 20);
         return cv::countNonZero(mask) > 50;
     }
 
-    bool BaseTravelMap::has_result()
+    std::vector<DestinationButton> BaseTravelMap::get_destinations() const
     {
-        static window::Color selected_color(255, 255, 255);
-        static window::Color text_color(133, 226, 243);
+        std::vector<DestinationButton> ret;
 
-        for (const components::Button& result : results) {
-            auto mask = window::get_mask(result.area, selected_color, 20);
-            auto mask2 = window::get_mask(result.area, text_color, 20);
+        for (const auto& roi : destination_slots_) {
+            // create an imaginary button for now.
+            const DestinationButton button(roi.x, roi.y);
+            // button doesnt exist, end of the list reached.
+            if (!(button.is_ready() || button.is_on_cooldown())) { break; }
+            ret.push_back(button);
+        }
+        return ret;
+    }
 
-            if (cv::countNonZero(mask) > 30 || cv::countNonZero(mask2) > 30) {
-                return true;
+    DestinationButton BaseTravelMap::get_ready_destination(
+        const std::string& name, const bool wait_ready) const
+    {
+        auto results = get_destinations();
+        if (results.empty()) { throw DestinationNotFound(name); }
+
+        const auto it = std::ranges::find_if(
+            results, [](const DestinationButton& b) -> bool { return b.is_ready(); });
+
+        if (it == results.end()) {
+            if (wait_ready) {
+                core::sleep_for(std::chrono::seconds(5));
+                return get_ready_destination(name, wait_ready);
             }
+            throw DestinationNotReady(name);
         }
-
-        return false;
-    }
-
-    bool BaseTravelMap::is_result_selected(int index)
-    {
-        static window::Color hovered_selected_color(83, 39, 1);
-        static window::Color selected_color(128, 64, 2);
-
-        auto roi = this->results[index].area;
-
-        auto mask1 = window::get_mask(roi, hovered_selected_color, 30);
-        auto mask2 = window::get_mask(roi, selected_color, 30);
-
-        return cv::countNonZero(mask1) > 50 || cv::countNonZero(mask2) > 50;
-    };
-
-    int BaseTravelMap::count_results()
-    {
-        static window::Color selected_color(255, 255, 255);
-        static window::Color text_color(133, 226, 243);
-
-        int count = 0;
-        for (const components::Button& result : results) {
-            auto mask = window::get_mask(result.area, selected_color, 15);
-            auto mask2 = window::get_mask(result.area, text_color, 15);
-
-            count += (cv::countNonZero(mask) > 50 || cv::countNonZero(mask2) > 50);
-        }
-
-        return count;
-    }
-
-    void BaseTravelMap::select_result(int index)
-    {
-        do { this->results[index].press(); }
-        while (!util::await([this, index]() { return this->is_result_selected(index); },
-                            std::chrono::seconds(3)));
+        return *it;
     }
 }

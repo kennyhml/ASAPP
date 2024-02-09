@@ -6,9 +6,9 @@
 
 namespace asa::interfaces
 {
-    void asa::interfaces::TeleportMap::close()
+    void TeleportMap::close()
     {
-        auto start = std::chrono::system_clock::now();
+        const auto start = std::chrono::system_clock::now();
         while (is_open()) {
             window::press("esc", true);
             if (util::await([this]() { return !is_open(); }, std::chrono::seconds(5))) {
@@ -21,30 +21,46 @@ namespace asa::interfaces
         }
     }
 
-    void asa::interfaces::TeleportMap::set_selected_as_default()
+    void TeleportMap::set_selected_as_default()
     {
-        while (!can_confirm_target()) { core::sleep_for(std::chrono::milliseconds(50)); }
+        if (!util::await([this]() -> bool { return can_confirm_travel(); },
+                         std::chrono::seconds(10))) {
+            throw std::exception("Travel confirmation button did not become available.");
+        }
 
         set_default_button.press();
     }
 
-    void asa::interfaces::TeleportMap::go_to(const std::string& destination)
+    void TeleportMap::go_to(const std::string& destination, bool wait_ready)
     {
-        std::cout << "[+] Teleporting to '" << destination << "'..." << std::endl;
         searchbar.search_for(destination);
         core::sleep_for(std::chrono::milliseconds(400));
 
-        select_result();
+        DestinationButton button = get_ready_destination(destination, false);
+        button.select();
 
-        std::cout << "\t[-] Waiting for teleport to go off cooldown...";
-        while (!can_confirm_target()) { core::sleep_for(std::chrono::milliseconds(50)); }
-        std::cout << " Done." << std::endl;
-
-        while (is_open()) {
-            confirm_button.press();
-            core::sleep_for(std::chrono::milliseconds(200));
+        if (!util::await([this]() -> bool { return can_confirm_travel(); },
+                         std::chrono::seconds(10))) {
+            throw std::exception("Tp confirmation button did not become available.");
         }
-        std::cout << "\t[-] Teleported to '" << destination << "'." << std::endl;
+
+        do { confirm_button.press(); }
+        while (!util::await([this]() -> bool { return !is_open(); },
+                            std::chrono::seconds(5)));
         searchbar.set_text_cleared();
+    }
+
+    std::vector<BaseTravelMap::DestinationButton> TeleportMap::get_destinations() const
+    {
+        std::vector<DestinationButton> ret;
+
+        for (const auto& roi : destination_slots_) {
+            // create an imaginary button for now.
+            const DestinationButton button(roi.x, roi.y);
+            // button doesnt exist, end of the list reached.
+            if (!button.is_ready()) { break; }
+            ret.push_back(button);
+        }
+        return ret;
     }
 }
