@@ -61,7 +61,6 @@ namespace asa::entities
     public:
         explicit FastTravelFailedError(const std::string& t_where);
         FastTravelFailedError(const std::string& t_where, const std::string& t_why);
-
     };
 
     /**

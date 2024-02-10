@@ -11,7 +11,7 @@ namespace asa::interfaces
     {
         explicit DestinationNotFound(const std::string& t_dst_name);
 
-        [[nodiscard]] char const* what() const override;
+        [[nodiscard]] char const* what() const override { return info_.c_str(); };
 
     private:
         std::string info_;
@@ -21,7 +21,7 @@ namespace asa::interfaces
     {
         explicit DestinationNotReady(const std::string& t_dst_name);
 
-        [[nodiscard]] char const* what() const override;
+        [[nodiscard]] char const* what() const override { return info_.c_str(); };
 
     private:
         std::string info_;

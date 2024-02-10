@@ -45,7 +45,6 @@ namespace asa::interfaces::components
     {
         if (has_text_entered()) { delete_search(); }
 
-
         this->press();
         core::sleep_for(std::chrono::milliseconds(200));
         this->searching = true;

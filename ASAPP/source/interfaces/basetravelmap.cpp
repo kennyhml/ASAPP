@@ -6,29 +6,26 @@
 
 namespace asa::interfaces
 {
-    using BaseTravelMap::DestinationButton;
-
-
     DestinationNotReady::DestinationNotReady(const std::string& t_dst_name)
         : info_(std::format("No destination for '{}' is ready.", t_dst_name)) {}
 
     DestinationNotFound::DestinationNotFound(const std::string& t_dst_name)
         : info_(std::format("No destination for '{}' exists.", t_dst_name)) {}
 
-    bool DestinationButton::is_ready() const
+    bool BaseTravelMap::DestinationButton::is_ready() const
     {
         const cv::Mat mask = window::get_mask(area, text_color, 30);
         mask |= window::get_mask(area, text_selected_color, 30);
-        return cv::countNonZero(mask) > 200;
+        return cv::countNonZero(mask) > 100;
     }
 
-    bool DestinationButton::is_on_cooldown() const
+    bool BaseTravelMap::DestinationButton::is_on_cooldown() const
     {
         const cv::Mat mask = window::get_mask(area, text_cooldown_color, 30);
-        return cv::countNonZero(mask) > 200;
+        return cv::countNonZero(mask) > 100;
     }
 
-    bool DestinationButton::is_selected() const
+    bool BaseTravelMap::DestinationButton::is_selected() const
     {
         const cv::Mat mask = window::get_mask(area, selected_color, 30);
         mask |= window::get_mask(area, hovered_selected_color, 30);
@@ -36,7 +33,7 @@ namespace asa::interfaces
         return cv::countNonZero(mask) > 300;
     }
 
-    void DestinationButton::select()
+    void BaseTravelMap::DestinationButton::select()
     {
         do { press(); }
         while (!util::await([this]() { return is_selected(); }, std::chrono::seconds(3)));
@@ -62,7 +59,7 @@ namespace asa::interfaces
         return cv::countNonZero(mask) > 50;
     }
 
-    std::vector<DestinationButton> BaseTravelMap::get_destinations() const
+    std::vector<BaseTravelMap::DestinationButton> BaseTravelMap::get_destinations() const
     {
         std::vector<DestinationButton> ret;
 
@@ -76,11 +73,10 @@ namespace asa::interfaces
         return ret;
     }
 
-    DestinationButton BaseTravelMap::get_ready_destination(
+    BaseTravelMap::DestinationButton BaseTravelMap::get_ready_destination(
         const std::string& name, const bool wait_ready) const
     {
         auto results = get_destinations();
-
         // Give it 5 seconds for the destinations to pop up in case server is
         // lagging or something.
         const auto start = std::chrono::system_clock::now();

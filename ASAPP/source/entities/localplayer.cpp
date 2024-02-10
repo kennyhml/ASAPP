@@ -11,7 +11,6 @@
 
 namespace asa::entities
 {
-
     interfaces::LocalInventory* LocalPlayer::get_inventory() const
     {
         return dynamic_cast<interfaces::LocalInventory*>(inventory_.get());
@@ -98,11 +97,11 @@ namespace asa::entities
             window::press(settings::use);
             if (util::timedout(start, std::chrono::seconds(10))) {
                 throw structures::StructureError(
-                        nullptr,
-                        std::format("Failed to deposit '{}' into dedicated storage.",
-                                    item.get_name()));
+                    nullptr, std::format("Failed to deposit '{}' into dedicated storage.",
+                                         item.get_name()));
             }
-        } while (!util::await(deposited, std::chrono::seconds(5)));
+        }
+        while (!util::await(deposited, std::chrono::seconds(5)));
         return true;
     }
 
@@ -147,7 +146,8 @@ namespace asa::entities
             }
             window::press(settings::use);
             core::sleep_for(std::chrono::seconds(3));
-        } while (interfaces::hud->extended_information_is_toggled());
+        }
+        while (interfaces::hud->extended_information_is_toggled());
         std::cout << "\t[-] Suicided successfully.\n";
         reset_view_angles();
         is_crouched_ = false;
@@ -208,8 +208,9 @@ namespace asa::entities
             if (util::timedout(start, std::chrono::seconds(30))) {
                 throw EntityNotAccessed(&entity);
             }
-        } while (!util::await([&entity]() { return entity.get_inventory()->is_open(); },
-                              std::chrono::seconds(5)));
+        }
+        while (!util::await([&entity]() { return entity.get_inventory()->is_open(); },
+                            std::chrono::seconds(5)));
 
         entity.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
@@ -223,20 +224,17 @@ namespace asa::entities
         container.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
 
-    void LocalPlayer::access(const structures::SimpleBed& bed,
-                             const AccessFlags_ flags)
+    void LocalPlayer::access(const structures::SimpleBed& bed, const AccessFlags_ flags)
     {
         static structures::Container bag("Item Cache", 0);
 
         if (bed.get_interface()->is_open()) { return; }
 
         const bool special_access_set = (flags & AccessFlags_AccessAboveOrBelow) ==
-                                        AccessFlags_AccessAboveOrBelow;
+            AccessFlags_AccessAboveOrBelow;
 
         for (int attempt = 0; attempt < 3; attempt++) {
-            if (!special_access_set) {
-                handle_access_direction(flags);
-            }
+            if (!special_access_set) { handle_access_direction(flags); }
 
             // If a bag is seen, give it one second to disappear.
             if (!util::await([this]() -> bool { return !can_access(bag); },
@@ -245,7 +243,8 @@ namespace asa::entities
                 // Check health level to ensure its an item cache.
                 if (bag.get_info()->get_health_level() == 0.f) {
                     bag.get_inventory()->popcorn_all();
-                } else { reset_pitch(); }
+                }
+                else { reset_pitch(); }
                 bag.get_inventory()->close();
 
                 core::sleep_for(std::chrono::seconds(1));
@@ -259,9 +258,7 @@ namespace asa::entities
             if (special_access_set) {
                 set_pitch(-90);
                 if (util::await(interfaces::HUD::can_fast_travel,
-                                std::chrono::seconds(1))) {
-                    break;
-                }
+                                std::chrono::seconds(1))) { break; }
             }
 
             // Still unable to see the bed, either missing or not yet loaded.
@@ -291,7 +288,8 @@ namespace asa::entities
             if (util::timedout(start, std::chrono::seconds(30))) {
                 throw structures::StructureNotOpenedError(&structure);
             }
-        } while (!util::await([&structure]() {
+        }
+        while (!util::await([&structure]() {
             return structure.get_interface()->is_open();
         }, std::chrono::seconds(5)));
     }
@@ -307,12 +305,11 @@ namespace asa::entities
         }
 
         do {
-            if (entity.get_inventory()->is_open()) {
-                entity.get_inventory()->close();
-            }
+            if (entity.get_inventory()->is_open()) { entity.get_inventory()->close(); }
             window::press(settings::use);
-        } while (!util::await([&entity]() -> bool { return entity.is_mounted(); },
-                              std::chrono::seconds(5)));
+        }
+        while (!util::await([&entity]() -> bool { return entity.is_mounted(); },
+                            std::chrono::seconds(5)));
 
         interfaces::hud->toggle_extended(false);
     }
@@ -321,13 +318,13 @@ namespace asa::entities
                                      const AccessFlags_ access_flags,
                                      const TravelFlags_ travel_flags)
     {
-        try {
-            access(bed, access_flags);
-        } catch (const std::exception& e) {
+        try { access(bed, access_flags); }
+        catch (const std::exception& e) {
             throw FastTravelFailedError(bed.get_name(), e.what());
         }
 
-        bed.get_interface()->go_to(bed.get_name());
+        bed.get_interface()->go_to(bed.get_name(),
+                                   travel_flags & TravelFlags_WaitForBeds);
 
         // always wait for the animation to start, dont wait for it to end if
         // the no travel animation flag is set.
@@ -347,7 +344,8 @@ namespace asa::entities
             tp.get_interface()->go_to(tp.get_name());
             util::await([]() { return !interfaces::hud->can_default_teleport(); },
                         std::chrono::seconds(5));
-        } else {
+        }
+        else {
             do { window::press(settings::reload); }
             while (!util::await([]() { return !interfaces::hud->can_default_teleport(); },
                                 std::chrono::seconds(5)));
@@ -487,6 +485,4 @@ namespace asa::entities
         if (flags & AccessFlags_AccessLeft) { set_yaw(-90); }
         else if (flags & AccessFlags_AccessRight) { set_yaw(90); }
     }
-
-
 }
