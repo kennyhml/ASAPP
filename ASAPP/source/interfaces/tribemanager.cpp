@@ -131,8 +131,6 @@ namespace asa::interfaces
                 return false;
             }
             last_server_info = std::make_unique<network::Server>(server.value());
-            std::cout << "[+] Refreshed: " << settings::last_session_0.get() << std::endl;
-            std::cout << "-- Day: " << last_server_info->day << std::endl;
             return true;
         }
 
@@ -189,10 +187,6 @@ namespace asa::interfaces
         const cv::Mat logs = get_current_logs_image();
 
         std::thread([this, on_finish, logs]() -> void {
-            if (!tribelog_.empty()) {
-                std::cout << "Most recent is " << tribelog_.front().timestamp.to_string() << std::endl;
-            }
-
             if (!refresh_server_data()) { return; }
 
             const bool is_initial_check = tribelog_.empty();
@@ -220,7 +214,7 @@ namespace asa::interfaces
         // we only care about the first 30 pixels on the x-axis
         const cv::Mat roi(src, cv::Rect(0, 0, 40, src.rows));
         auto matches = window::locate_all_template(roi, resources::interfaces::day_log,
-                                                   0.85);
+                                                   0.81);
 
         // sort the matches by their y-position in descending order
         std::ranges::sort(matches, [](const auto& a, const auto& b) -> bool {
@@ -276,13 +270,13 @@ namespace asa::interfaces
         timestamp_img.setTo(cv::Scalar(0, 0, 0));
 
         // If this fails theres no point even trying as we can't properly mask.
-        if (msg.event = get_message_event(src); msg.event == EventType::UNKNOWN) {
+        if (msg.type = get_message_event(src); msg.type == EventType::UNKNOWN) {
             std::cerr << "[!] Unknown event: " << msg.timestamp.to_string() << std::endl;
             return msg;
         }
 
         // Parse and fix the actual content of the message.
-        msg.raw_text = parse_content(src, msg.event);
+        msg.raw_text = parse_content(src, msg.type);
         msg.content = fix(msg.raw_text);
 
         if (msg.content.empty()) { msg.content = "???"; }
@@ -303,19 +297,19 @@ namespace asa::interfaces
     {
         if (msg.content.empty()) { throw std::exception("Cant evaluate empty message."); }
 
-        switch (msg.event) {
+        switch (msg.type) {
         // red events, detroyed is distinct, otherwise look for Tribemember.
         case EventType::TRIBE_DESTROYED:
         case EventType::TRIBE_PLAYER_KILLED:
         case EventType::TRIBE_DINO_KILLED:
         {
             if (msg.content.find("destroyed") != std::string::npos) {
-                msg.event = EventType::TRIBE_DESTROYED;
+                msg.type = EventType::TRIBE_DESTROYED;
             }
             else if (msg.content.find("Tribemember") != std::string::npos) {
-                msg.event = EventType::TRIBE_PLAYER_KILLED;
+                msg.type = EventType::TRIBE_PLAYER_KILLED;
             }
-            else { msg.event = EventType::TRIBE_DINO_KILLED; }
+            else { msg.type = EventType::TRIBE_DINO_KILLED; }
             break;
         }
         // white / gray events, all have a distinct identifier.
@@ -324,12 +318,12 @@ namespace asa::interfaces
         case EventType::DINO_CRYOD:
         {
             if (msg.content.find("starved") != std::string::npos) {
-                msg.event = EventType::DINO_STARVED;
+                msg.type = EventType::DINO_STARVED;
             }
             else if (msg.content.find("froze") != std::string::npos) {
-                msg.event = EventType::DINO_CRYOD;
+                msg.type = EventType::DINO_CRYOD;
             }
-            else { msg.event = EventType::TRIBE_GROUP_UPDATED; }
+            else { msg.type = EventType::TRIBE_GROUP_UPDATED; }
             break;
         }
         // purple events, if a dino is killed the type of dino will be in
@@ -340,13 +334,13 @@ namespace asa::interfaces
         case EventType::ENEMY_PLAYER_KILLED:
         {
             if (msg.content.find("claimed") != std::string::npos) {
-                msg.event = EventType::CLAIMED;
+                msg.type = EventType::CLAIMED;
             }
             else if (std::ranges::count(msg.content, '(') >= 2 ||
                 std::ranges::count(msg.content, ')') >= 2) {
-                msg.event = EventType::ENEMY_DINO_KILLED;
+                msg.type = EventType::ENEMY_DINO_KILLED;
             }
-            else { msg.event = EventType::ENEMY_PLAYER_KILLED; }
+            else { msg.type = EventType::ENEMY_PLAYER_KILLED; }
             break;
         }
         // yellow events, either unclaimed or demolished
@@ -355,12 +349,12 @@ namespace asa::interfaces
         case EventType::PLAYER_REMOVED:
         {
             if (msg.content.find("removed") != std::string::npos) {
-                msg.event = EventType::PLAYER_REMOVED;
+                msg.type = EventType::PLAYER_REMOVED;
             }
             else if (msg.content.find("demolished") != std::string::npos) {
-                msg.event = EventType::DEMOLISHED;
+                msg.type = EventType::DEMOLISHED;
             }
-            else { msg.event = EventType::UNCLAIMED; }
+            else { msg.type = EventType::UNCLAIMED; }
             break;
         }
         default:

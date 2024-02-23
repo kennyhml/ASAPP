@@ -60,7 +60,7 @@ namespace asa::interfaces::components {
 
     public:
         Timestamp timestamp;
-        EventType event = UNKNOWN;
+        EventType type = UNKNOWN;
 
         std::string content;
         std::string raw_text;
