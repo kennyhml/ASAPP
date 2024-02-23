@@ -8,6 +8,8 @@
 #include "asapp/structures/exceptions.h"
 #include <iostream>
 
+#include "asapp/interfaces/spawnmap.h"
+
 
 namespace asa::entities
 {
@@ -148,6 +150,7 @@ namespace asa::entities
             core::sleep_for(std::chrono::seconds(3));
         }
         while (interfaces::hud->extended_information_is_toggled());
+        while (!interfaces::spawn_map->is_open()) {}
         std::cout << "\t[-] Suicided successfully.\n";
         reset_view_angles();
         is_crouched_ = false;
@@ -270,12 +273,11 @@ namespace asa::entities
             const auto timeout = std::chrono::seconds(10);
             if (!util::await(interfaces::HUD::can_fast_travel, timeout)) {
                 reset_pitch();
-                continue;
             }
         }
         // At this point all the specific work for beds is done, can let the
         // general access method take over the rest.
-        access(static_cast<const structures::InteractableStructure&>(bed));
+        access(bed);
     }
 
     void LocalPlayer::access(const structures::InteractableStructure& structure) const
@@ -319,7 +321,7 @@ namespace asa::entities
                                      const TravelFlags_ travel_flags)
     {
         try { access(bed, access_flags); }
-        catch (const std::exception& e) {
+        catch (const structures::StructureError& e) {
             throw FastTravelFailedError(bed.get_name(), e.what());
         }
 

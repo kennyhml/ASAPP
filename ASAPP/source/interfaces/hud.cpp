@@ -80,6 +80,11 @@ namespace asa::interfaces
         return window::match_template(window::screenshot(), resources::text::fast_travel);
     }
 
+    bool HUD::can_teleport()
+    {
+        return window::match_template(window::screenshot(), resources::text::teleport_to);
+    }
+
     bool HUD::can_access_inventory() const
     {
         return window::match_template(window::screenshot(),
