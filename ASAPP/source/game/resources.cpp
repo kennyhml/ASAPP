@@ -84,6 +84,7 @@ namespace asa::resources
         LOAD_RESOURCE(dir, lootcrate);
         LOAD_RESOURCE(dir, default_teleport);
         LOAD_RESOURCE(dir, fast_travel);
+        LOAD_RESOURCE(dir, teleport_to);
         LOAD_RESOURCE(dir, access_inventory);
         LOAD_RESOURCE(dir, x);
         LOAD_RESOURCE(dir, bp_weight);
