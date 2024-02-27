@@ -8,13 +8,13 @@ namespace asa::interfaces
 {
     BaseInventory::BaseInventory(const bool is_remote) :
             item_filter(is_remote ? 1205 : 175, 841, 552, 42),
-            search_bar(is_remote ? 1207 : 177, 176, 142, 44),
+            search_bar(is_remote ? 1207 : 177, 176, 128, 44),
             item_area(is_remote ? 1205 : 178, 239, 552, 588),
-            transfer_all_button_(is_remote ? 1388 : 366, 176),
-            drop_all_button_(is_remote ? 1436 : 413, 176),
-            new_folder_button_(is_remote ? 1531 : 509, 176),
-            auto_stack_button_(is_remote ? 1579 : 557, 176),
-            folder_view_button_(is_remote ? 1652 : 629, 176),
+            transfer_all_button_(is_remote ? 1359 : 336, 176),
+            drop_all_button_(is_remote ? 1406 : 384, 176),
+            new_folder_button_(is_remote ? 1502 : 480, 176),
+            auto_stack_button_(is_remote ? 1549 : 527, 176),
+            folder_view_button_(is_remote ? 1656 : 634, 176),
             is_remote_inventory_(is_remote),
             area_(is_remote ? 1179 : 149, 94, 591, 827)
     {
