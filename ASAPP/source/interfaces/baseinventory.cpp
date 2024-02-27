@@ -8,7 +8,7 @@ namespace asa::interfaces
 {
     BaseInventory::BaseInventory(const bool is_remote) :
             item_filter(is_remote ? 1205 : 175, 841, 552, 42),
-            search_bar(is_remote ? 1207 : 177, 176, 128, 44),
+            search_bar(is_remote ? 1207 : 177, 176, 120, 44),
             item_area(is_remote ? 1205 : 178, 239, 552, 588),
             transfer_all_button_(is_remote ? 1359 : 336, 176),
             drop_all_button_(is_remote ? 1406 : 384, 176),
