@@ -341,6 +341,7 @@ namespace asa::interfaces
         new_folder_button_.press();
         asa::core::sleep_for(std::chrono::milliseconds(500));
 
+        window::post_mouse_press_at({895,499}, controls::LEFT);
         util::set_clipboard(folder_name);
         controls::key_combination_press("ctrl", "v");
         controls::key_press("enter");
