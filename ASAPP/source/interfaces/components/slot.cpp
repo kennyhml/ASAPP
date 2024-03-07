@@ -3,6 +3,7 @@
 #include <iostream>
 #include <opencv2/highgui.hpp>
 #include "asapp/items/items.h"
+#include "asapp/util/util.h"
 
 namespace asa::interfaces::components
 {
@@ -140,19 +141,20 @@ namespace asa::interfaces::components
         return cv::countNonZero(window::get_mask(roi, hovered_white, 20)) > 200;
     }
 
-    bool Slot::has(items::Item& item, float* accuracy_out) const
+    bool Slot::has(items::Item& item, float* accuracy_out, const bool cache_img) const
     {
         const bool is_cached = cached_locs.contains(item.get_name());
-        window::Rect roi = area;
-        if (is_cached) {
-            // adjust the region of interest according to our cached rect
-            const auto cached_loc = cached_locs.at(item.get_name());
-            roi.x += cached_loc.x;
-            roi.y += cached_loc.y;
-            roi.width = cached_loc.width;
-            roi.height = cached_loc.height;
+        if (!cache_img || last_img_.empty()) {
+            last_img_ = window::screenshot(area);
         }
-        cv::Mat src = window::screenshot(roi);
+
+        cv::Mat src;
+        if (is_cached) {
+            const auto c = cached_locs.at(item.get_name());
+            src = cv::Mat(last_img_, c.to_cv());
+        }
+        else { src = last_img_; }
+
         cv::Mat templ = item.get_inventory_icon();
         const cv::Mat mask = item.get_inventory_icon_mask();
 
@@ -179,22 +181,29 @@ namespace asa::interfaces::components
     std::unique_ptr<items::Item> Slot::get_item() const
     {
         if (is_empty()) { return nullptr; }
-        const auto start = std::chrono::system_clock::now();
         const PrederminationResult data = predetermine();
         bool perf_match_found = false;
+        bool has_matched_once = false;
+
         items::Item* best_match = nullptr;
         float best_match_accuracy = 0.f;
 
-        for (const std::vector<asa::items::Item**>& iter : items::iter_all()) {
-            if (perf_match_found) { break; }
-            const float category_max_conf = get_max_confidence_for_category(
-                (*iter[0])->get_data().type);
+        for (const auto& [type, items] : items::iter_all()) {
+            if (!data.matches(type)) { continue; }
 
-            for (const auto& item : iter) {
+            if (perf_match_found) { break; }
+            const float category_max_conf = get_max_confidence_for_category(type);
+
+            for (const auto& item : items) {
                 float accuracy = 0.f;
-                if (!data.matches((*item)->get_data()) || !has(**item, &accuracy)) {
+                if (!data.matches((*item)->get_data())) { continue; }
+
+                if (!has(**item, &accuracy, has_matched_once)) {
+                    has_matched_once = true;
                     continue;
                 }
+                has_matched_once = true;
+
                 if (accuracy > best_match_accuracy) {
                     best_match = *item;
                     best_match_accuracy = accuracy;
@@ -206,9 +215,6 @@ namespace asa::interfaces::components
             }
         }
         if (!best_match) { return nullptr; }
-        const auto time_taken = std::chrono::duration_cast<std::chrono::milliseconds>(
-            std::chrono::system_clock::now() - start);
-
         return std::make_unique<items::Item>(*best_match,
                                              is_blueprint(best_match->get_data()),
                                              get_quality());
@@ -303,6 +309,22 @@ namespace asa::interfaces::components
         if (data.has_spoil_timer != this->has_spoil_bar || ((data.has_durability != this->
             has_durability_bar) && !has_blueprint_variant(data.type))) { return false; }
         return true;
+    }
+
+    bool Slot::PrederminationResult::matches(items::ItemData::ItemType type) const
+    {
+        switch (type) {
+        case items::ItemData::EQUIPPABLE: return has_durability_bar;
+        case items::ItemData::CONSUMABLE: return has_spoil_bar;
+
+        case items::ItemData::AMMO: return !has_spoil_bar && !has_durability_bar;
+        case items::ItemData::RESOURCE: return !has_durability_bar;
+
+        default:
+            // for all of theses cases there is no clear distinction
+            // Example: C4 det is a weapon but has no durability.
+            return true;
+        }
     }
 
     std::ostream& operator<<(std::ostream& os, const Slot::PrederminationResult& d)

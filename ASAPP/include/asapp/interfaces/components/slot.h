@@ -76,7 +76,7 @@ namespace asa::interfaces::components
          * @return True if the slot is a folder, false otherwise.
          */
         [[nodiscard]] bool is_folder() const;
-     
+
         /**
          * @brief Computes the rect of the stack size value for this slot.
          * 
@@ -89,10 +89,12 @@ namespace asa::interfaces::components
          * 
          * @param item The item to check for.
          * @param accuracy_out An optional pointer to a float to store the match accuracy.
+         * @param cache_img If true, the last taken image of the slot will be reused.
          *
          * @return True if the given item is located in this slot, false otherwise.
          */
-        [[nodiscard]] bool has(items::Item& item, float* accuracy_out = nullptr) const;
+        [[nodiscard]] bool has(items::Item& item, float* accuracy_out = nullptr,
+                               bool cache_img = false) const;
 
         /**
          * @brief Determines the item located in the slot.
@@ -124,6 +126,8 @@ namespace asa::interfaces::components
             bool has_durability_bar{false};
 
             [[nodiscard]] bool matches(const items::ItemData& data) const;
+
+            [[nodiscard]] bool matches(items::ItemData::ItemType type) const;
         };
 
         friend std::ostream& operator<<(std::ostream& os, const PrederminationResult& d);
@@ -209,5 +213,7 @@ namespace asa::interfaces::components
          * @return The result containing the collected data.
          */
         [[nodiscard]] PrederminationResult predetermine() const;
+
+        mutable cv::Mat last_img_;
     };
 }

@@ -57,11 +57,14 @@ namespace asa::items
         return true;
     }
 
-    std::vector<std::vector<Item**>> iter_all()
+    std::map<ItemData::ItemType, std::vector<Item**>> iter_all()
     {
         return {
-            resources::iter(), consumables::iter(), equippables::iter(), weapons::iter(),
-            ammo::iter()
+            {ItemData::ItemType::RESOURCE, resources::iter()},
+            {ItemData::ItemType::CONSUMABLE, consumables::iter()},
+            {ItemData::ItemType::EQUIPPABLE, equippables::iter()},
+            {ItemData::ItemType::WEAPON, weapons::iter()},
+            {ItemData::ItemType::AMMO, ammo::iter()},
         };
     }
 

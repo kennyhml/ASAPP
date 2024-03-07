@@ -114,6 +114,7 @@ namespace asa::settings
 
         inline UserSetting<int> fullscreen_mode("FullscreenMode");
         inline UserSetting<int> last_joined_category("LastSessionCategoryJoined");
+        inline UserSetting<int> remote_sort_type("RemoteItemSortType");
 
         inline UserSetting<std::string> last_session_0("LastJoinedSessionPerCategory0");
         inline UserSetting<std::string> last_session_1("LastJoinedSessionPerCategory1");

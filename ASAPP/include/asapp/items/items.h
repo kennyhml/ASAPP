@@ -9,7 +9,7 @@ namespace asa::items
     inline json raw_data = NULL;
 
     bool init();
-    std::vector<std::vector<Item**>> iter_all();
+    std::map<ItemData::ItemType ,std::vector<Item**>> iter_all();
     Item* get_custom_item(std::string name);
 
     namespace resources
