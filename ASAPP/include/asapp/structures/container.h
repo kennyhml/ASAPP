@@ -33,13 +33,25 @@ namespace asa::structures
          */
         [[nodiscard]] int get_max_slots() const { return max_slots_; }
 
-        [[nodiscard]] int get_current_slots() const
+        /**
+         * @brief Returns the last amount of slots that was known for this Container.
+         */
+        [[nodiscard]] int get_last_known_slots() const { return last_known_slots_; }
+
+        /**
+         * @brief Determines the amounts of slots in the Container, updates the last known
+         * amount and returns the result.
+         */
+        int get_current_slots()
         {
-            return get_info()->get_fill_level() * max_slots_;
+            last_known_slots_ = get_info()->get_fill_level() * max_slots_;
+            return last_known_slots_;
         }
 
     protected:
         int max_slots_;
         std::unique_ptr<interfaces::ContainerInfo> info_;
+
+        int last_known_slots_{0};
     };
 }
