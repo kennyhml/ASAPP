@@ -84,12 +84,9 @@ namespace asa::interfaces
             static constexpr window::Color time_rgb{192, 192, 192};
 
             const cv::Mat mask = window::get_mask(src, time_rgb, 120);
+            const std::string raw = window::ocr_threadsafe(
+                mask, tesseract::PSM_SINGLE_LINE, TIMESTAMP_OCR_WHITELIST);
 
-            window::set_tesseract_image(mask);
-            window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_LINE);
-            window::tessEngine->SetVariable("tessedit_char_whitelist",
-                                            TIMESTAMP_OCR_WHITELIST);
-            const std::string raw = window::tessEngine->GetUTF8Text();
             return TribeLogMessage::Timestamp::parse(fix(raw));
         }
 
@@ -106,12 +103,8 @@ namespace asa::interfaces
                 mask |= window::get_mask(src, turret_name_color, 120);
             }
 
-            window::set_tesseract_image(mask);
-            window::tessEngine->SetPageSegMode(tesseract::PSM_SINGLE_BLOCK);
-            window::tessEngine->SetVariable("tessedit_char_whitelist",
-                                            CONTENT_OCR_WHITELIST);
-
-            return window::tessEngine->GetUTF8Text();
+            return window::ocr_threadsafe(mask, tesseract::PSM_SINGLE_BLOCK,
+                                          CONTENT_OCR_WHITELIST);
         }
 
         std::unique_ptr<network::Server> last_server_info = nullptr;
