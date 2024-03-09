@@ -146,6 +146,20 @@ namespace asa::window
         return locate_template(source, templ, threshold, mask) != std::nullopt;
     }
 
+    inline std::mutex ocr_mutex;
+
+    std::string ocr_threadsafe(const cv::Mat& src, const tesseract::PageSegMode mode,
+                               const char* whitelist)
+    {
+        std::lock_guard<std::mutex> lock(ocr_mutex);
+
+        set_tesseract_image(src);
+        tessEngine->SetPageSegMode(mode);
+        tessEngine->SetVariable("tessedit_char_whitelist", whitelist);
+
+        return tessEngine->GetUTF8Text();
+    }
+
     cv::Mat get_mask(const Rect& region, const Color& color, float variance)
     {
         cv::Mat image = screenshot(region);

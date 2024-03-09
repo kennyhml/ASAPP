@@ -89,6 +89,9 @@ namespace asa::window
     bool match_template(const cv::Mat& source, const cv::Mat& templ,
                         float threshold = 0.7, const cv::Mat& mask = cv::Mat());
 
+    std::string ocr_threadsafe(const cv::Mat& src, tesseract::PageSegMode mode,
+                               const char* whitelist);
+
     cv::Mat get_mask(const cv::Mat& image, const Color& color, float variance);
 
     cv::Mat get_mask(const Rect& region, const Color& color, float variance);
@@ -176,7 +179,7 @@ namespace asa::window
 
     void post_mouse_press(controls::MouseButton, bool catch_cursor = false,
                           std::chrono::milliseconds delay =
-                          std::chrono::milliseconds(100));
+                              std::chrono::milliseconds(100));
 
     void post_mouse_press_at(const Point&, controls::MouseButton);
 
