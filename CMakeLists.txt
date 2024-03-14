@@ -119,7 +119,9 @@ add_library(asapp STATIC
         ASAPP/include/asapp/network/server.h
         ASAPP/include/asapp/network/queries.h
         ASAPP/source/network/server.cpp
-        ASAPP/source/network/queries.cpp)
+        ASAPP/source/network/queries.cpp
+        ASAPP/source/interfaces/components/tooltip.cpp
+)
 
 set_target_properties(asapp PROPERTIES
         CXX_STANDARD 20
