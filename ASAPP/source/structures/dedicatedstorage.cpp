@@ -1,4 +1,5 @@
 #include "asapp/structures/dedicatedstorage.h"
+#include <asapp/game/resources.h>
 
 namespace asa::structures
 {

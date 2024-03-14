@@ -42,5 +42,6 @@ namespace asa::resources
         inline cv::Mat detected_enemy;
         inline cv::Mat x;
         inline cv::Mat bp_weight;
+        inline cv::Mat durability;
     }
 }

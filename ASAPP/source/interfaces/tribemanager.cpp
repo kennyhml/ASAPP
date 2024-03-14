@@ -18,9 +18,9 @@ namespace asa::interfaces
 
     namespace
     {
-        const char* CONTENT_OCR_WHITELIST =
+        auto CONTENT_OCR_WHITELIST =
             R"(ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789()[]{}-!?/\|+=>*'": )";
-        const char* TIMESTAMP_OCR_WHITELIST = R"("Day:0123456789, )";
+        auto TIMESTAMP_OCR_WHITELIST = R"("Day:0123456789, )";
 
         const std::map<std::string, std::string> OCR_FIXES = {
             {"\"\n", "- "}, {"\n", " "}, {"\"", "'"}, {"}", ")"}, {"{", "("},
@@ -61,24 +61,6 @@ namespace asa::interfaces
         };
 
 
-        /**
-         * @brief Returns a string with all common OCR mistakes in a src string
-         * fixed.
-         *
-         * @param src The source string to find and fix the mistakes in
-         */
-        std::string fix(const std::string& src)
-        {
-            std::string out = src;
-            for (const auto& [wrong, right] : OCR_FIXES) {
-                std::size_t index;
-                while ((index = out.find(wrong)) != std::string::npos) {
-                    out.replace(index, wrong.length(), right);
-                }
-            }
-            return out;
-        }
-
         TribeLogMessage::Timestamp parse_timestamp(const cv::Mat& src)
         {
             static constexpr window::Color time_rgb{192, 192, 192};
@@ -87,7 +69,7 @@ namespace asa::interfaces
             const std::string raw = window::ocr_threadsafe(
                 mask, tesseract::PSM_SINGLE_LINE, TIMESTAMP_OCR_WHITELIST);
 
-            return TribeLogMessage::Timestamp::parse(fix(raw));
+            return TribeLogMessage::Timestamp::parse(util::fix(raw, OCR_FIXES));
         }
 
         std::string parse_content(const cv::Mat& src, const EventType event)
@@ -270,7 +252,7 @@ namespace asa::interfaces
 
         // Parse and fix the actual content of the message.
         msg.raw_text = parse_content(src, msg.type);
-        msg.content = fix(msg.raw_text);
+        msg.content = util::fix(msg.raw_text, OCR_FIXES);
 
         if (msg.content.empty()) { msg.content = "???"; }
         else { evaluate_message_event(msg); }

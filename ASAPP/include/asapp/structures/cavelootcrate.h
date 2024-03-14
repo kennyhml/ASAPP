@@ -20,7 +20,11 @@ namespace asa::structures
 
         Quality get_crate_quality();
 
-        std::optional<asa::window::Rect> get_info_area();
+        std::optional<window::Rect> get_info_area();
+
+        static std::string quality_to_string(Quality);
+
+        static Quality string_to_quality(const std::string&);
 
     private:
         Quality get_quality_from_tooltip(const std::string& tooltip);

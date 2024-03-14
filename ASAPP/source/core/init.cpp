@@ -2,6 +2,7 @@
 #include "asapp/game/settings.h"
 #include "asapp/game/window.h"
 #include "asapp/items/items.h"
+#include "asapp/game/resources.h"
 
 bool asa::core::init(std::filesystem::path config_path)
 {

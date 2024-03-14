@@ -1,6 +1,8 @@
 #include "asapp/interfaces/components/slot.h"
 
 #include <iostream>
+
+#include "asapp/game/resources.h"
 #include <opencv2/highgui.hpp>
 #include "asapp/items/items.h"
 #include "asapp/util/util.h"
@@ -115,7 +117,7 @@ namespace asa::interfaces::components
             }
         }
         if (rect.empty()) { return nullptr; }
-        return std::make_unique<ItemTooltip>(rect.x, rect.y, rect.width, rect.height);
+        return std::make_unique<ItemTooltip>(ItemTooltip::from_hovered(rect));
     }
 
     bool Slot::is_empty() const
@@ -144,9 +146,7 @@ namespace asa::interfaces::components
     bool Slot::has(items::Item& item, float* accuracy_out, const bool cache_img) const
     {
         const bool is_cached = cached_locs.contains(item.get_name());
-        if (!cache_img || last_img_.empty()) {
-            last_img_ = window::screenshot(area);
-        }
+        if (!cache_img || last_img_.empty()) { last_img_ = window::screenshot(area); }
 
         cv::Mat src;
         if (is_cached) {
@@ -182,6 +182,7 @@ namespace asa::interfaces::components
     {
         if (is_empty()) { return nullptr; }
         const PrederminationResult data = predetermine();
+        std::cout << data << std::endl;
         bool perf_match_found = false;
         bool has_matched_once = false;
 
@@ -189,8 +190,6 @@ namespace asa::interfaces::components
         float best_match_accuracy = 0.f;
 
         for (const auto& [type, items] : items::iter_all()) {
-            if (!data.matches(type)) { continue; }
-
             if (perf_match_found) { break; }
             const float category_max_conf = get_max_confidence_for_category(type);
 
