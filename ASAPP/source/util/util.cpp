@@ -67,4 +67,26 @@ namespace util
         if (cv::countNonZero(mask) == 0) { return cv::Mat::ones(copy.size(), CV_8U); }
         return mask;
     }
+
+    bool iequal(const std::string& a, const std::string& b)
+    {
+        return std::ranges::equal(a, b, [](const char ca, const char cb) -> bool {
+            return std::tolower(static_cast<unsigned char>(ca)) == std::tolower(
+                static_cast<unsigned char>(cb));
+        });
+    }
+
+    std::string fix(const std::string& src, const std::map<std::string, std::string>& fixes)
+    {
+        std::string out = src;
+        for (const auto& [wrong, right] : fixes) {
+            std::size_t index;
+            while ((index = out.find(wrong)) != std::string::npos) {
+                out.replace(index, wrong.length(), right);
+            }
+        }
+        return out;
+    }
+
+
 }
