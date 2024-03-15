@@ -111,6 +111,7 @@ namespace asa::settings
         inline UserSetting<bool> third_person("bThirdPersonPlayer");
         inline UserSetting<bool> show_notis("bShowStatusNotificationMessages");
         inline UserSetting<bool> toggle_hud("bToggleExtendedHUDInfo");
+        inline UserSetting<bool> inventory_tooltips("bEnableInventoryItemTooltips");
 
         inline UserSetting<int> fullscreen_mode("FullscreenMode");
         inline UserSetting<int> last_joined_category("LastSessionCategoryJoined");
