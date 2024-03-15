@@ -19,6 +19,6 @@ namespace asa::interfaces::components
         const auto res = window::locate_template(image_, resources::text::durability);
         if (!res.has_value()) { return std::nullopt; }
 
-        return window::Rect(res->x, res->y, res->width * 2, res->height);
+        return window::Rect(res->x + res->width, res->y - 2, res->width, res->height + 4);
     }
 }
