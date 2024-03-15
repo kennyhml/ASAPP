@@ -116,7 +116,7 @@ namespace asa::interfaces::components
                 rect = cv::boundingRect(approxed);
             }
         }
-        if (rect.empty()) { return nullptr; }
+        if (rect.empty() || max_rect < 2000) { return nullptr; }
         return std::make_unique<ItemTooltip>(ItemTooltip::from_hovered(rect));
     }
 
@@ -150,8 +150,10 @@ namespace asa::interfaces::components
 
         cv::Mat src;
         if (is_cached) {
-            const auto c = cached_locs.at(item.get_name());
-            src = cv::Mat(last_img_, c.to_cv());
+            window::Rect roi = cached_locs.at(item.get_name());
+            roi.width = std::min(roi.width, last_img_.size().width - roi.x);
+            roi.height = std::min(roi.height, last_img_.size().height - roi.y);
+            src = cv::Mat(last_img_, roi.to_cv());
         }
         else { src = last_img_; }
 
@@ -167,7 +169,8 @@ namespace asa::interfaces::components
         }
         const auto match = window::locate_template(src, templ, conf, mask, accuracy_out);
         if (!match.has_value()) { return false; }
-        if (!is_cached) {
+
+        if (!is_cached && *accuracy_out > 0.85f) {
             // create a cachec location allowing some variance
             const window::Rect cached_loc(match->x - CACHED_LOC_PADDING,
                                           match->y - CACHED_LOC_PADDING,
@@ -182,7 +185,6 @@ namespace asa::interfaces::components
     {
         if (is_empty()) { return nullptr; }
         const PrederminationResult data = predetermine();
-        std::cout << data << std::endl;
         bool perf_match_found = false;
         bool has_matched_once = false;
 
