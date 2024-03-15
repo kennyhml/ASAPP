@@ -148,16 +148,18 @@ namespace asa::interfaces
          * 
          * @param slot The slot to select.
          */
-        void select_slot(const components::Slot& slot, bool hovered_check = true) const;
+        void select_slot(const components::Slot& slot, bool hovered_check = true,
+                         bool tooltip_check = false) const;
 
         /**
           * @brief Selects the given slot by index.
-          * 
+          *
           * @index The index of the slot to select.
           */
-        void select_slot(const int index, bool hovered_check = true) const
+        void select_slot(const int index, bool hovered_check = true,
+                         bool tooltip_check = false) const
         {
-            return select_slot(slots[index], hovered_check);
+            return select_slot(slots[index], hovered_check, tooltip_check);
         }
 
         /**
@@ -174,7 +176,7 @@ namespace asa::interfaces
         void drop_all();
 
         /**
-         * @brief Drops all of the given item from the inventory. 
+         * @brief Drops all of the given item from the inventory.
          * @param item The item to drop all of.
          */
         void drop_all(const items::Item& item);
@@ -187,7 +189,7 @@ namespace asa::interfaces
 
         /**
          * @brief Transfers all items to another inventory.
-         * 
+         *
          * @param receiver A pointer to the receiving inventory (optional).
          *
          * @remarks The pointer to the receiving end may help to confirm transfers.
@@ -196,27 +198,27 @@ namespace asa::interfaces
 
         /**
          * @brief Transfers all of a given item into another inventory.
-         * 
+         *
          * @param item The item to transfer all of.
          * @param receiver A pointer to the receiving inventory (optional).
-         * 
+         *
          * @remarks The pointer to the receiving end may help to confirm transfers.
          */
         void transfer_all(const items::Item& item, BaseInventory* receiver = nullptr);
 
         /**
          * @brief Transfers all of a given item into another inventory.
-         * 
+         *
          * @param term The term to search and transfer all of.
          * @param receiver A pointer to the receiving inventory (optional).
-         * 
+         *
          * @remarks The pointer to the receiving end may help to confirm transfers.
          */
         void transfer_all(const std::string& term, BaseInventory* receiver = nullptr);
 
         /**
          * @brief Transfers n-items into another inventory.
-         * 
+         *
          * @param item The item to transfer.
          * @param stacks The amount of stacks to transfer.
          * @param receiver The receiving end (default nullptr).
@@ -229,8 +231,8 @@ namespace asa::interfaces
 
         /**
          * @brief Transfers a given amount of rows of a given item.
-         * 
-         * @param item The item to transfer x rows of, will be searched beforehand 
+         *
+         * @param item The item to transfer x rows of, will be searched beforehand
          * @param rows The estimated amounts of rows to transfer.
          *
          * @remark The amount of rows transferred is not checked but guessed.
@@ -245,8 +247,8 @@ namespace asa::interfaces
 
         /**
          * @brief Transfers rows of a given item for a given duration.
-         * 
-         * @param item The item to transfer x rows of, will be searched beforehand 
+         *
+         * @param item The item to transfer x rows of, will be searched beforehand
          * @param duration The duration to transfer rows for in seconds.
          *
          * @remark The amount of rows transferred is not checked but guessed.
@@ -260,7 +262,7 @@ namespace asa::interfaces
 
         /**
          * @brief Creates a new folder given a name.
-         * 
+         *
          * @param folder_name The name of the folder to create.
          *
          * @remarks Folder names must contain at least 2 characters.
@@ -279,21 +281,20 @@ namespace asa::interfaces
 
         /**
          * @brief Determines all items in the given slots.
-         * 
-         * @tparam Size The size of the array i.e the amount of slots to get the item of. 
+         *
+         * @tparam Size The size of the array i.e the amount of slots to get the item of.
          * @param start_index The slot index to start getting the items at.
          * @param allowed_items Whitelist of allowed items, other items are not checked.
          * @param allowed_categories Whitelist of allowed item types, others are not checked.
          * @param num_threads The number of threads to use, default 5.
-         * 
+         *
          * @return An array of the given size containing smart pointers to the items, or null.
          */
-        template<std::size_t Size>
+        template <std::size_t Size>
         [[nodiscard]] std::array<std::unique_ptr<items::Item>, Size> get_items(
-                const int start_index = 0,
-                std::vector<std::string>* allowed_items = nullptr,
-                std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
-                int num_threads = 5) const
+            const int start_index = 0, std::vector<std::string>* allowed_items = nullptr,
+            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
+            int num_threads = 5) const
         {
             assert_open(__func__);
             const auto start = std::chrono::system_clock::now();
@@ -311,7 +312,7 @@ namespace asa::interfaces
                 });
             }
 
-            for (auto& thread: threads) { thread.join(); }
+            for (auto& thread : threads) { thread.join(); }
             return ret;
         }
 
@@ -321,16 +322,16 @@ namespace asa::interfaces
          * @param allowed_items Whitelist of allowed items, other items are not checked.
          * @param allowed_categories Whitelist of allowed item types, others are not checked.
          * @param num_threads The number of threads to use, default 5.
-         * 
+         *
          * @return A vector containing unique pointers to all items  in the current page.
          *
          * @remarks When an empty slot is encountered, the evaluation is stopped and the
          * result is returned. Otherwise the result is returned after the 36th slot.
          */
         [[nodiscard]] std::vector<std::unique_ptr<items::Item>> get_current_page_items(
-                std::vector<std::string>* allowed_items = nullptr,
-                std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
-                int num_threads = 5) const;
+            std::vector<std::string>* allowed_items = nullptr,
+            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
+            int num_threads = 5) const;
 
     protected:
         struct ManagementButton : components::Button
