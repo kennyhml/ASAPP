@@ -218,12 +218,6 @@ namespace asa::interfaces
     {
         assert_open(__func__);
 
-        if (tooltip_check) {
-            window::set_mouse_pos({953, 234});
-            window::post_mouse_press(controls::LEFT);
-            core::sleep_for(std::chrono::milliseconds(200));
-        }
-
         if (hovered_check) {
             do {
                 const window::Point location = slot.area.get_random_location(5);
@@ -233,6 +227,12 @@ namespace asa::interfaces
                                 std::chrono::seconds(2)));
         }
         else { window::set_mouse_pos(slot.area.get_random_location(5)); }
+
+        while (tooltip_check && !util::await(
+            [slot]() { return slot.get_tooltip().get(); }, std::chrono::seconds(1))) {
+            if (settings::inventory_tooltips.get()) { toggle_tooltips(); }
+            toggle_tooltips();
+        }
     }
 
     void BaseInventory::drop_all()
@@ -342,6 +342,11 @@ namespace asa::interfaces
     {
         assert_open(__func__);
         auto_stack_button_.press();
+    }
+
+    void BaseInventory::toggle_tooltips() const
+    {
+        window::press(settings::toggle_tooltip);
     }
 
     void BaseInventory::make_new_folder(const std::string& folder_name)

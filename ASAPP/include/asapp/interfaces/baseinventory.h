@@ -280,6 +280,11 @@ namespace asa::interfaces
         void toggle_folder_view();
 
         /**
+         * @brief Toggles the inventory item tooltip on / off.
+         */
+        void toggle_tooltips() const;
+
+        /**
          * @brief Determines all items in the given slots.
          *
          * @tparam Size The size of the array i.e the amount of slots to get the item of.
