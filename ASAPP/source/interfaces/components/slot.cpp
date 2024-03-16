@@ -98,7 +98,7 @@ namespace asa::interfaces::components
         using contour = std::vector<cv::Point>;
         static constexpr window::Color color{121, 244, 253};
 
-        if (is_empty() || !is_hovered()) { return nullptr; }
+        if (!is_hovered()) { return nullptr; }
         const cv::Mat mask = window::get_mask(window::Rect(0, 0, 1920, 1080), color, 10);
         std::vector<contour> contours;
         cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
