@@ -14,7 +14,7 @@ namespace asa::interfaces
         bool is_blinking(const window::Rect& icon, const window::Color& color,
                          int min_matches = 500,
                          const std::chrono::milliseconds timeout =
-                         std::chrono::milliseconds(500))
+                             std::chrono::milliseconds(500))
         {
             const auto start = std::chrono::system_clock::now();
             while (!util::timedout(start, timeout)) {
@@ -29,7 +29,7 @@ namespace asa::interfaces
             int max_size = 0;
             cv::Rect max_cont;
 
-            for (const auto& contour: contours) {
+            for (const auto& contour : contours) {
                 if (contourArea(contour) > max_size) {
                     max_size = cv::contourArea(contour);
                     max_cont = boundingRect(contour);
@@ -77,12 +77,22 @@ namespace asa::interfaces
 
     bool HUD::can_fast_travel()
     {
-        return window::match_template(window::screenshot(), resources::text::fast_travel);
+        // match a reduced area first, as ~80% of the times this will already match
+        // it correctly, it should improve the performance overall.
+        const static window::Rect reduced(549, 327, 767, 499);
+
+        return window::match_template(reduced, resources::text::fast_travel) ||
+            window::match_template(window::screenshot(), resources::text::fast_travel);
     }
 
     bool HUD::can_teleport()
     {
-        return window::match_template(window::screenshot(), resources::text::teleport_to);
+        // match a reduced area first, as ~80% of the times this will already match
+        // it correctly, it should improve the performance overall.
+        const static window::Rect reduced(549, 327, 767, 499);
+
+        return window::match_template(reduced, resources::text::teleport_to) ||
+            window::match_template(window::screenshot(), resources::text::teleport_to);
     }
 
     bool HUD::can_access_inventory() const
@@ -93,8 +103,7 @@ namespace asa::interfaces
 
     bool HUD::can_pick_up() const
     {
-        return window::match_template(window::screenshot(),
-                                      resources::text::pick_up);
+        return window::match_template(window::screenshot(), resources::text::pick_up);
     }
 
     bool HUD::detected_enemy()
@@ -122,8 +131,7 @@ namespace asa::interfaces
     {
         const window::Rect roi = item_icon_removed_or_added_area;
         const std::vector<window::Rect> locations = window::locate_all_template(
-                roi, item.get_notification_icon(), 0.75f,
-                item.get_notification_icon_mask());
+            roi, item.get_notification_icon(), 0.75f, item.get_notification_icon_mask());
 
         auto got_added = [roi, roi_out](const window::Rect& r) -> bool {
             const auto loc = window::Rect(roi.x + r.x + 20, roi.y + r.y - 10, 120, 25);
@@ -138,8 +146,7 @@ namespace asa::interfaces
     {
         const window::Rect roi = item_icon_removed_or_added_area;
         const std::vector<window::Rect> locations = window::locate_all_template(
-                roi, item.get_notification_icon(), 0.65f,
-                item.get_notification_icon_mask());
+            roi, item.get_notification_icon(), 0.65f, item.get_notification_icon_mask());
 
         auto got_added = [roi, roi_out](const window::Rect& r) -> bool {
             const auto loc = window::Rect(roi.x + r.x + 20, roi.y + r.y - 10, 120, 30);
@@ -243,7 +250,7 @@ namespace asa::interfaces
         pix.convertTo(pix, CV_32F);
 
         const cv::TermCriteria criteria(
-                cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 100, 0.2);
+            cv::TermCriteria::EPS + cv::TermCriteria::MAX_ITER, 100, 0.2);
         const int clusters = variance > 50.f ? 2 : 1;
         cv::Mat labels;
         cv::Mat centers;
@@ -286,9 +293,7 @@ namespace asa::interfaces
 
         // make sure there is no overlap between the masks
         if (m1.area() != roi.height * roi.width && (m2.area() != roi.height * roi.
-                                                                                         width)) {
-            mask2 = mask2 & ~mask1;
-        }
+            width)) { mask2 = mask2 & ~mask1; }
 
 
         // lets look at the bigger of the two masks only as it's usually more reliable.

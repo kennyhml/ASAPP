@@ -239,9 +239,9 @@ namespace asa::entities
         for (int attempt = 0; attempt < 3; attempt++) {
             if (!special_access_set) { handle_access_direction(flags); }
 
-            // If a bag is seen, give it one second to disappear.
+            // If a bag is seen, give it a few seconds to disappear.
             if (!util::await([this]() -> bool { return !can_access(bag); },
-                             std::chrono::seconds(1))) {
+                             std::chrono::seconds(3))) {
                 access(bag);
                 // Check health level to ensure its an item cache.
                 if (bag.get_info()->get_health_level() == 0.f) {

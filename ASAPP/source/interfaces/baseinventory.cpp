@@ -190,7 +190,7 @@ namespace asa::interfaces
 
     void BaseInventory::take_slot(const components::Slot& slot)
     {
-        select_slot(slot);
+        if (!slot.is_hovered()) { select_slot(slot); }
         do {
             window::press(settings::transfer_item, false, std::chrono::milliseconds(15));
         }
@@ -228,10 +228,10 @@ namespace asa::interfaces
         }
         else { window::set_mouse_pos(slot.area.get_random_location(5)); }
 
-        while (tooltip_check && !util::await(
-            [slot]() { return slot.get_tooltip().get(); }, std::chrono::seconds(1))) {
+        while (tooltip_check && !slot.get_tooltip()) {
             if (settings::inventory_tooltips.get()) { toggle_tooltips(); }
             toggle_tooltips();
+            core::sleep_for(std::chrono::milliseconds(100));
         }
     }
 
