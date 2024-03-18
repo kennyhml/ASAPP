@@ -167,10 +167,13 @@ namespace asa::interfaces::components
             cv::cvtColor(src, src, cv::COLOR_RGB2GRAY);
             cv::cvtColor(templ, templ, cv::COLOR_RGB2GRAY);
         }
-        const auto match = window::locate_template(src, templ, conf, mask, accuracy_out);
+
+        float accuracy = 0.f;
+        const auto match = window::locate_template(src, templ, conf, mask, &accuracy);
+        if (accuracy_out) { *accuracy_out = accuracy; }
         if (!match.has_value()) { return false; }
 
-        if (!is_cached && *accuracy_out > 0.85f) {
+        if (!is_cached && accuracy > 0.85f) {
             // create a cachec location allowing some variance
             const window::Rect cached_loc(match->x - CACHED_LOC_PADDING,
                                           match->y - CACHED_LOC_PADDING,
