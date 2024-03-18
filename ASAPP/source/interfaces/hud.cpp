@@ -135,11 +135,14 @@ namespace asa::interfaces
 
         auto got_added = [roi, roi_out](const window::Rect& r) -> bool {
             const auto loc = window::Rect(roi.x + r.x + 20, roi.y + r.y - 10, 120, 25);
+            if ((loc.x + loc.width) >= 1920 || (loc.y + loc.height > 1080)) {
+                return false;
+            }
             if (!item_added(loc)) { return false; }
             if (roi_out) { *roi_out = loc; }
             return true;
         };
-        return std::ranges::any_of(locations.begin(), locations.end(), got_added);
+        return std::ranges::any_of(locations, got_added);
     }
 
     bool HUD::item_removed(items::Item& item, window::Rect* roi_out) const
@@ -148,13 +151,16 @@ namespace asa::interfaces
         const std::vector<window::Rect> locations = window::locate_all_template(
             roi, item.get_notification_icon(), 0.65f, item.get_notification_icon_mask());
 
-        auto got_added = [roi, roi_out](const window::Rect& r) -> bool {
+        auto got_removed = [roi, roi_out](const window::Rect& r) -> bool {
             const auto loc = window::Rect(roi.x + r.x + 20, roi.y + r.y - 10, 120, 30);
+            if ((loc.x + loc.width) >= 1920 || (loc.y + loc.height > 1080)) {
+                return false;
+            }
             if (!item_removed(loc)) { return false; }
             if (roi_out) { *roi_out = loc; }
             return true;
         };
-        return std::ranges::any_of(locations.begin(), locations.end(), got_added);
+        return std::ranges::any_of(locations, got_removed);
     }
 
     bool HUD::count_items_added(items::Item& item, int& amount_out) const
