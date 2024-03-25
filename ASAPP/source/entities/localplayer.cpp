@@ -294,13 +294,7 @@ namespace asa::entities
             }
         }
         while (!util::await([&structure]() {
-            if(structure.get_interface()->is_open()) {
-                // Sleep for a moment to let the bed menu load
-                // Would be faster to detect when the search bar has changed instead
-                core::sleep_for(std::chrono::seconds(3));
-                return true;
-            }
-            return false;
+            return structure.get_interface()->is_open();
         }, std::chrono::seconds(5)));
     }
 
