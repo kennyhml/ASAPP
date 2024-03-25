@@ -78,7 +78,7 @@ namespace asa::settings
 
             if (!map.contains(key)) { return false; }
             map[key] = convert_settings_value(key, value);
-            VERBOSE_LOG("\t[-] Parsed " << key << " (" << value << ")")
+            // VERBOSE_LOG("\t[-] Parsed " << key << " (" << value << ")")
             return true;
         }
 
@@ -131,7 +131,7 @@ namespace asa::settings
             }
 
             if (!mapping) { return false; }
-            VERBOSE_LOG("\t[-] Parsed " << *mapping)
+            // VERBOSE_LOG("\t[-] Parsed " << *mapping)
             return true;
         }
     }

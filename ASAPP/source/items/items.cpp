@@ -31,8 +31,8 @@ namespace asa::items
             else { add_to.push_back(&item); }
 
             item = new Item(name);
-            std::cout << std::format("\t[-] Loaded  '{}' -> '{}'", item->get_name(),
-                                     item->get_data().icon_path.string()) << "\n";
+            // std::cout << std::format("\t[-] Loaded  '{}' -> '{}'", item->get_name(),
+            //                      item->get_data().icon_path.string()) << "\n";
         }
 
         std::vector<Item**> all_resources;

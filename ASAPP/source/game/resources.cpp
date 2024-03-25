@@ -29,7 +29,7 @@ namespace asa::resources
     cv::Mat load_resource(std::filesystem::path path)
     {
         auto mat = cv::imread(path.string());
-        std::cout << "\t[-] Resource loaded @ " << path << std::endl;
+        // std::cout << "\t[-] Resource loaded @ " << path << std::endl;
         return mat;
     }
 
