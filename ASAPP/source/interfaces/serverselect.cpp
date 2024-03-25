@@ -83,7 +83,11 @@ namespace asa::interfaces
         std::cout << "\t[-] Best search result selected." << std::endl;
         auto start = std::chrono::system_clock::now();
         while (!is_joining_server()) {
-            if (server_has_mods_enabled()) { join_button_mods_popup_.press(); }
+            if (server_has_mods_enabled()) {
+                // sleep for 3 seconds before clicking
+                core::sleep_for(std::chrono::milliseconds(3000));
+                join_button_mods_popup_.press();
+            }
             else { join_button_.press(); }
             core::sleep_for(std::chrono::seconds(1));
             
