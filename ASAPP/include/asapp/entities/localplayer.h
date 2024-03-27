@@ -8,7 +8,7 @@
 #include "dinoentity.h"
 
 // Flags for LocalPlayer::access
-enum AccessFlags_
+enum AccessFlags_ : uint32_t
 {
     AccessFlags_None = 0,
     AccessFlags_InstantFail = 1 << 1, // Throw if the bed is not instantly found.
@@ -22,12 +22,24 @@ enum AccessFlags_
 };
 
 // Flags for LocalPlayer::fast_travel_to
-enum TravelFlags_
+enum TravelFlags_ : uint32_t
 {
     TravelFlags_None = 0,
     TravelFlags_WaitForBeds = 1 << 1, // Throw an exception when no beds are ready.
     TravelFlags_NoTravelAnimation = 1 << 2, // Return when the travel animation starts.
 };
+
+// Flags for LocalPlayer::teleport_to
+enum TeleportFlags_ : uint32_t
+{
+    TeleportFlags_None = 0,
+    TeleportFlags_UseDefaultOption = 1 << 1, // Assume the destination is the default
+    TeleportFlags_UnsafeLoad = 1 << 2, // Assume an instant teleport, lag unsafe.
+};
+
+using AccessFlags = int;
+using TravelFlags = int;
+using TeleportFlags = int;
 
 using namespace std::chrono_literals;
 
@@ -99,7 +111,7 @@ namespace asa::entities
 
         void access(const structures::Container&) const;
 
-        void access(const structures::SimpleBed&, AccessFlags_);
+        void access(const structures::SimpleBed&, AccessFlags);
 
         void access(const structures::InteractableStructure&) const;
 
@@ -110,11 +122,30 @@ namespace asa::entities
          */
         void mount(DinoEntity& entity);
 
-        void fast_travel_to(const structures::SimpleBed& dst,
-                            AccessFlags_ access_flags = AccessFlags_Default,
-                            TravelFlags_ travel_flags = TravelFlags_None);
+        /**
+         * @brief Dismounts the local player from a given (rideable) entity.
+         */
+        void dismount(DinoEntity& entity);
 
-        void teleport_to(const structures::Teleporter&, bool is_default = false);
+        /**
+         * @brief Teleports to a target destination.
+         *
+         * @param dst The teleporter that serves as the destination.
+         * @param flags Flags to control the teleport process.
+         */
+        void teleport_to(const structures::Teleporter& dst,
+                         TeleportFlags flags = TeleportFlags_None);
+
+        /**
+         * @brief Fast travels to a target destination.
+         *
+         * @param dst The bed that serves as the destination.
+         * @param access_flags Flags to control the process of accessing the bed.
+         * @param travel_flags Flags to control the travelling process.
+         */
+        void fast_travel_to(const structures::SimpleBed& dst,
+                            AccessFlags access_flags = AccessFlags_Default,
+                            TravelFlags travel_flags = TravelFlags_None);
 
         void get_off_bed();
 
@@ -143,7 +174,7 @@ namespace asa::entities
         /**
          * @brief Handles the access direction of an access flag bitfield.
          */
-        void handle_access_direction(AccessFlags_);
+        void handle_access_direction(AccessFlags);
 
         /**
          * @brief Gets the current yaw angle of the player's view.
@@ -252,6 +283,16 @@ namespace asa::entities
          * @remark The pitch (up / down) reaches its limit at 90 or -90.
          */
         void turn_down(int degrees = 90, std::chrono::milliseconds delay = 100ms);
+
+        /**
+         * @brief Resets the states of the local player including:
+         * - Crouched state
+         * - Proned state
+         * - Mounted state
+         * - Yaw angle
+         * - Pitch angle
+         */
+        void reset_state();
 
     private:
         int current_yaw_ = 0; // degrees of our view left and right, between -180 and 180

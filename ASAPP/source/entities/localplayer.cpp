@@ -149,9 +149,7 @@ namespace asa::entities
         while (interfaces::hud->extended_information_is_toggled());
         while (!interfaces::spawn_map->is_open()) {}
 
-        reset_view_angles();
-        is_crouched_ = false;
-        is_proned_ = false;
+        reset_state();
         interfaces::hud->toggle_extended(false, true);
     }
 
@@ -222,7 +220,7 @@ namespace asa::entities
         container.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
 
-    void LocalPlayer::access(const structures::SimpleBed& bed, const AccessFlags_ flags)
+    void LocalPlayer::access(const structures::SimpleBed& bed, const AccessFlags flags)
     {
         static structures::Container bag("Item Cache", 0);
 
@@ -315,9 +313,23 @@ namespace asa::entities
         is_riding_mount_ = true;
     }
 
+    void LocalPlayer::dismount(DinoEntity& entity)
+    {
+        interfaces::hud->toggle_extended(true);
+        core::sleep_for(std::chrono::milliseconds(200));
+
+        if (entity.is_mounted()) {
+            do { window::press(settings::use); }
+            while (!util::await([&entity]() -> bool { return !entity.is_mounted(); },
+                                std::chrono::seconds(5)));
+        }
+        interfaces::hud->toggle_extended(false);
+        is_riding_mount_ = false;
+    }
+
     void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed,
-                                     const AccessFlags_ access_flags,
-                                     const TravelFlags_ travel_flags)
+                                     const AccessFlags access_flags,
+                                     const TravelFlags travel_flags)
     {
         try { access(bed, access_flags); }
         catch (const structures::StructureError& e) {
@@ -335,23 +347,33 @@ namespace asa::entities
         is_proned_ = false;
     }
 
-    void LocalPlayer::teleport_to(const structures::Teleporter& tp, const bool is_default)
+    void LocalPlayer::teleport_to(const structures::Teleporter& dst,
+                                  const TeleportFlags flags)
     {
-        const bool could_access_before = can_access(tp);
-        if (!is_default) {
-            set_pitch(90);
-            access(tp);
-            core::sleep_for(std::chrono::milliseconds(500));
-            tp.get_interface()->go_to(tp.get_name());
-            util::await([]() { return !interfaces::hud->can_default_teleport(); },
-                        std::chrono::seconds(5));
+        static structures::Teleporter generic_teleporter("STATIC GENERIC");
+
+        // While riding a mount, the only way we can teleport is the default option.
+        if (is_riding_mount_ && !(flags & TeleportFlags_UseDefaultOption)) {
+            throw std::exception("Cannot use non default teleport while mounted.");
         }
-        else {
+
+        if (flags & TeleportFlags_UseDefaultOption) {
             do { window::press(settings::reload); }
             while (!util::await([]() { return !interfaces::hud->can_default_teleport(); },
                                 std::chrono::seconds(5)));
         }
-        pass_teleport_screen(!could_access_before);
+        else {
+            set_pitch(90);
+            access(generic_teleporter);
+            generic_teleporter.get_interface()->go_to(dst.get_name());
+            util::await([]() { return !interfaces::hud->can_default_teleport(); },
+                        std::chrono::seconds(5));
+        }
+
+        // If the unsafe load flag is set, skip the step of passing the teleportation
+        // and just assume that we did.
+        if (flags & TeleportFlags_UnsafeLoad) { return; }
+        pass_teleport_screen();
     }
 
     void LocalPlayer::get_off_bed()
@@ -395,6 +417,11 @@ namespace asa::entities
                 std::cout << "[+] Teleported to a container." << std::endl;
                 return;
             }
+
+            if (is_riding_mount_ && util::timedout(start, std::chrono::seconds(3))) {
+                go_back(std::chrono::milliseconds(1));
+                core::sleep_for(std::chrono::milliseconds(200));
+            }
         }
         // See whether the default teleport popup lasts for more than 500ms
         // if it doesnt its a glitched popup that appears when the teleport has
@@ -406,7 +433,7 @@ namespace asa::entities
         }
     }
 
-    void LocalPlayer::handle_access_direction(const AccessFlags_ flags)
+    void LocalPlayer::handle_access_direction(const AccessFlags flags)
     {
         if (flags & AccessFlags_AccessBelow) { set_pitch(90); }
         else if (flags & AccessFlags_AccessAbove) { set_pitch(-90); }
@@ -456,5 +483,13 @@ namespace asa::entities
         controls::turn_degrees(0, -allowed);
         current_pitch_ -= allowed;
         core::sleep_for(delay);
+    }
+
+    void LocalPlayer::reset_state()
+    {
+        reset_view_angles();
+        is_crouched_ = false;
+        is_proned_ = false;
+        is_riding_mount_ = false;
     }
 }
