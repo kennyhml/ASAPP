@@ -3,7 +3,7 @@
 
 namespace asa::entities
 {
-    class DinoEnt : public BaseEntity
+    class DinoEntity : public BaseEntity
     {
     public:
         using BaseEntity::BaseEntity;
