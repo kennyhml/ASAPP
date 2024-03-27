@@ -21,7 +21,7 @@ namespace asa::entities
     bool LocalPlayer::is_alive() const
     {
         interfaces::hud->toggle_extended(true);
-        bool result = util::await([]() {
+        const bool result = util::await([]() {
             return interfaces::hud->extended_information_is_toggled();
         }, std::chrono::milliseconds(300));
 
@@ -125,23 +125,18 @@ namespace asa::entities
     void LocalPlayer::suicide()
     {
         const auto start = std::chrono::system_clock::now();
-        std::cout << "[+] Suiciding with implant...\n";
         interfaces::hud->toggle_extended(true);
 
         get_inventory()->open();
         if (get_inventory()->slots[0].is_empty()) {
-            std::cerr << "[!] Got glitched implant, trying again..\n";
             get_inventory()->close();
             return suicide();
         }
 
-        controls::mouse_press(controls::LEFT);
         core::sleep_for(std::chrono::milliseconds(100));
-        inventory_->select_slot(0);
-
-        std::cout << "\t[-] Waiting for implant cooldown... ";
+        inventory_->select_slot(0, true, true);
         core::sleep_for(std::chrono::seconds(6));
-        std::cout << "Done.\n";
+
         do {
             if (util::timedout(start, std::chrono::seconds(30))) {
                 throw SuicideFailedError();
@@ -153,7 +148,7 @@ namespace asa::entities
         }
         while (interfaces::hud->extended_information_is_toggled());
         while (!interfaces::spawn_map->is_open()) {}
-        std::cout << "\t[-] Suicided successfully.\n";
+
         reset_view_angles();
         is_crouched_ = false;
         is_proned_ = false;
@@ -162,12 +157,10 @@ namespace asa::entities
 
     void LocalPlayer::jump()
     {
-        if (is_proned_ || is_crouched_) {
-            is_proned_ = false;
-            is_crouched_ = false;
-            jump();
-        }
+        stand_up();
         window::press(settings::jump);
+
+        last_jumped_ = std::chrono::system_clock::now();
     }
 
     void LocalPlayer::crouch()
@@ -298,24 +291,28 @@ namespace asa::entities
         }, std::chrono::seconds(5)));
     }
 
-    void LocalPlayer::mount(const DinoEnt& entity) const
+    void LocalPlayer::mount(DinoEntity& entity)
     {
+        const auto start = std::chrono::system_clock::now();
+
         interfaces::hud->toggle_extended(true);
-        asa::core::sleep_for(std::chrono::milliseconds(200));
+        core::sleep_for(std::chrono::milliseconds(200));
 
-        if (entity.is_mounted()) {
-            interfaces::hud->toggle_extended(false);
-            return;
+        if (!entity.is_mounted()) {
+            do {
+                if (util::timedout(start, std::chrono::minutes(1))) {
+                    throw EntityNotMounted(&entity);
+                }
+                if (entity.get_inventory()->is_open()) {
+                    entity.get_inventory()->close();
+                }
+                window::press(settings::use);
+            }
+            while (!util::await([&entity]() -> bool { return entity.is_mounted(); },
+                                std::chrono::seconds(5)));
         }
-
-        do {
-            if (entity.get_inventory()->is_open()) { entity.get_inventory()->close(); }
-            window::press(settings::use);
-        }
-        while (!util::await([&entity]() -> bool { return entity.is_mounted(); },
-                            std::chrono::seconds(5)));
-
         interfaces::hud->toggle_extended(false);
+        is_riding_mount_ = true;
     }
 
     void LocalPlayer::fast_travel_to(const structures::SimpleBed& bed,
@@ -342,7 +339,7 @@ namespace asa::entities
     {
         const bool could_access_before = can_access(tp);
         if (!is_default) {
-            look_fully_down();
+            set_pitch(90);
             access(tp);
             core::sleep_for(std::chrono::milliseconds(500));
             tp.get_interface()->go_to(tp.get_name());
@@ -364,73 +361,6 @@ namespace asa::entities
         reset_view_angles();
     }
 
-    void LocalPlayer::set_yaw(const int yaw)
-    {
-        const int diff = ((yaw - current_yaw_) + 180) % 360 - 180;
-        diff < 0 ? turn_left(-diff) : turn_right(diff);
-        current_yaw_ = yaw;
-    }
-
-    void LocalPlayer::set_pitch(const int pitch)
-    {
-        const int diff = ((pitch - current_pitch_) + 90) % 360 - 90;
-        diff < 0 ? turn_up(-diff) : turn_down(diff);
-        current_pitch_ = pitch;
-    }
-
-    void LocalPlayer::turn_right(const int by_degrees, const ms delay)
-    {
-        controls::turn_degrees(by_degrees, 0);
-        current_yaw_ += by_degrees;
-        core::sleep_for(delay);
-    }
-
-    void LocalPlayer::turn_left(const int by_degrees, const ms delay)
-    {
-        controls::turn_degrees(-by_degrees, 0);
-        current_yaw_ -= by_degrees;
-        core::sleep_for(delay);
-    }
-
-    void LocalPlayer::turn_down(const int by_degrees, const ms delay)
-    {
-        const int allowed = std::min(90 - current_pitch_, by_degrees);
-        controls::turn_degrees(0, allowed);
-        current_pitch_ += allowed;
-        core::sleep_for(delay);
-    }
-
-    void LocalPlayer::turn_up(const int by_degrees, const ms delay)
-    {
-        const int allowed = std::min(90 + current_pitch_, by_degrees);
-        controls::turn_degrees(0, -allowed);
-        current_pitch_ -= allowed;
-        core::sleep_for(delay);
-    }
-
-    void LocalPlayer::equip(items::Item* item, interfaces::PlayerInfo::Slot slot)
-    {
-        const bool was_inventory_open = inventory_->is_open();
-        if (!was_inventory_open) {
-            get_inventory()->open();
-            core::sleep_for(std::chrono::milliseconds(500));
-        }
-
-        get_inventory()->equip(*item, slot);
-        if (!was_inventory_open) { get_inventory()->close(); }
-    }
-
-    void LocalPlayer::unequip(interfaces::PlayerInfo::Slot slot)
-    {
-        bool was_inventory_open = get_inventory()->is_open();
-        if (!was_inventory_open) {
-            get_inventory()->open();
-            core::sleep_for(std::chrono::milliseconds(500));
-        }
-        get_inventory()->info.unequip(slot);
-        if (!was_inventory_open) { get_inventory()->close(); }
-    }
-
     void LocalPlayer::pass_travel_screen(const bool in, const bool out)
     {
         if (in) {
@@ -448,12 +378,18 @@ namespace asa::entities
 
     void LocalPlayer::pass_teleport_screen(const bool access_flag)
     {
+        const auto start = std::chrono::system_clock::now();
+
         while (!interfaces::hud->can_default_teleport()) {
             // for long distance teleports we still enter a white screen,
             // so we can simply reuse our bed logic
             if (is_in_travel_screen()) {
                 std::cout << "[+] Whitescreen entered upon teleport." << std::endl;
                 return pass_travel_screen(false);
+            }
+            if (util::timedout(start, std::chrono::seconds(30))) {
+                std::cerr << "[!] Timed out waiting for teleport!" << std::endl;
+                return;
             }
             if (access_flag && can_access_inventory()) {
                 std::cout << "[+] Teleported to a container." << std::endl;
@@ -470,23 +406,55 @@ namespace asa::entities
         }
     }
 
-    void LocalPlayer::look_fully_down()
-    {
-        for (int i = 0; i < 10; i++) { turn_down(18, std::chrono::milliseconds(20)); }
-        core::sleep_for(std::chrono::milliseconds(300));
-    }
-
-    void LocalPlayer::look_fully_up()
-    {
-        for (int i = 0; i < 10; i++) { turn_up(18, std::chrono::milliseconds(20)); }
-        core::sleep_for(std::chrono::milliseconds(300));
-    }
-
     void LocalPlayer::handle_access_direction(const AccessFlags_ flags)
     {
         if (flags & AccessFlags_AccessBelow) { set_pitch(90); }
         else if (flags & AccessFlags_AccessAbove) { set_pitch(-90); }
         if (flags & AccessFlags_AccessLeft) { set_yaw(-90); }
         else if (flags & AccessFlags_AccessRight) { set_yaw(90); }
+    }
+
+    void LocalPlayer::set_yaw(const int yaw)
+    {
+        const int diff = ((yaw - current_yaw_) + 180) % 360 - 180;
+        diff < 0 ? turn_left(-diff) : turn_right(diff);
+        current_yaw_ = yaw;
+    }
+
+    void LocalPlayer::set_pitch(const int pitch)
+    {
+        const int diff = ((pitch - current_pitch_) + 90) % 360 - 90;
+        diff < 0 ? turn_up(-diff) : turn_down(diff);
+        current_pitch_ = pitch;
+    }
+
+    void LocalPlayer::turn_right(const int degrees, const std::chrono::milliseconds delay)
+    {
+        controls::turn_degrees(degrees, 0);
+        current_yaw_ += degrees;
+        core::sleep_for(delay);
+    }
+
+    void LocalPlayer::turn_left(const int degrees, const std::chrono::milliseconds delay)
+    {
+        controls::turn_degrees(-degrees, 0);
+        current_yaw_ -= degrees;
+        core::sleep_for(delay);
+    }
+
+    void LocalPlayer::turn_down(const int degrees, const std::chrono::milliseconds delay)
+    {
+        const int allowed = std::min(90 - current_pitch_, degrees);
+        controls::turn_degrees(0, allowed);
+        current_pitch_ += allowed;
+        core::sleep_for(delay);
+    }
+
+    void LocalPlayer::turn_up(const int degrees, const std::chrono::milliseconds delay)
+    {
+        const int allowed = std::min(90 + current_pitch_, degrees);
+        controls::turn_degrees(0, -allowed);
+        current_pitch_ -= allowed;
+        core::sleep_for(delay);
     }
 }

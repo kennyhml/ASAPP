@@ -1,13 +1,22 @@
 #pragma once
 #include "components/button.h"
 #include "components/searchbar.h"
-
 #include "iinterface.h"
 
 namespace asa::interfaces
 {
     class ServerSelect final : public IInterface
     {
+    public:
+        [[nodiscard]] bool is_open() const override;
+        [[nodiscard]] bool can_join() const;
+        [[nodiscard]] bool can_join_last_played() const;
+        [[nodiscard]] bool is_joining_server() const;
+        [[nodiscard]] bool server_has_mods_enabled() const;
+
+        void join_server(const std::string& name);
+        void refresh();
+
     private:
         components::SearchBar searchbar_{1577, 172, 184, 46};
 
@@ -23,18 +32,7 @@ namespace asa::interfaces
         components::Button join_last_played_button_{1624, 876, 178, 39};
 
         [[nodiscard]] bool is_best_result_selected() const;
-
-    public:
-        [[nodiscard]] bool is_open() const override;
-        [[nodiscard]] bool can_join() const;
-        [[nodiscard]] bool can_join_last_played() const;
-        [[nodiscard]] bool is_joining_server() const;
-        [[nodiscard]] bool server_has_mods_enabled() const;
-
-        void join_server(const std::string& name);
-        void refresh();
     };
-
 
     inline std::unique_ptr<ServerSelect> server_select = std::make_unique<ServerSelect>();
 }

@@ -1,22 +1,21 @@
 #pragma once
-
 #include "baseentity.h"
 #include "asapp/interfaces/localinventory.h"
 #include "asapp/structures/basestructure.h"
 #include "asapp/structures/container.h"
 #include "asapp/structures/simplebed.h"
 #include "asapp/structures/teleporter.h"
-#include "dinoent.h"
+#include "dinoentity.h"
 
 // Flags for LocalPlayer::access
 enum AccessFlags_
 {
     AccessFlags_None = 0,
-    AccessFlags_InstantFail = 1 << 1,   // Throw if the bed is not instantly found.
-    AccessFlags_AccessAbove = 1 << 2,   // Access the bed above.
-    AccessFlags_AccessBelow = 1 << 3,   // Access the bed below.
-    AccessFlags_AccessLeft = 1 << 4,    // Access the bed to the left.
-    AccessFlags_AccessRight = 1 << 5,   // Access the bed to the right.
+    AccessFlags_InstantFail = 1 << 1, // Throw if the bed is not instantly found.
+    AccessFlags_AccessAbove = 1 << 2, // Access the bed above.
+    AccessFlags_AccessBelow = 1 << 3, // Access the bed below.
+    AccessFlags_AccessLeft = 1 << 4, // Access the bed to the left.
+    AccessFlags_AccessRight = 1 << 5, // Access the bed to the right.
 
     AccessFlags_AccessAboveOrBelow = AccessFlags_AccessAbove | AccessFlags_AccessBelow,
     AccessFlags_Default = AccessFlags_AccessBelow,
@@ -26,10 +25,11 @@ enum AccessFlags_
 enum TravelFlags_
 {
     TravelFlags_None = 0,
-    TravelFlags_WaitForBeds = 1 << 1,       // Throw an exception when no beds are ready.
+    TravelFlags_WaitForBeds = 1 << 1, // Throw an exception when no beds are ready.
     TravelFlags_NoTravelAnimation = 1 << 2, // Return when the travel animation starts.
 };
 
+using namespace std::chrono_literals;
 
 namespace asa::entities
 {
@@ -37,7 +37,7 @@ namespace asa::entities
     {
     public:
         explicit LocalPlayer() : BaseEntity(
-                "You", std::make_unique<interfaces::LocalInventory>()) {}
+            "You", std::make_unique<interfaces::LocalInventory>()) {}
 
         /**
          * @brief Gets the local player inventory component.
@@ -103,7 +103,12 @@ namespace asa::entities
 
         void access(const structures::InteractableStructure&) const;
 
-        void mount(const DinoEnt&) const;
+        /**
+         * @brief Mounts the local player onto a given (rideable) entity.
+         *
+         * @throws EntityNotMounted If the dino could not be mounted within 60s.
+         */
+        void mount(DinoEntity& entity);
 
         void fast_travel_to(const structures::SimpleBed& dst,
                             AccessFlags_ access_flags = AccessFlags_Default,
@@ -115,40 +120,30 @@ namespace asa::entities
 
         void suicide();
 
-        void walk_forward(std::chrono::milliseconds duration);
+        /**
+         * @brief Override to ensure we leave any crouched / proned states first.
+         */
+        void jump() override;
 
-        void walk_left(std::chrono::milliseconds duration);
-
-        void walk_right(std::chrono::milliseconds duration);
-
-        void walk_back(std::chrono::milliseconds duration);
-
-        void equip(items::Item* item, interfaces::PlayerInfo::Slot target_slot);
-
-        void unequip(interfaces::PlayerInfo::Slot target_slot);
-
-        void look_fully_down();
-
-        void look_fully_up();
-
-        void jump();
-
+        /**
+         * @brief Makes the local player enter a crouched state.
+         */
         void crouch();
 
+        /**
+         * @brief Makes the local player enter a proned state.
+         */
         void prone();
 
+        /**
+         * @brief Makes the local player enter the default state.
+         */
         void stand_up();
 
-    private:
-        bool is_crouched_ = false;
-        bool is_proned_ = false;
-
-        void pass_travel_screen(bool in = true, bool out = true);
-
-        void pass_teleport_screen(bool access_flag = false);
-
-    public:
-        using ms = std::chrono::milliseconds;
+        /**
+         * @brief Handles the access direction of an access flag bitfield.
+         */
+        void handle_access_direction(AccessFlags_);
 
         /**
          * @brief Gets the current yaw angle of the player's view.
@@ -169,14 +164,14 @@ namespace asa::entities
          * in degrees, used to determine the upward or downward tilt of itsviewpoint.
          *
          * @remark The valid range of the player's pitch is between -90 and 90 degrees.
-         * 
+         *
          * @return The current pitch angle in degrees.
          */
         [[nodiscard]] int get_pitch() const { return current_pitch_; }
 
         /**
          * @brief Sets the yaw angle of the players's view.
-         * 
+         *
          * @param yaw The new yaw angle, between -180 (left) and 180 (right)
          *
          * @remark Does not only modify the internal yaw state but also attempts
@@ -186,7 +181,7 @@ namespace asa::entities
 
         /**
          * @brief Sets the pitch angle of the players's view.
-         * 
+         *
          * @param pitch The new pitch angle, between -90 (up) and 90 (down)
          *
          * @remark Does not only modify the internal pitch state but also attempts
@@ -222,19 +217,55 @@ namespace asa::entities
             reset_pitch();
         }
 
-        void turn_right(int by_degrees = 90, ms delay = ms(100));
+        /**
+         * @brief Turns the view of this entity to the right by the given amount.
+         *
+         * @param degrees The amount of degrees to turn.
+         * @param delay The amount of time to wait after turning.
+         */
+        void turn_right(int degrees = 90, std::chrono::milliseconds delay = 100ms);
 
-        void turn_left(int by_degrees = 90, ms delay = ms(100));
+        /**
+         * @brief Turns the view of this entity to the left by the given amount.
+         *
+         * @param degrees The amount of degrees to turn.
+         * @param delay The amount of time to wait after turning.
+         */
+        void turn_left(int degrees = 90, std::chrono::milliseconds delay = 100ms);
 
-        void turn_up(int by_degrees = 90, ms delay = ms(100));
+        /**
+         * @brief Turns the view of this entity to the up by the given amount.
+         *
+         * @param degrees The amount of degrees to turn.
+         * @param delay The amount of time to wait after turning.
+         *
+         * @remark The pitch (up / down) reaches its limit at 90 or -90.
+         */
+        void turn_up(int degrees = 90, std::chrono::milliseconds delay = 100ms);
 
-        void turn_down(int by_degrees = 90, ms delay = ms(100));
-
-        void handle_access_direction(AccessFlags_);
+        /**
+         * @brief Turns the view of this entity to the down by the given amount.
+         *
+         * @param degrees The amount of degrees to turn.
+         * @param delay The amount of time to wait after turning.
+         *
+         * @remark The pitch (up / down) reaches its limit at 90 or -90.
+         */
+        void turn_down(int degrees = 90, std::chrono::milliseconds delay = 100ms);
 
     private:
         int current_yaw_ = 0; // degrees of our view left and right, between -180 and 180
         int current_pitch_ = 0; // degrees of our view bottom to top, between -90 and 90
+
+        bool is_riding_mount_ = false;
+        bool is_crouched_ = false;
+        bool is_proned_ = false;
+
+        std::chrono::system_clock::time_point last_jumped_;
+
+        void pass_travel_screen(bool in = true, bool out = true);
+
+        void pass_teleport_screen(bool access_flag = false);
     };
 
     inline std::unique_ptr<LocalPlayer> local_player = std::make_unique<LocalPlayer>();

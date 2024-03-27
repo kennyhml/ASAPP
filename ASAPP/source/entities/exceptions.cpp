@@ -15,7 +15,7 @@ namespace asa::entities
             : EntityError(entity, "Failed to access " + entity->get_name()) {}
 
 
-    EntityNotMounted::EntityNotMounted(const DinoEnt* mount)
+    EntityNotMounted::EntityNotMounted(const DinoEntity* mount)
             : EntityError(mount, "Failed to mount " + mount->get_name()) {}
 
     SuicideFailedError::SuicideFailedError()

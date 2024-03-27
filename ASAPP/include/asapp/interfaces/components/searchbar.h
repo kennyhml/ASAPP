@@ -7,6 +7,7 @@ namespace asa::interfaces::components
 {
     struct SearchBar : IInterfaceComponent
     {
+    public:
         using IInterfaceComponent::IInterfaceComponent;
 
         virtual void press() const;

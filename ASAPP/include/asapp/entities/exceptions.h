@@ -1,7 +1,7 @@
 #pragma once
 #include <stdexcept>
 #include "baseentity.h"
-#include "dinoent.h"
+#include "dinoentity.h"
 
 namespace asa::entities
 {
@@ -41,7 +41,7 @@ namespace asa::entities
     class EntityNotMounted : public EntityError
     {
     public:
-        explicit EntityNotMounted(const DinoEnt*);
+        explicit EntityNotMounted(const DinoEntity*);
     };
 
     /**

@@ -52,7 +52,7 @@ add_library(asapp STATIC
         ASAPP/include/asapp/core/init.h
         ASAPP/include/asapp/core/state.h
         ASAPP/include/asapp/entities/baseentity.h
-        ASAPP/include/asapp/entities/dinoent.h
+        ASAPP/include/asapp/entities/dinoentity.h
         ASAPP/include/asapp/entities/entities.h
         ASAPP/include/asapp/entities/exceptions.h
         ASAPP/include/asapp/entities/localplayer.h
