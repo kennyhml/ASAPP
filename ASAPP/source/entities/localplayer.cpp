@@ -97,7 +97,7 @@ namespace asa::entities
         const auto start = std::chrono::system_clock::now();
         do {
             window::press(settings::use);
-            if (util::timedout(start, std::chrono::seconds(10))) {
+            if (util::timedout(start, std::chrono::seconds(15))) {
                 throw structures::StructureError(
                     nullptr, std::format("Failed to deposit '{}' into dedicated storage.",
                                          item.get_name()));
@@ -358,6 +358,11 @@ namespace asa::entities
         }
 
         if (flags & TeleportFlags_UseDefaultOption) {
+            while (is_riding_mount_ && !interfaces::hud->can_default_teleport()) {
+                go_back(10ms);
+                core::sleep_for(200ms);
+            }
+
             do { window::press(settings::reload); }
             while (!util::await([]() { return !interfaces::hud->can_default_teleport(); },
                                 std::chrono::seconds(5)));
@@ -419,8 +424,8 @@ namespace asa::entities
             }
 
             if (is_riding_mount_ && util::timedout(start, std::chrono::seconds(3))) {
-                go_back(std::chrono::milliseconds(1));
-                core::sleep_for(std::chrono::milliseconds(200));
+                go_forward(std::chrono::milliseconds(10));
+                core::sleep_for(std::chrono::milliseconds(400));
             }
         }
         // See whether the default teleport popup lasts for more than 500ms
