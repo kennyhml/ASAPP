@@ -37,9 +37,9 @@ enum TeleportFlags_ : uint32_t
     TeleportFlags_UnsafeLoad = 1 << 2, // Assume an instant teleport, lag unsafe.
 };
 
-using AccessFlags = int;
-using TravelFlags = int;
-using TeleportFlags = int;
+using AccessFlags = int32_t;
+using TravelFlags = int32_t;
+using TeleportFlags = int32_t;
 
 using namespace std::chrono_literals;
 
@@ -114,6 +114,10 @@ namespace asa::entities
         void access(const structures::SimpleBed&, AccessFlags);
 
         void access(const structures::InteractableStructure&) const;
+
+        void pick_up_one() const { controls::press(settings::use); }
+
+        void pick_up_all() const { controls::press(settings::access_inventory); }
 
         /**
          * @brief Mounts the local player onto a given (rideable) entity.
