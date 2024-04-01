@@ -1,15 +1,12 @@
 #pragma once
-
 #include <array>
-#include <iostream>
-#include <asapp/util/util.h>
+#include "baseinfo.h"
 #include "iinterface.h"
 #include "asapp/game/window.h"
 #include "components/button.h"
 #include "components/combobox.h"
 #include "components/searchbar.h"
 #include "components/slot.h"
-
 
 enum PopcornFlags_
 {
@@ -20,25 +17,28 @@ enum PopcornFlags_
     PopcornFlags_Default = PopcornFlags_None,
 };
 
+using PopcornFlags = int32_t;
+
 namespace asa::interfaces
 {
-    inline constexpr int MAX_ITEMS_PER_PAGE = 36;
-
     class BaseInventory : public IInterface
     {
     public:
-        explicit BaseInventory(bool is_remote);
+        explicit BaseInventory(bool t_remote, std::unique_ptr<BaseInfo> t_info = nullptr);
 
         enum Tabs
         {
             INVENTORY,
         };
 
-        std::array<components::Slot, 36> slots;
-
-        components::ComboBox item_filter;
-        components::SearchBar search_bar;
-        window::Rect item_area;
+    public:
+        /**
+         * @brief Gets the info component of the inventory.
+         */
+        [[nodiscard]] virtual BaseInfo* get_info() const
+        {
+            return info_.get();
+        }
 
         /**
          * @brief Gets the full area of the inventory, differs between local and remote.
@@ -72,7 +72,7 @@ namespace asa::interfaces
          * 
          * @throws ReceivingRemoteInventoryTimeoutError if the action took too long.
          */
-        void receive_remote_inventory(const std::chrono::seconds timeout) const;
+        void receive_remote_inventory(std::chrono::seconds timeout) const;
 
         /**
          * @brief Checks whether a given item is located within the inventory.
@@ -127,7 +127,7 @@ namespace asa::interfaces
         /**
          * @brief Popcorns al items from the inventory. 
          */
-        void popcorn_all(PopcornFlags_ = PopcornFlags_Default);
+        void popcorn_all(PopcornFlags = PopcornFlags_Default);
 
         /**
          * @brief Takes the item located at a given slot.
@@ -285,43 +285,6 @@ namespace asa::interfaces
         void toggle_tooltips() const;
 
         /**
-         * @brief Determines all items in the given slots.
-         *
-         * @tparam Size The size of the array i.e the amount of slots to get the item of.
-         * @param start_index The slot index to start getting the items at.
-         * @param allowed_items Whitelist of allowed items, other items are not checked.
-         * @param allowed_categories Whitelist of allowed item types, others are not checked.
-         * @param num_threads The number of threads to use, default 5.
-         *
-         * @return An array of the given size containing smart pointers to the items, or null.
-         */
-        template <std::size_t Size>
-        [[nodiscard]] std::array<std::unique_ptr<items::Item>, Size> get_items(
-            const int start_index = 0, std::vector<std::string>* allowed_items = nullptr,
-            std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
-            int num_threads = 5) const
-        {
-            assert_open(__func__);
-            const auto start = std::chrono::system_clock::now();
-
-            std::array<std::unique_ptr<items::Item>, Size> ret;
-            std::vector<std::thread> threads;
-            threads.reserve(num_threads);
-
-            for (int i = 0; i < num_threads; i++) {
-                threads.emplace_back([this, i, &ret, num_threads, start_index]() -> void {
-                    for (int j = i; j < Size; j += num_threads) {
-                        if (j > Size) { break; }
-                        ret[j] = std::move(slots[j + start_index].get_item());
-                    }
-                });
-            }
-
-            for (auto& thread : threads) { thread.join(); }
-            return ret;
-        }
-
-        /**
          * @brief Retrieves all items from the currently visible page.
          *
          * @param allowed_items Whitelist of allowed items, other items are not checked.
@@ -333,10 +296,14 @@ namespace asa::interfaces
          * @remarks When an empty slot is encountered, the evaluation is stopped and the
          * result is returned. Otherwise the result is returned after the 36th slot.
          */
-        [[nodiscard]] std::vector<std::unique_ptr<items::Item>> get_current_page_items(
+        [[nodiscard]] std::vector<std::unique_ptr<items::Item> > get_current_page_items(
             std::vector<std::string>* allowed_items = nullptr,
             std::vector<items::ItemData::ItemType>* allowed_categories = nullptr,
             int num_threads = 5) const;
+
+        std::array<components::Slot, 36> slots;
+        components::SearchBar search_bar;
+        window::Rect item_area;
 
     protected:
         struct ManagementButton : components::Button
@@ -357,6 +324,8 @@ namespace asa::interfaces
             [[nodiscard]] bool exists() const;
         };
 
+    protected:
+        void assert_open(std::string for_action) const;
 
         InvTabButton you_button_{756, 122, 117, 51};
         InvTabButton them_button_{1043, 126, 121, 48};
@@ -372,7 +341,10 @@ namespace asa::interfaces
         window::Rect recv_remote_inv_area_{1340, 511, 295, 34};
         components::Button close_button_{1781, 49, 36, 33};
 
-        void assert_open(std::string for_action) const;
+        components::ComboBox item_filter;
+
+
+        std::unique_ptr<BaseInfo> info_;
 
     private:
         void init_slots(const window::Point& origin);

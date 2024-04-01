@@ -23,15 +23,15 @@ namespace asa::interfaces
     void LocalInventory::switch_to(const Tab tab)
     {
         assert_open(__func__);
-        
+
         InvTabButton* button = nullptr;
         switch (tab) {
-        case INVENTORY: button = &inventory_tab;
-            break;
-        case COSMETICS: button = &cosmetics_tab;
-            break;
-        case CRAFTING: button = &crafting_tab;
-            break;
+            case INVENTORY: button = &inventory_tab;
+                break;
+            case COSMETICS: button = &cosmetics_tab;
+                break;
+            case CRAFTING: button = &crafting_tab;
+                break;
         }
         assert(button != nullptr);
 
@@ -50,20 +50,27 @@ namespace asa::interfaces
     void LocalInventory::equip(items::Item& item, const PlayerInfo::Slot slot)
     {
         assert_open(__func__);
+        search_bar.search_for(item.get_name());
 
-        bool searched = false;
-        if (!has(item, false)) {
-            searched = true;
-            if (!has(item, true)) {
-                throw std::runtime_error(std::format(
-                    "No '{}' in local player inventory", item.get_name()));
+        // If the item name is unique, we can search & check the first slot only.
+        if (!item.get_data().has_ambiguous_query) {
+            for (const auto& s: slots) {
+                if (s.is_empty() && !s.is_folder()) {
+                    throw std::exception("Attempted to equip an item we do not own");
+                }
+                select_slot(s);
+                break;
             }
+        } else if (const auto pos = find_item(item, true); pos != nullptr) {
+            select_slot(*pos);
+        } else {
+            throw std::exception("Attempted to equip an item we do not own");
         }
 
-        select_slot(*find_item(item, searched));
-        do { window::press(settings::action_mappings::use); }
-        while (!util::await([this, &item, slot]() {
-            return info.has_equipped(item, slot);
-        }, std::chrono::seconds(5)));
+        do {
+            window::press(settings::action_mappings::use);
+        } while (!util::await([this, &item, slot]() {
+            return get_info()->get_slot(slot).has(item);
+        }, 5s));
     }
 }

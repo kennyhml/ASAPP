@@ -7,7 +7,7 @@ add_library(asapp STATIC
         ASAPP/source/core/init.cpp
         ASAPP/source/core/state.cpp
         ASAPP/source/entities/baseentity.cpp
-        ASAPP/source/entities/dinoent.cpp
+        ASAPP/source/entities/dinoentity.cpp
         ASAPP/source/entities/exceptions.cpp
         ASAPP/source/entities/localplayer.cpp
         ASAPP/source/game/baseentitiyinfo.cpp
@@ -121,6 +121,9 @@ add_library(asapp STATIC
         ASAPP/source/network/server.cpp
         ASAPP/source/network/queries.cpp
         ASAPP/source/interfaces/components/tooltip.cpp
+        ASAPP/source/interfaces/dinoinfo.cpp
+        ASAPP/include/asapp/interfaces/dinoinventory.h
+        ASAPP/source/interfaces/dinoinventory.cpp
 )
 
 set_target_properties(asapp PROPERTIES

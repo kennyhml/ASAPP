@@ -5,6 +5,7 @@
 
 #include <array>
 
+
 namespace asa::interfaces
 {
     class BaseEntityInfo : public BaseInfo
@@ -20,19 +21,12 @@ namespace asa::interfaces
             }
         };
 
-        std::array<GearSlot, 6> gear_slots;
-        window::Rect info_area{859, 177, 200, 275};
-        components::Button toggle_buffs_button{765, 866, 392, 36};
-
     public:
-        BaseEntityInfo()
-        {
-            for (int i = 0; i < gear_slots.max_size(); i++) {
-                gear_slots[i] = GearSlot(764 + (305 * (i > 2)), 178 + (93 * (i % 3)));
-            }
-        }
+        BaseEntityInfo();
 
-        enum Stat
+        enum Slot : uint32_t;
+
+        enum Stat : uint32_t
         {
             HEALTH,
             STAMINA,
@@ -41,6 +35,21 @@ namespace asa::interfaces
             MELEE,
             TORPIDITY,
         };
+
+        virtual const GearSlot& get_slot(const int slot) const
+        {
+            return gear_slots.at(slot);
+        };
+
+        /**
+         * @brief Unequips the item in a given slot.
+         */
+        void unequip(Slot slot);
+
+        /**
+         * @brief Unequips all items.
+         */
+        void unequip_all();
 
         virtual int get_level() { return 0; }
 
@@ -51,6 +60,7 @@ namespace asa::interfaces
 
         int get_max_health() override { return 0; }
         int get_current_health() override { return 0; }
+
         float get_health_level() override;
 
         int get_max_weight() override { return 0; }
@@ -64,15 +74,22 @@ namespace asa::interfaces
 
         virtual int get_max_food() { return 0; }
         virtual int get_current_food() { return 0; }
+
         virtual float get_food_level();
 
         virtual int get_max_water() { return 0; }
         virtual int get_current_water() { return 0; }
+
         virtual float get_water_level();
 
         virtual int get_melee_multiplier() { return 0; }
         virtual int get_torpitidy() { return 0; }
 
         virtual bool can_level_up() { return false; }
+
+    protected:
+        std::array<GearSlot, 6> gear_slots;
+        window::Rect info_area{859, 177, 200, 275};
+        components::Button toggle_buffs_button{765, 866, 392, 36};
     };
 }

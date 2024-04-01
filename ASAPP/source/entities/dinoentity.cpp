@@ -1,6 +1,7 @@
 #include "asapp/entities/dinoentity.h"
 #include "asapp/core/state.h"
 #include "asapp/interfaces/hud.h"
+#include "asapp/util/util.h"
 
 namespace asa::entities
 {

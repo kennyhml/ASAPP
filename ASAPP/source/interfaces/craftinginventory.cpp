@@ -1,7 +1,6 @@
 #include "asapp/interfaces/craftinginventory.h"
-
 #include "asapp/core/state.h"
-
+#include "asapp/util/util.h"
 
 namespace asa::interfaces
 {
