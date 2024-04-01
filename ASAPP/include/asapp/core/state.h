@@ -2,6 +2,8 @@
 #include <chrono>
 #include <functional>
 
+using namespace std::chrono_literals;
+
 namespace asa::core
 {
     using StateCheckCallback_t = std::function<void()>;
