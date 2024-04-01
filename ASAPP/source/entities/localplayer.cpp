@@ -72,6 +72,19 @@ namespace asa::entities
         return mean[0] > 240.f;
     }
 
+    bool LocalPlayer::is_in_connect_screen() const
+    {
+        static window::Rect roi(94, 69, 1751, 883);
+
+        cv::Mat image = screenshot(roi);
+        cv::Mat gray;
+        cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+
+        cv::Scalar mean, stddev;
+        meanStdDev(gray, mean, stddev);
+        return mean[0] < 5.f;
+    }
+
     bool LocalPlayer::can_access_bed() const
     {
         return interfaces::hud->can_fast_travel();
@@ -102,8 +115,7 @@ namespace asa::entities
                     nullptr, std::format("Failed to deposit '{}' into dedicated storage.",
                                          item.get_name()));
             }
-        }
-        while (!util::await(deposited, std::chrono::seconds(5)));
+        } while (!util::await(deposited, std::chrono::seconds(5)));
         return true;
     }
 
@@ -145,8 +157,7 @@ namespace asa::entities
             controls::mouse_press(controls::RIGHT);
             window::press(settings::use);
             core::sleep_for(std::chrono::seconds(3));
-        }
-        while (interfaces::hud->extended_information_is_toggled());
+        } while (interfaces::hud->extended_information_is_toggled());
         while (!interfaces::spawn_map->is_open()) {}
 
         reset_state();
@@ -194,6 +205,11 @@ namespace asa::entities
         // TODO: if ghud fails use the action wheel
     }
 
+    bool LocalPlayer::can_ride(const entities::DinoEntity&) const
+    {
+        return interfaces::hud->can_ride();
+    }
+
     void LocalPlayer::access(const BaseEntity& entity) const
     {
         if (entity.get_inventory()->is_open()) { return; }
@@ -204,9 +220,8 @@ namespace asa::entities
             if (util::timedout(start, std::chrono::seconds(30))) {
                 throw EntityNotAccessed(&entity);
             }
-        }
-        while (!util::await([&entity]() { return entity.get_inventory()->is_open(); },
-                            std::chrono::seconds(5)));
+        } while (!util::await([&entity]() { return entity.get_inventory()->is_open(); },
+                              std::chrono::seconds(5)));
 
         entity.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
@@ -227,7 +242,7 @@ namespace asa::entities
         if (bed.get_interface()->is_open()) { return; }
 
         const bool special_access_set = (flags & AccessFlags_AccessAboveOrBelow) ==
-            AccessFlags_AccessAboveOrBelow;
+                                        AccessFlags_AccessAboveOrBelow;
 
         for (int attempt = 0; attempt < 3; attempt++) {
             if (!special_access_set) { handle_access_direction(flags); }
@@ -239,8 +254,7 @@ namespace asa::entities
                 // Check health level to ensure its an item cache.
                 if (bag.get_info()->get_health_level() == 0.f) {
                     bag.get_inventory()->popcorn_all();
-                }
-                else { reset_pitch(); }
+                } else { reset_pitch(); }
                 bag.get_inventory()->close();
 
                 core::sleep_for(std::chrono::seconds(1));
@@ -283,8 +297,7 @@ namespace asa::entities
             if (util::timedout(start, std::chrono::seconds(30))) {
                 throw structures::StructureNotOpenedError(&structure);
             }
-        }
-        while (!util::await([&structure]() {
+        } while (!util::await([&structure]() {
             return structure.get_interface()->is_open();
         }, std::chrono::seconds(5)));
     }
@@ -292,22 +305,19 @@ namespace asa::entities
     void LocalPlayer::mount(DinoEntity& entity)
     {
         const auto start = std::chrono::system_clock::now();
-
         interfaces::hud->toggle_extended(true);
-        core::sleep_for(std::chrono::milliseconds(200));
+        core::sleep_for(200ms);
 
         if (!entity.is_mounted()) {
             do {
-                if (util::timedout(start, std::chrono::minutes(1))) {
-                    throw EntityNotMounted(&entity);
-                }
+                if (util::timedout(start, 1min)) { throw EntityNotMounted(&entity); }
                 if (entity.get_inventory()->is_open()) {
                     entity.get_inventory()->close();
                 }
                 window::press(settings::use);
-            }
-            while (!util::await([&entity]() -> bool { return entity.is_mounted(); },
-                                std::chrono::seconds(5)));
+            } while (!util::await([&entity]() -> bool {
+                return entity.is_mounted();
+            }, 10s));
         }
         interfaces::hud->toggle_extended(false);
         is_riding_mount_ = true;
@@ -319,9 +329,9 @@ namespace asa::entities
         core::sleep_for(std::chrono::milliseconds(200));
 
         if (entity.is_mounted()) {
-            do { window::press(settings::use); }
-            while (!util::await([&entity]() -> bool { return !entity.is_mounted(); },
-                                std::chrono::seconds(5)));
+            do { window::press(settings::use); } while (!util::await(
+                [&entity]() -> bool { return !entity.is_mounted(); },
+                std::chrono::seconds(5)));
         }
         interfaces::hud->toggle_extended(false);
         is_riding_mount_ = false;
@@ -331,8 +341,7 @@ namespace asa::entities
                                      const AccessFlags access_flags,
                                      const TravelFlags travel_flags)
     {
-        try { access(bed, access_flags); }
-        catch (const structures::StructureError& e) {
+        try { access(bed, access_flags); } catch (const structures::StructureError& e) {
             throw FastTravelFailedError(bed.get_name(), e.what());
         }
 
@@ -359,15 +368,14 @@ namespace asa::entities
 
         if (flags & TeleportFlags_UseDefaultOption) {
             while (is_riding_mount_ && !interfaces::hud->can_default_teleport()) {
-                go_back(10ms);
+                go_back(100ms);
                 core::sleep_for(200ms);
             }
 
-            do { window::press(settings::reload); }
-            while (!util::await([]() { return !interfaces::hud->can_default_teleport(); },
-                                std::chrono::seconds(5)));
-        }
-        else {
+            do { window::press(settings::reload); } while (!util::await(
+                []() { return !interfaces::hud->can_default_teleport(); },
+                std::chrono::seconds(5)));
+        } else {
             set_pitch(90);
             access(generic_teleporter);
             generic_teleporter.get_interface()->go_to(dst.get_name());
@@ -424,7 +432,7 @@ namespace asa::entities
             }
 
             if (is_riding_mount_ && util::timedout(start, std::chrono::seconds(3))) {
-                go_forward(std::chrono::milliseconds(10));
+                go_forward(100ms);
                 core::sleep_for(std::chrono::milliseconds(400));
             }
         }
@@ -440,10 +448,10 @@ namespace asa::entities
 
     void LocalPlayer::handle_access_direction(const AccessFlags flags)
     {
-        if (flags & AccessFlags_AccessBelow) { set_pitch(90); }
-        else if (flags & AccessFlags_AccessAbove) { set_pitch(-90); }
-        if (flags & AccessFlags_AccessLeft) { set_yaw(-90); }
-        else if (flags & AccessFlags_AccessRight) { set_yaw(90); }
+        if (flags & AccessFlags_AccessBelow) { set_pitch(90); } else if (
+            flags & AccessFlags_AccessAbove) { set_pitch(-90); }
+        if (flags & AccessFlags_AccessLeft) { set_yaw(-90); } else if (
+            flags & AccessFlags_AccessRight) { set_yaw(90); }
     }
 
     void LocalPlayer::set_yaw(const int yaw)

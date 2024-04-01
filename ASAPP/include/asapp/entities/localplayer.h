@@ -41,7 +41,6 @@ using AccessFlags = int32_t;
 using TravelFlags = int32_t;
 using TeleportFlags = int32_t;
 
-using namespace std::chrono_literals;
 
 namespace asa::entities
 {
@@ -89,6 +88,8 @@ namespace asa::entities
 
         [[nodiscard]] bool is_in_travel_screen() const;
 
+        [[nodiscard]] bool is_in_connect_screen() const;
+
         [[nodiscard]] bool can_access_bed() const;
 
         [[nodiscard]] bool can_access_inventory() const;
@@ -106,6 +107,8 @@ namespace asa::entities
         [[nodiscard]] bool can_access(const structures::BaseStructure&) const;
 
         [[nodiscard]] bool can_access(const entities::BaseEntity&) const;
+
+        [[nodiscard]] bool can_ride(const entities::DinoEntity&) const;
 
         void access(const BaseEntity&) const;
 

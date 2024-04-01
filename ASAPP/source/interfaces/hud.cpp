@@ -14,7 +14,7 @@ namespace asa::interfaces
         bool is_blinking(const window::Rect& icon, const window::Color& color,
                          int min_matches = 500,
                          const std::chrono::milliseconds timeout =
-                             std::chrono::milliseconds(500))
+                                 std::chrono::milliseconds(500))
         {
             const auto start = std::chrono::system_clock::now();
             while (!util::timedout(start, timeout)) {
@@ -24,12 +24,12 @@ namespace asa::interfaces
             return false;
         }
 
-        cv::Rect find_max_contour(const std::vector<std::vector<cv::Point>>& contours)
+        cv::Rect find_max_contour(const std::vector<std::vector<cv::Point> >& contours)
         {
             int max_size = 0;
             cv::Rect max_cont;
 
-            for (const auto& contour : contours) {
+            for (const auto& contour: contours) {
                 if (contourArea(contour) > max_size) {
                     max_size = cv::contourArea(contour);
                     max_cont = boundingRect(contour);
@@ -82,7 +82,7 @@ namespace asa::interfaces
         const static window::Rect reduced(549, 327, 767, 499);
 
         return window::match_template(reduced, resources::text::fast_travel) ||
-            window::match_template(window::screenshot(), resources::text::fast_travel);
+               window::match_template(window::screenshot(), resources::text::fast_travel);
     }
 
     bool HUD::can_teleport()
@@ -92,13 +92,19 @@ namespace asa::interfaces
         const static window::Rect reduced(549, 327, 767, 499);
 
         return window::match_template(reduced, resources::text::teleport_to) ||
-            window::match_template(window::screenshot(), resources::text::teleport_to);
+               window::match_template(window::screenshot(), resources::text::teleport_to);
     }
 
     bool HUD::can_access_inventory() const
     {
         return window::match_template(window::screenshot(),
                                       resources::text::access_inventory);
+    }
+
+    bool HUD::can_ride() const
+    {
+        return window::match_template(window::screenshot(),
+                                      resources::text::ride);
     }
 
     bool HUD::can_pick_up() const
@@ -235,8 +241,9 @@ namespace asa::interfaces
         if (settings::toggle_hud.get()) {
             return window::press(settings::show_extended_info);
         }
-        if (on) { window::down(settings::show_extended_info); }
-        else { window::up(settings::show_extended_info); }
+        if (on) { window::down(settings::show_extended_info); } else {
+            window::up(settings::show_extended_info);
+        }
     }
 
     float HUD::get_health_level() const
@@ -268,8 +275,9 @@ namespace asa::interfaces
         cv::Mat mask2 = cv::Mat::zeros(original_img.size(), CV_8U);
 
         for (int i = 0; i < pix.rows; ++i) {
-            if (labels.at<int>(i, 0)) { mask1.at<uchar>(i) = 255; }
-            else { mask2.at<uchar>(i) = 255; }
+            if (labels.at<int>(i, 0)) { mask1.at<uchar>(i) = 255; } else {
+                mask2.at<uchar>(i) = 255;
+            }
         }
 
         cv::Mat structure = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(5, 5));
@@ -299,7 +307,7 @@ namespace asa::interfaces
 
         // make sure there is no overlap between the masks
         if (m1.area() != roi.height * roi.width && (m2.area() != roi.height * roi.
-            width)) { mask2 = mask2 & ~mask1; }
+                                                    width)) { mask2 = mask2 & ~mask1; }
 
 
         // lets look at the bigger of the two masks only as it's usually more reliable.

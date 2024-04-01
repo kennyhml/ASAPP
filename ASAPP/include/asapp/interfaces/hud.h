@@ -44,7 +44,9 @@ namespace asa::interfaces
         [[nodiscard]] static bool can_teleport();
 
         [[nodiscard]] bool can_access_inventory() const;
-        
+
+        [[nodiscard]] bool can_ride() const;
+
         [[nodiscard]] bool can_pick_up() const;
 
         [[nodiscard]] bool detected_enemy();

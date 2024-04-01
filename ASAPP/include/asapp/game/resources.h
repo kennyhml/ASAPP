@@ -38,6 +38,7 @@ namespace asa::resources
         inline cv::Mat fast_travel;
         inline cv::Mat teleport_to;
         inline cv::Mat access_inventory;
+        inline cv::Mat ride;
         inline cv::Mat pick_up;
         inline cv::Mat detected_enemy;
         inline cv::Mat x;

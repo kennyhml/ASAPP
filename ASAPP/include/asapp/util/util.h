@@ -16,10 +16,6 @@ namespace util
         return now - start >= timeout;
     }
 
-
-    template <typename Type>
-    const char* GetName(const Type& obj) { return typeid(obj).name(); }
-
     bool is_only_one_bit_set(int bitfield);
     void set_clipboard(const std::string& term);
 
