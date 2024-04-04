@@ -104,7 +104,7 @@ namespace asa::interfaces
     bool HUD::can_ride() const
     {
         return window::match_template(window::screenshot(),
-                                      resources::text::ride);
+                                      resources::text::ride, 0.8f);
     }
 
     bool HUD::can_pick_up() const
@@ -355,5 +355,12 @@ namespace asa::interfaces
 
         const cv::Mat mask = window::get_mask(dino_weightcapped, black_weight, 0);
         return cv::countNonZero(mask) > 950;
+    }
+
+    bool HUD::can_harvest_target() const
+    {
+        constexpr window::Color color(123, 154, 155);
+        const cv::Mat mask = window::get_mask(harvest_action_area, color, 10);
+        return cv::countNonZero(mask) > 300;
     }
 }
