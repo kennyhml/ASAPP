@@ -41,6 +41,7 @@ namespace asa::items
         inline Item* hide = nullptr;
         inline Item* sap = nullptr;
         inline Item* charcoal = nullptr;
+        inline Item* gasoline = nullptr;
     }
 
     namespace consumables
