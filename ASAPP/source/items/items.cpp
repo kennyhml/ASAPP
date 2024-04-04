@@ -326,6 +326,8 @@ namespace asa::items
             load(paintbrush, "Paintbrush", all_weapons);
             load(crossbow, "Crossbow", all_weapons);
             load(c4_detonator, "C4 Detonator", all_weapons);
+            load(chainsaw, "Chainsaw", all_weapons);
+
             return true;
         }
         catch (const ItemError& e) {

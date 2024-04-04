@@ -27,6 +27,8 @@ namespace asa::interfaces
 
         [[nodiscard]] bool is_mount_capped();
 
+        [[nodiscard]] bool is_player_capped();
+
         [[nodiscard]] bool can_harvest_target() const;
 
         [[nodiscard]] bool is_player_overweight() const;
@@ -121,6 +123,7 @@ namespace asa::interfaces
 
         window::Rect dino_xp{1872, 39, 9, 36};
         window::Rect dino_weightcapped{1713, 33, 60, 33};
+        window::Rect player_weightcapped{1709, 993, 65, 58};
         window::Rect harvest_action_area{1849, 676, 70, 78};
 
         bool extended_toggled_ = false;

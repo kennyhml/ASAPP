@@ -1287,6 +1287,20 @@
     "has_armor_value": false,
     "has_damage_value": true
   },
+  "Chainsaw": {
+    "icon": "items\\weapons\\chainsaw.png",
+    "type": "WEAPON",
+    "recipe": {},
+    "weight": 20.0,
+    "stack_size": 1,
+    "can_put_in_hotbar": true,
+    "has_spoil_timer": false,
+    "has_durability": true,
+    "requires_engram": false,
+    "has_ambiguous_query": false,
+    "has_armor_value": false,
+    "has_damage_value": true
+  },
   "Pump-Action Shotgun": {
     "icon": "items\\weapons\\pump_action_shotgun.png",
     "type": "WEAPON",

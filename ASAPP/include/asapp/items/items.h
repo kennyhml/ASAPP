@@ -253,6 +253,7 @@ namespace asa::items
         inline Item* paintbrush = nullptr;
         inline Item* crossbow = nullptr;
         inline Item* c4_detonator = nullptr;
+        inline Item* chainsaw = nullptr;
     }
 
     namespace ammo

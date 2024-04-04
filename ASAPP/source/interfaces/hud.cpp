@@ -357,6 +357,14 @@ namespace asa::interfaces
         return cv::countNonZero(mask) > 950;
     }
 
+    bool HUD::is_player_capped()
+    {
+        static constexpr window::Color black_weight{0, 0, 0};
+
+        const cv::Mat mask = window::get_mask(player_weightcapped, black_weight, 0);
+        return cv::countNonZero(mask) > 950;
+    }
+
     bool HUD::can_harvest_target() const
     {
         constexpr window::Color color(123, 154, 155);
