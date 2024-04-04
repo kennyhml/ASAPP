@@ -8,7 +8,9 @@ namespace asa::controls
 {
     namespace
     {
-        constexpr float PIXELS_PER_DEGREE = 129.f / 90.f;
+        constexpr float PIXELS_PER_DEGREE_LR = 129.f / 90.f;
+        constexpr float PIXELS_PER_DEGREE_UD = 115.f / 90.f;
+
         constexpr float MAX_LEFT_RIGHT_SENS = 3.2f;
         constexpr float MAX_UP_DOWN_SENS = 3.2f;
         constexpr float MAX_FOV = 1.25f;
@@ -147,9 +149,14 @@ namespace asa::controls
         key_up(key);
     }
 
-    void turn_degrees(int x, int y)
+    void turn_degrees_lr(int x, int y)
     {
-        turn_position(x * PIXELS_PER_DEGREE, y * PIXELS_PER_DEGREE);
+        turn_position(x * PIXELS_PER_DEGREE_LR, y * PIXELS_PER_DEGREE_LR);
+    }
+
+    void turn_degrees_ud(int x, int y)
+    {
+        turn_position(x * PIXELS_PER_DEGREE_UD, y * PIXELS_PER_DEGREE_UD);
     }
 
     void turn_position(int x, int y)

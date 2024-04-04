@@ -40,7 +40,9 @@ namespace asa::controls
 
     void mouse_combination_press(MouseButton, std::string key);
 
-    void turn_degrees(int x, int y);
+    void turn_degrees_lr(int x, int y);
+    void turn_degrees_ud(int x, int y);
+
     void turn_position(int x, int y);
     void turn_to(int x, int y);
 

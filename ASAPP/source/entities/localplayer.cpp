@@ -470,14 +470,14 @@ namespace asa::entities
 
     void LocalPlayer::turn_right(const int degrees, const std::chrono::milliseconds delay)
     {
-        controls::turn_degrees(degrees, 0);
+        controls::turn_degrees_lr(degrees, 0);
         current_yaw_ += degrees;
         core::sleep_for(delay);
     }
 
     void LocalPlayer::turn_left(const int degrees, const std::chrono::milliseconds delay)
     {
-        controls::turn_degrees(-degrees, 0);
+        controls::turn_degrees_lr(-degrees, 0);
         current_yaw_ -= degrees;
         core::sleep_for(delay);
     }
@@ -485,7 +485,7 @@ namespace asa::entities
     void LocalPlayer::turn_down(const int degrees, const std::chrono::milliseconds delay)
     {
         const int allowed = std::min(90 - current_pitch_, degrees);
-        controls::turn_degrees(0, allowed);
+        controls::turn_degrees_ud(0, allowed);
         current_pitch_ += allowed;
         core::sleep_for(delay);
     }
@@ -493,7 +493,7 @@ namespace asa::entities
     void LocalPlayer::turn_up(const int degrees, const std::chrono::milliseconds delay)
     {
         const int allowed = std::min(90 + current_pitch_, degrees);
-        controls::turn_degrees(0, -allowed);
+        controls::turn_degrees_ud(0, -allowed);
         current_pitch_ -= allowed;
         core::sleep_for(delay);
     }
