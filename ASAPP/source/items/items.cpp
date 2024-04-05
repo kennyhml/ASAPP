@@ -328,7 +328,7 @@ namespace asa::items
             load(crossbow, "Crossbow", all_weapons);
             load(c4_detonator, "C4 Detonator", all_weapons);
             load(chainsaw, "Chainsaw", all_weapons);
-
+            load(whip, "Whip", all_weapons);
             return true;
         }
         catch (const ItemError& e) {
