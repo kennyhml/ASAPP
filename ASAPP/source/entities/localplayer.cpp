@@ -369,12 +369,11 @@ namespace asa::entities
         if (flags & TeleportFlags_UseDefaultOption) {
             while (is_riding_mount_ && !interfaces::hud->can_default_teleport()) {
                 go_back(100ms);
-                core::sleep_for(200ms);
+                util::await([] { return interfaces::hud->can_default_teleport(); }, 5s);
             }
 
             do { window::press(settings::reload); } while (!util::await(
-                []() { return !interfaces::hud->can_default_teleport(); },
-                std::chrono::seconds(5)));
+                [] { return !interfaces::hud->can_default_teleport(); }, 5s));
         } else {
             set_pitch(90);
             access(generic_teleporter);
@@ -431,9 +430,9 @@ namespace asa::entities
                 return;
             }
 
-            if (is_riding_mount_ && util::timedout(start, std::chrono::seconds(3))) {
+            if (is_riding_mount_ && util::timedout(start, 3s)) {
                 go_forward(100ms);
-                core::sleep_for(std::chrono::milliseconds(400));
+                util::await([] { return interfaces::hud->can_default_teleport(); }, 5s);
             }
         }
         // See whether the default teleport popup lasts for more than 500ms
