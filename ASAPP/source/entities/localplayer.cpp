@@ -221,7 +221,7 @@ namespace asa::entities
                 throw EntityNotAccessed(&entity);
             }
         } while (!util::await([&entity]() { return entity.get_inventory()->is_open(); },
-                              std::chrono::seconds(5)));
+                              std::chrono::seconds(10)));
 
         entity.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
@@ -299,7 +299,7 @@ namespace asa::entities
             }
         } while (!util::await([&structure]() {
             return structure.get_interface()->is_open();
-        }, std::chrono::seconds(5)));
+        }, std::chrono::seconds(10)));
     }
 
     void LocalPlayer::mount(DinoEntity& entity)
