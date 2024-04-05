@@ -109,6 +109,15 @@ namespace asa::interfaces::components
          */
         [[nodiscard]] std::unique_ptr<items::Item> get_item() const;
 
+        /**
+         * @brief Gets the durability of the item located in the slot.
+         *
+         * @param durability_out The float to store the durability in.
+         *
+         * @return Whether the slot is not empty and has a durability value.
+         */
+        bool get_item_durability(float& durability_out) const;
+
     private:
         /**
          * @brief Contains the information that we have about an item in the slot without

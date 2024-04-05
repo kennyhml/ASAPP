@@ -26,40 +26,40 @@ namespace asa::interfaces::components
         bool has_blueprint_variant(const items::ItemData::ItemType type)
         {
             switch (type) {
-            case items::ItemData::ItemType::RESOURCE:
-            case items::ItemData::ItemType::ARTIFACT:
-            case items::ItemData::ItemType::CONSUMABLE: { return false; }
-            default: { return true; }
+                case items::ItemData::ItemType::RESOURCE:
+                case items::ItemData::ItemType::ARTIFACT:
+                case items::ItemData::ItemType::CONSUMABLE: { return false; }
+                default: { return true; }
             }
         }
 
         float get_confidence_for_category(const items::ItemData::ItemType category)
         {
             switch (category) {
-            case items::ItemData::ARTIFACT:
-            case items::ItemData::ATTACHMENT:
-            case items::ItemData::AMMO: { return 0.87f; }
-            case items::ItemData::WEAPON:
-            case items::ItemData::EQUIPPABLE: { return 0.7f; }
-            default: { return 0.8f; }
+                case items::ItemData::ARTIFACT:
+                case items::ItemData::ATTACHMENT:
+                case items::ItemData::AMMO: { return 0.87f; }
+                case items::ItemData::WEAPON:
+                case items::ItemData::EQUIPPABLE: { return 0.7f; }
+                default: { return 0.8f; }
             }
         }
 
         float get_max_confidence_for_category(const items::ItemData::ItemType category)
         {
             switch (category) {
-            case items::ItemData::ARTIFACT:
-            case items::ItemData::ATTACHMENT:
-            case items::ItemData::AMMO: { return 0.9f; }
-            case items::ItemData::CONSUMABLE: { return 0.96f; }
-            default: { return 0.8f; }
+                case items::ItemData::ARTIFACT:
+                case items::ItemData::ATTACHMENT:
+                case items::ItemData::AMMO: { return 0.9f; }
+                case items::ItemData::CONSUMABLE: { return 0.96f; }
+                default: { return 0.8f; }
             }
         }
 
         bool is_grayscale_category(const items::ItemData::ItemType category)
         {
             return (category == items::ItemData::EQUIPPABLE || category ==
-                items::ItemData::WEAPON);
+                    items::ItemData::WEAPON);
         }
     }
 
@@ -105,7 +105,7 @@ namespace asa::interfaces::components
 
         cv::Rect rect;
         double max_rect = 0.0;
-        for (const auto& cont : contours) {
+        for (const auto& cont: contours) {
             contour approxed;
             cv::approxPolyDP(cont, approxed, 0.04 * cv::arcLength(cont, true), true);
 
@@ -154,8 +154,7 @@ namespace asa::interfaces::components
             roi.width = std::min(roi.width, last_img_.size().width - roi.x);
             roi.height = std::min(roi.height, last_img_.size().height - roi.y);
             src = cv::Mat(last_img_, roi.to_cv());
-        }
-        else { src = last_img_; }
+        } else { src = last_img_; }
 
         cv::Mat templ = item.get_inventory_icon();
         const cv::Mat mask = item.get_inventory_icon_mask();
@@ -194,11 +193,11 @@ namespace asa::interfaces::components
         items::Item* best_match = nullptr;
         float best_match_accuracy = 0.f;
 
-        for (const auto& [type, items] : items::iter_all()) {
+        for (const auto& [type, items]: items::iter_all()) {
             if (perf_match_found) { break; }
             const float category_max_conf = get_max_confidence_for_category(type);
 
-            for (const auto& item : items) {
+            for (const auto& item: items) {
                 float accuracy = 0.f;
                 if (!data.matches((*item)->get_data())) { continue; }
 
@@ -222,6 +221,23 @@ namespace asa::interfaces::components
         return std::make_unique<items::Item>(*best_match,
                                              is_blueprint(best_match->get_data()),
                                              get_quality());
+    }
+
+    bool Slot::get_item_durability(float& durability_out) const
+    {
+        static constexpr window::Color color{1, 156, 136};
+
+        auto roi = get_spoil_or_durability_bar_area();
+        roi.y += 2;
+        roi.height = 1;
+
+        if (is_empty() && !has_durability()) { return false; }
+
+        const auto mask = window::get_mask(roi, color, 10);
+        const int green = cv::countNonZero(mask);
+
+        durability_out = static_cast<float>(green) / static_cast<float>(roi.width);
+        return true;
     }
 
     bool Slot::has_armor_value() const
@@ -283,7 +299,7 @@ namespace asa::interfaces::components
     {
         const window::Rect quality_roi(area.x + 2, area.y + 60, 6, 6);
 
-        for (const auto& [quality, color] : color_per_quality) {
+        for (const auto& [quality, color]: color_per_quality) {
             if (cv::countNonZero(window::get_mask(quality_roi, color, 25)) > 20) {
                 return quality;
             }
@@ -296,11 +312,13 @@ namespace asa::interfaces::components
         PrederminationResult res;
 
         // Only one of these can be true for any item
-        if (has_armor_value()) { res.has_armor_modifier = true; }
-        else if (has_damage_value()) { res.has_damage_modifier = true; }
-        else if (is_stack()) { res.is_stack = true; }
-        if (has_spoil_timer()) { res.has_spoil_bar = true; }
-        else if (has_durability()) { res.has_durability_bar = true; }
+        if (has_armor_value()) { res.has_armor_modifier = true; } else if (
+            has_damage_value()) { res.has_damage_modifier = true; } else if (is_stack()) {
+            res.is_stack = true;
+        }
+        if (has_spoil_timer()) { res.has_spoil_bar = true; } else if (has_durability()) {
+            res.has_durability_bar = true;
+        }
         return res;
     }
 
@@ -311,31 +329,34 @@ namespace asa::interfaces::components
             this->has_damage_modifier) { return false; }
         if ((data.stack_size == 1) && this->is_stack) { return false; }
         if (data.has_spoil_timer != this->has_spoil_bar || ((data.has_durability != this->
-            has_durability_bar) && !has_blueprint_variant(data.type))) { return false; }
+                    has_durability_bar) && !has_blueprint_variant(data.type))) {
+            return false;
+        }
         return true;
     }
 
     bool Slot::PrederminationResult::matches(items::ItemData::ItemType type) const
     {
         switch (type) {
-        case items::ItemData::EQUIPPABLE: return has_durability_bar;
-        case items::ItemData::CONSUMABLE: return has_spoil_bar;
+            case items::ItemData::EQUIPPABLE: return has_durability_bar;
+            case items::ItemData::CONSUMABLE: return has_spoil_bar;
 
-        case items::ItemData::AMMO: return !has_spoil_bar && !has_durability_bar;
-        case items::ItemData::RESOURCE: return !has_durability_bar;
+            case items::ItemData::AMMO: return !has_spoil_bar && !has_durability_bar;
+            case items::ItemData::RESOURCE: return !has_durability_bar;
 
-        default:
-            // for all of theses cases there is no clear distinction
-            // Example: C4 det is a weapon but has no durability.
-            return true;
+            default:
+                // for all of theses cases there is no clear distinction
+                // Example: C4 det is a weapon but has no durability.
+                return true;
         }
     }
 
     std::ostream& operator<<(std::ostream& os, const Slot::PrederminationResult& d)
     {
         return os << std::format(
-            "Armor: {}, damage: {}, stack: {}, spoils: {}, durability: {})",
-            d.has_armor_modifier, d.has_damage_modifier, d.is_stack, d.has_spoil_bar,
-            d.has_durability_bar);
+                   "Armor: {}, damage: {}, stack: {}, spoils: {}, durability: {})",
+                   d.has_armor_modifier, d.has_damage_modifier, d.is_stack,
+                   d.has_spoil_bar,
+                   d.has_durability_bar);
     }
 }
