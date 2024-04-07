@@ -38,7 +38,7 @@ namespace asa::resources
         if (!is_valid_dir(core::config::assets_dir)) { return false; }
 
         std::cout << "[+] Initializing resources..." << std::endl;
-        if (!interfaces::init() || !text::init()) { return false; }
+        if (!interfaces::init() || !text::init() || !wheel_icon::init()) { return false; }
 
         return true;
     }
@@ -93,6 +93,17 @@ namespace asa::resources
         LOAD_RESOURCE(dir, durability);
         LOAD_RESOURCE(dir, ride);
 
+        return true;
+    }
+
+    bool wheel_icon::init()
+    {
+        auto dir = core::config::assets_dir / "wheel_actions";
+        if (!is_valid_dir(dir)) {
+            std::cout << dir << " not found" << std::endl;
+            return false;
+        }
+        LOAD_RESOURCE(dir, lay_on);
         return true;
     }
 }

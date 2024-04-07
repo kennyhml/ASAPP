@@ -116,6 +116,8 @@ namespace asa::entities
 
         void access(const structures::SimpleBed&, AccessFlags);
 
+        void lay_on(const structures::SimpleBed&, AccessFlags);
+
         void access(const structures::InteractableStructure&) const;
 
         void pick_up_one() const { controls::press(settings::use); }

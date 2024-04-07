@@ -45,4 +45,14 @@ namespace asa::resources
         inline cv::Mat bp_weight;
         inline cv::Mat durability;
     }
+
+    namespace wheel_icon
+    {
+        bool init();
+        inline cv::Mat lay_on;
+    }
+
 }
+
+
+

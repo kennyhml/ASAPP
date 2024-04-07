@@ -8,6 +8,7 @@
 #include "asapp/structures/exceptions.h"
 #include <iostream>
 
+#include "asapp/game/resources.h"
 #include "asapp/interfaces/spawnmap.h"
 
 
@@ -285,6 +286,27 @@ namespace asa::entities
         // At this point all the specific work for beds is done, can let the
         // general access method take over the rest.
         access(bed);
+    }
+
+    void LocalPlayer::lay_on(const structures::SimpleBed&, const AccessFlags flags)
+    {
+        handle_access_direction(flags);
+        core::sleep_for(1s);
+
+        controls::down(settings::use);
+        core::sleep_for(2s);
+
+        const auto location = window::locate_template(window::Rect{683, 253, 543, 556},
+                                                      resources::wheel_icon::lay_on);
+        if (!location.has_value()) {
+            throw std::exception("Failed to locate lay_on position");
+        }
+
+        const auto pos = location->get_random_location(3);
+        window::set_mouse_pos(pos.x + 683, pos.y + 253);
+
+        core::sleep_for(1s);
+        controls::release(settings::use);
     }
 
     void LocalPlayer::access(const structures::InteractableStructure& structure) const

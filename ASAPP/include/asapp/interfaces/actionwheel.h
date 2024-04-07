@@ -1,5 +1,4 @@
 #pragma once
-
 #include "iinterface.h"
 #include "../game/window.h"
 
@@ -13,6 +12,7 @@ namespace asa::interfaces
 
     public:
         bool is_open() const override;
+
         void select_lay_on() const;
     };
 }
