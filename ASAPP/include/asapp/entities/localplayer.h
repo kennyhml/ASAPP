@@ -110,15 +110,15 @@ namespace asa::entities
 
         [[nodiscard]] bool can_ride(const entities::DinoEntity&) const;
 
-        void access(const BaseEntity&) const;
+        void access(const BaseEntity&);
 
-        void access(const structures::Container&) const;
+        void access(const structures::Container&);
 
         void access(const structures::SimpleBed&, AccessFlags);
 
         void lay_on(const structures::SimpleBed&, AccessFlags);
 
-        void access(const structures::InteractableStructure&) const;
+        void access(const structures::InteractableStructure&);
 
         void pick_up_one() const { controls::press(settings::use); }
 
@@ -159,6 +159,11 @@ namespace asa::entities
         void get_off_bed();
 
         void suicide();
+
+        /**
+         * @brief Stores the current state, then reconnects & restores the original state.
+         */
+        void reconnect();
 
         /**
          * @brief Override to ensure we leave any crouched / proned states first.
@@ -313,9 +318,9 @@ namespace asa::entities
 
         std::chrono::system_clock::time_point last_jumped_;
 
-        void pass_travel_screen(bool in = true, bool out = true);
+        bool pass_travel_screen(bool in = true, bool out = true);
 
-        void pass_teleport_screen(bool access_flag = false);
+        bool pass_teleport_screen(bool access_flag = false);
     };
 
     inline std::unique_ptr<LocalPlayer> local_player = std::make_unique<LocalPlayer>();

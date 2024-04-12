@@ -9,6 +9,7 @@
 #include <iostream>
 
 #include "asapp/game/resources.h"
+#include "asapp/interfaces/console.h"
 #include "asapp/interfaces/spawnmap.h"
 
 
@@ -22,7 +23,7 @@ namespace asa::entities
     bool LocalPlayer::is_alive() const
     {
         interfaces::hud->toggle_extended(true);
-        const bool result = util::await([]() {
+        const bool result = util::await([] {
             return interfaces::hud->extended_information_is_toggled();
         }, std::chrono::milliseconds(300));
 
@@ -165,6 +166,28 @@ namespace asa::entities
         interfaces::hud->toggle_extended(false, true);
     }
 
+    void LocalPlayer::reconnect()
+    {
+        const int prev_yaw = current_yaw_;
+        const int prev_pitch = current_pitch_;
+        const bool was_crouched = is_crouched_;
+        const bool was_proned = is_proned_;
+
+        interfaces::console->execute("reconnect");
+        if (!util::await([this] { return !is_alive(); }, 1min)) {
+            throw std::exception("Failed to disconnect.");
+        }
+        if (!util::await([this] { return is_alive(); }, 1min)) {
+            throw std::exception("Failed to reconnect.");
+        }
+        core::sleep_for(10s);
+        reset_state();
+        set_yaw(prev_yaw);
+        set_pitch(prev_pitch);
+        if (was_crouched) { crouch(); }
+        if (was_proned) { prone(); }
+    }
+
     void LocalPlayer::jump()
     {
         stand_up();
@@ -211,7 +234,7 @@ namespace asa::entities
         return interfaces::hud->can_ride();
     }
 
-    void LocalPlayer::access(const BaseEntity& entity) const
+    void LocalPlayer::access(const BaseEntity& entity)
     {
         if (entity.get_inventory()->is_open()) { return; }
 
@@ -227,7 +250,7 @@ namespace asa::entities
         entity.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
     }
 
-    void LocalPlayer::access(const structures::Container& container) const
+    void LocalPlayer::access(const structures::Container& container)
     {
         // Accessing the inventory is the same as accessing the interface of
         // any interactable structure such as teleporters, beds etc.
@@ -241,10 +264,9 @@ namespace asa::entities
         static structures::Container bag("Item Cache", 0);
 
         if (bed.get_interface()->is_open()) { return; }
-
         const bool special_access_set = (flags & AccessFlags_AccessAboveOrBelow) ==
                                         AccessFlags_AccessAboveOrBelow;
-
+        crouch();
         for (int attempt = 0; attempt < 3; attempt++) {
             if (!special_access_set) { handle_access_direction(flags); }
 
@@ -309,19 +331,28 @@ namespace asa::entities
         controls::release(settings::use);
     }
 
-    void LocalPlayer::access(const structures::InteractableStructure& structure) const
+    void LocalPlayer::access(const structures::InteractableStructure& structure)
     {
         if (structure.get_interface()->is_open()) { return; }
+        bool has_reconnected = false;
+        auto start = std::chrono::system_clock::now();
 
-        const auto start = std::chrono::system_clock::now();
         do {
             window::press(structure.get_interact_key(), true);
-            if (util::timedout(start, std::chrono::seconds(30))) {
-                throw structures::StructureNotOpenedError(&structure);
+            if (util::timedout(start, 30s)) {
+                // before we throw the error, lets try to reconnect and restore our
+                // state in order to handle the render bug
+                if (!has_reconnected) {
+                    reconnect();
+                    start = std::chrono::system_clock::now();
+                    has_reconnected = true;
+                } else {
+                    throw structures::StructureNotOpenedError(&structure);
+                }
             }
-        } while (!util::await([&structure]() {
+        } while (!util::await([&structure] {
             return structure.get_interface()->is_open();
-        }, std::chrono::seconds(10)));
+        }, 10s));
     }
 
     void LocalPlayer::mount(DinoEntity& entity)
@@ -381,7 +412,8 @@ namespace asa::entities
     void LocalPlayer::teleport_to(const structures::Teleporter& dst,
                                   const TeleportFlags flags)
     {
-        static structures::Teleporter generic_teleporter("STATIC GENERIC");
+        static structures::Teleporter generic_teleporter("GENERIC SRC TELEPORTER");
+        const auto start = std::chrono::system_clock::now();
 
         // While riding a mount, the only way we can teleport is the default option.
         if (is_riding_mount_ && !(flags & TeleportFlags_UseDefaultOption)) {
@@ -392,6 +424,9 @@ namespace asa::entities
             while (is_riding_mount_ && !interfaces::hud->can_default_teleport()) {
                 go_back(100ms);
                 util::await([] { return interfaces::hud->can_default_teleport(); }, 5s);
+                if (util::timedout(start, 30s)) {
+                    throw TeleportFailedError(dst.get_name(), "No default destination.");
+                }
             }
 
             do { window::press(settings::reload); } while (!util::await(
@@ -400,14 +435,16 @@ namespace asa::entities
             set_pitch(90);
             access(generic_teleporter);
             generic_teleporter.get_interface()->go_to(dst.get_name());
-            util::await([]() { return !interfaces::hud->can_default_teleport(); },
-                        std::chrono::seconds(5));
+            util::await([] { return !interfaces::hud->can_default_teleport(); }, 5s);
         }
 
         // If the unsafe load flag is set, skip the step of passing the teleportation
         // and just assume that we did.
         if (flags & TeleportFlags_UnsafeLoad) { return; }
-        pass_teleport_screen();
+        if (!pass_teleport_screen()) {
+            throw TeleportFailedError(dst.get_name(), "Did not arrive at destination.\n"
+                                      "Make sure the destination has a default set.");
+        }
     }
 
     void LocalPlayer::get_off_bed()
@@ -417,7 +454,7 @@ namespace asa::entities
         reset_view_angles();
     }
 
-    void LocalPlayer::pass_travel_screen(const bool in, const bool out)
+    bool LocalPlayer::pass_travel_screen(const bool in, const bool out)
     {
         if (in) {
             if (!util::await([this]() { return is_in_travel_screen(); },
@@ -430,41 +467,33 @@ namespace asa::entities
         }
 
         core::sleep_for(std::chrono::seconds(1));
+        return true;
     }
 
-    void LocalPlayer::pass_teleport_screen(const bool access_flag)
+    bool LocalPlayer::pass_teleport_screen(const bool access_flag)
     {
         const auto start = std::chrono::system_clock::now();
 
         while (!interfaces::hud->can_default_teleport()) {
             // for long distance teleports we still enter a white screen,
             // so we can simply reuse our bed logic
-            if (is_in_travel_screen()) {
-                std::cout << "[+] Whitescreen entered upon teleport." << std::endl;
-                return pass_travel_screen(false);
-            }
-            if (util::timedout(start, std::chrono::seconds(30))) {
-                std::cerr << "[!] Timed out waiting for teleport!" << std::endl;
-                return;
-            }
-            if (access_flag && can_access_inventory()) {
-                std::cout << "[+] Teleported to a container." << std::endl;
-                return;
-            }
+            if (is_in_travel_screen()) { return pass_travel_screen(false); }
+            if (util::timedout(start, 30s)) { return false; }
+            if (access_flag && can_access_inventory()) { return true; }
 
             if (is_riding_mount_ && util::timedout(start, 3s)) {
                 go_forward(100ms);
                 util::await([] { return interfaces::hud->can_default_teleport(); }, 5s);
+                if (util::timedout(start, 30s)) { return false; }
             }
         }
         // See whether the default teleport popup lasts for more than 500ms
         // if it doesnt its a glitched popup that appears when the teleport has
         // happened. Restart the procedure in that case
-        if (util::await([]() { return !interfaces::hud->can_default_teleport(); },
-                        std::chrono::milliseconds(500))) {
-            std::cout << "[!] Glitched default teleport popup found." << std::endl;
+        if (util::await([] { return !interfaces::hud->can_default_teleport(); }, 500ms)) {
             return pass_teleport_screen();
         }
+        return true;
     }
 
     void LocalPlayer::handle_access_direction(const AccessFlags flags)
