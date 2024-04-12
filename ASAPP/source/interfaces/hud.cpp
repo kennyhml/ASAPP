@@ -48,8 +48,8 @@ namespace asa::interfaces
 
     bool HUD::is_player_overweight() const
     {
-        return is_blinking(weight_icon_, blink_red_state_weight_, 500,
-                           std::chrono::milliseconds(700));
+        return is_blinking(weight_icon_, blink_red_state_weight_, 400,
+                           std::chrono::milliseconds(800));
     }
 
     bool HUD::is_player_broken_bones() const
