@@ -23,7 +23,7 @@ namespace asa::interfaces::components
         /**
          * @return Gets the image of the tooltip, an image must have been taken before.
          */
-        cv::Mat get_image() { return image_; }
+        cv::Mat get_image() const { return image_; }
 
         /**
          * @return Takes the image of the tooltip, it must be visible at this point.
