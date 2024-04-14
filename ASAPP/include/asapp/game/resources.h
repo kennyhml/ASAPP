@@ -25,6 +25,7 @@ namespace asa::resources
         inline cv::Mat ride;
         inline cv::Mat tribemanager;
         inline cv::Mat day_log;
+        inline cv::Mat server_transition;
     }
 
     namespace text
@@ -46,6 +47,7 @@ namespace asa::resources
         inline cv::Mat durability;
         inline cv::Mat teleports;
         inline cv::Mat beds;
+        inline cv::Mat resume;
     }
 
     namespace wheel_icon

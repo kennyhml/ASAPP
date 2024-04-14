@@ -66,7 +66,7 @@ namespace asa::resources
         LOAD_RESOURCE(dir, ride);
         LOAD_RESOURCE(dir, tribemanager);
         LOAD_RESOURCE(dir, day_log);
-
+        LOAD_RESOURCE(dir, server_transition);
         return true;
     }
 
@@ -94,6 +94,7 @@ namespace asa::resources
         LOAD_RESOURCE(dir, ride);
         LOAD_RESOURCE(dir, teleports);
         LOAD_RESOURCE(dir, beds);
+        LOAD_RESOURCE(dir, resume);
         return true;
     }
 
