@@ -186,4 +186,8 @@ namespace asa::window
     void reset_cursor(POINT& previousPosition);
 
     void post_close();
+
+    bool is_playing_transition_movie();
+
+
 }

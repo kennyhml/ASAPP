@@ -9,6 +9,7 @@
 #include "asapp/core/config.h"
 #include "asapp/core/state.h"
 #include "asapp/game/globals.h"
+#include "asapp/game/resources.h"
 
 namespace asa::window
 {
@@ -83,8 +84,9 @@ namespace asa::window
     {
         core::check_state();
         cv::Mat result;
-        if (mask.empty()) { matchTemplate(source, templ, result, mode); }
-        else { matchTemplate(source, templ, result, mode, mask); }
+        if (mask.empty()) { matchTemplate(source, templ, result, mode); } else {
+            matchTemplate(source, templ, result, mode, mask);
+        }
 
 
         double min_val, max_val;
@@ -211,8 +213,7 @@ namespace asa::window
                 interval_start = now;
                 info = true;
             }
-        }
-        while (!hWnd);
+        } while (!hWnd);
 
         RECT rect = get_window_rect();
         width = rect.right - rect.left;
@@ -337,8 +338,7 @@ namespace asa::window
             set_mouse_pos(position);
             core::sleep_for(delay);
             mouse_press(button);
-        }
-        else { post_mouse_press_at(position, button); }
+        } else { post_mouse_press_at(position, button); }
     }
 
     void down(const settings::ActionMapping& input, std::chrono::milliseconds delay)
@@ -403,8 +403,7 @@ namespace asa::window
     {
         if (controls::is_mouse_input(input)) {
             post_mouse_press(controls::str_to_button.at(input.key), catchCursor, delay);
-        }
-        else { post_key_press(input.key, catchCursor, delay); }
+        } else { post_key_press(input.key, catchCursor, delay); }
     }
 
     void post_key_down(const std::string& key, std::chrono::milliseconds delay)
@@ -437,16 +436,19 @@ namespace asa::window
     {
         using controls::MouseButton;
         switch (button) {
-        case MouseButton::LEFT: PostMessageW(hWnd, WM_LBUTTONDOWN, MK_LBUTTON, NULL);
-            break;
-        case MouseButton::RIGHT: PostMessageW(hWnd, WM_RBUTTONDOWN, MK_RBUTTON, NULL);
-            break;
-        case MouseButton::MIDDLE: PostMessageW(hWnd, WM_MBUTTONDOWN, MK_MBUTTON, NULL);
-            break;
-        case MouseButton::MOUSE4: PostMessageW(hWnd, WM_XBUTTONDOWN, MK_XBUTTON1, NULL);
-            break;
-        case MouseButton::MOUSE5: PostMessageW(hWnd, WM_XBUTTONDOWN, MK_XBUTTON2, NULL);
-            break;
+            case MouseButton::LEFT: PostMessageW(hWnd, WM_LBUTTONDOWN, MK_LBUTTON, NULL);
+                break;
+            case MouseButton::RIGHT: PostMessageW(hWnd, WM_RBUTTONDOWN, MK_RBUTTON, NULL);
+                break;
+            case MouseButton::MIDDLE:
+                PostMessageW(hWnd, WM_MBUTTONDOWN, MK_MBUTTON, NULL);
+                break;
+            case MouseButton::MOUSE4: PostMessageW(hWnd, WM_XBUTTONDOWN, MK_XBUTTON1,
+                                                   NULL);
+                break;
+            case MouseButton::MOUSE5: PostMessageW(hWnd, WM_XBUTTONDOWN, MK_XBUTTON2,
+                                                   NULL);
+                break;
         }
         core::sleep_for(delay);
     }
@@ -455,16 +457,16 @@ namespace asa::window
     {
         using controls::MouseButton;
         switch (button) {
-        case MouseButton::LEFT: PostMessageW(hWnd, WM_LBUTTONUP, MK_LBUTTON, NULL);
-            break;
-        case MouseButton::RIGHT: PostMessageW(hWnd, WM_RBUTTONUP, MK_RBUTTON, NULL);
-            break;
-        case MouseButton::MIDDLE: PostMessageW(hWnd, WM_MBUTTONUP, MK_MBUTTON, NULL);
-            break;
-        case MouseButton::MOUSE4: PostMessageW(hWnd, WM_XBUTTONUP, MK_XBUTTON1, NULL);
-            break;
-        case MouseButton::MOUSE5: PostMessageW(hWnd, WM_XBUTTONUP, MK_XBUTTON2, NULL);
-            break;
+            case MouseButton::LEFT: PostMessageW(hWnd, WM_LBUTTONUP, MK_LBUTTON, NULL);
+                break;
+            case MouseButton::RIGHT: PostMessageW(hWnd, WM_RBUTTONUP, MK_RBUTTON, NULL);
+                break;
+            case MouseButton::MIDDLE: PostMessageW(hWnd, WM_MBUTTONUP, MK_MBUTTON, NULL);
+                break;
+            case MouseButton::MOUSE4: PostMessageW(hWnd, WM_XBUTTONUP, MK_XBUTTON1, NULL);
+                break;
+            case MouseButton::MOUSE5: PostMessageW(hWnd, WM_XBUTTONUP, MK_XBUTTON2, NULL);
+                break;
         }
         core::sleep_for(delay);
     }
@@ -491,13 +493,11 @@ namespace asa::window
         LPARAM lParam = MAKELPARAM(position.x, position.y);
         if (button == controls::MouseButton::LEFT) {
             PostMessageW(hWnd, WM_LBUTTONDOWN, MK_LBUTTON, lParam);
-        }
-        else { PostMessageW(hWnd, WM_RBUTTONDOWN, MK_RBUTTON, lParam); }
+        } else { PostMessageW(hWnd, WM_RBUTTONDOWN, MK_RBUTTON, lParam); }
 
         if (button == controls::MouseButton::LEFT) {
             PostMessageW(hWnd, WM_LBUTTONUP, MK_LBUTTON, lParam);
-        }
-        else { PostMessageW(hWnd, WM_RBUTTONUP, MK_RBUTTON, lParam); }
+        } else { PostMessageW(hWnd, WM_RBUTTONUP, MK_RBUTTON, lParam); }
     }
 
     void reset_cursor(POINT& previousPosition)
@@ -534,5 +534,11 @@ namespace asa::window
             std::cout << "Closed game window" << std::endl;
             PostMessageW(hwnd, WM_CLOSE, 0, 0);
         }
+    }
+
+    bool is_playing_transition_movie()
+    {
+        return match_template(Rect(1569, 698, 342, 364),
+                              resources::interfaces::server_transition);
     }
 }
