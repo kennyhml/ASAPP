@@ -10,6 +10,7 @@
 
 #include "asapp/game/resources.h"
 #include "asapp/interfaces/console.h"
+#include "asapp/interfaces/menu.h"
 #include "asapp/interfaces/spawnmap.h"
 
 
@@ -172,14 +173,21 @@ namespace asa::entities
         const int prev_pitch = current_pitch_;
         const bool was_crouched = is_crouched_;
         const bool was_proned = is_proned_;
+        std::cout << "previous states saved..." << std::endl;
+
+        interfaces::menu->open();
+        interfaces::menu->close();
 
         interfaces::console->execute("reconnect");
-        if (!util::await([this] { return !is_alive(); }, 1min)) {
+
+        if (!util::await([] { return window::is_playing_transition_movie(); }, 1min)) {
             throw std::exception("Failed to disconnect.");
         }
-        if (!util::await([this] { return is_alive(); }, 1min)) {
+        std::cout << "Now reconnecting" << std::endl;
+        if (!util::await([] { return !window::is_playing_transition_movie(); }, 1min)) {
             throw std::exception("Failed to reconnect.");
         }
+        std::cout << "Now reconnected" << std::endl;
         core::sleep_for(10s);
         reset_state();
         set_yaw(prev_yaw);
@@ -271,27 +279,24 @@ namespace asa::entities
             if (!special_access_set) { handle_access_direction(flags); }
 
             // If a bag is seen, give it a few seconds to disappear.
-            if (!util::await([this]() -> bool { return !can_access(bag); },
-                             std::chrono::seconds(3))) {
+            if (!util::await([this]() -> bool { return !can_access(bag); }, 3s)) {
                 access(bag);
                 // Check health level to ensure its an item cache.
                 if (bag.get_info()->get_health_level() == 0.f) {
                     bag.get_inventory()->popcorn_all();
                 } else { reset_pitch(); }
                 bag.get_inventory()->close();
-
-                core::sleep_for(std::chrono::seconds(1));
+                core::sleep_for(1s);
                 continue;
             }
 
             if (special_access_set) { set_pitch(90); }
-            if (util::await(interfaces::HUD::can_fast_travel, std::chrono::seconds(1))) {
+            if (util::await(interfaces::HUD::can_fast_travel, 1s)) {
                 break;
             }
             if (special_access_set) {
                 set_pitch(-90);
-                if (util::await(interfaces::HUD::can_fast_travel,
-                                std::chrono::seconds(1))) { break; }
+                if (util::await(interfaces::HUD::can_fast_travel, 1s)) { break; }
             }
 
             // Still unable to see the bed, either missing or not yet loaded.
@@ -300,8 +305,7 @@ namespace asa::entities
             }
 
             // TODO: Implement the action wheel as 2nd indicator we are unable to access it
-            const auto timeout = std::chrono::seconds(10);
-            if (!util::await(interfaces::HUD::can_fast_travel, timeout)) {
+            if (!util::await(interfaces::HUD::can_fast_travel, 5s) && attempt != 2) {
                 reset_pitch();
             }
         }
@@ -442,8 +446,7 @@ namespace asa::entities
         // and just assume that we did.
         if (flags & TeleportFlags_UnsafeLoad) { return; }
         if (!pass_teleport_screen()) {
-            throw TeleportFailedError(dst.get_name(), "Did not arrive at destination.\n"
-                                      "Make sure the destination has a default set.");
+            throw TeleportFailedError(dst.get_name(), "Did not arrive at destination.");
         }
     }
 

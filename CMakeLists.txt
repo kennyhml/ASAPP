@@ -124,6 +124,7 @@ add_library(asapp STATIC
         ASAPP/source/interfaces/dinoinfo.cpp
         ASAPP/include/asapp/interfaces/dinoinventory.h
         ASAPP/source/interfaces/dinoinventory.cpp
+        ASAPP/source/interfaces/menu.cpp
 )
 
 set_target_properties(asapp PROPERTIES

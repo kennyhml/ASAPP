@@ -7,9 +7,19 @@
 
 namespace asa::interfaces
 {
+    namespace
+    {
+        bool open()
+        {
+            return window::match_template(window::Rect(283, 129, 91, 46),
+                                          resources::text::beds);
+        }
+    }
+
     bool TravelMap::is_open() const
     {
-        return window::match_template(window::Rect(283, 129, 91, 46), resources::text::beds);
+        if (!open()) { return false; }
+        return !util::await([] { return !open(); }, 1s);
     }
 
     void TravelMap::close()
