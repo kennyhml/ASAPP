@@ -92,7 +92,8 @@ namespace asa::resources
         LOAD_RESOURCE(dir, pick_up);
         LOAD_RESOURCE(dir, durability);
         LOAD_RESOURCE(dir, ride);
-
+        LOAD_RESOURCE(dir, teleports);
+        LOAD_RESOURCE(dir, beds);
         return true;
     }
 

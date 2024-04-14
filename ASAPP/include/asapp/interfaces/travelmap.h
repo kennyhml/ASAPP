@@ -9,6 +9,8 @@ namespace asa::interfaces
     public:
         using BaseTravelMap::BaseTravelMap;
 
+        bool is_open() const override;
+
         /**
          * @brief Closes the travel map interface.
          */

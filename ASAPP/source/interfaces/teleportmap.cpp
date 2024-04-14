@@ -2,10 +2,16 @@
 #include "asapp/interfaces/teleportmap.h"
 #include "asapp/util/util.h"
 #include "asapp/core/state.h"
+#include "asapp/game/resources.h"
 #include "asapp/interfaces/exceptions.h"
 
 namespace asa::interfaces
 {
+    bool TeleportMap::is_open() const
+    {
+        return window::match_template({239, 126, 176, 51}, resources::text::teleports);
+    }
+
     void TeleportMap::close()
     {
         const auto start = std::chrono::system_clock::now();
@@ -44,9 +50,9 @@ namespace asa::interfaces
             throw std::exception("Tp confirmation button did not become available.");
         }
 
-        do { confirm_button.press(); }
-        while (!util::await([this]() -> bool { return !is_open(); },
-                            std::chrono::seconds(5)));
+        do { confirm_button.press(); } while (!util::await(
+            [this]() -> bool { return !is_open(); },
+            std::chrono::seconds(5)));
         searchbar.set_text_cleared();
     }
 
@@ -54,7 +60,7 @@ namespace asa::interfaces
     {
         std::vector<DestinationButton> ret;
 
-        for (const auto& roi : destination_slots_) {
+        for (const auto& roi: destination_slots_) {
             // create an imaginary button for now.
             const DestinationButton button(roi.x, roi.y);
             // button doesnt exist, end of the list reached.

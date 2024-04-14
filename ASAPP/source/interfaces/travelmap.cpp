@@ -2,10 +2,16 @@
 #include "asapp/interfaces/travelmap.h"
 #include "asapp/util/util.h"
 #include "asapp/core/state.h"
+#include "asapp/game/resources.h"
 #include "asapp/interfaces/exceptions.h"
 
 namespace asa::interfaces
 {
+    bool TravelMap::is_open() const
+    {
+        return window::match_template({283, 129, 91, 46}, resources::text::beds);
+    }
+
     void TravelMap::close()
     {
         auto start = std::chrono::system_clock::now();
@@ -34,9 +40,9 @@ namespace asa::interfaces
             throw std::exception("Travel confirmation button did not become available.");
         }
 
-        do { confirm_button.press(); }
-        while (!util::await([this]() -> bool { return !is_open(); },
-                            std::chrono::seconds(5)));
+        do { confirm_button.press(); } while (!util::await(
+            [this]() -> bool { return !is_open(); },
+            std::chrono::seconds(5)));
         searchbar.set_text_cleared();
     }
 }

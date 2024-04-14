@@ -44,6 +44,8 @@ namespace asa::resources
         inline cv::Mat x;
         inline cv::Mat bp_weight;
         inline cv::Mat durability;
+        inline cv::Mat teleports;
+        inline cv::Mat beds;
     }
 
     namespace wheel_icon
