@@ -1,7 +1,7 @@
 #pragma once
-#include <stdexcept>
 #include "baseentity.h"
 #include "dinoentity.h"
+#include "asapp/core/exceptions.h"
 
 namespace asa::entities
 {
@@ -9,7 +9,7 @@ namespace asa::entities
      * @brief Parent class for any exception that may be thrown while
      * interacting with an entity.
      */
-    class EntityError : public std::exception
+    class EntityError : public core::ASAPPError
     {
     private:
         std::string info;

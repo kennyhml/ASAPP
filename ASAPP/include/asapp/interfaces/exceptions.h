@@ -1,12 +1,11 @@
 #pragma once
-#include <exception>
 #include <format>
-#include <typeinfo>
 #include "iinterface.h"
+#include "asapp/core/exceptions.h"
 
 namespace asa::interfaces
 {
-    class InterfaceError : public std::exception
+    class InterfaceError : public core::ASAPPError
     {
         const IInterface* _interface;
         std::string info;

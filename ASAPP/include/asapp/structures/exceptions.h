@@ -1,12 +1,11 @@
 #pragma once
-#include <exception>
 #include <format>
-#include <typeinfo>
 #include "basestructure.h"
+#include "asapp/core/exceptions.h"
 
 namespace asa::structures
 {
-    class StructureError : public std::exception
+    class StructureError : public core::ASAPPError
     {
         const BaseStructure* structure;
         std::string info;
