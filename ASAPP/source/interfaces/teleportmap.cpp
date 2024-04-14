@@ -9,7 +9,7 @@ namespace asa::interfaces
 {
     bool TeleportMap::is_open() const
     {
-        return window::match_template({239, 126, 176, 51}, resources::text::teleports);
+        return window::match_template(window::Rect(239, 126, 176, 51), resources::text::teleports);
     }
 
     void TeleportMap::close()

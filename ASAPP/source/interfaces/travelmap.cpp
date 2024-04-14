@@ -9,7 +9,7 @@ namespace asa::interfaces
 {
     bool TravelMap::is_open() const
     {
-        return window::match_template({283, 129, 91, 46}, resources::text::beds);
+        return window::match_template(window::Rect(283, 129, 91, 46), resources::text::beds);
     }
 
     void TravelMap::close()
