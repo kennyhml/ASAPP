@@ -59,6 +59,10 @@ namespace asa::interfaces
 
         [[nodiscard]] bool is_boss_teleport_out_active();
 
+        [[nodiscard]] bool is_boss_on_cooldown();
+
+        [[nodiscard]] bool is_boss_ongoing();
+
         [[nodiscard]] bool extended_information_is_toggled() const;
 
         /**

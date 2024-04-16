@@ -127,6 +127,16 @@ namespace asa::interfaces
         return detect_push_notification(resources::text::return_time_remaining);
     }
 
+    bool HUD::is_boss_on_cooldown()
+    {
+        return detect_push_notification(resources::text::arena_available_in);
+    }
+
+    bool HUD::is_boss_ongoing()
+    {
+        return detect_push_notification(resources::text::arena_time_remaining);
+    }
+
     bool HUD::item_added(items::Item& item, window::Rect* roi_out) const
     {
         const window::Rect roi = item_icon_removed_or_added_area;
@@ -242,6 +252,8 @@ namespace asa::interfaces
 
     bool HUD::detect_push_notification(const cv::Mat& notification)
     {
+        if (window::match_template(push_notifications_, notification)) { return true; }
+
         toggle_extended(true);
         core::sleep_for(100ms);
         bool result = util::await([this, &notification] {
