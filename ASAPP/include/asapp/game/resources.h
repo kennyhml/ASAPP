@@ -50,6 +50,8 @@ namespace asa::resources
         inline cv::Mat resume;
         inline cv::Mat teleport_in;
         inline cv::Mat return_time_remaining;
+        inline cv::Mat arena_time_remaining;
+        inline cv::Mat arena_available_in;
     }
 
     namespace wheel_icon

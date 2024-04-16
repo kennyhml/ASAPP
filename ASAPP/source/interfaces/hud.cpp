@@ -114,23 +114,17 @@ namespace asa::interfaces
 
     bool HUD::detected_enemy()
     {
-        toggle_extended(true);
-        core::sleep_for(std::chrono::milliseconds(100));
-        bool result = util::await([this]() {
-            return window::match_template(push_notifications_,
-                                          resources::text::detected_enemy);
-        }, std::chrono::seconds(2));
+        return detect_push_notification(resources::text::detected_enemy);
+    }
 
-        toggle_extended(false);
-        if (!result) {
-            core::sleep_for(std::chrono::milliseconds(100));
-            result = util::await([this]() {
-                return window::match_template(push_notifications_,
-                                              resources::text::detected_enemy);
-            }, std::chrono::seconds(2));
-        }
+    bool HUD::is_boss_teleport_in_active()
+    {
+        return detect_push_notification(resources::text::teleport_in);
+    }
 
-        return result;
+    bool HUD::is_boss_teleport_out_active()
+    {
+        return detect_push_notification(resources::text::return_time_remaining);
     }
 
     bool HUD::item_added(items::Item& item, window::Rect* roi_out) const
@@ -244,6 +238,24 @@ namespace asa::interfaces
         if (on) { window::down(settings::show_extended_info); } else {
             window::up(settings::show_extended_info);
         }
+    }
+
+    bool HUD::detect_push_notification(const cv::Mat& notification)
+    {
+        toggle_extended(true);
+        core::sleep_for(100ms);
+        bool result = util::await([this, &notification] {
+            return match_template(push_notifications_, notification);
+        }, 2s);
+
+        toggle_extended(false);
+        if (!result) {
+            core::sleep_for(100ms);
+            result = util::await([this, &notification] {
+                return match_template(push_notifications_, notification);
+            }, 2s);
+        }
+        return result;
     }
 
     float HUD::get_health_level() const

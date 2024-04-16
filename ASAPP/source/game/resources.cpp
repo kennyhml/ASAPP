@@ -97,6 +97,8 @@ namespace asa::resources
         LOAD_RESOURCE(dir, resume);
         LOAD_RESOURCE(dir, teleport_in);
         LOAD_RESOURCE(dir, return_time_remaining);
+        LOAD_RESOURCE(dir, arena_time_remaining);
+        LOAD_RESOURCE(dir, arena_available_in);
         return true;
     }
 

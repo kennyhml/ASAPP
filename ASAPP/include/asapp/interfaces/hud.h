@@ -55,6 +55,10 @@ namespace asa::interfaces
 
         [[nodiscard]] bool detected_enemy();
 
+        [[nodiscard]] bool is_boss_teleport_in_active();
+
+        [[nodiscard]] bool is_boss_teleport_out_active();
+
         [[nodiscard]] bool extended_information_is_toggled() const;
 
         /**
@@ -105,6 +109,8 @@ namespace asa::interfaces
         void toggle_extended(bool on, bool force = false);
 
     private:
+        bool detect_push_notification(const cv::Mat& notification);
+
         window::Color blink_red_state_{109, 54, 52};
         window::Color blink_red_state_weight_{255, 45, 45};
 
