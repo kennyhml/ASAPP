@@ -104,6 +104,8 @@ namespace asa::entities
 
         bool get_amount_removed(items::Item&, int& amount_out);
 
+        bool turn_to_closest_waypoint(const window::Color& color, float variance);
+
         [[nodiscard]] bool can_access(const structures::BaseStructure&) const;
 
         [[nodiscard]] bool can_access(const entities::BaseEntity&) const;

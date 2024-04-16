@@ -137,6 +137,31 @@ namespace asa::entities
         return interfaces::hud->count_items_removed(item, amount_out);
     }
 
+    bool LocalPlayer::turn_to_closest_waypoint(const window::Color& color,
+                                               const float variance)
+    {
+        const cv::Mat screen = window::screenshot();
+        const cv::Mat masked = window::get_mask(screen, color, variance);
+
+        std::vector<std::vector<cv::Point> > contours;
+        cv::findContours(masked, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+        cv::Rect rect;
+        double max_rect = 0.0;
+
+        for (const auto& cont: contours) {
+            if (const double area = cv::contourArea(cont); area > max_rect) {
+                max_rect = area;
+                rect = cv::boundingRect(cont);
+            }
+        }
+        if (rect.empty() || rect.area() < 100) {
+            return false;
+        }
+
+        controls::turn_to(rect.x + rect.width / 2, rect.y + rect.height / 2);
+        core::sleep_for(100ms);
+    }
+
     void LocalPlayer::suicide()
     {
         const auto start = std::chrono::system_clock::now();
@@ -169,28 +194,22 @@ namespace asa::entities
 
     void LocalPlayer::reconnect()
     {
-        const int prev_yaw = current_yaw_;
         const int prev_pitch = current_pitch_;
         const bool was_crouched = is_crouched_;
         const bool was_proned = is_proned_;
-        std::cout << "previous states saved..." << std::endl;
 
         interfaces::menu->open();
         interfaces::menu->close();
 
         interfaces::console->execute("reconnect");
-
         if (!util::await([] { return window::is_playing_transition_movie(); }, 1min)) {
             throw std::exception("Failed to disconnect.");
         }
-        std::cout << "Now reconnecting" << std::endl;
         if (!util::await([] { return !window::is_playing_transition_movie(); }, 1min)) {
             throw std::exception("Failed to reconnect.");
         }
-        std::cout << "Now reconnected" << std::endl;
         core::sleep_for(10s);
         reset_state();
-        set_yaw(prev_yaw);
         set_pitch(prev_pitch);
         if (was_crouched) { crouch(); }
         if (was_proned) { prone(); }
