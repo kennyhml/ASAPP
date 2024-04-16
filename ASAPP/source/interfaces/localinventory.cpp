@@ -67,6 +67,7 @@ namespace asa::interfaces
             throw std::exception("Attempted to equip an item we do not own");
         }
 
+        select_info_tab();
         do {
             window::press(settings::action_mappings::use);
         } while (!util::await([this, &item, slot]() {
