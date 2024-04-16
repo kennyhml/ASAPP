@@ -127,6 +127,8 @@ add_library(asapp STATIC
         ASAPP/source/interfaces/menu.cpp
         ASAPP/include/asapp/interfaces/tributeinventory.h
         ASAPP/source/interfaces/tributeinventory.cpp
+        ASAPP/include/asapp/structures/tributeable.h
+        ASAPP/source/structures/tributable.cpp
 )
 
 set_target_properties(asapp PROPERTIES
