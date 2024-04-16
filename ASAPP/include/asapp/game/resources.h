@@ -48,6 +48,8 @@ namespace asa::resources
         inline cv::Mat teleports;
         inline cv::Mat beds;
         inline cv::Mat resume;
+        inline cv::Mat teleport_in;
+        inline cv::Mat return_time_remaining;
     }
 
     namespace wheel_icon

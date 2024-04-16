@@ -95,6 +95,8 @@ namespace asa::resources
         LOAD_RESOURCE(dir, teleports);
         LOAD_RESOURCE(dir, beds);
         LOAD_RESOURCE(dir, resume);
+        LOAD_RESOURCE(dir, teleport_in);
+        LOAD_RESOURCE(dir, return_time_remaining);
         return true;
     }
 
