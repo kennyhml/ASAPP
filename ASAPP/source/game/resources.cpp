@@ -99,6 +99,7 @@ namespace asa::resources
         LOAD_RESOURCE(dir, return_time_remaining);
         LOAD_RESOURCE(dir, arena_time_remaining);
         LOAD_RESOURCE(dir, arena_available_in);
+        LOAD_RESOURCE(dir, sit_on);
         return true;
     }
 
