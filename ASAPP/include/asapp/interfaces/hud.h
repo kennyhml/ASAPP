@@ -113,7 +113,7 @@ namespace asa::interfaces
         void toggle_extended(bool on, bool force = false);
 
     private:
-        bool detect_push_notification(const cv::Mat& notification);
+        bool detect_push_notification(const cv::Mat& notification, float variance = 0.7f);
 
         window::Color blink_red_state_{109, 54, 52};
         window::Color blink_red_state_weight_{255, 45, 45};

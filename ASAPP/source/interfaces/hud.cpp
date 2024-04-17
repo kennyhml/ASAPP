@@ -124,7 +124,7 @@ namespace asa::interfaces
 
     bool HUD::is_boss_teleport_out_active()
     {
-        return detect_push_notification(resources::text::return_time_remaining);
+        return detect_push_notification(resources::text::return_time_remaining, 0.85f);
     }
 
     bool HUD::is_boss_on_cooldown()
@@ -134,7 +134,7 @@ namespace asa::interfaces
 
     bool HUD::is_boss_ongoing()
     {
-        return detect_push_notification(resources::text::arena_time_remaining);
+        return detect_push_notification(resources::text::arena_time_remaining, 0.85f);
     }
 
     bool HUD::item_added(items::Item& item, window::Rect* roi_out) const
@@ -250,21 +250,23 @@ namespace asa::interfaces
         }
     }
 
-    bool HUD::detect_push_notification(const cv::Mat& notification)
+    bool HUD::detect_push_notification(const cv::Mat& notification, const float variance)
     {
-        if (window::match_template(push_notifications_, notification)) { return true; }
+        if (window::match_template(push_notifications_, notification, variance)) {
+            return true;
+        }
 
         toggle_extended(true);
         core::sleep_for(100ms);
-        bool result = util::await([this, &notification] {
-            return match_template(push_notifications_, notification);
+        bool result = util::await([this, &notification, variance] {
+            return match_template(push_notifications_, notification, variance);
         }, 2s);
 
         toggle_extended(false);
         if (!result) {
             core::sleep_for(100ms);
-            result = util::await([this, &notification] {
-                return match_template(push_notifications_, notification);
+            result = util::await([this, &notification, variance] {
+                return match_template(push_notifications_, notification, variance);
             }, 2s);
         }
         return result;

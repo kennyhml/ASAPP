@@ -27,8 +27,10 @@ namespace asa::controls
             {"numpadeight", VK_NUMPAD8}, {"NumPadnine", VK_NUMPAD9}, {"ctrl", VK_CONTROL},
             {"esc", VK_ESCAPE}, {"space", VK_SPACE}, {"spacebar", VK_SPACE},
             {"zero", 0x30}, {"one", 0x31}, {"two", 0x32}, {"three", 0x33}, {"four", 0x34},
-            {"five", 0x35}, {"six", 0x36}, {"seven", 0x37}, {"eight", 0x38}, {"nine", 0x39},
-            {"backspace", VK_BACK}, {"leftshift", VK_LSHIFT}, {"tilde", VK_OEM_3}
+            {"five", 0x35}, {"six", 0x36}, {"seven", 0x37}, {"eight", 0x38},
+            {"nine", 0x39},
+            {"backspace", VK_BACK}, {"leftshift", VK_LSHIFT}, {"tilde", VK_OEM_3},
+            {"comma", VK_OEM_COMMA}
         };
 
         KeyboardMapping GetKeyboardMapping()
@@ -47,11 +49,11 @@ namespace asa::controls
         int constexpr get_mouse_flag(MouseButton button, bool down)
         {
             switch (button) {
-            case LEFT: return down ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP;
-            case RIGHT: return down ? MOUSEEVENTF_RIGHTDOWN : MOUSEEVENTF_RIGHTUP;
-            case MIDDLE: return down ? MOUSEEVENTF_MIDDLEDOWN : MOUSEEVENTF_MIDDLEUP;
-            case MOUSE4:
-            case MOUSE5: return down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP;
+                case LEFT: return down ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP;
+                case RIGHT: return down ? MOUSEEVENTF_RIGHTDOWN : MOUSEEVENTF_RIGHTUP;
+                case MIDDLE: return down ? MOUSEEVENTF_MIDDLEDOWN : MOUSEEVENTF_MIDDLEUP;
+                case MOUSE4:
+                case MOUSE5: return down ? MOUSEEVENTF_XDOWN : MOUSEEVENTF_XUP;
             }
             return -1;
         }
@@ -112,8 +114,8 @@ namespace asa::controls
 
         input.mi.dwFlags = get_mouse_flag(button, true);
 
-        if (button == MOUSE4) { input.mi.mouseData = XBUTTON1; }
-        else if (button == MOUSE5) { input.mi.mouseData = XBUTTON2; }
+        if (button == MOUSE4) { input.mi.mouseData = XBUTTON1; } else if (
+            button == MOUSE5) { input.mi.mouseData = XBUTTON2; }
 
         SendInput(1, &input, sizeof(INPUT));
         core::sleep_for(delay);
@@ -126,8 +128,8 @@ namespace asa::controls
 
         input.mi.dwFlags = get_mouse_flag(button, false);
 
-        if (button == MOUSE4) { input.mi.mouseData = XBUTTON1; }
-        else if (button == MOUSE5) { input.mi.mouseData = XBUTTON2; }
+        if (button == MOUSE4) { input.mi.mouseData = XBUTTON1; } else if (
+            button == MOUSE5) { input.mi.mouseData = XBUTTON2; }
 
         SendInput(1, &input, sizeof(INPUT));
         core::sleep_for(delay);

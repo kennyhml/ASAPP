@@ -61,6 +61,7 @@ namespace asa::settings
         inline ActionMapping jump("Jump", "Space");
         inline ActionMapping run("Run", "LeftShift");
         inline ActionMapping console("ConsoleKeys", "Tilde");
+        inline ActionMapping move_to("CallMoveTo", "Comma");
     }
 
     inline namespace game_user_settings
