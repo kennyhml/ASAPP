@@ -53,6 +53,7 @@ namespace asa::resources
         inline cv::Mat arena_time_remaining;
         inline cv::Mat arena_available_in;
         inline cv::Mat sit_on;
+        inline cv::Mat deposit;
     }
 
     namespace wheel_icon

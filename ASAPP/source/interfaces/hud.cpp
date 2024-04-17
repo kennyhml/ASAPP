@@ -17,11 +17,14 @@ namespace asa::interfaces
          *
          * @return The roi to look for the interaction text in if found, else std::nullopt.
          */
-        std::optional<cv::Rect> find_multi_interactable_line()
+        std::optional<cv::Rect> find_multi_interactable_line(bool* match_full = nullptr)
         {
             static constexpr window::Color cyan{0, 255, 255};
             const auto ss = window::screenshot();
             const auto mask = window::get_mask(ss, cyan, 10);
+            if (match_full) {
+                *match_full = cv::countNonZero(mask) > 200;
+            }
 
             std::vector<std::vector<cv::Point> > contours;
             cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
@@ -125,10 +128,12 @@ namespace asa::interfaces
 
     bool HUD::can_access_inventory() const
     {
-        const auto narrowed = find_multi_interactable_line();
-        if (!narrowed.has_value()) { return false; }
+        bool match_full = false;
+        const auto narrowed = find_multi_interactable_line(&match_full);
+        if (!narrowed.has_value() && !match_full) { return false; }
 
-        const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
+        window::Rect roi;
+        if (!match_full) { roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25}; }
         return window::match_template(roi, resources::text::access_inventory);
     }
 
@@ -139,6 +144,24 @@ namespace asa::interfaces
 
         const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
         return window::match_template(roi, resources::text::access_inventory, 0.85f);
+    }
+
+    bool HUD::can_sit_down() const
+    {
+        const auto narrowed = find_multi_interactable_line();
+        if (!narrowed.has_value()) { return false; }
+
+        const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
+        return window::match_template(roi, resources::text::sit_on);
+    }
+
+    bool HUD::can_deposit() const
+    {
+        const auto narrowed = find_multi_interactable_line();
+        if (!narrowed.has_value()) { return false; }
+
+        const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
+        return window::match_template(roi, resources::text::deposit);
     }
 
     bool HUD::can_pick_up() const

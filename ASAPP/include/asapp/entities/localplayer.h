@@ -112,6 +112,8 @@ namespace asa::entities
 
         [[nodiscard]] bool can_ride(const entities::DinoEntity&) const;
 
+        [[nodiscard]] bool can_sit_down() const;
+
         void access(const BaseEntity&);
 
         void access(const structures::Container&);

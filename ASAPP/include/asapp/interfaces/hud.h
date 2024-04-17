@@ -51,6 +51,10 @@ namespace asa::interfaces
 
         [[nodiscard]] bool can_ride() const;
 
+        [[nodiscard]] bool can_sit_down() const;
+
+        [[nodiscard]] bool can_deposit() const;
+
         [[nodiscard]] bool can_pick_up() const;
 
         [[nodiscard]] bool detected_enemy();

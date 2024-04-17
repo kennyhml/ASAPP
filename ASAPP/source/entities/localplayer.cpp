@@ -261,6 +261,11 @@ namespace asa::entities
         return interfaces::hud->can_ride();
     }
 
+    bool LocalPlayer::can_sit_down() const
+    {
+        return interfaces::hud->can_sit_down();
+    }
+
     void LocalPlayer::access(const BaseEntity& entity)
     {
         if (entity.get_inventory()->is_open()) { return; }
