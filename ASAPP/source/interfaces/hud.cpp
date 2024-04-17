@@ -2,7 +2,6 @@
 #include "asapp/util/util.h"
 #include <iostream>
 #include <opencv2/highgui.hpp>
-
 #include "asapp/core/state.h"
 #include "asapp/game/resources.h"
 #include "asapp/game/window.h"
@@ -11,6 +10,37 @@ namespace asa::interfaces
 {
     namespace
     {
+        /**
+         * @brief This function helps optimize the template match on all interactions
+         * that are underlined by the cyan line which will appear when one or more options
+         * are available on a structure.
+         *
+         * @return The roi to look for the interaction text in if found, else std::nullopt.
+         */
+        std::optional<cv::Rect> find_multi_interactable_line()
+        {
+            static constexpr window::Color cyan{0, 255, 255};
+            const auto ss = window::screenshot();
+            const auto mask = window::get_mask(ss, cyan, 10);
+
+            std::vector<std::vector<cv::Point> > contours;
+            cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+
+            double longest = 0;
+            cv::Rect best_contour;
+            for (const auto& contour: contours) {
+                const auto rect = cv::boundingRect(contour);
+                // not the shape we are looking for.
+                if (rect.width < rect.height || rect.width < 150) { continue; }
+
+                if (const auto length = cv::arcLength(contour, true); length > longest) {
+                    longest = length;
+                    best_contour = rect;
+                }
+            }
+            return best_contour.empty() ? std::nullopt : std::optional(best_contour);
+        }
+
         bool is_blinking(const window::Rect& icon, const window::Color& color,
                          int min_matches = 500,
                          const std::chrono::milliseconds timeout =
@@ -77,39 +107,47 @@ namespace asa::interfaces
 
     bool HUD::can_fast_travel()
     {
-        // match a reduced area first, as ~80% of the times this will already match
-        // it correctly, it should improve the performance overall.
-        const static window::Rect reduced(549, 327, 767, 499);
+        const auto narrowed = find_multi_interactable_line();
+        if (!narrowed.has_value()) { return false; }
 
-        return window::match_template(reduced, resources::text::fast_travel) ||
-               window::match_template(window::screenshot(), resources::text::fast_travel);
+        const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
+        return window::match_template(roi, resources::text::fast_travel);
     }
 
     bool HUD::can_teleport()
     {
-        // match a reduced area first, as ~80% of the times this will already match
-        // it correctly, it should improve the performance overall.
-        const static window::Rect reduced(549, 327, 767, 499);
+        const auto narrowed = find_multi_interactable_line();
+        if (!narrowed.has_value()) { return false; }
 
-        return window::match_template(reduced, resources::text::teleport_to) ||
-               window::match_template(window::screenshot(), resources::text::teleport_to);
+        const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
+        return window::match_template(roi, resources::text::teleport_to);
     }
 
     bool HUD::can_access_inventory() const
     {
-        return window::match_template(window::screenshot(),
-                                      resources::text::access_inventory);
+        const auto narrowed = find_multi_interactable_line();
+        if (!narrowed.has_value()) { return false; }
+
+        const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
+        return window::match_template(roi, resources::text::access_inventory);
     }
 
     bool HUD::can_ride() const
     {
-        return window::match_template(window::screenshot(),
-                                      resources::text::ride, 0.8f);
+        const auto narrowed = find_multi_interactable_line();
+        if (!narrowed.has_value()) { return false; }
+
+        const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
+        return window::match_template(roi, resources::text::access_inventory, 0.85f);
     }
 
     bool HUD::can_pick_up() const
     {
-        return window::match_template(window::screenshot(), resources::text::pick_up);
+        const auto narrowed = find_multi_interactable_line();
+        if (!narrowed.has_value()) { return false; }
+
+        const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
+        return window::match_template(roi, resources::text::pick_up);
     }
 
     bool HUD::detected_enemy()
