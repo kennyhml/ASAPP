@@ -5,10 +5,10 @@
 
 namespace asa::structures
 {
-    class InteractableStructure : public BaseStructure
+    class Interactable : public BaseStructure
     {
     public:
-        explicit InteractableStructure(std::string name,
+        explicit Interactable(std::string name,
                                        settings::ActionMapping* t_interact_key,
                                        std::unique_ptr<interfaces::IInterface>
                                        t_interface) : BaseStructure(std::move(name)),

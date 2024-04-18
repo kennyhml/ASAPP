@@ -1,13 +1,13 @@
 #pragma once
-#include "interactablestructure.h"
+#include "interactable.h"
 #include "../interfaces/teleportmap.h"
 
 namespace asa::structures
 {
-    class Teleporter : public InteractableStructure
+    class Teleporter : public Interactable
     {
     public:
-        explicit Teleporter(std::string name) : InteractableStructure(
+        explicit Teleporter(std::string name) : Interactable(
             std::move(name), &settings::use,
             std::make_unique<interfaces::TeleportMap>()) {}
 

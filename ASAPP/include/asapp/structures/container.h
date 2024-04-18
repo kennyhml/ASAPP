@@ -1,11 +1,11 @@
 #pragma once
-#include "interactablestructure.h"
+#include "interactable.h"
 #include "../interfaces/baseinventory.h"
 #include "../interfaces/containerinfo.h"
 
 namespace asa::structures
 {
-    class Container : public InteractableStructure
+    class Container : public Interactable
     {
     public:
         Container(std::string t_name, int t_max_slots,

@@ -6,8 +6,6 @@
 #include "asapp/game/settings.h"
 #include "asapp/game/window.h"
 #include "asapp/structures/exceptions.h"
-#include <iostream>
-
 #include "asapp/game/resources.h"
 #include "asapp/interfaces/console.h"
 #include "asapp/interfaces/menu.h"
@@ -160,6 +158,7 @@ namespace asa::entities
 
         controls::turn_to(rect.x + rect.width / 2, rect.y + rect.height / 2);
         core::sleep_for(100ms);
+        return true;
     }
 
     void LocalPlayer::suicide()
@@ -266,29 +265,27 @@ namespace asa::entities
         return interfaces::hud->can_sit_down();
     }
 
-    void LocalPlayer::access(const BaseEntity& entity)
+    void LocalPlayer::access(const BaseEntity& entity, const std::chrono::seconds timeout)
     {
         if (entity.get_inventory()->is_open()) { return; }
-
-        auto start = std::chrono::system_clock::now();
+        const auto start = std::chrono::system_clock::now();
         do {
             window::press(settings::access_inventory, true);
-            if (util::timedout(start, std::chrono::seconds(30))) {
-                throw EntityNotAccessed(&entity);
-            }
+            if (util::timedout(start, timeout)) { throw EntityNotAccessed(&entity); }
         } while (!util::await([&entity]() { return entity.get_inventory()->is_open(); },
-                              std::chrono::seconds(10)));
+                              10s));
 
-        entity.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
+        entity.get_inventory()->receive_remote_inventory(30s);
     }
 
-    void LocalPlayer::access(const structures::Container& container)
+    void LocalPlayer::access(const structures::Container& container,
+                             const std::chrono::seconds timeout)
     {
         // Accessing the inventory is the same as accessing the interface of
         // any interactable structure such as teleporters, beds etc.
         // just that we have to wait to receive the remote inventory afterward.
-        access(static_cast<const structures::InteractableStructure&>(container));
-        container.get_inventory()->receive_remote_inventory(std::chrono::seconds(30));
+        access(static_cast<const structures::Interactable&>(container), timeout);
+        container.get_inventory()->receive_remote_inventory(30s);
     }
 
     void LocalPlayer::access(const structures::SimpleBed& bed, const AccessFlags flags)
@@ -359,7 +356,7 @@ namespace asa::entities
         controls::release(settings::use);
     }
 
-    void LocalPlayer::access(const structures::InteractableStructure& structure)
+    void LocalPlayer::access(const structures::Interactable& structure, const std::chrono::seconds timeout)
     {
         if (structure.get_interface()->is_open()) { return; }
         bool has_reconnected = false;
@@ -367,7 +364,7 @@ namespace asa::entities
 
         do {
             window::press(structure.get_interact_key(), true);
-            if (util::timedout(start, 30s)) {
+            if (util::timedout(start, timeout)) {
                 // before we throw the error, lets try to reconnect and restore our
                 // state in order to handle the render bug
                 if (!has_reconnected) {

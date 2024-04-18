@@ -108,21 +108,22 @@ namespace asa::entities
 
         [[nodiscard]] bool can_access(const structures::BaseStructure&) const;
 
-        [[nodiscard]] bool can_access(const entities::BaseEntity&) const;
+        [[nodiscard]] bool can_access(const BaseEntity&) const;
 
-        [[nodiscard]] bool can_ride(const entities::DinoEntity&) const;
+        [[nodiscard]] bool can_ride(const DinoEntity&) const;
 
         [[nodiscard]] bool can_sit_down() const;
 
-        void access(const BaseEntity&);
+        void access(const BaseEntity&, std::chrono::seconds timeout = 30s);
 
-        void access(const structures::Container&);
+        void access(const structures::Container&, std::chrono::seconds timeout = 30s);
+
+        void access(const structures::Interactable&, std::chrono::seconds timeout = 30s);
 
         void access(const structures::SimpleBed&, AccessFlags);
 
         void lay_on(const structures::SimpleBed&, AccessFlags);
 
-        void access(const structures::InteractableStructure&);
 
         void pick_up_one() const { controls::press(settings::use); }
 

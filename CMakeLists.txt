@@ -107,7 +107,7 @@ add_library(asapp STATIC
         ASAPP/include/asapp/structures/craftingstation.h
         ASAPP/include/asapp/structures/dedicatedstorage.h
         ASAPP/include/asapp/structures/exceptions.h
-        ASAPP/include/asapp/structures/interactablestructure.h
+        ASAPP/include/asapp/structures/interactable.h
         ASAPP/include/asapp/structures/largecropplot.h
         ASAPP/include/asapp/structures/mediumcropplot.h
         ASAPP/include/asapp/structures/simplebed.h
