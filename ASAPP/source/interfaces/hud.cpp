@@ -143,7 +143,7 @@ namespace asa::interfaces
         if (!narrowed.has_value()) { return false; }
 
         const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
-        return window::match_template(roi, resources::text::access_inventory, 0.85f);
+        return window::match_template(roi, resources::text::ride, 0.85f);
     }
 
     bool HUD::can_sit_down() const

@@ -15,6 +15,9 @@ namespace asa::interfaces
         [[nodiscard]] bool server_has_mods_enabled() const;
 
         void join_server(const std::string& name);
+
+        void join_last_played();
+
         void refresh();
 
     private:

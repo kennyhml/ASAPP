@@ -8,8 +8,12 @@
 #include "asapp/structures/exceptions.h"
 #include "asapp/game/resources.h"
 #include "asapp/interfaces/console.h"
+#include "asapp/interfaces/mainmenu.h"
 #include "asapp/interfaces/menu.h"
+#include "asapp/interfaces/modeselect.h"
+#include "asapp/interfaces/serverselect.h"
 #include "asapp/interfaces/spawnmap.h"
+#include "asapp/network/queries.h"
 
 
 namespace asa::entities
@@ -200,14 +204,18 @@ namespace asa::entities
         interfaces::menu->open();
         interfaces::menu->close();
 
-        interfaces::console->execute("reconnect");
+        interfaces::console->execute("disconnect");
         if (!util::await([] { return window::is_playing_transition_movie(); }, 1min)) {
             throw std::exception("Failed to disconnect.");
         }
-        if (!util::await([] { return !window::is_playing_transition_movie(); }, 1min)) {
-            throw std::exception("Failed to reconnect.");
-        }
-        core::sleep_for(10s);
+        util::await([] {return interfaces::main_menu->is_open(); }, 30s);
+
+        interfaces::main_menu->start();
+        interfaces::mode_select->join_game();
+
+        const auto server = network::get_server(settings::last_session_3.get());
+        interfaces::server_select->join_server(server->name);
+
         reset_state();
         set_pitch(prev_pitch);
         if (was_crouched) { crouch(); }
@@ -505,7 +513,7 @@ namespace asa::entities
             if (util::timedout(start, 30s)) { return false; }
             if (access_flag && can_access_inventory()) { return true; }
 
-            if (is_riding_mount_ && util::timedout(start, 3s)) {
+            if (is_riding_mount_ && util::timedout(start, 2s)) {
                 go_forward(100ms);
                 util::await([] { return interfaces::hud->can_default_teleport(); }, 5s);
                 if (util::timedout(start, 30s)) { return false; }
@@ -579,4 +587,8 @@ namespace asa::entities
         is_proned_ = false;
         is_riding_mount_ = false;
     }
+
+
+
+
 }

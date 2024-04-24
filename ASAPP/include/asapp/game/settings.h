@@ -62,6 +62,9 @@ namespace asa::settings
         inline ActionMapping run("Run", "LeftShift");
         inline ActionMapping console("ConsoleKeys", "Tilde");
         inline ActionMapping move_to("CallMoveTo", "Comma");
+        inline ActionMapping aggressive("CallAggressive", "Equals");
+        inline ActionMapping follow_all("CallFollow", "J");
+        inline ActionMapping stay_all("CallStay", "U");
     }
 
     inline namespace game_user_settings

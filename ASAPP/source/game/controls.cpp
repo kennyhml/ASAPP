@@ -70,6 +70,9 @@ namespace asa::controls
 
     int get_virtual_keycode(std::string key)
     {
+        // dirty fix for now
+        if (key == "Equals") { key = "="; } else if (key == "Backslash") { key = "\\"; }
+
         std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c) {
             return std::tolower(c);
         });

@@ -13,7 +13,7 @@ namespace asa::interfaces
     void ModeSelect::join_game()
     {
         if (!is_open()) { return; }
-        do { join_game_button.press(); }
+        do { window::post_mouse_press_at({614,594}, controls::LEFT); }
         while (!util::await([this]() { return !is_open(); }, std::chrono::seconds(5)));
     }
 }

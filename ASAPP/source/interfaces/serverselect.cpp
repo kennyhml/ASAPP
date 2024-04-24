@@ -81,26 +81,32 @@ namespace asa::interfaces
         }
 
         std::cout << "\t[-] Best search result selected." << std::endl;
-        auto start = std::chrono::system_clock::now();
+        const auto start = std::chrono::system_clock::now();
         while (!is_joining_server()) {
             if (server_has_mods_enabled()) {
-                // sleep for 3 seconds before clicking
-                core::sleep_for(std::chrono::milliseconds(3000));
+                core::sleep_for(5s);
                 join_button_mods_popup_.press();
             }
             else { join_button_.press(); }
-            core::sleep_for(std::chrono::seconds(1));
+            core::sleep_for(1s);
             
-            if (util::timedout(start, std::chrono::seconds(5))) {
-              start = std::chrono::system_clock::now();
+            if (util::timedout(start, 20s)) {
               throw std::exception("Failed to find join server");
             }
         }
+
         std::cout << "\t[-] Now joining session..." << std::endl;
-        if (!util::await([this]() { return !is_open(); }, std::chrono::seconds(60))) {
-            throw std::runtime_error("Failed to join server within 60 seconds.");
+        if (!util::await([this] { return !is_open(); }, std::chrono::seconds(60))) {
+            throw std::exception("Failed to join server within 60 seconds.");
         }
+        util::await([] {return !window::is_playing_transition_movie(); }, 30s);
         std::cout << "[+] Server joined successfully." << std::endl;
+    }
+
+    void ServerSelect::join_last_played()
+    {
+        join_last_played_button_.press();
+        core::sleep_for(1s);
     }
 
     void ServerSelect::refresh()
