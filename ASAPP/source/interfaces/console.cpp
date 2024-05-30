@@ -36,7 +36,17 @@ namespace asa::interfaces
         open();
         util::set_clipboard(command);
         controls::key_combination_press("ctrl", "v");
-        window::press("enter");
+
+        // Keep trying to press enter until console closed
+        int counter = 0;
+        do {
+            // Only try to close the console 12 times (aka 1min)
+            if(counter > 12) {
+                break;
+            }
+            window::press("enter");
+            counter++;
+        } while (!util::await([this] { return !is_open(); }, std::chrono::seconds(5)));
     }
 
 
