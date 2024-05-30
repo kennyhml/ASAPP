@@ -21,7 +21,8 @@ namespace asa::interfaces
                 return;
             }
 
-            if (util::timedout(start, std::chrono::seconds(30))) {
+            // Increased timeout to 60 seconds
+            if (util::timedout(start, std::chrono::seconds(60))) {
                 throw InterfaceNotClosedError(this);
             }
         }

@@ -214,7 +214,9 @@ namespace asa::interfaces
             if (util::await([this]() { return !is_open(); }, std::chrono::seconds(5))) {
                 return;
             }
-            if (util::timedout(start, std::chrono::seconds(30))) {
+
+            // Increased timeout to 60 seconds
+            if (util::timedout(start, std::chrono::seconds(60))) {
                 throw InterfaceNotClosedError(this);
             }
         }

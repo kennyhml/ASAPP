@@ -44,6 +44,7 @@ namespace asa::interfaces::components
     void SearchBar::search_for(std::string term)
     {
         if (has_text_entered()) { delete_search(); }
+        core::sleep_for(std::chrono::milliseconds(500));
 
         this->press();
         core::sleep_for(std::chrono::milliseconds(200));
@@ -61,7 +62,7 @@ namespace asa::interfaces::components
 
         if (!util::await([this]() { return this->has_text_entered(); },
                          std::chrono::seconds(5))) {
-            std::cerr << "[!] Failed to search, trying again..." << std::endl;
+            std::cerr << "[!] Failed to search, trying again... searching for" << term << std::endl;
             return this->search_for(term);
         }
 

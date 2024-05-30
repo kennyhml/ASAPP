@@ -31,7 +31,8 @@ namespace asa::interfaces
                 return;
             }
 
-            if (util::timedout(start, std::chrono::seconds(30))) {
+            // Increased timeout to 60 seconds
+            if (util::timedout(start, std::chrono::seconds(60))) {
                 throw InterfaceNotClosedError(this);
             }
         }
@@ -39,6 +40,7 @@ namespace asa::interfaces
 
     void TravelMap::go_to(const std::string& destination, const bool wait_ready)
     {
+        core::sleep_for(std::chrono::milliseconds(500));
         searchbar.search_for(destination);
         core::sleep_for(std::chrono::milliseconds(400));
 

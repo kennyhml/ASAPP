@@ -24,7 +24,9 @@ namespace asa::interfaces
             if (util::await([this] { return is_open(); }, 3s)) {
                 break;
             }
-            if (util::timedout(start, 30s)) {
+
+            // Increased timeout to 60 seconds
+            if (util::timedout(start, 60s)) {
                 throw InterfaceNotOpenedError(this);
             }
         }
@@ -41,7 +43,9 @@ namespace asa::interfaces
             if (util::await([this] { return !is_open(); }, 3s)) {
                 break;
             }
-            if (util::timedout(start, 30s)) {
+
+            // Increased timeout to 60 seconds
+            if (util::timedout(start, 60s)) {
                 throw InterfaceNotClosedError(this);
             }
         }
