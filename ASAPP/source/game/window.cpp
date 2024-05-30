@@ -74,8 +74,14 @@ namespace asa::window
     std::optional<Rect> locate_template(const Rect& region, const cv::Mat& templ,
                                         float threshold, const cv::Mat& mask)
     {
-        cv::Mat image = screenshot(region);
-        return locate_template(image, templ, threshold, mask);
+        try {
+            cv::Mat image = screenshot(region);
+            return locate_template(image, templ, threshold, mask);
+        } catch (const std::exception& e) {
+            // try to catch errors capturing the screenshot and print it to console (rather than crash)
+            std::cerr << "Exception in locate_template(): " << e.what() << std::endl;
+            return std::nullopt;
+        }
     }
 
     std::optional<Rect> locate_template(const cv::Mat& source, const cv::Mat& templ,
