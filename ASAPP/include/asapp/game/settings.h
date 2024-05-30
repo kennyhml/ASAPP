@@ -30,6 +30,7 @@ namespace asa::settings
 
         std::ostream& operator<<(std::ostream& os, const ActionMapping& m);
 
+        inline ActionMapping restart_bot("RestartBot", "f1");
         inline ActionMapping access_inventory("AccessInventory", "F");
         inline ActionMapping crouch("Crouch", "C");
         inline ActionMapping prone("Prone", "X");
