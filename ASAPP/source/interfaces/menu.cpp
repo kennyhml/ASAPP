@@ -10,7 +10,7 @@ namespace asa::interfaces
 {
     bool Menu::is_open() const
     {
-        return window::match_template(window::Rect(916, 439, 90, 35),
+        return window::match_template(window::Rect(894, 416, 143, 35),
                                       resources::text::resume);
     }
 

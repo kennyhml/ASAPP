@@ -30,7 +30,7 @@ namespace asa::interfaces
         components::Button refresh_button_{834, 932, 275, 39};
         components::Button best_result_{94, 306, 1730, 43};
         // The join button if the server has mods enabled
-        components::Button join_button_mods_popup_{266, 911, 162, 39};
+        components::Button join_button_mods_popup_{440, 911, 162, 39};
         components::Button join_button_{1615, 924, 195, 41};
         components::Button join_last_played_button_{1624, 876, 178, 39};
 
