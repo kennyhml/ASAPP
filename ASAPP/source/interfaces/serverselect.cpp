@@ -83,23 +83,26 @@ namespace asa::interfaces
         std::cout << "\t[-] Best search result selected." << std::endl;
         const auto start = std::chrono::system_clock::now();
         while (!is_joining_server()) {
+            std::cout << "\t[-] Checking if mods enabled..." << std::endl;
             if (server_has_mods_enabled()) {
-                core::sleep_for(5s);
+                std::cout << "\t[-] Mods enabled, pressing JOIN on mods popup." << std::endl;
                 join_button_mods_popup_.press();
             }
-            else { join_button_.press(); }
+            else {
+                join_button_.press();
+            }
             core::sleep_for(1s);
             
-            if (util::timedout(start, 20s)) {
+            if (util::timedout(start, 60s)) {
               throw std::exception("Failed to find join server");
             }
         }
 
         std::cout << "\t[-] Now joining session..." << std::endl;
-        if (!util::await([this] { return !is_open(); }, std::chrono::seconds(60))) {
-            throw std::exception("Failed to join server within 60 seconds.");
+        if (!util::await([this] { return !is_open(); }, std::chrono::seconds(90))) {
+            throw std::exception("Failed to join server within 90 seconds.");
         }
-        util::await([] {return !window::is_playing_transition_movie(); }, 30s);
+        util::await([] {return !window::is_playing_transition_movie(); }, 90s);
         std::cout << "[+] Server joined successfully." << std::endl;
     }
 

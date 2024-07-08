@@ -23,14 +23,14 @@ namespace asa::interfaces
     private:
         components::SearchBar searchbar_{1577, 172, 184, 46};
 
-        window::Rect joining_text_{717, 469, 507, 38};
+        window::Rect joining_text_{717, 469, 507, 20};
         window::Rect joining_text_2_{828, 357, 266, 66};
 
         components::Button official_button_{571, 182, 116, 49};
         components::Button refresh_button_{834, 932, 275, 39};
         components::Button best_result_{94, 306, 1730, 43};
         // The join button if the server has mods enabled
-        components::Button join_button_mods_popup_{440, 911, 162, 39};
+        components::Button join_button_mods_popup_{447, 920, 50, 31};
         components::Button join_button_{1615, 924, 195, 41};
         components::Button join_last_played_button_{1624, 876, 178, 39};
 
