@@ -252,33 +252,41 @@ namespace asa::window
 
     cv::Mat screenshot(const Rect& region, HWND window)
     {
-        SetProcessDPIAware();
+        int window_width = 0;
+        int window_height = 0;
 
-        // We can't use `get_window_rect` here since it needs to be the entirety of the window
-        // including the task bar so that we can resize it
-        RECT rect;
-        GetWindowRect(window, &rect);
+        if (hWnd) {
+            RECT rect;
+            GetWindowRect(hWnd, &rect);
+            window_width = rect.right - rect.left;
+            window_height = rect.bottom - rect.top;
+        } else {
+            window_width = region.width;
+            window_height = region.height;
+        }
 
-        int window_width = rect.right - rect.left;
-        int window_height = rect.bottom - rect.top;
+        HDC dc = hWnd ? GetWindowDC(hWnd) : GetDC(nullptr);
+        HDC mdc = CreateCompatibleDC(dc);
+        HBITMAP bitmap = CreateCompatibleBitmap(dc, window_width, window_height);
 
-        HDC hwndDC = GetWindowDC(window);
-        HDC mDc = CreateCompatibleDC(hwndDC);
-        HBITMAP bitmap = CreateCompatibleBitmap(hwndDC, window_width, window_height);
-
-        SelectObject(mDc, bitmap);
-        PrintWindow(window, mDc, PW_RENDERFULLCONTENT);
+        SelectObject(mdc, bitmap);
+        if (hWnd != nullptr) {
+            PrintWindow(hWnd, mdc, PW_RENDERFULLCONTENT);
+        } else {
+            BitBlt(mdc, 0, 0, region.width, region.height, dc, region.x, region.y,
+                   SRCCOPY);
+        }
 
         BITMAPINFOHEADER bi = get_bitmap_info_header(window_width, window_height, 32,
                                                      BI_RGB);
 
         auto mat = cv::Mat(window_height, window_width, CV_8UC4);
-        GetDIBits(mDc, bitmap, 0, window_height, mat.data,
+        GetDIBits(mdc, bitmap, 0, window_height, mat.data,
                   reinterpret_cast<BITMAPINFO*>(&bi), DIB_RGB_COLORS);
 
         DeleteObject(bitmap);
-        DeleteDC(mDc);
-        ReleaseDC(window, hwndDC);
+        DeleteDC(mdc);
+        ReleaseDC(window, dc);
 
         cv::Mat result;
         cvtColor(mat, result, cv::COLOR_RGBA2RGB);
