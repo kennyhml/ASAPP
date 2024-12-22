@@ -88,7 +88,6 @@ namespace asa::window
                                         const float threshold, const cv::Mat& mask,
                                         float* highest_match, const int mode)
     {
-        core::check_state();
         cv::Mat result;
         if (mask.empty()) { matchTemplate(source, templ, result, mode); } else {
             matchTemplate(source, templ, result, mode, mask);
