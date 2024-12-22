@@ -1,20 +1,18 @@
 #pragma once
-#include "../interfaces/actionwheel.h"
-#include "../interfaces/baseinventory.h"
+#include "asa/interfaces/actionwheel.h"
+#include "asa/interfaces/baseinventory.h"
 
-
-namespace asa::entities
+namespace asa
 {
-    class BaseEntity
+    class base_entity
     {
     public:
-        explicit BaseEntity(std::string t_name,
-                            std::unique_ptr<interfaces::BaseInventory> t_inventory =
-                                nullptr)
+        virtual ~base_entity() = default;
+
+        explicit base_entity(std::string t_name,
+                             std::unique_ptr<base_inventory> t_inv = nullptr)
             : name_(std::move(t_name)),
-              inventory_(t_inventory
-                             ? std::move(t_inventory)
-                             : std::make_unique<interfaces::BaseInventory>(true)) {}
+              inventory_(t_inv ? std::move(t_inv) : std::make_unique<base_inventory>()) {}
 
         /**
          * @brief Gets the name of the entity.
@@ -23,10 +21,22 @@ namespace asa::entities
 
         /**
          * @brief Gets the inventory component of the entity.
+         *
+         * Subclasses may override this to provide a more concrete inventory component.
          */
-        [[nodiscard]] virtual interfaces::BaseInventory* get_inventory() const
+        [[nodiscard]] virtual base_inventory* get_inventory() const
         {
             return inventory_.get();
+        }
+
+        /**
+         * @brief Gets the action wheel component of the entity.
+         *
+         * Subclasses may override this to provide a more concrete wheel component.
+         */
+        [[nodiscard]] virtual base_action_wheel* get_action_wheel() const
+        {
+            return action_wheel_.get();
         }
 
         /**
@@ -68,10 +78,7 @@ namespace asa::entities
         void go_right(const std::chrono::milliseconds duration) { walk("d", duration); }
 
         /**
-         * @brief Makes the local player jump.
-         *
-         * @remark If the local player is currently in a crouched or proned state,
-         * it will first stand up, then jump.
+         * @brief Makes the entity jump.
          */
         virtual void jump();
 
@@ -82,8 +89,8 @@ namespace asa::entities
         std::chrono::system_clock::time_point last_moved_;
 
         std::string name_;
-        std::unique_ptr<interfaces::BaseInventory> inventory_;
-        interfaces::ActionWheel action_wheel_;
+        std::unique_ptr<base_inventory> inventory_;
+        std::unique_ptr<base_action_wheel> action_wheel_;
 
         void walk(const std::string& key, std::chrono::milliseconds duration);
     };
