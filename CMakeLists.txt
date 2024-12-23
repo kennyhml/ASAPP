@@ -57,7 +57,6 @@ add_library(asapp STATIC
         ASAPP/include/asa/entities/exceptions.h
         ASAPP/include/asa/entities/localplayer.h
         ASAPP/include/asa/game/controls.h
-        ASAPP/include/asa/game/globals.h
         ASAPP/include/asa/game/resources.h
         ASAPP/include/asa/game/settings.h
         ASAPP/include/asa/game/window.h
@@ -129,6 +128,9 @@ add_library(asapp STATIC
         ASAPP/src/interfaces/tributeinventory.cpp
         ASAPP/include/asa/structures/tributeable.h
         ASAPP/src/structures/tributable.cpp
+        ASAPP/include/asa/game/actionmappings.h
+        ASAPP/include/asa/game/usersettings.h
+        ASAPP/src/game/actionmappings.cpp
 )
 
 set_target_properties(asapp PROPERTIES

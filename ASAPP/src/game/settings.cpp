@@ -1,13 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <format>
-#include <vector>
 #include "asa/game/settings.h"
 #include "asa/core/config.h"
 
-#define VERBOSE_LOG(log)         \
-    if (verbose) { std::cout << log << "\n"; }
+#include <fstream>
+#include <iostream>
 
 namespace asa::settings
 {
@@ -23,7 +18,7 @@ namespace asa::settings
 
         bool open_file(const std::filesystem::path& path, std::ifstream& out_file)
         {
-            if (!std::filesystem::exists(path)) {
+            if (!exists(path)) {
                 std::cout << std::format("[!] Path '{}' was not found.", path.string());
                 return false;
             }
@@ -64,9 +59,8 @@ namespace asa::settings
             return std::stoi(value);
         }
 
-        bool parse_user_settings(const std::istringstream& stream, const bool verbose)
+        bool parse_user_settings(const std::istringstream& stream)
         {
-            auto& map = setting_value_map;
             std::string key;
             std::string value;
 
@@ -76,15 +70,14 @@ namespace asa::settings
                 key += std::to_string(session_category_count++);
             }
 
-            if (!map.contains(key)) { return false; }
-            map[key] = convert_settings_value(key, value);
-            // VERBOSE_LOG("\t[-] Parsed " << key << " (" << value << ")")
+            if (!mapped_settings.contains(key)) { return false; }
+            mapped_settings[key] = convert_settings_value(key, value);
             return true;
         }
 
-        bool parse_action_mapping(std::string& from, const bool verbose)
+        bool parse_action_mapping(std::string& from)
         {
-            ActionMapping* mapping = nullptr;
+            action_mapping* mapping = nullptr;
             std::istringstream stream(from);
             std::string token;
             std::vector<std::string> tokens;
@@ -107,12 +100,12 @@ namespace asa::settings
 
                 // get the pointer to the ActionMapping that we are parsing
                 if (key == "ActionName") {
-                    if (!input_map.contains(value)) { return false; }
-                    mapping = input_map[value];
+                    if (!action_mapping::mapped.contains(value)) { return false; }
+                    mapping = action_mapping::mapped[value];
                     continue;
                 }
-                else if (key == "ConsoleKeys") {
-                    mapping = input_map[key];
+                if (key == "ConsoleKeys") {
+                    mapping = action_mapping::mapped[key];
                     mapping->key = value;
                     continue;
                 }
@@ -131,48 +124,30 @@ namespace asa::settings
             }
 
             if (!mapping) { return false; }
-            // VERBOSE_LOG("\t[-] Parsed " << *mapping)
             return true;
         }
     }
 
-    bool init() { return load_user_settings() && load_action_mappings(); }
-
-    ActionMapping::ActionMapping(std::string t_name, std::string t_default) :
-        name(std::move(t_name)), key(std::move(t_default)) { input_map[name] = this; };
-
-    std::ostream& action_mappings::operator
-    <<(std::ostream& os, const action_mappings::ActionMapping& m)
-    {
-        return os << std::format(
-            "ActionMapping(name={}, shift={}, " "ctrl={}, alt={}, cmd={}, key={})",
-            m.name, static_cast<int>(m.shift), static_cast<int>(m.ctrl),
-            static_cast<int>(m.alt), static_cast<int>(m.cmd), m.key);
-    }
-
-    bool action_mappings::load_action_mappings(const bool verbose)
+    bool load_action_mappings()
     {
         std::ifstream file;
         if (!open_file(core::config::game_base_directory / INPUT_SETTINGS_REL, file)) {
             return false;
         }
 
-        VERBOSE_LOG("[+] Parsing Input.ini...")
         for (std::string line; std::getline(file, line);) {
-            parse_action_mapping(line, verbose);
+            parse_action_mapping(line);
         }
-        VERBOSE_LOG("[+] Input.ini parsed, mappings mapped.")
         return true;
     }
 
-    bool game_user_settings::load_user_settings(const bool verbose)
+    bool load_user_settings()
     {
         std::ifstream file;
         if (!open_file(core::config::game_base_directory / USER_SETTINGS_REL, file)) {
             return false;
         }
 
-        VERBOSE_LOG("[+] Parsing GameUserSettings.ini...")
         bool section_found = false;
         session_category_count = 0;
 
@@ -187,9 +162,14 @@ namespace asa::settings
             }
 
             std::istringstream ss(line);
-            parse_user_settings(ss, verbose);
+            parse_user_settings(ss);
         }
-        VERBOSE_LOG("[+] GameUserSettings.ini parsed.")
         return true;
+    }
+
+    void load()
+    {
+        load_user_settings();
+        load_action_mappings();
     }
 }
