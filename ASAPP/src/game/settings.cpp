@@ -4,10 +4,12 @@
 #include <fstream>
 #include <iostream>
 
-namespace asa::settings
+namespace asa
 {
     namespace
     {
+        std::map<std::string, std::unique_ptr<action_mapping> > action_mappings;
+
         int session_category_count = 0;
 
         const auto USER_SETTINGS_REL = std::filesystem::path(
@@ -41,12 +43,10 @@ namespace asa::settings
             // Exclude  = and " characters from the key  ---------------
             if (key_out == "ActionName") {
                 value_out = token.substr(eq + 2, token.length() - (key_out.length() + 3));
-            }
-            else if (key_out == "Key") {
+            } else if (key_out == "Key") {
                 // Parse out the ending parantheses, example: Key=F)
                 value_out = token.substr(eq + 1, token.length() - key_out.length() - 2);
-            }
-            else { value_out = token.substr(eq + 1); }
+            } else { value_out = token.substr(eq + 1); }
 
             return true;
         }
@@ -59,40 +59,57 @@ namespace asa::settings
             return std::stoi(value);
         }
 
-        bool parse_user_settings(const std::istringstream& stream)
+        void parse_user_settings(const std::istringstream& stream)
         {
             std::string key;
             std::string value;
 
-            if (!parse_action_name(stream.str(), key, value)) { return false; }
+            if (!parse_action_name(stream.str(), key, value)) { return; }
 
             if (key == "LastJoinedSessionPerCategory") {
                 key += std::to_string(session_category_count++);
             }
 
-            if (!mapped_settings.contains(key)) { return false; }
-            mapped_settings[key] = convert_settings_value(key, value);
-            return true;
+            _user_settings_mappings[key] = convert_settings_value(key, value);
         }
 
-        bool parse_action_mapping(std::string& from)
+        /**
+         * @brief Parses an action mapping, for example:
+         * ActionMappings=(ActionName="Reload",bShift=False,bCtrl=False,bAlt=False,bCmd=False,Key=R)
+         *
+         * The mapping is split into its indivual tokens, e.g
+         * ActionName: Reload
+         * bShift: False
+         * bCtrl: False
+         * bAlt: False
+         * bCmd: False
+         * Key: R
+         *
+         * With the action names value "Reload" being the key to later access the mapping.
+         *
+         * @remark There are special cases, for example the console keys are just stored
+         * as "ConsoleKeys=Tilde" with no further data.
+         *
+         * @param from The action mapping to parse.
+         */
+        void parse_action_mapping(const std::string& from)
         {
             action_mapping* mapping = nullptr;
             std::istringstream stream(from);
-            std::string token;
             std::vector<std::string> tokens;
 
             if (from.find("ActionMappings") != std::string::npos) {
                 // skip first 16 characters for normal mappings, e.g 'ActionMappings=('
                 stream.seekg(16);
+
                 // collect all the tokens inside the action mapping
+                std::string token;
                 while (std::getline(stream, token, ',')) { tokens.push_back(token); }
-            }
-            else if (from.find("ConsoleKeys") != std::string::npos) {
+            } else if (from.find("ConsoleKeys") != std::string::npos) {
                 tokens.push_back(from);
             }
 
-            for (const std::string& tk : tokens) {
+            for (const std::string& tk: tokens) {
                 std::string key;
                 std::string value;
 
@@ -100,52 +117,52 @@ namespace asa::settings
 
                 // get the pointer to the ActionMapping that we are parsing
                 if (key == "ActionName") {
-                    if (!action_mapping::mapped.contains(value)) { return false; }
-                    mapping = action_mapping::mapped[value];
+                    if (!action_mappings.contains(value)) {
+                        action_mappings[value] = std::make_unique<action_mapping>();
+                    }
+                    mapping = action_mappings.at(value).get();
                     continue;
                 }
                 if (key == "ConsoleKeys") {
-                    mapping = action_mapping::mapped[key];
-                    mapping->key = value;
-                    continue;
+                    action_mappings[key] = std::make_unique<action_mapping>();
+                    action_mappings[key]->key = value;
+                    return;
                 }
 
-                if (!mapping) {
-                    std::cerr << std::format("[!] Couldn't parse '{}'", stream.str()) <<
-                        "\n";
-                    return false;
-                }
+                // if we dont have a pointer to the action mapping at this point
+                // then we cant assign the values either
+                if (!mapping) { return; }
 
-                if (key == "bShift") { mapping->shift = (value == "True"); }
-                else if (key == "bCtrl") { mapping->ctrl = (value == "True"); }
-                else if (key == "bAlt") { mapping->alt = (value == "True"); }
-                else if (key == "bCmd") { mapping->cmd = (value == "True"); }
-                else if (key == "Key") { mapping->key = value; }
+                if (key == "bShift") {
+                    mapping->shift = (value == "True");
+                } else if (key == "bCtrl") {
+                    mapping->ctrl = (value == "True");
+                } else if (key == "bAlt") {
+                    mapping->alt = (value == "True");
+                } else if (key == "bCmd") {
+                    mapping->cmd = (value == "True");
+                } else if (key == "Key") { mapping->key = value; }
             }
-
-            if (!mapping) { return false; }
-            return true;
         }
     }
 
-    bool load_action_mappings()
+    void load_action_mappings(const std::filesystem::path& game_directory)
     {
         std::ifstream file;
-        if (!open_file(core::config::game_base_directory / INPUT_SETTINGS_REL, file)) {
-            return false;
+        if (!open_file(game_directory / INPUT_SETTINGS_REL, file)) {
+            return;
         }
 
         for (std::string line; std::getline(file, line);) {
             parse_action_mapping(line);
         }
-        return true;
     }
 
-    bool load_user_settings()
+    void load_user_settings(const std::filesystem::path& game_directory)
     {
         std::ifstream file;
-        if (!open_file(core::config::game_base_directory / USER_SETTINGS_REL, file)) {
-            return false;
+        if (!open_file(game_directory / USER_SETTINGS_REL, file)) {
+            return;
         }
 
         bool section_found = false;
@@ -164,12 +181,16 @@ namespace asa::settings
             std::istringstream ss(line);
             parse_user_settings(ss);
         }
-        return true;
     }
 
-    void load()
+    void load_game_settings(const std::filesystem::path& game_directory)
     {
-        load_user_settings();
-        load_action_mappings();
+        load_user_settings(game_directory);
+        load_action_mappings(game_directory);
+    }
+
+    const action_mapping& get_action_mapping(const std::string& key)
+    {
+        return *action_mappings.at(key);
     }
 }

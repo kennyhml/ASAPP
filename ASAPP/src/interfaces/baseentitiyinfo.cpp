@@ -1,5 +1,5 @@
-#include "asa/interfaces/baseentityinfo.h"
-#include "asa/core/state.h"
+#include "../../include/asa/interfaces/baseentityinfo.h"
+#include "../../include/asa/core/state.h"
 
 namespace asa::interfaces
 {

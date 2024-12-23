@@ -133,13 +133,13 @@ namespace asa::window
     void click_at(const Point&, controls::MouseButton,
                   std::chrono::milliseconds delay = std::chrono::milliseconds(50));
 
-    void down(const settings::ActionMapping&,
+    void down(const action_mapping&,
               std::chrono::milliseconds delay = std::chrono::milliseconds(10));
 
-    void up(const settings::ActionMapping&,
+    void up(const action_mapping&,
             std::chrono::milliseconds delay = std::chrono::milliseconds(10));
 
-    void press(const settings::ActionMapping&, bool catch_cursor = false,
+    void press(const action_mapping&, bool catch_cursor = false,
                std::chrono::milliseconds delay = std::chrono::milliseconds(50));
 
     void down(const std::string& key,
@@ -151,13 +151,13 @@ namespace asa::window
     void press(const std::string& key, bool catch_cursor = false,
                std::chrono::milliseconds delay = std::chrono::milliseconds(0));
 
-    void post_down(const settings::ActionMapping&,
+    void post_down(const action_mapping&,
                    std::chrono::milliseconds delay = std::chrono::milliseconds(10));
 
-    void post_up(const settings::ActionMapping&,
+    void post_up(const action_mapping&,
                  std::chrono::milliseconds delay = std::chrono::milliseconds(10));
 
-    void post_press(const settings::ActionMapping&, bool catch_cursor = false,
+    void post_press(const action_mapping&, bool catch_cursor = false,
                     std::chrono::milliseconds delay = std::chrono::milliseconds(50));
 
     void post_key_down(const std::string& key,

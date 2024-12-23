@@ -11,11 +11,11 @@ namespace asa::controls
         constexpr float PIXELS_PER_DEGREE_LR = 129.f / 90.f;
         constexpr float PIXELS_PER_DEGREE_UD = 115.f / 90.f;
 
-        constexpr float MAX_LEFT_RIGHT_SENS = 3.2f;
-        constexpr float MAX_UP_DOWN_SENS = 3.2f;
+        constexpr float MAX_LR_SENS = 3.2f;
+        constexpr float MAX_UD_SENS = 3.2f;
         constexpr float MAX_FOV = 1.25f;
 
-        const KeyboardMapping static_keymap = {
+        const keyboard_mapping_t static_keymap = {
             {"tab", VK_TAB}, {"f1", VK_F1}, {"f2", VK_F2}, {"f3", VK_F3}, {"f4", VK_F4},
             {"f5", VK_F5}, {"f6", VK_F6}, {"f7", VK_F7}, {"f8", VK_F8}, {"f9", VK_F9},
             {"f10", VK_F10}, {"delete", VK_DELETE}, {"home", VK_HOME}, {"end", VK_END},
@@ -33,9 +33,9 @@ namespace asa::controls
             {"comma", VK_OEM_COMMA}
         };
 
-        KeyboardMapping GetKeyboardMapping()
+        keyboard_mapping_t get_keyboard_mapping()
         {
-            KeyboardMapping mapping = static_keymap;
+            keyboard_mapping_t mapping = static_keymap;
 
             for (int i = 32; i < 128; i++) {
                 const char c = static_cast<char>(i);
@@ -44,9 +44,9 @@ namespace asa::controls
             return mapping;
         }
 
-        const KeyboardMapping mapping = GetKeyboardMapping();
+        const keyboard_mapping_t mapping = get_keyboard_mapping();
 
-        int constexpr get_mouse_flag(MouseButton button, bool down)
+        int constexpr get_mouse_flag(const MouseButton button, const bool down)
         {
             switch (button) {
                 case LEFT: return down ? MOUSEEVENTF_LEFTDOWN : MOUSEEVENTF_LEFTUP;
@@ -60,12 +60,18 @@ namespace asa::controls
 
         float get_left_right_factor()
         {
-            return MAX_LEFT_RIGHT_SENS / settings::sens_x.get();
+            return MAX_LR_SENS / get_user_setting<float>("LookLeftRightSensitivity");
         }
 
-        float get_up_down_factor() { return MAX_UP_DOWN_SENS / settings::sens_y.get(); }
+        float get_up_down_factor()
+        {
+            return MAX_UD_SENS / get_user_setting<float>("LookUpDownSensitivity");
+        }
 
-        float get_fov_factor() { return MAX_FOV / settings::fov.get(); }
+        float get_fov_factor()
+        {
+            return MAX_FOV / get_user_setting<float>("FOVMultiplier");
+        }
     }
 
     int get_virtual_keycode(std::string key)
@@ -79,38 +85,38 @@ namespace asa::controls
         return mapping.at(key);
     }
 
-    bool is_mouse_input(const settings::ActionMapping& input)
+    bool is_mouse_input(const action_mapping& input)
     {
         return input.key.find("Mouse") != std::string::npos;
     }
 
-    bool is_key_input(const settings::ActionMapping& input)
+    bool is_key_input(const action_mapping& input)
     {
         return !is_mouse_input(input);
     }
 
-    void down(const settings::ActionMapping& input, std::chrono::milliseconds delay)
+    void down(const action_mapping& input, const std::chrono::milliseconds delay)
     {
         is_mouse_input(input)
             ? mouse_down(str_to_button.at(input.key), delay)
             : key_down(input.key, delay);
     }
 
-    void release(const settings::ActionMapping& input, std::chrono::milliseconds delay)
+    void release(const action_mapping& input, const std::chrono::milliseconds delay)
     {
         is_mouse_input(input)
             ? mouse_up(str_to_button.at(input.key), delay)
             : key_up(input.key, delay);
     }
 
-    void press(const settings::ActionMapping& input, std::chrono::milliseconds delay)
+    void press(const action_mapping& input, const std::chrono::milliseconds delay)
     {
         is_mouse_input(input)
             ? mouse_press(str_to_button.at(input.key), delay)
             : key_press(input.key, delay);
     }
 
-    void mouse_down(MouseButton button, std::chrono::milliseconds delay)
+    void mouse_down(const MouseButton button, const std::chrono::milliseconds delay)
     {
         INPUT input{0};
         input.type = INPUT_MOUSE;
@@ -124,7 +130,7 @@ namespace asa::controls
         core::sleep_for(delay);
     }
 
-    void mouse_up(MouseButton button, std::chrono::milliseconds delay)
+    void mouse_up(const MouseButton button, const std::chrono::milliseconds delay)
     {
         INPUT input{0};
         input.type = INPUT_MOUSE;

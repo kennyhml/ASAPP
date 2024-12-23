@@ -239,7 +239,7 @@ namespace asa::window
         RECT rect;
         GetWindowRect(hWnd, &rect);
 
-        if (settings::fullscreen_mode.get() == settings::FullscreenMode::WINDOWED) {
+        if (get_user_setting<int>("FullscreenMode") == 0) {
             rect.left += WINDOWED_PADDING;
             rect.top += WINDOWED_PADDING_TOP;
             rect.right -= WINDOWED_PADDING;
@@ -290,8 +290,8 @@ namespace asa::window
         cv::Mat result;
         cvtColor(mat, result, cv::COLOR_RGBA2RGB);
 
-        if (window == hWnd && settings::fullscreen_mode ==
-            settings::FullscreenMode::WINDOWED) {
+
+        if (window == hWnd && get_user_setting<int>("FullscreenMode") == 0) {
             result = result(cv::Rect(WINDOWED_PADDING, WINDOWED_PADDING_TOP,
                                      window_width - WINDOWED_PADDING * 2,
                                      window_height - WINDOWED_PADDING_TOP -
@@ -347,71 +347,55 @@ namespace asa::window
     void click_at(const Point& position, controls::MouseButton button,
                   std::chrono::milliseconds delay)
     {
-        if (!globals::use_window_input) {
-            set_mouse_pos(position);
-            core::sleep_for(delay);
-            mouse_press(button);
-        } else { post_mouse_press_at(position, button); }
+        post_mouse_press_at(position, button);
     }
 
-    void down(const settings::ActionMapping& input, std::chrono::milliseconds delay)
+    void down(const action_mapping& input, std::chrono::milliseconds delay)
     {
-        globals::use_window_input
-            ? post_down(input, delay)
-            : controls::down(input, delay);
+        controls::down(input, delay);
     }
 
-    void up(const settings::ActionMapping& input, std::chrono::milliseconds delay)
+    void up(const action_mapping& input, std::chrono::milliseconds delay)
     {
-        globals::use_window_input
-            ? post_up(input, delay)
-            : controls::release(input, delay);
+        controls::release(input, delay);
     }
 
-    void press(const settings::ActionMapping& input, bool catchCursor,
+    void press(const action_mapping& input, bool catchCursor,
                std::chrono::milliseconds delay)
     {
-        globals::use_window_input
-            ? post_press(input, catchCursor, delay)
-            : controls::press(input, delay);
+        controls::press(input, delay);
     }
 
     void down(const std::string& key, std::chrono::milliseconds delay)
     {
-        globals::use_window_input
-            ? post_key_down(key, delay)
-            : controls::key_down(key, delay);
+        controls::key_down(key, delay);
     }
 
     void up(const std::string& key, std::chrono::milliseconds delay)
     {
-        globals::use_window_input
-            ? post_key_up(key, delay)
-            : controls::key_up(key, delay);
+        controls::key_up(key, delay);
     }
 
     void press(const std::string& key, bool catchCursor, std::chrono::milliseconds delay)
     {
-        globals::use_window_input
-            ? post_key_press(key, catchCursor, delay)
-            : controls::key_press(key, delay);
+        controls::key_press(key, delay);
     }
 
-    void post_down(const settings::ActionMapping& input, std::chrono::milliseconds delay)
+    void post_down(const action_mapping& input, std::chrono::milliseconds delay)
     {
         controls::is_mouse_input(input)
             ? post_mouse_down(controls::str_to_button.at(input.key), delay)
             : post_key_down(input.key, delay);
     }
 
-    void post_up(const settings::ActionMapping& input, std::chrono::milliseconds delay)
+    void post_up(const action_mapping& input, std::chrono::milliseconds delay)
     {
         controls::is_mouse_input(input)
             ? post_mouse_up(controls::str_to_button.at(input.key), delay)
             : post_key_up(input.key, delay);
     }
 
-    void post_press(const settings::ActionMapping& input, bool catchCursor,
+    void post_press(const action_mapping& input, bool catchCursor,
                     std::chrono::milliseconds delay)
     {
         if (controls::is_mouse_input(input)) {

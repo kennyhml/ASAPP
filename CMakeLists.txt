@@ -10,7 +10,7 @@ add_library(asapp STATIC
         ASAPP/src/entities/dinoentity.cpp
         ASAPP/src/entities/exceptions.cpp
         ASAPP/src/entities/localplayer.cpp
-        ASAPP/src/game/baseentitiyinfo.cpp
+        ASAPP/src/interfaces/baseentitiyinfo.cpp
         ASAPP/src/game/controls.cpp
         ASAPP/src/game/resources.cpp
         ASAPP/src/game/settings.cpp
@@ -128,9 +128,7 @@ add_library(asapp STATIC
         ASAPP/src/interfaces/tributeinventory.cpp
         ASAPP/include/asa/structures/tributeable.h
         ASAPP/src/structures/tributable.cpp
-        ASAPP/include/asa/game/actionmappings.h
-        ASAPP/include/asa/game/usersettings.h
-        ASAPP/src/game/actionmappings.cpp
+        ASAPP/include/asa/game/game.h
 )
 
 set_target_properties(asapp PROPERTIES
