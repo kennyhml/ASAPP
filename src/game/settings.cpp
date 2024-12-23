@@ -53,8 +53,8 @@ namespace asa
 
         std::any convert_settings_value(const std::string& key, const std::string& value)
         {
-            if (key.find("LastJoinedSessionPer") != std::string::npos) { return value; }
-            if (value.find('.') != std::string::npos) { return std::stof(value); }
+            if (key.contains("LastJoinedSessionPer")) { return value; }
+            if (value.contains('.')) { return std::stof(value); }
             if (value == "True" || value == "False") { return value == "True"; }
             return std::stoi(value);
         }
@@ -98,14 +98,14 @@ namespace asa
             std::istringstream stream(from);
             std::vector<std::string> tokens;
 
-            if (from.find("ActionMappings") != std::string::npos) {
+            if (from.contains("ActionMappings")) {
                 // skip first 16 characters for normal mappings, e.g 'ActionMappings=('
                 stream.seekg(16);
 
                 // collect all the tokens inside the action mapping
                 std::string token;
                 while (std::getline(stream, token, ',')) { tokens.push_back(token); }
-            } else if (from.find("ConsoleKeys") != std::string::npos) {
+            } else if (from.contains("ConsoleKeys")) {
                 tokens.push_back(from);
             }
 
@@ -169,8 +169,8 @@ namespace asa
         session_category_count = 0;
 
         for (std::string line; std::getline(file, line);) {
-            const bool section_started = line.find("ShooterGame") != std::string::npos;
-            if (line.find("ServerSettings") != std::string::npos) { break; }
+            const bool section_started = line.contains("ShooterGame");
+            if (line.contains("ServerSettings")) { break; }
 
             if (!section_found && !section_started) { continue; }
             if (section_started) {

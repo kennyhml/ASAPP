@@ -1,8 +1,9 @@
 #define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
 #include "asa/game/controls.h"
-#include <algorithm>
 #include "asa/core/state.h"
+
+#include <algorithm>
+#include <Windows.h>
 
 namespace asa::controls
 {
@@ -127,7 +128,7 @@ namespace asa::controls
             button == MOUSE5) { input.mi.mouseData = XBUTTON2; }
 
         SendInput(1, &input, sizeof(INPUT));
-        core::sleep_for(delay);
+        checked_sleep(delay);
     }
 
     void mouse_up(const MouseButton button, const std::chrono::milliseconds delay)
@@ -141,22 +142,22 @@ namespace asa::controls
             button == MOUSE5) { input.mi.mouseData = XBUTTON2; }
 
         SendInput(1, &input, sizeof(INPUT));
-        core::sleep_for(delay);
+        checked_sleep(delay);
     }
 
     void mouse_press(MouseButton button, std::chrono::milliseconds delay)
     {
         mouse_down(button);
-        core::sleep_for(delay);
+        checked_sleep(delay);
         mouse_up(button);
     }
 
     void mouse_combination_press(MouseButton button, std::string key)
     {
         key_down(key);
-        core::sleep_for(std::chrono::milliseconds(20));
+        checked_sleep(std::chrono::milliseconds(20));
         mouse_press(button);
-        core::sleep_for(std::chrono::milliseconds(20));
+        checked_sleep(std::chrono::milliseconds(20));
         key_up(key);
     }
 
@@ -210,7 +211,7 @@ namespace asa::controls
         }
 
         SendInput(1, &input, sizeof(INPUT));
-        core::sleep_for(delay);
+        checked_sleep(delay);
     }
 
     void key_up(std::string key, std::chrono::milliseconds delay)
@@ -230,13 +231,13 @@ namespace asa::controls
         }
 
         SendInput(1, &input, sizeof(INPUT));
-        core::sleep_for(delay);
+        checked_sleep(delay);
     }
 
     void key_press(std::string key, std::chrono::milliseconds delay)
     {
         key_down(key);
-        core::sleep_for(delay);
+        checked_sleep(delay);
         key_up(key);
     }
 
