@@ -8,11 +8,14 @@
 #include <random>
 #include <opencv2/highgui.hpp>
 #include <tesseract/baseapi.h>
+#include "asa/game/embedded.h"
 
 namespace asa::window
 {
     namespace
     {
+
+
         tesseract::TessBaseAPI* tesseract_engine = nullptr;
 
         HWND hwnd = nullptr;

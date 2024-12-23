@@ -128,6 +128,7 @@ add_library(asapp STATIC
         include/asa/core/managedthread.h
         src/core/managedthread.cpp
         include/asa/structures/structures.h
+        include/asa/game/embedded.h
 )
 
 set_target_properties(asapp PROPERTIES

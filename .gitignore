@@ -34,3 +34,4 @@
 build
 .vs
 enc_temp_folder
+/include/asa/game/embedded.h
