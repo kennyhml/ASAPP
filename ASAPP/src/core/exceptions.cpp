@@ -1,19 +1,20 @@
 #include "asa/core/exceptions.h"
 
-namespace asa::core
+namespace asa
 {
     bool crash_aware = false;
 
-    void set_crash_aware(bool aware) { crash_aware = aware; }
+    void set_crash_aware(const bool aware) { crash_aware = aware; }
     bool get_crash_aware() { return crash_aware; }
 
-    ShooterGameError::ShooterGameError(std::string info) : info(
-        "ShooterGameError: " + info) {};
+    shooter_game_error::shooter_game_error(const std::string& info)
+        : info("shooter_game_error: " + info) {};
 
-    const char* ShooterGameError::what() const noexcept { return info.c_str(); }
+    const char* shooter_game_error::what() const noexcept { return info.c_str(); }
 
-    ServerCrashedError::ServerCrashedError() : ShooterGameError(
-        "Server / connection crashed.") {};
+    server_crashed::server_crashed()
+        : shooter_game_error("Server / connection crashed.") {};
 
-    GameCrashedError::GameCrashedError() : ShooterGameError("The game has crashed.") {};
+    game_crashed::game_crashed()
+        : shooter_game_error("The game has crashed.") {};
 }

@@ -1,44 +1,72 @@
+#include "asa/utility.h"
+#include "asa/core/managedthread.h"
 #include "asa/core/state.h"
-#include "../../include/asa/utility.h"
-#include "asa/core/exceptions.h"
-#include "asa/interfaces/main_menu.h"
 
-namespace asa::core
+namespace asa
 {
     namespace
     {
-        std::chrono::system_clock::time_point last_check;
-        std::vector<StateCheckCallback_t> state_check_callbacks{
-            []() {
-                if (interfaces::main_menu->got_connection_timeout()) {
-                    throw core::ServerCrashedError();
-                }
-            },
-            {
-                []() {
-                    if (window::has_crashed_popup()) { throw core::GameCrashedError(); }
+        std::map<std::string, state_check_callback_t> state_check_callbacks;
+
+        std::mutex erase_mutex;
+
+        void pop_terminated_threads()
+        {
+            // Super important lock, the function may be called from multiple threads
+            // at the same time and cause all kinds of issues without the lock!!
+            std::lock_guard lock(erase_mutex);
+            std::vector<std::string> to_erase;
+
+            thread_registry_t& threads = get_all_threads();
+
+            for (auto& [name, thread]: threads) {
+                try {
+                    // We cannot pop our own thread, its clearly still running
+                    if (thread->get_thread()->get_id() == boost::this_thread::get_id()) {
+                        continue;
+                    }
+
+                    // Add the thread for erasure if it hasnt started or is joinable
+                    if (thread->has_terminated()) { to_erase.push_back(name); }
+                } catch (const std::exception& e) {
+                    // SK_SPDLOG_ERROR("", e.what());
                 }
             }
-        };
+            for (const auto& t: to_erase) { threads.erase(t); }
+        }
     }
 
-    void asa::core::check_state()
+    void checked_sleep(const std::chrono::milliseconds duration)
     {
-        if (!util::timedout(last_check, std::chrono::seconds(1)) ||
-            core::get_crash_aware()) { return; }
+        pop_terminated_threads();
 
-        last_check = std::chrono::system_clock::now();
-        for (auto& callback : state_check_callbacks) { callback(); }
+        const std::shared_ptr<managed_thread> thread = get_this_thread();
+        if (thread) {
+            const auto start = std::chrono::system_clock::now();
+            while (!utility::timedout(start, duration)) {
+                while (thread->get_state() == managed_thread::PAUSED) {
+                    std::this_thread::sleep_for(10ms);
+                }
+                if (thread->get_state() == managed_thread::TERMINATED) {
+                    throw thread_interruped(thread->get_id(), "TERMINATED");
+                }
+                std::this_thread::sleep_for(10ms);
+            }
+        } else {
+            // We might be in a thread that we didn't register, just let it sleep
+            std::this_thread::sleep_for(duration);
+        }
+
+        for (auto& [id, callback]: state_check_callbacks) {
+            if (!callback()) {
+                throw thread_interruped(thread->get_id(), id);
+            }
+        }
+        std::this_thread::sleep_for(duration);
     }
 
-    void asa::core::sleep_for(std::chrono::milliseconds duration)
+    void register_state_callback(std::string id, state_check_callback_t callback)
     {
-        check_state();
-        return std::this_thread::sleep_for(duration);
-    }
-
-    void asa::core::register_state_callback(StateCheckCallback_t callback)
-    {
-        state_check_callbacks.push_back(callback);
+        state_check_callbacks.emplace(std::move(id), std::move(callback));
     }
 }

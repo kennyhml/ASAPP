@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.25)
 project(asapp)
 
 add_library(asapp STATIC
-        ASAPP/src/core/config.cpp
         ASAPP/src/core/exceptions.cpp
         ASAPP/src/core/init.cpp
         ASAPP/src/core/state.cpp
@@ -47,7 +46,6 @@ add_library(asapp STATIC
         ASAPP/src/structures/dedicated_storage.cpp
         ASAPP/src/structures/exceptions.cpp
         ASAPP/src/util/util.cpp
-        ASAPP/include/asa/core/config.h
         ASAPP/include/asa/core/exceptions.h
         ASAPP/include/asa/core/init.h
         ASAPP/include/asa/core/state.h
@@ -125,6 +123,8 @@ add_library(asapp STATIC
         ASAPP/include/asa/interfaces/info/infos.h
         ASAPP/include/asa/interfaces/inventories/inventories.h
         ASAPP/include/asa/interfaces/maps/maps.h
+        ASAPP/include/asa/core/managedthread.h
+        ASAPP/src/core/managedthread.cpp
 )
 
 set_target_properties(asapp PROPERTIES
@@ -146,6 +146,9 @@ target_include_directories(asapp PRIVATE ASAPP/src)
 
 find_package(nlohmann_json CONFIG REQUIRED)
 target_link_libraries(asapp PRIVATE nlohmann_json::nlohmann_json)
+
+find_package(Boost QUIET REQUIRED COMPONENTS thread)
+target_link_libraries(asapp PUBLIC Boost::thread)
 
 # Copy resources to build folder
 add_custom_command(
