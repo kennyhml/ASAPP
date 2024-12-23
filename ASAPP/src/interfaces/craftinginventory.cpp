@@ -62,7 +62,7 @@ namespace asa::interfaces
         queue(amount);
     }
 
-    void CraftingInventory::craft(const components::Slot at_slot, const int amount)
+    void CraftingInventory::craft(const components::slot at_slot, const int amount)
     {
         assert_open(__func__);
         switch_to(Tab::CRAFTING);

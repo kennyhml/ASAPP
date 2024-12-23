@@ -5,14 +5,14 @@
 
 namespace asa::interfaces::components
 {
-    ItemTooltip ItemTooltip::from_hovered(const window::Rect& area)
+    item_tooltip item_tooltip::from_hovered(const window::Rect& area)
     {
-        ItemTooltip ret(area);
+        item_tooltip ret(area);
         ret.take_image();
         return ret;
     }
 
-    std::optional<window::Rect> ItemTooltip::get_durability_area() const
+    std::optional<window::Rect> item_tooltip::get_durability_area() const
     {
         if (image_.empty()) { return std::nullopt; }
 

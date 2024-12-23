@@ -13,7 +13,7 @@ namespace asa::interfaces
         constexpr int MAX_ITEMS_PER_PAGE = 36;
     }
 
-    BaseInventory::BaseInventory(const bool t_remote, std::unique_ptr<BaseInfo> t_info)
+    BaseInventory::BaseInventory(const bool t_remote, std::unique_ptr<base_info> t_info)
         : transfer_all_button_(t_remote ? 1359 : 336, 176),
           drop_all_button_(t_remote ? 1406 : 384, 176),
           new_folder_button_(t_remote ? 1502 : 480, 176),
@@ -24,7 +24,7 @@ namespace asa::interfaces
           item_filter(t_remote ? 1205 : 175, 841, 552, 42),
           search_bar(t_remote ? 1207 : 177, 176, t_remote ? 133 : 141, 44),
           item_area(t_remote ? 1205 : 178, 239, 552, 588),
-          info_(t_info ? std::move(t_info) : std::make_unique<BaseInfo>())
+          info_(t_info ? std::move(t_info) : std::make_unique<base_info>())
     {
         init_slots({t_remote ? 1205 : 178, 239});
     };
@@ -68,7 +68,7 @@ namespace asa::interfaces
         assert_open(__func__);
 
         if (!util::await([this]() -> bool { return !is_receiving_remote_inventory(); },
-                         timeout)) { throw ReceivingRemoteInventoryTimeoutError(this); }
+                         timeout)) { throw receiving_remote_inventory_timeout(this); }
     }
 
     bool BaseInventory::is_open() const
@@ -110,7 +110,7 @@ namespace asa::interfaces
         return count_out != MAX_ITEMS_PER_PAGE;
     }
 
-    const components::Slot* BaseInventory::find_item(items::Item& item,
+    const components::slot* BaseInventory::find_item(items::Item& item,
                                                      const bool is_searched,
                                                      const bool search_for)
     {
@@ -122,7 +122,7 @@ namespace asa::interfaces
         }
 
         if (search_for) { search_bar.search_for(item.get_name()); }
-        for (const components::Slot& slot: slots) {
+        for (const components::slot& slot: slots) {
             if (slot.has(item)) { return &slot; }
             if (slot.is_empty()) { return nullptr; }
         }
@@ -135,7 +135,7 @@ namespace asa::interfaces
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
                 // the slots are offset by 93 on the x and y axis
-                const components::Slot slot(origin.x + (j * 93), origin.y + (i * 93));
+                const components::slot slot(origin.x + (j * 93), origin.y + (i * 93));
 
                 // the current row is (row index * 6) + col index, image row = 1 and
                 // col = 4: (1 * 6) + 4 = 10, so we are at slot index 10 :)
@@ -197,7 +197,7 @@ namespace asa::interfaces
         window::post_up(settings::drop_item);
     }
 
-    void BaseInventory::take_slot(const components::Slot& slot)
+    void BaseInventory::take_slot(const components::slot& slot)
     {
         if (!slot.is_hovered()) { select_slot(slot); }
         do {
@@ -217,12 +217,12 @@ namespace asa::interfaces
 
             // Increased timeout to 60 seconds
             if (util::timedout(start, std::chrono::seconds(60))) {
-                throw InterfaceNotClosedError(this);
+                throw failed_to_close(this);
             }
         }
     }
 
-    void BaseInventory::select_slot(const components::Slot& slot,
+    void BaseInventory::select_slot(const components::slot& slot,
                                     const bool hovered_check,
                                     const bool tooltip_check) const
     {

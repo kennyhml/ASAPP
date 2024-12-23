@@ -6,14 +6,14 @@
 
 namespace asa::interfaces
 {
-    bool Console::is_open() const
+    bool console::is_open() const
     {
         static constexpr window::Color gray{140,140,140};
 
         return cv::countNonZero(window::get_mask(bar_lower_, gray, 5)) > 500; 
     }
 
-    void Console::open()
+    void console::open()
     {
         if (is_open()) { return; }
 
@@ -22,7 +22,7 @@ namespace asa::interfaces
                             std::chrono::seconds(5)));
     }
 
-    void Console::close()
+    void console::close()
     {
         if (!is_open()) { return; }
 
@@ -31,7 +31,7 @@ namespace asa::interfaces
                             std::chrono::seconds(5)));
     }
 
-    void Console::execute(const std::string& command)
+    void console::execute(const std::string& command)
     {
         open();
         util::set_clipboard(command);

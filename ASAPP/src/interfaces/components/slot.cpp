@@ -63,37 +63,37 @@ namespace asa::interfaces::components
         }
     }
 
-    window::Rect Slot::get_stack_size_area() const
+    window::Rect slot::get_stack_size_area() const
     {
         return {area.x + 3, area.y + 3, 30, 14};
     }
 
-    window::Rect Slot::get_armor_or_damage_icon_area() const
+    window::Rect slot::get_armor_or_damage_icon_area() const
     {
         return {area.x + 4, area.y + 4, 18, 18};
     }
 
-    window::Rect Slot::get_spoil_or_durability_bar_area() const
+    window::Rect slot::get_spoil_or_durability_bar_area() const
     {
         return {area.x, area.y + 83, 87, 5};
     }
 
-    window::Rect Slot::get_folder_name_area() const
+    window::Rect slot::get_folder_name_area() const
     {
         return {area.x, area.y + 65, area.width, 20};
     }
 
-    window::Rect Slot::get_weight_area() const
+    window::Rect slot::get_weight_area() const
     {
         return {area.x + 46, area.y + 69, 42, 14};
     }
 
-    window::Rect Slot::get_hovered_area() const
+    window::Rect slot::get_hovered_area() const
     {
         return {area.x - 15, area.y - 15, area.width + 30, area.height + 30};
     }
 
-    std::unique_ptr<ItemTooltip> Slot::get_tooltip() const
+    std::unique_ptr<item_tooltip> slot::get_tooltip() const
     {
         using contour = std::vector<cv::Point>;
         static constexpr window::Color color{121, 244, 253};
@@ -117,17 +117,17 @@ namespace asa::interfaces::components
             }
         }
         if (rect.empty() || max_rect < 2000) { return nullptr; }
-        return std::make_unique<ItemTooltip>(ItemTooltip::from_hovered(rect));
+        return std::make_unique<item_tooltip>(item_tooltip::from_hovered(rect));
     }
 
-    bool Slot::is_empty() const
+    bool slot::is_empty() const
     {
         static constexpr window::Color weight_text_color{128, 231, 255};
         const cv::Mat masked = window::get_mask(get_weight_area(), weight_text_color, 35);
         return countNonZero(masked) < 10;
     }
 
-    bool Slot::is_folder() const
+    bool slot::is_folder() const
     {
         static constexpr window::Color folder_name_color{182, 237, 248};
         const cv::Mat masked = window::get_mask(get_folder_name_area(), folder_name_color,
@@ -135,7 +135,7 @@ namespace asa::interfaces::components
         return cv::countNonZero(masked) > 20;
     }
 
-    bool Slot::is_hovered() const
+    bool slot::is_hovered() const
     {
         static constexpr window::Color hovered_white{255, 255, 255};
         const auto roi = get_hovered_area();
@@ -143,7 +143,7 @@ namespace asa::interfaces::components
         return cv::countNonZero(window::get_mask(roi, hovered_white, 20)) > 200;
     }
 
-    bool Slot::has(items::Item& item, float* accuracy_out, const bool cache_img) const
+    bool slot::has(items::Item& item, float* accuracy_out, const bool cache_img) const
     {
         const bool is_cached = cached_locs.contains(item.get_name());
         if (!cache_img || last_img_.empty()) { last_img_ = window::screenshot(area); }
@@ -183,7 +183,7 @@ namespace asa::interfaces::components
         return true;
     }
 
-    std::unique_ptr<items::Item> Slot::get_item() const
+    std::unique_ptr<items::Item> slot::get_item() const
     {
         if (is_empty()) { return nullptr; }
         const PrederminationResult data = predetermine();
@@ -223,7 +223,7 @@ namespace asa::interfaces::components
                                              get_quality());
     }
 
-    bool Slot::get_item_durability(float& durability_out) const
+    bool slot::get_item_durability(float& durability_out) const
     {
         static constexpr window::Color color{1, 156, 136};
 
@@ -240,19 +240,19 @@ namespace asa::interfaces::components
         return true;
     }
 
-    bool Slot::has_armor_value() const
+    bool slot::has_armor_value() const
     {
         return window::match_template(get_armor_or_damage_icon_area(),
                                       asa::resources::interfaces::armor, 0.8f);
     }
 
-    bool Slot::has_damage_value() const
+    bool slot::has_damage_value() const
     {
         return window::match_template(get_armor_or_damage_icon_area(),
                                       asa::resources::interfaces::damage, 0.8f);
     }
 
-    bool Slot::has_spoil_timer() const
+    bool slot::has_spoil_timer() const
     {
         const auto bar = get_spoil_or_durability_bar_area();
         static constexpr window::Color spoil_color{0, 214, 161};
@@ -263,7 +263,7 @@ namespace asa::interfaces::components
         return cv::countNonZero(left | spoiled) > 100;
     }
 
-    bool Slot::has_durability() const
+    bool slot::has_durability() const
     {
         const auto bar = get_spoil_or_durability_bar_area();
         static constexpr window::Color dura_color{1, 156, 136};
@@ -274,7 +274,7 @@ namespace asa::interfaces::components
         return cv::countNonZero(left | lost) > 100;
     }
 
-    bool Slot::is_stack() const
+    bool slot::is_stack() const
     {
         static constexpr window::Color stack_count_color{128, 231, 255};
         const auto bar = get_stack_size_area();
@@ -282,7 +282,7 @@ namespace asa::interfaces::components
         return cv::countNonZero(mask) > 30;
     }
 
-    bool Slot::is_blueprint(const items::ItemData& data) const
+    bool slot::is_blueprint(const items::ItemData& data) const
     {
         // Consumables, artifacts or resources do not have blueprint variants.
         if (!has_blueprint_variant(data.type)) { return false; }
@@ -295,7 +295,7 @@ namespace asa::interfaces::components
                                       0.9f);
     }
 
-    items::ItemData::ItemQuality Slot::get_quality() const
+    items::ItemData::ItemQuality slot::get_quality() const
     {
         const window::Rect quality_roi(area.x + 2, area.y + 60, 6, 6);
 
@@ -307,7 +307,7 @@ namespace asa::interfaces::components
         return items::ItemData::ItemQuality::NONE;
     }
 
-    Slot::PrederminationResult Slot::predetermine() const
+    slot::PrederminationResult slot::predetermine() const
     {
         PrederminationResult res;
 
@@ -322,7 +322,7 @@ namespace asa::interfaces::components
         return res;
     }
 
-    bool Slot::PrederminationResult::matches(const items::ItemData& data) const
+    bool slot::PrederminationResult::matches(const items::ItemData& data) const
     {
         // check modifiers
         if (data.has_armor_value != this->has_armor_modifier || data.has_damage_value !=
@@ -335,7 +335,7 @@ namespace asa::interfaces::components
         return true;
     }
 
-    bool Slot::PrederminationResult::matches(items::ItemData::ItemType type) const
+    bool slot::PrederminationResult::matches(items::ItemData::ItemType type) const
     {
         switch (type) {
             case items::ItemData::EQUIPPABLE: return has_durability_bar;
@@ -351,7 +351,7 @@ namespace asa::interfaces::components
         }
     }
 
-    std::ostream& operator<<(std::ostream& os, const Slot::PrederminationResult& d)
+    std::ostream& operator<<(std::ostream& os, const slot::PrederminationResult& d)
     {
         return os << std::format(
                    "Armor: {}, damage: {}, stack: {}, spoils: {}, durability: {})",

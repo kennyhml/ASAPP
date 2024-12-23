@@ -19,7 +19,7 @@ namespace asa::interfaces
         core::sleep_for(std::chrono::milliseconds(200));
 
         const auto& roi = destination_slots_[region_index];
-        DestinationButton button(roi.x, roi.y);
+        destination_button button(roi.x, roi.y);
 
         button.press();
         while (!can_confirm_travel()) {}
@@ -35,7 +35,7 @@ namespace asa::interfaces
         searchbar.search_for(bed);
         core::sleep_for(std::chrono::milliseconds(400));
 
-        DestinationButton button = get_ready_destination(bed, wait_ready);
+        destination_button button = get_ready_destination(bed, wait_ready);
         button.select();
 
         if (!util::await([this]() -> bool { return can_confirm_travel(); },
@@ -61,8 +61,8 @@ namespace asa::interfaces
         // Wait for spawn map to open/close
         if (!util::await([this, in]() { return in == is_open(); },
                          std::chrono::seconds(30))) {
-            if (in) { throw asa::interfaces::InterfaceNotOpenedError(this); }
-            else { throw asa::interfaces::InterfaceNotClosedError(this); }
+            if (in) { throw asa::interfaces::failed_to_open(this); }
+            else { throw asa::interfaces::failed_to_close(this); }
         }
 
         core::sleep_for(std::chrono::seconds(1));
@@ -77,7 +77,7 @@ namespace asa::interfaces
                 core::sleep_for(std::chrono::milliseconds(100));
 
                 if (util::timedout(start, std::chrono::seconds(30))) {
-                    throw asa::interfaces::InterfaceNotClosedError(this);
+                    throw asa::interfaces::failed_to_close(this);
                 }
             }
 

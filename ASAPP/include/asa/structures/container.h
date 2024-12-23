@@ -1,16 +1,16 @@
 #pragma once
 #include "interactable.h"
-#include "../interfaces/baseinventory.h"
-#include "../interfaces/containerinfo.h"
+#include "asa/interfaces/baseinventory.h"
+#include "../interfaces/info/containerinfo.h"
 
-namespace asa::structures
+namespace asa
 {
-    class Container : public Interactable
+    class container : public Interactable
     {
     public:
         Container(std::string t_name, int t_max_slots,
                   std::unique_ptr<interfaces::BaseInventory> t_inv = nullptr,
-                  std::unique_ptr<interfaces::ContainerInfo> t_info = nullptr);
+                  std::unique_ptr<interfaces::container_info> t_info = nullptr);
 
         /**
          * @brief Gets the inventory component of the container. 
@@ -23,7 +23,7 @@ namespace asa::structures
         /**
          * @brief Gets the info component of the container. 
          */
-        [[nodiscard]] virtual interfaces::ContainerInfo* get_info() const
+        [[nodiscard]] virtual interfaces::container_info* get_info() const
         {
             return info_.get();
         }
@@ -50,7 +50,7 @@ namespace asa::structures
 
     protected:
         int max_slots_;
-        std::unique_ptr<interfaces::ContainerInfo> info_;
+        std::unique_ptr<interfaces::container_info> info_;
 
         int last_known_slots_{0};
     };

@@ -1,7 +1,7 @@
 #pragma once
 #include "container.h"
 #include "../interfaces/baseinventory.h"
-#include "../interfaces/dedicatedstorageinfo.h"
+#include "../interfaces/info/dedicated_storage_info.h"
 
 namespace asa::structures
 {
@@ -10,7 +10,7 @@ namespace asa::structures
     public:
         explicit DedicatedStorage(std::string name) : Container(
             std::move(name), 1800, nullptr,
-            std::make_unique<interfaces::DedicatedStorageInfo>()) {}
+            std::make_unique<interfaces::dedicated_storage_info>()) {}
 
         /**
          * @brief Checks whether depositing into the dedicated storage is possible.
@@ -24,9 +24,9 @@ namespace asa::structures
          *
          * @remark This is a special component that allows item withdrawal.
          */
-        [[nodiscard]] interfaces::DedicatedStorageInfo* get_info() const override
+        [[nodiscard]] interfaces::dedicated_storage_info* get_info() const override
         {
-            return dynamic_cast<interfaces::DedicatedStorageInfo*>(info_.get());
+            return dynamic_cast<interfaces::dedicated_storage_info*>(info_.get());
         }
 
     private:

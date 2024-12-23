@@ -2,8 +2,13 @@
 #include "baseentity.h"
 #include "asa/interfaces/dinoinventory.h"
 
-namespace asa::entities
+namespace asa
 {
+    /**
+     * @brief Basic dino entity implementation.
+     *
+     * Provides access to the more concrete dino inventory.
+     */
     class dino_entity : public base_entity
     {
     public:

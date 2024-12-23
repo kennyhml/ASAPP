@@ -1,48 +1,50 @@
 #pragma once
-#include <format>
-#include "iinterface.h"
+#include "interface.h"
 #include "asa/core/exceptions.h"
 
-namespace asa::interfaces
+#include <format>
+
+namespace asa
 {
-    class InterfaceError : public core::ASAPPError
+    class interface_error : public asapp_error
     {
-        const IInterface* _interface;
+        const interface* _interface;
         std::string info;
 
     public:
-        InterfaceError(const IInterface* t_interface, std::string t_info);
-        InterfaceError(const IInterface* t_interface);
+        interface_error(const interface* t_interface, std::string t_info);
+
+        explicit interface_error(const interface* t_interface);
 
         const char* what() const noexcept override;
     };
 
-    class InterfaceNotOpenedError : public InterfaceError
+    class failed_to_open : public interface_error
     {
     public:
-        InterfaceNotOpenedError(const IInterface* t_interface);
+        explicit failed_to_open(const interface* t_interface);
     };
 
-    class InterfaceNotClosedError : public InterfaceError
+    class failed_to_close : public interface_error
     {
     public:
-        InterfaceNotClosedError(const IInterface* t_interface);
+        explicit failed_to_close(const interface* t_interface);
     };
 
-    class ReceivingRemoteInventoryTimeoutError : public InterfaceError
+    class receiving_remote_inventory_timeout : public interface_error
     {
     public:
-        ReceivingRemoteInventoryTimeoutError(const IInterface* t_interface);
+        explicit receiving_remote_inventory_timeout(const interface* t_interface);
     };
 
     /**
      * @brief Thrown when an action is attempted on an interface that requires
      * the it to be open, but it was not.
      */
-    class InterfaceNotOpenError : public InterfaceError
+    class no_interface_open : public interface_error
     {
     public:
-        InterfaceNotOpenError(std::string t_attempted_action,
-                              const IInterface* t_interface);
+        no_interface_open(std::string t_attempted_action,
+                          const interface* t_interface);
     };
 }

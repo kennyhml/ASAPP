@@ -4,11 +4,23 @@
 
 namespace asa
 {
+    /**
+     * @brief Base class for any entity-like actor in ASA.
+     *
+     * Provides the basic attributes and functionality of any entity.
+     * Component getters may be overriden by subclasses to provide concrete implementations.
+     */
     class base_entity
     {
     public:
         virtual ~base_entity() = default;
 
+        /**
+         * @brief Constructors a base entity with a given name and it's inventory component.
+         *
+         * @param t_name The name of the entity, may also refer to its kind.
+         * @param t_inv An inventory component that belongs to this entity, created if null.
+         */
         explicit base_entity(std::string t_name,
                              std::unique_ptr<base_inventory> t_inv = nullptr)
             : name_(std::move(t_name)),

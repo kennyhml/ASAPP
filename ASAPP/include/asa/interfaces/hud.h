@@ -2,11 +2,11 @@
 
 #include "asa/items/item.h"
 #include "asa/game/window.h"
-#include "asa/interfaces/iinterface.h"
+#include "asa/interfaces/interface.h"
 
 namespace asa::interfaces
 {
-    class HUD : public IInterface
+    class hud : public interface
     {
     public:
         [[nodiscard]] bool is_open() const override { return true; }
@@ -87,15 +87,15 @@ namespace asa::interfaces
          */
         [[nodiscard]] static bool item_added(const window::Rect& area);
 
-        [[nodiscard]] bool item_added(items::Item&, window::Rect* roi_out) const;
+        [[nodiscard]] bool item_added(item&, window::Rect* roi_out) const;
 
-        [[nodiscard]] bool item_removed(items::Item&, window::Rect* roi_out) const;
+        [[nodiscard]] bool item_removed(item&, window::Rect* roi_out) const;
 
         [[nodiscard]] bool transferred_item_into_dedicated_storage() const;
 
-        bool count_items_added(items::Item&, int& amount_out) const;
+        bool count_items_added(item&, int& amount_out) const;
 
-        bool count_items_removed(items::Item&, int& amount_out) const;
+        bool count_items_removed(item&, int& amount_out) const;
 
         float get_water_level() const;
 
@@ -142,6 +142,4 @@ namespace asa::interfaces
 
         bool extended_toggled_ = false;
     };
-
-    inline HUD* hud = new HUD();
 }

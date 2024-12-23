@@ -1,14 +1,14 @@
 #pragma once
 #include "basestructure.h"
-#include "asa/game/settings.h"
-#include "asa/interfaces/iinterface.h"
+#include "../game/settings.h"
+#include "asa/interfaces/interface.h"
 
-namespace asa::structures
+namespace asa
 {
-    class Interactable : public BaseStructure
+    class interactable : public base_structure
     {
     public:
-        explicit Interactable(std::string name,
+        explicit interactable(std::string name,
                                        settings::ActionMapping* t_interact_key,
                                        std::unique_ptr<interfaces::IInterface>
                                        t_interface) : BaseStructure(std::move(name)),

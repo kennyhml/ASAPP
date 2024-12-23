@@ -1,4 +1,4 @@
-#include "asa/interfaces/containerinfo.h"
+#include "../../include/asa/interfaces/info/containerinfo.h"
 
 namespace asa::interfaces
 {
@@ -14,14 +14,14 @@ namespace asa::interfaces
         }
     }
 
-    float ContainerInfo::get_fill_level()
+    float container_info::get_fill_level()
     {
         auto roi = slots_bar_;
         roi.y -= 5;
         return get_filled(roi);
     }
 
-    float ContainerInfo::get_health_level()
+    float container_info::get_health_level()
     {
         auto roi = health_bar_;
         roi.y -= 5;
@@ -29,7 +29,7 @@ namespace asa::interfaces
         return get_filled(roi);
     }
 
-    int ContainerInfo::get_max_weight() { return std::numeric_limits<float>::infinity(); }
+    int container_info::get_max_weight() { return std::numeric_limits<float>::infinity(); }
 
-    int ContainerInfo::get_current_weight() { return 0; }
+    int container_info::get_current_weight() { return 0; }
 }

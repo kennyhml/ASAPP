@@ -17,26 +17,26 @@ add_library(asapp STATIC
         ASAPP/src/game/window.cpp
         ASAPP/src/interfaces/actionwheel.cpp
         ASAPP/src/interfaces/baseinventory.cpp
-        ASAPP/src/interfaces/basetravelmap.cpp
+        ASAPP/src/interfaces/base_travel_map.cpp
         ASAPP/src/interfaces/components/button.cpp
-        ASAPP/src/interfaces/components/searchbar.cpp
+        ASAPP/src/interfaces/components/search_bar.cpp
         ASAPP/src/interfaces/components/slot.cpp
         ASAPP/src/interfaces/console.cpp
         ASAPP/src/interfaces/craftinginventory.cpp
-        ASAPP/src/interfaces/dedicatedstorageinfo.cpp
+        ASAPP/src/interfaces/dedicated_storage_info.cpp
         ASAPP/src/interfaces/exceptions.cpp
         ASAPP/src/interfaces/hud.cpp
         ASAPP/src/interfaces/interfacemanager.cpp
         ASAPP/src/interfaces/localinventory.cpp
-        ASAPP/src/interfaces/mainmenu.cpp
-        ASAPP/src/interfaces/modeselect.cpp
-        ASAPP/src/interfaces/playerinfo.cpp
-        ASAPP/src/interfaces/serverselect.cpp
+        ASAPP/src/interfaces/main_menu.cpp
+        ASAPP/src/interfaces/mode_select.cpp
+        ASAPP/src/interfaces/player_info.cpp
+        ASAPP/src/interfaces/server_select.cpp
         ASAPP/src/interfaces/spawnmap.cpp
         ASAPP/src/interfaces/structureinfo.cpp
         ASAPP/src/interfaces/teleportmap.cpp
         ASAPP/src/interfaces/travelmap.cpp
-        ASAPP/src/interfaces/tribemanager.cpp
+        ASAPP/src/interfaces/tribe_manager.cpp
         ASAPP/src/items/exceptions.cpp
         ASAPP/src/items/item.cpp
         ASAPP/src/items/itemdata.cpp
@@ -60,42 +60,36 @@ add_library(asapp STATIC
         ASAPP/include/asa/game/resources.h
         ASAPP/include/asa/game/settings.h
         ASAPP/include/asa/game/window.h
-        ASAPP/include/asa/interfaces/actionwheel.h
-        ASAPP/include/asa/interfaces/baseentityinfo.h
-        ASAPP/include/asa/interfaces/baseinfo.h
-        ASAPP/include/asa/interfaces/baseinventory.h
-        ASAPP/include/asa/interfaces/basetravelmap.h
+        ASAPP/include/asa/interfaces/wheels/baseactionwheel.h
+        ASAPP/include/asa/interfaces/info/baseentityinfo.h
+        ASAPP/include/asa/interfaces/info/baseinfo.h
+        ASAPP/include/asa/interfaces/inventories/baseinventory.h
+        ASAPP/include/asa/interfaces/maps/basetravelmap.h
         ASAPP/include/asa/interfaces/components/button.h
-        ASAPP/include/asa/interfaces/components/combobox.h
-        ASAPP/include/asa/interfaces/components/iinterfacecomponent.h
-        ASAPP/include/asa/interfaces/components/searchbar.h
+        ASAPP/include/asa/interfaces/components/combo_box.h
+        ASAPP/include/asa/interfaces/components/interface_component.h
+        ASAPP/include/asa/interfaces/components/search_bar.h
         ASAPP/include/asa/interfaces/components/slot.h
         ASAPP/include/asa/interfaces/components/tooltip.h
         ASAPP/include/asa/interfaces/console.h
-        ASAPP/include/asa/interfaces/containerinfo.h
-        ASAPP/include/asa/interfaces/craftinginventory.h
-        ASAPP/include/asa/interfaces/dedicatedstorageinfo.h
-        ASAPP/include/asa/interfaces/dinoinfo.h
-        ASAPP/include/asa/interfaces/engrams.h
+        ASAPP/include/asa/interfaces/info/containerinfo.h
+        ASAPP/include/asa/interfaces/inventories/crafting_inventory.h
+        ASAPP/include/asa/interfaces/info/dedicated_storage_info.h
+        ASAPP/include/asa/interfaces/info/dino_info.h
         ASAPP/include/asa/interfaces/exceptions.h
-        ASAPP/include/asa/interfaces/explorernotes.h
         ASAPP/include/asa/interfaces/hud.h
-        ASAPP/include/asa/interfaces/iinterface.h
-        ASAPP/include/asa/interfaces/interfacemanager.h
+        ASAPP/include/asa/interfaces/interface.h
         ASAPP/include/asa/interfaces/interfaces.h
-        ASAPP/include/asa/interfaces/localinventory.h
-        ASAPP/include/asa/interfaces/mainmenu.h
-        ASAPP/include/asa/interfaces/map.h
+        ASAPP/include/asa/interfaces/inventories/localinventory.h
+        ASAPP/include/asa/interfaces/main_menu.h
         ASAPP/include/asa/interfaces/menu.h
-        ASAPP/include/asa/interfaces/minimap.h
-        ASAPP/include/asa/interfaces/modeselect.h
-        ASAPP/include/asa/interfaces/playerinfo.h
-        ASAPP/include/asa/interfaces/serverselect.h
-        ASAPP/include/asa/interfaces/spawnmap.h
-        ASAPP/include/asa/interfaces/teleportmap.h
-        ASAPP/include/asa/interfaces/trackingtab.h
-        ASAPP/include/asa/interfaces/travelmap.h
-        ASAPP/include/asa/interfaces/tribemanager.h
+        ASAPP/include/asa/interfaces/mode_select.h
+        ASAPP/include/asa/interfaces/info/player_info.h
+        ASAPP/include/asa/interfaces/server_select.h
+        ASAPP/include/asa/interfaces/maps/spawn_map.h
+        ASAPP/include/asa/interfaces/maps/teleport_map.h
+        ASAPP/include/asa/interfaces/maps/travel_map.h
+        ASAPP/include/asa/interfaces/tribe_manager.h
         ASAPP/include/asa/items/exceptions.h
         ASAPP/include/asa/items/item.h
         ASAPP/include/asa/items/itemdata.h
@@ -113,22 +107,27 @@ add_library(asapp STATIC
         ASAPP/include/asa/structures/smallcropplot.h
         ASAPP/include/asa/structures/teleporter.h
         ASAPP/include/asa/util/util.h
-        ASAPP/include/asa/interfaces/components/tribelogmessage.h
-        ASAPP/src/interfaces/components/tribelogmessage.cpp
+        ASAPP/include/asa/interfaces/components/tribelog_message.h
+        ASAPP/src/interfaces/components/tribelog_message.cpp
         ASAPP/include/asa/network/server.h
         ASAPP/include/asa/network/queries.h
         ASAPP/src/network/server.cpp
         ASAPP/src/network/queries.cpp
         ASAPP/src/interfaces/components/tooltip.cpp
-        ASAPP/src/interfaces/dinoinfo.cpp
-        ASAPP/include/asa/interfaces/dinoinventory.h
+        ASAPP/src/interfaces/dino_info.cpp
+        ASAPP/include/asa/interfaces/inventories/dinoinventory.h
         ASAPP/src/interfaces/dinoinventory.cpp
         ASAPP/src/interfaces/menu.cpp
-        ASAPP/include/asa/interfaces/tributeinventory.h
+        ASAPP/include/asa/interfaces/inventories/tribute_inventory.h
         ASAPP/src/interfaces/tributeinventory.cpp
         ASAPP/include/asa/structures/tributeable.h
         ASAPP/src/structures/tributable.cpp
         ASAPP/include/asa/game/game.h
+        ASAPP/include/asa/interfaces/components/components.h
+        ASAPP/include/asa/interfaces/maps/exceptions.h
+        ASAPP/include/asa/interfaces/info/infos.h
+        ASAPP/include/asa/interfaces/inventories/inventories.h
+        ASAPP/include/asa/interfaces/maps/maps.h
 )
 
 set_target_properties(asapp PROPERTIES

@@ -1,11 +1,9 @@
 #pragma once
-#include <memory>
+#include "interface.h"
 
-#include "iinterface.h"
-
-namespace asa::interfaces
+namespace asa
 {
-    class Menu final : public IInterface
+    class menu final : public interface
     {
     public:
         [[nodiscard]] bool is_open() const override;
@@ -14,6 +12,4 @@ namespace asa::interfaces
 
         void close();
     };
-
-    inline auto menu = std::make_unique<Menu>();
 }

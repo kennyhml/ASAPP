@@ -3,15 +3,15 @@
 #include "asa/util/util.h"
 #include "asa/core/state.h"
 #include "asa/entities/exceptions.h"
-#include "asa/game/settings.h"
+#include "../../include/asa/game/settings.h"
 #include "asa/game/window.h"
 #include "asa/structures/exceptions.h"
 #include "asa/game/resources.h"
 #include "asa/interfaces/console.h"
-#include "asa/interfaces/mainmenu.h"
+#include "asa/interfaces/main_menu.h"
 #include "asa/interfaces/menu.h"
-#include "asa/interfaces/modeselect.h"
-#include "asa/interfaces/serverselect.h"
+#include "asa/interfaces/mode_select.h"
+#include "asa/interfaces/server_select.h"
 #include "asa/interfaces/spawnmap.h"
 #include "asa/network/queries.h"
 
@@ -320,12 +320,12 @@ namespace asa::entities
             }
 
             if (special_access_set) { set_pitch(90); }
-            if (util::await(interfaces::HUD::can_fast_travel, 1s)) {
+            if (util::await(interfaces::hud::can_fast_travel, 1s)) {
                 break;
             }
             if (special_access_set) {
                 set_pitch(-90);
-                if (util::await(interfaces::HUD::can_fast_travel, 1s)) { break; }
+                if (util::await(interfaces::hud::can_fast_travel, 1s)) { break; }
             }
 
             // Still unable to see the bed, either missing or not yet loaded.
@@ -334,7 +334,7 @@ namespace asa::entities
             }
 
             // TODO: Implement the action wheel as 2nd indicator we are unable to access it
-            if (!util::await(interfaces::HUD::can_fast_travel, 5s) && attempt != 2) {
+            if (!util::await(interfaces::hud::can_fast_travel, 5s) && attempt != 2) {
                 reset_pitch();
             }
         }

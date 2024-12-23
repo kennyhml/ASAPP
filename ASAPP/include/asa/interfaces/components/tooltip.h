@@ -1,12 +1,12 @@
 #pragma once
-#include "iinterfacecomponent.h"
+#include "interface_component.h"
 
-namespace asa::interfaces::components
+namespace asa
 {
-    class ItemTooltip : public IInterfaceComponent
+    class item_tooltip : public interface_component
     {
     public:
-        using IInterfaceComponent::IInterfaceComponent;
+        using interface_component::interface_component;
 
         /**
          * @brief Constructs a new item tooltip from an area while hovered meaning the
@@ -18,7 +18,7 @@ namespace asa::interfaces::components
          * @param area The area of the tooltip to be created (thats hovered)
          * @return
          */
-        static ItemTooltip from_hovered(const window::Rect& area);
+        static item_tooltip from_hovered(const window::Rect& area);
 
         /**
          * @return Gets the image of the tooltip, an image must have been taken before.

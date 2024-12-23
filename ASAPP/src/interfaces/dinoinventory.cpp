@@ -4,7 +4,7 @@
 
 namespace asa::interfaces
 {
-    void DinoInventory::equip(items::Item& item, const DinoInfo::Slot slot)
+    void DinoInventory::equip(items::Item& item, const dino_info::Slot slot)
     {
         assert_open(__func__);
         search_bar.search_for(item.get_name());

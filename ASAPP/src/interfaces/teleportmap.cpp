@@ -23,7 +23,7 @@ namespace asa::interfaces
 
             // Increased timeout to 60 seconds
             if (util::timedout(start, std::chrono::seconds(60))) {
-                throw InterfaceNotClosedError(this);
+                throw failed_to_close(this);
             }
         }
     }
@@ -43,7 +43,7 @@ namespace asa::interfaces
         searchbar.search_for(destination);
         core::sleep_for(std::chrono::milliseconds(400));
 
-        DestinationButton button = get_ready_destination(destination, false);
+        destination_button button = get_ready_destination(destination, false);
         button.select();
 
         if (!util::await([this]() -> bool { return can_confirm_travel(); },
@@ -57,13 +57,13 @@ namespace asa::interfaces
         searchbar.set_text_cleared();
     }
 
-    std::vector<BaseTravelMap::DestinationButton> TeleportMap::get_destinations() const
+    std::vector<base_travel_map::destination_button> TeleportMap::get_destinations() const
     {
-        std::vector<DestinationButton> ret;
+        std::vector<destination_button> ret;
 
         for (const auto& roi: destination_slots_) {
             // create an imaginary button for now.
-            const DestinationButton button(roi.x, roi.y);
+            const destination_button button(roi.x, roi.y);
             // button doesnt exist, end of the list reached.
             if (!button.is_ready()) { break; }
             ret.push_back(button);

@@ -1,4 +1,4 @@
-#include "../../include/asa/interfaces/baseentityinfo.h"
+#include "../../include/asa/interfaces/info/baseentityinfo.h"
 #include "../../include/asa/core/state.h"
 
 namespace asa::interfaces
@@ -14,32 +14,32 @@ namespace asa::interfaces
         }
     }
 
-    BaseEntityInfo::BaseEntityInfo()
+    base_entity_info::BaseEntityInfo()
     {
         for (int i = 0; i < gear_slots.max_size(); i++) {
             gear_slots[i] = GearSlot(764 + (305 * (i > 2)), 178 + (93 * (i % 3)));
         }
     }
 
-    float BaseEntityInfo::get_health_level()
+    float base_entity_info::get_health_level()
     {
         static const window::Rect roi(764, 514, 336, 1);
         return get_fill_amount(roi);
     }
 
-    float BaseEntityInfo::get_food_level()
+    float base_entity_info::get_food_level()
     {
         static const window::Rect roi(764, 619, 336, 1);
         return get_fill_amount(roi);
     }
 
-    float BaseEntityInfo::get_water_level()
+    float base_entity_info::get_water_level()
     {
         static const window::Rect roi(764, 654, 336, 1);
         return get_fill_amount(roi);
     }
 
-    void BaseEntityInfo::unequip(const Slot slot)
+    void base_entity_info::unequip(const Slot slot)
     {
         const auto& gear_slot = gear_slots.at(slot);
 
@@ -53,7 +53,7 @@ namespace asa::interfaces
         }
     }
 
-    void BaseEntityInfo::unequip_all()
+    void base_entity_info::unequip_all()
     {
         for (int i = 0; i < gear_slots.size(); i++) {
             unequip(static_cast<Slot>(i));

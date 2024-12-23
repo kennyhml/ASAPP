@@ -9,7 +9,7 @@ namespace asa::structures
     public:
         Tributable(std::string t_name, int t_max_slots,
                   std::unique_ptr<interfaces::TributeInventory> t_inv = nullptr,
-                  std::unique_ptr<interfaces::ContainerInfo> t_info = nullptr);
+                  std::unique_ptr<interfaces::container_info> t_info = nullptr);
 
         /**
          * @brief Gets the inventory component of the Tributeable Structure.

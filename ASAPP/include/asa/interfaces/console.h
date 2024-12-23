@@ -1,15 +1,15 @@
 #pragma once
-#include "iinterface.h"
-#include <string>
-
+#include "interface.h"
 #include "asa/game/window.h"
 
-namespace asa::interfaces
+#include <string>
+
+namespace asa
 {
-    class Console final : public IInterface
+    class console final : public interface
     {
     public:
-        Console() = default;
+        console() = default;
 
         /**
          * @brief Checks whether the console is currently open. 
@@ -37,6 +37,4 @@ namespace asa::interfaces
     private:
         window::Rect bar_lower_{0, 1052, 1919, 20};
     };
-
-    inline std::unique_ptr<Console> console = std::make_unique<Console>();
 }

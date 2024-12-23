@@ -1,5 +1,5 @@
 #include "asa/core/init.h"
-#include "asa/game/settings.h"
+#include "../../include/asa/game/settings.h"
 #include "asa/game/window.h"
 #include "asa/items/items.h"
 #include "asa/game/resources.h"

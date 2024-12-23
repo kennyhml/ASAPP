@@ -1,6 +1,6 @@
 #include "asa/interfaces/localinventory.h"
 #include "asa/util/util.h"
-#include "asa/game/settings.h"
+#include "../../include/asa/game/settings.h"
 #include "asa/interfaces/exceptions.h"
 
 namespace asa::interfaces
@@ -15,7 +15,7 @@ namespace asa::interfaces
             }
 
             if (util::timedout(start, std::chrono::seconds(30))) {
-                throw InterfaceNotOpenedError(this);
+                throw failed_to_open(this);
             }
         }
     }
@@ -42,12 +42,12 @@ namespace asa::interfaces
                             std::chrono::seconds(5))) { return; }
 
             if (util::timedout(start, std::chrono::seconds(30))) {
-                throw InterfaceError(this, "Failed to open tab " + std::to_string(tab));
+                throw interface_error(this, "Failed to open tab " + std::to_string(tab));
             }
         }
     }
 
-    void LocalInventory::equip(items::Item& item, const PlayerInfo::Slot slot)
+    void LocalInventory::equip(items::Item& item, const player_info::Slot slot)
     {
         assert_open(__func__);
         search_bar.search_for(item.get_name());

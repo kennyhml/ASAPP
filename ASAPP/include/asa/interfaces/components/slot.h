@@ -1,15 +1,15 @@
 #pragma once
-#include "iinterfacecomponent.h"
 #include "tooltip.h"
+#include "interface_component.h"
 #include "asa/items/item.h"
 
-namespace asa::interfaces::components
+namespace asa
 {
-    struct Slot : IInterfaceComponent
+    struct item_slot : interface_component
     {
     public:
-        Slot() : Slot(0, 0) {}
-        Slot(const int t_x, const int t_y) : IInterfaceComponent(t_x, t_y, 86, 87) {}
+        item_slot() : item_slot(0, 0) {}
+        item_slot(const int t_x, const int t_y) : interface_component(t_x, t_y, 86, 87) {}
 
         /**
          * @brief Computes the rect of the stack size value for this slot.
@@ -61,7 +61,7 @@ namespace asa::interfaces::components
          * 
          * @return A pointer to the constructed tooltip or null pointer upon failure. 
          */
-        [[nodiscard]] std::unique_ptr<ItemTooltip> get_tooltip() const;
+        [[nodiscard]] std::unique_ptr<item_tooltip> get_tooltip() const;
 
         /**
          * @brief Determines whether the slot is empty or has an item in it.
@@ -93,7 +93,7 @@ namespace asa::interfaces::components
          *
          * @return True if the given item is located in this slot, false otherwise.
          */
-        [[nodiscard]] bool has(items::Item& item, float* accuracy_out = nullptr,
+        [[nodiscard]] bool has(item& item, float* accuracy_out = nullptr,
                                bool cache_img = false) const;
 
         /**
@@ -107,7 +107,7 @@ namespace asa::interfaces::components
          *
          * @return A unique pointer to the determined item object.
          */
-        [[nodiscard]] std::unique_ptr<items::Item> get_item() const;
+        [[nodiscard]] std::unique_ptr<item> get_item() const;
 
         /**
          * @brief Gets the durability of the item located in the slot.

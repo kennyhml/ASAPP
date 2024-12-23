@@ -33,7 +33,7 @@ namespace asa::interfaces
 
             // Increased timeout to 60 seconds
             if (util::timedout(start, std::chrono::seconds(60))) {
-                throw InterfaceNotClosedError(this);
+                throw failed_to_close(this);
             }
         }
     }
@@ -44,7 +44,7 @@ namespace asa::interfaces
         searchbar.search_for(destination);
         core::sleep_for(std::chrono::milliseconds(400));
 
-        DestinationButton button = get_ready_destination(destination, wait_ready);
+        destination_button button = get_ready_destination(destination, wait_ready);
         button.select();
 
         if (!util::await([this]() -> bool { return can_confirm_travel(); },

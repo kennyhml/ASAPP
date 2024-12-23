@@ -3,7 +3,7 @@
 
 using json = nlohmann::json;
 
-namespace asa::items
+namespace asa
 {
     /**
      * @class ItemData

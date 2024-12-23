@@ -2,9 +2,9 @@
 #include "itemdata.h"
 #include <opencv2/imgproc/imgproc.hpp>
 
-namespace asa::items
+namespace asa
 {
-    class Item
+    class item
     {
     public:
         /**
@@ -16,7 +16,7 @@ namespace asa::items
          *
          * @throws ItemIconNotFound if the icon file for the item does not exist.
          */
-        explicit Item(std::string t_name, bool t_is_blueprint = false,
+        explicit item(std::string t_name, bool t_is_blueprint = false,
                       ItemData::ItemQuality t_quality = ItemData::PRIMITIVE);
 
         /**
@@ -28,11 +28,11 @@ namespace asa::items
          *
          * @throws ItemIconNotFound if the icon file for the item does not exist.
          */
-        Item(const Item& t_other, bool t_is_blueprint, ItemData::ItemQuality t_quality);
+        item(const item& t_other, bool t_is_blueprint, ItemData::ItemQuality t_quality);
 
-        Item(const Item& t_other) = default;
+        item(const item& t_other) = default;
 
-        bool operator==(const Item& other) const
+        bool operator==(const item& other) const
         {
             return this->name_ == other.name_ && this->data_ == other.data_;
         }

@@ -8,7 +8,6 @@
 #include "asa/util/util.h"
 #include "asa/core/config.h"
 #include "asa/core/state.h"
-#include "asa/game/globals.h"
 #include "asa/game/resources.h"
 
 namespace asa::window
@@ -92,7 +91,6 @@ namespace asa::window
         if (mask.empty()) { matchTemplate(source, templ, result, mode); } else {
             matchTemplate(source, templ, result, mode, mask);
         }
-
 
         double min_val, max_val;
         cv::Point min_loc, max_loc;

@@ -73,42 +73,42 @@ namespace asa::interfaces
         }
     }
 
-    bool HUD::extended_information_is_toggled() const
+    bool hud::extended_information_is_toggled() const
     {
         static window::Rect roi{14, 34, 134, 35};
         return window::match_template(roi, resources::text::day);
     }
 
-    bool HUD::is_player_overweight() const
+    bool hud::is_player_overweight() const
     {
         return is_blinking(weight_icon_, blink_red_state_weight_, 400,
                            std::chrono::milliseconds(800));
     }
 
-    bool HUD::is_player_broken_bones() const
+    bool hud::is_player_broken_bones() const
     {
         return is_blinking(health_icon_, blink_red_state_);
     }
 
-    bool HUD::is_player_out_of_water() const
+    bool hud::is_player_out_of_water() const
     {
         return is_blinking(water_icon_, blink_red_state_);
     }
 
-    bool HUD::is_player_out_of_food() const
+    bool hud::is_player_out_of_food() const
     {
         return is_blinking(food_icon_, blink_red_state_);
     }
 
-    bool HUD::is_player_sprinting() const { return false; }
+    bool hud::is_player_sprinting() const { return false; }
 
-    bool HUD::can_default_teleport() const
+    bool hud::can_default_teleport() const
     {
         return window::match_template(default_teleport_,
                                       resources::text::default_teleport, 0.5);
     }
 
-    bool HUD::can_fast_travel()
+    bool hud::can_fast_travel()
     {
         const auto narrowed = find_multi_interactable_line();
         if (!narrowed.has_value()) { return false; }
@@ -117,7 +117,7 @@ namespace asa::interfaces
         return window::match_template(roi, resources::text::fast_travel);
     }
 
-    bool HUD::can_teleport()
+    bool hud::can_teleport()
     {
         const auto narrowed = find_multi_interactable_line();
         if (!narrowed.has_value()) { return false; }
@@ -126,7 +126,7 @@ namespace asa::interfaces
         return window::match_template(roi, resources::text::teleport_to);
     }
 
-    bool HUD::can_access_inventory() const
+    bool hud::can_access_inventory() const
     {
         bool match_full = false;
         const auto narrowed = find_multi_interactable_line(&match_full);
@@ -137,7 +137,7 @@ namespace asa::interfaces
         return window::match_template(roi, resources::text::access_inventory);
     }
 
-    bool HUD::can_ride() const
+    bool hud::can_ride() const
     {
         const auto narrowed = find_multi_interactable_line();
         if (!narrowed.has_value()) { return false; }
@@ -146,7 +146,7 @@ namespace asa::interfaces
         return window::match_template(roi, resources::text::ride, 0.85f);
     }
 
-    bool HUD::can_sit_down() const
+    bool hud::can_sit_down() const
     {
         const auto narrowed = find_multi_interactable_line();
         if (!narrowed.has_value()) { return false; }
@@ -155,7 +155,7 @@ namespace asa::interfaces
         return window::match_template(roi, resources::text::sit_on);
     }
 
-    bool HUD::can_deposit() const
+    bool hud::can_deposit() const
     {
         const auto narrowed = find_multi_interactable_line();
         if (!narrowed.has_value()) { return false; }
@@ -164,7 +164,7 @@ namespace asa::interfaces
         return window::match_template(roi, resources::text::deposit);
     }
 
-    bool HUD::can_pick_up() const
+    bool hud::can_pick_up() const
     {
         const auto narrowed = find_multi_interactable_line();
         if (!narrowed.has_value()) { return false; }
@@ -173,32 +173,32 @@ namespace asa::interfaces
         return window::match_template(roi, resources::text::pick_up);
     }
 
-    bool HUD::detected_enemy()
+    bool hud::detected_enemy()
     {
         return detect_push_notification(resources::text::detected_enemy);
     }
 
-    bool HUD::is_boss_teleport_in_active()
+    bool hud::is_boss_teleport_in_active()
     {
         return detect_push_notification(resources::text::teleport_in);
     }
 
-    bool HUD::is_boss_teleport_out_active()
+    bool hud::is_boss_teleport_out_active()
     {
         return detect_push_notification(resources::text::return_time_remaining, 0.85f);
     }
 
-    bool HUD::is_boss_on_cooldown()
+    bool hud::is_boss_on_cooldown()
     {
         return detect_push_notification(resources::text::arena_available_in);
     }
 
-    bool HUD::is_boss_ongoing()
+    bool hud::is_boss_ongoing()
     {
         return detect_push_notification(resources::text::arena_time_remaining, 0.85f);
     }
 
-    bool HUD::item_added(items::Item& item, window::Rect* roi_out) const
+    bool hud::item_added(items::Item& item, window::Rect* roi_out) const
     {
         const window::Rect roi = item_icon_removed_or_added_area;
         const std::vector<window::Rect> locations = window::locate_all_template(
@@ -216,7 +216,7 @@ namespace asa::interfaces
         return std::ranges::any_of(locations, got_added);
     }
 
-    bool HUD::item_removed(items::Item& item, window::Rect* roi_out) const
+    bool hud::item_removed(items::Item& item, window::Rect* roi_out) const
     {
         const window::Rect roi = item_icon_removed_or_added_area;
         const std::vector<window::Rect> locations = window::locate_all_template(
@@ -234,7 +234,7 @@ namespace asa::interfaces
         return std::ranges::any_of(locations, got_removed);
     }
 
-    bool HUD::count_items_added(items::Item& item, int& amount_out) const
+    bool hud::count_items_added(items::Item& item, int& amount_out) const
     {
         window::Rect roi{0, 0, 0, 0};
         if (!item_added(item, &roi)) { return false; }
@@ -263,7 +263,7 @@ namespace asa::interfaces
         return true;
     }
 
-    bool HUD::count_items_removed(items::Item& item, int& amount_out) const
+    bool hud::count_items_removed(items::Item& item, int& amount_out) const
     {
         window::Rect roi{0, 0, 0, 0};
         if (!item_removed(item, &roi)) { return false; }
@@ -292,7 +292,7 @@ namespace asa::interfaces
         return true;
     }
 
-    void HUD::toggle_extended(const bool on, const bool force)
+    void hud::toggle_extended(const bool on, const bool force)
     {
         if (!force) {
             // check if the hud is already in the state that was requested to avoid
@@ -311,7 +311,7 @@ namespace asa::interfaces
         }
     }
 
-    bool HUD::detect_push_notification(const cv::Mat& notification, const float variance)
+    bool hud::detect_push_notification(const cv::Mat& notification, const float variance)
     {
         if (window::match_template(push_notifications_, notification, variance)) {
             return true;
@@ -333,7 +333,7 @@ namespace asa::interfaces
         return result;
     }
 
-    float HUD::get_health_level() const
+    float hud::get_health_level() const
     {
         static window::Rect roi(1881, 956, 9, 42);
         const cv::Mat original_img = window::screenshot(roi);
@@ -402,24 +402,24 @@ namespace asa::interfaces
         return 0.f;
     }
 
-    bool HUD::item_removed(const window::Rect& area)
+    bool hud::item_removed(const window::Rect& area)
     {
         return window::match_template(area, resources::text::removed);
     }
 
-    bool HUD::item_added(const window::Rect& area)
+    bool hud::item_added(const window::Rect& area)
     {
         return window::match_template(area, resources::text::added);
     }
 
-    bool HUD::mount_has_level_up()
+    bool hud::mount_has_level_up()
     {
         static constexpr window::Color blink_color{50, 224, 239};
 
         return is_blinking(dino_xp, blink_color, 70, std::chrono::milliseconds(700));
     }
 
-    bool HUD::mount_hud_available()
+    bool hud::mount_hud_available()
     {
         static constexpr window::Color text{255, 255, 255};
         static window::Rect roi(1869, 48, 15, 10);
@@ -436,7 +436,7 @@ namespace asa::interfaces
         return cv::countNonZero(mask) > 20 || mount_has_level_up();
     }
 
-    bool HUD::is_mount_capped()
+    bool hud::is_mount_capped()
     {
         static constexpr window::Color black_weight{0, 0, 0};
 
@@ -444,7 +444,7 @@ namespace asa::interfaces
         return cv::countNonZero(mask) > 950;
     }
 
-    bool HUD::is_player_capped()
+    bool hud::is_player_capped()
     {
         static constexpr window::Color black_weight{0, 0, 0};
 
@@ -452,7 +452,7 @@ namespace asa::interfaces
         return cv::countNonZero(mask) > 950;
     }
 
-    bool HUD::can_harvest_target() const
+    bool hud::can_harvest_target() const
     {
         constexpr window::Color color(123, 154, 155);
         const cv::Mat mask = window::get_mask(harvest_action_area, color, 10);

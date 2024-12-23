@@ -8,13 +8,13 @@
 
 namespace asa::interfaces
 {
-    bool Menu::is_open() const
+    bool menu::is_open() const
     {
         return window::match_template(window::Rect(894, 416, 143, 35),
                                       resources::text::resume);
     }
 
-    void Menu::open()
+    void menu::open()
     {
         const auto start = std::chrono::system_clock::now();
 
@@ -27,13 +27,13 @@ namespace asa::interfaces
 
             // Increased timeout to 60 seconds
             if (util::timedout(start, 60s)) {
-                throw InterfaceNotOpenedError(this);
+                throw failed_to_open(this);
             }
         }
         core::sleep_for(1s);
     }
 
-    void Menu::close()
+    void menu::close()
     {
         const auto start = std::chrono::system_clock::now();
 
@@ -46,7 +46,7 @@ namespace asa::interfaces
 
             // Increased timeout to 60 seconds
             if (util::timedout(start, 60s)) {
-                throw InterfaceNotClosedError(this);
+                throw failed_to_close(this);
             }
         }
         core::sleep_for(1s);

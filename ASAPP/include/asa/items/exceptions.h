@@ -2,7 +2,7 @@
 #include <exception>
 #include <filesystem>
 
-namespace asa::items
+namespace asa
 {
     class Item;
 

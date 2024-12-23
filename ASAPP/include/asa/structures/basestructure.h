@@ -1,13 +1,13 @@
 #pragma once
 #include <string>
-#include "../interfaces/actionwheel.h"
+#include "asa/interfaces/actionwheel.h"
 
-namespace asa::structures
+namespace asa
 {
-    class BaseStructure
+    class base_structure
     {
     public:
-        explicit BaseStructure(std::string t_name) : name_(std::move(t_name)) {}
+        explicit base_structure(std::string t_name) : name_(std::move(t_name)) {}
 
         /**
          * @brief Gets the name of the structure. 

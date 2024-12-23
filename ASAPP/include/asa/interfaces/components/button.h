@@ -1,17 +1,17 @@
 #pragma once
 #include <chrono>
-#include "iinterfacecomponent.h"
+#include "interface_component.h"
 
-namespace asa::interfaces::components
+namespace asa
 {
-    struct Button : IInterfaceComponent
+    struct button : interface_component
     {
     public:
         inline static std::chrono::system_clock::time_point last_button_press =
             std::chrono::system_clock::now();
 
-        Button(window::Rect t_area, int t_padding = 2);
-        Button(int t_x, int t_y, int t_width, int t_height, int t_padding = 2);
+        button(window::Rect t_area, int t_padding = 2);
+        button(int t_x, int t_y, int t_width, int t_height, int t_padding = 2);
 
         virtual void press();
 
