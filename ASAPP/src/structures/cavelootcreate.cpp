@@ -1,9 +1,9 @@
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include <iostream>
 #include <opencv2/highgui.hpp>
 
 #include "asa/game/resources.h"
-#include "asa/structures/cavelootcrate.h"
+#include "asa/structures/cave_loot_crate.h"
 
 namespace asa::structures
 {
@@ -29,7 +29,7 @@ namespace asa::structures
         }
     }
 
-    CaveLootCrate::Quality CaveLootCrate::get_crate_quality()
+    cave_loot_crate::Quality cave_loot_crate::get_crate_quality()
     {
         if (util::is_only_one_bit_set(quality_flags_)) {
             return static_cast<Quality>(quality_flags_);
@@ -49,7 +49,7 @@ namespace asa::structures
         return get_quality_from_tooltip(res);
     }
 
-    std::optional<window::Rect> CaveLootCrate::get_info_area()
+    std::optional<window::Rect> cave_loot_crate::get_info_area()
     {
         const auto match_loc = locate_template(window::Rect(0, 0, 0, 0),
                                                resources::text::lootcrate);
@@ -60,7 +60,7 @@ namespace asa::structures
                             30);
     }
 
-    CaveLootCrate::Quality CaveLootCrate::get_quality_from_tooltip(const std::string& tooltip)
+    cave_loot_crate::Quality cave_loot_crate::get_quality_from_tooltip(const std::string& tooltip)
     {
         const std::string fixed = util::fix(tooltip, {{"Tierl", "Tier1"}});
 
@@ -71,7 +71,7 @@ namespace asa::structures
         return ANY;
     }
 
-    std::string CaveLootCrate::quality_to_string(const Quality quality)
+    std::string cave_loot_crate::quality_to_string(const Quality quality)
     {
         switch (quality) {
         case RED: return "RED";
@@ -82,7 +82,7 @@ namespace asa::structures
         return "";
     }
 
-    CaveLootCrate::Quality CaveLootCrate::string_to_quality(const std::string& quality)
+    cave_loot_crate::Quality cave_loot_crate::string_to_quality(const std::string& quality)
     {
         if (quality == "RED") { return RED; }
         if (quality == "YELLOW") { return YELLOW; }

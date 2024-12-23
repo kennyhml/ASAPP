@@ -1,8 +1,8 @@
 #pragma once
-#include <optional>
 #include "server.h"
+#include <optional>
 
-namespace asa::network
+namespace asa
 {
     /**
      * @brief Retrieves a server from the official network api.
@@ -11,7 +11,7 @@ namespace asa::network
      *
      * @return The server data if the server was found, otherwise std::nullopt.
      */
-    std::optional<Server> get_server(const std::string& server_name);
+    std::optional<server> get_server(const std::string& server_name);
 
     /**
      * @brief Queries the given server to update the data.
@@ -20,5 +20,5 @@ namespace asa::network
      *
      * @return True if the server was found an updated, false otherwise.
      */
-    bool query(Server& server);
+    bool query(server& server);
 }

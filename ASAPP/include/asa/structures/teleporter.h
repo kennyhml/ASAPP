@@ -1,19 +1,29 @@
 #pragma once
 #include "interactable.h"
-#include "../interfaces/teleportmap.h"
+#include "asa/interfaces/maps/teleport_map.h"
 
-namespace asa::structures
+namespace asa
 {
-    class Teleporter : public Interactable
+    class teleporter final : public interactable
     {
     public:
-        explicit Teleporter(std::string name) : Interactable(
-            std::move(name), &settings::use,
-            std::make_unique<interfaces::TeleportMap>()) {}
-
-        [[nodiscard]] interfaces::TeleportMap* get_interface() const override
+        enum Size : int32_t
         {
-            return dynamic_cast<interfaces::TeleportMap*>(interface_.get());
+            SMALL,
+            MEDIUM,
+            LARGE
+        };
+
+        explicit teleporter(std::string t_name, const Size t_size)
+            : interactable(std::move(t_name), &get_action_mapping("Use"),
+                           std::make_unique<teleport_map>()), size_(t_size) {}
+
+        [[nodiscard]] teleport_map* get_interface() const override
+        {
+            return dynamic_cast<teleport_map*>(interface_.get());
         }
+
+    private:
+        Size size_;
     };
 }

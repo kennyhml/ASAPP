@@ -22,7 +22,7 @@ namespace asa::network
         }
     }
 
-    std::optional<Server> get_server(const std::string& server_name)
+    std::optional<server> get_server(const std::string& server_name)
     {
         curl_global_init(CURL_GLOBAL_DEFAULT);
         CURL* curl = curl_easy_init();
@@ -51,7 +51,7 @@ namespace asa::network
                 const std::string name = data.at("Name");
 
                 if (name.find(to_find) != std::string::npos) {
-                    return Server::from_json(data);
+                    return server::from_json(data);
                 }
             }
         }
@@ -61,9 +61,9 @@ namespace asa::network
         return std::nullopt;
     }
 
-    bool query(Server& server)
+    bool query(server& server)
     {
-        const std::optional<Server> other = get_server(server.name);
+        const std::optional<server> other = get_server(server.name);
 
         if (!other.has_value()) {
             server.is_online = false;

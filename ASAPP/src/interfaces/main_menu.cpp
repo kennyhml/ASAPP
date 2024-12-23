@@ -1,5 +1,5 @@
 #include "asa/interfaces/main_menu.h"
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include "asa/game/resources.h"
 
 namespace asa::interfaces

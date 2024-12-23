@@ -1,5 +1,5 @@
 #define WIN32_LEAN_AND_MEAN
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include <string>
 #include <Windows.h>
 #include "asa/core/state.h"

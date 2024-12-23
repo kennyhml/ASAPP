@@ -5,7 +5,7 @@
 
 #include "opencv2/imgproc.hpp"
 
-namespace util
+namespace asa::utility
 {
     bool await(const std::function<bool()>& condition, std::chrono::milliseconds timeout);
 

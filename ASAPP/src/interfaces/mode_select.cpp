@@ -1,5 +1,5 @@
 #include "asa/interfaces/mode_select.h"
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include "asa/game/resources.h"
 
 

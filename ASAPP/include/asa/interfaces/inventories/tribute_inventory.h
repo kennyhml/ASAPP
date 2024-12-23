@@ -1,7 +1,7 @@
 #pragma once
 #include "baseinventory.h"
 
-namespace asa::interfaces
+namespace asa
 {
     class tribute_inventory : public base_inventory
     {

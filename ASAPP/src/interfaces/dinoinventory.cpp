@@ -1,6 +1,6 @@
 #include "asa/interfaces/dinoinventory.h"
 
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 
 namespace asa::interfaces
 {

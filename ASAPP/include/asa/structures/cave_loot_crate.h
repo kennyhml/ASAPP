@@ -1,10 +1,9 @@
 #pragma once
-#include "craftingstation.h"
-#include "../interfaces/baseinventory.h"
+#include "crafting_station.h"
 
-namespace asa::structures
+namespace asa
 {
-    class CaveLootCrate final : public CraftingStation
+    class cave_loot_crate final : public crafting_station
     {
     public:
         enum Quality
@@ -15,8 +14,8 @@ namespace asa::structures
             ANY = BLUE | YELLOW | RED,
         };
 
-        explicit CaveLootCrate(const int t_quality_flags) :
-            CraftingStation("Loot Crate", 0), quality_flags_(t_quality_flags) {}
+        explicit cave_loot_crate(const int t_quality_flags) :
+            crafting_station("Loot Crate", 0), quality_flags_(t_quality_flags) {}
 
         Quality get_crate_quality();
 

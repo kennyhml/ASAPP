@@ -1,22 +1,22 @@
 #pragma once
 #include "container.h"
-#include "asa/interfaces/tributeinventory.h"
+#include "asa/interfaces/inventories/tribute_inventory.h"
 
-namespace asa::structures
+namespace asa
 {
-    class Tributable : public Container
+    class tributable : public container
     {
     public:
-        Tributable(std::string t_name, int t_max_slots,
-                  std::unique_ptr<interfaces::TributeInventory> t_inv = nullptr,
-                  std::unique_ptr<interfaces::container_info> t_info = nullptr);
+        tributable(std::string t_name, int t_max_slots,
+                   std::unique_ptr<tribute_inventory> t_inv = nullptr,
+                   std::unique_ptr<container_info> t_info = nullptr);
 
         /**
          * @brief Gets the inventory component of the Tributeable Structure.
          */
-        [[nodiscard]] interfaces::TributeInventory* get_inventory() const override
+        [[nodiscard]] tribute_inventory* get_inventory() const override
         {
-            return dynamic_cast<interfaces::TributeInventory*>(interface_.get());
+            return dynamic_cast<tribute_inventory*>(interface_.get());
         }
     };
 }

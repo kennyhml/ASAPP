@@ -4,7 +4,7 @@
 #include "asa/game/resources.h"
 #include "asa/game/window.h"
 #include "asa/interfaces/exceptions.h"
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 
 namespace asa::interfaces
 {

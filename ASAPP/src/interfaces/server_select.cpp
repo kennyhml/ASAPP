@@ -1,6 +1,6 @@
 #include <iostream>
 #include "asa/interfaces/server_select.h"
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include "asa/core/state.h"
 #include "asa/game/resources.h"
 

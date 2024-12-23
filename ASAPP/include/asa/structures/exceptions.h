@@ -3,40 +3,19 @@
 #include "basestructure.h"
 #include "asa/core/exceptions.h"
 
-namespace asa::structures
+namespace asa
 {
-    class StructureError : public core::ASAPPError
+    class structure_error : public asapp_error
     {
-        const BaseStructure* structure;
+        const base_structure* structure;
         std::string info;
 
     public:
-        StructureError(const BaseStructure* t_structure);
-        StructureError(const BaseStructure* t_structure, std::string t_info);
+        explicit structure_error(const base_structure* t_structure);
+        structure_error(const base_structure* t_structure, std::string t_info);
 
         const char* what() const noexcept override;
-        const BaseStructure* get_structure() { return structure; }
-    };
 
-    class StructureNotOpenedError : public StructureError
-    {
-    public:
-        StructureNotOpenedError(const BaseStructure* structure);
-    };
-
-    /**
-     * @Brief thrown when a structure was not found in access range.
-     */
-    class StructureNotFoundError : public StructureError
-    {
-    public:
-        StructureNotFoundError(const BaseStructure* structure);
-    };
-
-
-    class StructureNotClosedError : public StructureError
-    {
-    public:
-        StructureNotClosedError(const BaseStructure* structure);
+        const base_structure* get_structure() { return structure; }
     };
 }

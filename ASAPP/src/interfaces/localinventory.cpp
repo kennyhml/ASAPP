@@ -1,5 +1,5 @@
 #include "asa/interfaces/localinventory.h"
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include "../../include/asa/game/settings.h"
 #include "asa/interfaces/exceptions.h"
 

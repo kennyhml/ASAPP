@@ -1,6 +1,6 @@
 #include <mutex>
 #include <opencv2/imgcodecs.hpp>
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include "asa/items/item.h"
 #include "asa/items/exceptions.h"
 #include "asa/items/items.h"

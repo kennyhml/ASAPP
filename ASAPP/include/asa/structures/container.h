@@ -1,29 +1,29 @@
 #pragma once
 #include "interactable.h"
-#include "asa/interfaces/baseinventory.h"
-#include "../interfaces/info/containerinfo.h"
+#include "asa/interfaces/inventories/baseinventory.h"
+#include "asa/interfaces/info/containerinfo.h"
 
 namespace asa
 {
-    class container : public Interactable
+    class container : public interactable
     {
     public:
-        Container(std::string t_name, int t_max_slots,
-                  std::unique_ptr<interfaces::BaseInventory> t_inv = nullptr,
-                  std::unique_ptr<interfaces::container_info> t_info = nullptr);
+        container(std::string t_name, int t_max_slots,
+                  std::unique_ptr<base_inventory> t_inv = nullptr,
+                  std::unique_ptr<container_info> t_info = nullptr);
 
         /**
          * @brief Gets the inventory component of the container. 
          */
-        [[nodiscard]] virtual interfaces::BaseInventory* get_inventory() const
+        [[nodiscard]] virtual base_inventory* get_inventory() const
         {
-            return dynamic_cast<interfaces::BaseInventory*>(interface_.get());
+            return dynamic_cast<base_inventory*>(interface_.get());
         }
 
         /**
          * @brief Gets the info component of the container. 
          */
-        [[nodiscard]] virtual interfaces::container_info* get_info() const
+        [[nodiscard]] virtual container_info* get_info() const
         {
             return info_.get();
         }
@@ -50,8 +50,7 @@ namespace asa
 
     protected:
         int max_slots_;
-        std::unique_ptr<interfaces::container_info> info_;
-
         int last_known_slots_{0};
+        std::unique_ptr<container_info> info_;
     };
 }

@@ -2,7 +2,7 @@
 
 namespace asa::network
 {
-    Server Server::from_json(const nlohmann::json& data)
+    server server::from_json(const nlohmann::json& data)
     {
         return {data.at("Name"), data.at("SessionName"), data.at("IP"),
                       data.at("Port"), data.at("ServerPing"),

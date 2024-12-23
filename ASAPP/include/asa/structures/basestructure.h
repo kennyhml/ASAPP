@@ -1,13 +1,16 @@
 #pragma once
+#include "asa/interfaces/wheels/baseactionwheel.h"
 #include <string>
-#include "asa/interfaces/actionwheel.h"
 
 namespace asa
 {
     class base_structure
     {
     public:
-        explicit base_structure(std::string t_name) : name_(std::move(t_name)) {}
+        virtual ~base_structure() = default;
+
+        explicit base_structure(std::string t_name)
+            : name_(std::move(t_name)) {}
 
         /**
          * @brief Gets the name of the structure. 
@@ -16,6 +19,6 @@ namespace asa
 
     private:
         std::string name_;
-        interfaces::ActionWheel action_wheel_;
+        base_action_wheel action_wheel_;
     };
 }

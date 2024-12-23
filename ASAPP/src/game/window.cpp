@@ -5,7 +5,7 @@
 #include <random>
 #include <opencv2/highgui.hpp>
 
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include "asa/core/config.h"
 #include "asa/core/state.h"
 #include "asa/game/resources.h"

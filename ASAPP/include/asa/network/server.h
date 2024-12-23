@@ -1,11 +1,10 @@
 #pragma once
-
 #include <string>
 #include <nlohmann/json.hpp>
 
-namespace asa::network
+namespace asa
 {
-    struct Server final
+    struct server final
     {
     public:
         enum ServerType : int
@@ -36,6 +35,6 @@ namespace asa::network
 
         std::chrono::system_clock::time_point last_queried = std::chrono::system_clock::now();
 
-        static Server from_json(const nlohmann::json& data);
+        static server from_json(const nlohmann::json& data);
     };
 }

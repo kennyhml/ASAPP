@@ -5,7 +5,7 @@
 #include "asa/game/resources.h"
 #include <opencv2/highgui.hpp>
 #include "asa/items/items.h"
-#include "asa/util/util.h"
+#include "../../../include/asa/utility.h"
 
 namespace asa::interfaces::components
 {

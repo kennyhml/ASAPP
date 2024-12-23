@@ -1,7 +1,7 @@
 #include "asa/interfaces/console.h"
 
 #include <iostream>
-#include <asa/util/util.h>
+#include <../../include/asa/util.h>
 
 
 namespace asa::interfaces

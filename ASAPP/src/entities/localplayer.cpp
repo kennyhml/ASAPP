@@ -1,6 +1,6 @@
 #include "asa/entities/localplayer.h"
 #include "asa/interfaces/hud.h"
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include "asa/core/state.h"
 #include "asa/entities/exceptions.h"
 #include "../../include/asa/game/settings.h"
@@ -116,7 +116,7 @@ namespace asa::entities
         do {
             window::press(settings::use);
             if (util::timedout(start, std::chrono::seconds(15))) {
-                throw structures::StructureError(
+                throw structures::structure_error(
                     nullptr, std::format("Failed to deposit '{}' into dedicated storage.",
                                          item.get_name()));
             }
@@ -427,7 +427,7 @@ namespace asa::entities
                                      const AccessFlags access_flags,
                                      const TravelFlags travel_flags)
     {
-        try { access(bed, access_flags); } catch (const structures::StructureError& e) {
+        try { access(bed, access_flags); } catch (const structures::structure_error& e) {
             throw FastTravelFailedError(bed.get_name(), e.what());
         }
 

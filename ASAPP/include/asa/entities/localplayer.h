@@ -4,7 +4,7 @@
 
 #include "asa/structures/basestructure.h"
 #include "asa/structures/container.h"
-#include "asa/structures/simplebed.h"
+#include "asa/structures/simple_bed.h"
 #include "asa/structures/teleporter.h"
 #include "asa/interfaces/inventories/localinventory.h"
 

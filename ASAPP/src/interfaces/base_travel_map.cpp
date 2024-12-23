@@ -1,7 +1,7 @@
 #include "asa/interfaces/basetravelmap.h"
 #include <opencv2/highgui.hpp>
 #include "asa/core/state.h"
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include "asa/game/resources.h"
 
 namespace asa::interfaces

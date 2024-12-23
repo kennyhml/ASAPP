@@ -1,7 +1,7 @@
 #include "asa/entities/dinoentity.h"
 #include "asa/core/state.h"
 #include "asa/interfaces/hud.h"
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 
 namespace asa::entities
 {

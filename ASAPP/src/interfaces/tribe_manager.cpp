@@ -2,7 +2,7 @@
 #include "asa/core/state.h"
 #include "asa/game/resources.h"
 #include "asa/interfaces/exceptions.h"
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include <algorithm>
 #include <iostream>
 #include <map>
@@ -89,7 +89,7 @@ namespace asa::interfaces
                                           CONTENT_OCR_WHITELIST);
         }
 
-        std::unique_ptr<network::Server> last_server_info = nullptr;
+        std::unique_ptr<network::server> last_server_info = nullptr;
 
         bool refresh_server_data()
         {
@@ -105,7 +105,7 @@ namespace asa::interfaces
                 last_server_info = nullptr;
                 return false;
             }
-            last_server_info = std::make_unique<network::Server>(server.value());
+            last_server_info = std::make_unique<network::server>(server.value());
             return true;
         }
 

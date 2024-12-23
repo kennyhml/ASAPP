@@ -43,8 +43,8 @@ add_library(asapp STATIC
         ASAPP/src/items/items.cpp
         ASAPP/src/structures/cavelootcreate.cpp
         ASAPP/src/structures/container.cpp
-        ASAPP/src/structures/craftingstation.cpp
-        ASAPP/src/structures/dedicatedstorage.cpp
+        ASAPP/src/structures/crafting_station.cpp
+        ASAPP/src/structures/dedicated_storage.cpp
         ASAPP/src/structures/exceptions.cpp
         ASAPP/src/util/util.cpp
         ASAPP/include/asa/core/config.h
@@ -95,18 +95,15 @@ add_library(asapp STATIC
         ASAPP/include/asa/items/itemdata.h
         ASAPP/include/asa/items/items.h
         ASAPP/include/asa/structures/basestructure.h
-        ASAPP/include/asa/structures/cavelootcrate.h
+        ASAPP/include/asa/structures/cave_loot_crate.h
         ASAPP/include/asa/structures/container.h
-        ASAPP/include/asa/structures/craftingstation.h
-        ASAPP/include/asa/structures/dedicatedstorage.h
+        ASAPP/include/asa/structures/crafting_station.h
+        ASAPP/include/asa/structures/dedicated_storage.h
         ASAPP/include/asa/structures/exceptions.h
         ASAPP/include/asa/structures/interactable.h
-        ASAPP/include/asa/structures/largecropplot.h
-        ASAPP/include/asa/structures/mediumcropplot.h
-        ASAPP/include/asa/structures/simplebed.h
-        ASAPP/include/asa/structures/smallcropplot.h
+        ASAPP/include/asa/structures/simple_bed.h
         ASAPP/include/asa/structures/teleporter.h
-        ASAPP/include/asa/util/util.h
+        ASAPP/include/asa/utility.h
         ASAPP/include/asa/interfaces/components/tribelog_message.h
         ASAPP/src/interfaces/components/tribelog_message.cpp
         ASAPP/include/asa/network/server.h

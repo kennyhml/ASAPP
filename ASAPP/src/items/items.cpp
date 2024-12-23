@@ -1,7 +1,7 @@
 #include "asa/items/items.h"
 #include <fstream>
 #include <iostream>
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include "asa/core/config.h"
 #include "asa/items/exceptions.h"
 

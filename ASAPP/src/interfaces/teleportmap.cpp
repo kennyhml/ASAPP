@@ -1,6 +1,6 @@
 #include <iostream>
 #include "asa/interfaces/teleportmap.h"
-#include "asa/util/util.h"
+#include "../../include/asa/utility.h"
 #include "asa/core/state.h"
 #include "asa/game/resources.h"
 #include "asa/interfaces/exceptions.h"
