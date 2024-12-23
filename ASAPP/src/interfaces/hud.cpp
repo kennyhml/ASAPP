@@ -1,79 +1,28 @@
 #include "asa/interfaces/hud.h"
-#include "../../include/asa/utility.h"
+#include "asa/utility.h"
+#include "asa/game/game.h"
+
 #include <iostream>
 #include <opencv2/highgui.hpp>
-#include "asa/core/state.h"
-#include "asa/game/resources.h"
-#include "asa/game/window.h"
 
-namespace asa::interfaces
+namespace asa
 {
     namespace
     {
-        /**
-         * @brief This function helps optimize the template match on all interactions
-         * that are underlined by the cyan line which will appear when one or more options
-         * are available on a structure.
-         *
-         * @return The roi to look for the interaction text in if found, else std::nullopt.
-         */
-        std::optional<cv::Rect> find_multi_interactable_line(bool* match_full = nullptr)
-        {
-            static constexpr window::Color cyan{0, 255, 255};
-            const auto ss = window::screenshot();
-            const auto mask = window::get_mask(ss, cyan, 10);
-            if (match_full) {
-                *match_full = cv::countNonZero(mask) > 200;
-            }
-
-            std::vector<std::vector<cv::Point> > contours;
-            cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
-
-            double longest = 0;
-            cv::Rect best_contour;
-            for (const auto& contour: contours) {
-                const auto rect = cv::boundingRect(contour);
-                // not the shape we are looking for.
-                if (rect.width < rect.height || rect.width < 150) { continue; }
-
-                if (const auto length = cv::arcLength(contour, true); length > longest) {
-                    longest = length;
-                    best_contour = rect;
-                }
-            }
-            return best_contour.empty() ? std::nullopt : std::optional(best_contour);
-        }
-
         bool is_blinking(const window::Rect& icon, const window::Color& color,
-                         int min_matches = 500,
-                         const std::chrono::milliseconds timeout =
-                                 std::chrono::milliseconds(500))
+                         const int min_matches = 500,
+                         const std::chrono::milliseconds timeout = 500ms)
         {
             const auto start = std::chrono::system_clock::now();
-            while (!util::timedout(start, timeout)) {
+            while (!utility::timedout(start, timeout)) {
                 cv::Mat mask = window::get_mask(icon, color, 30);
                 if (cv::countNonZero(mask) > min_matches) { return true; }
             }
             return false;
         }
-
-        cv::Rect find_max_contour(const std::vector<std::vector<cv::Point> >& contours)
-        {
-            int max_size = 0;
-            cv::Rect max_cont;
-
-            for (const auto& contour: contours) {
-                if (contourArea(contour) > max_size) {
-                    max_size = cv::contourArea(contour);
-                    max_cont = boundingRect(contour);
-                }
-            }
-
-            return max_cont;
-        }
     }
 
-    bool hud::extended_information_is_toggled() const
+    bool hud::is_extended_info_toggled() const
     {
         static window::Rect roi{14, 34, 134, 35};
         return window::match_template(roi, resources::text::day);
@@ -110,7 +59,8 @@ namespace asa::interfaces
 
     bool hud::can_fast_travel()
     {
-        const auto narrowed = find_multi_interactable_line();
+        cv::Mat img = window::screenshot();
+        const auto narrowed = utility::find_multi_interactable_line(img);
         if (!narrowed.has_value()) { return false; }
 
         const window::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
@@ -297,7 +247,7 @@ namespace asa::interfaces
         if (!force) {
             // check if the hud is already in the state that was requested to avoid
             // desyncing it with the expected state.
-            extended_toggled_ = extended_information_is_toggled();
+            extended_toggled_ = is_extended_info_toggled();
             if (extended_toggled_ == on) { return; }
             extended_toggled_ ^= 1;
         }
@@ -424,7 +374,7 @@ namespace asa::interfaces
         static constexpr window::Color text{255, 255, 255};
         static window::Rect roi(1869, 48, 15, 10);
 
-        const bool was_hud_toggled = extended_information_is_toggled();
+        const bool was_hud_toggled = is_extended_info_toggled();
 
         toggle_extended(true);
         asa::core::sleep_for(std::chrono::milliseconds(100));

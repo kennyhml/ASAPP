@@ -44,7 +44,7 @@ add_library(asapp STATIC
         ASAPP/src/structures/crafting_station.cpp
         ASAPP/src/structures/dedicated_storage.cpp
         ASAPP/src/structures/exceptions.cpp
-        ASAPP/src/util/util.cpp
+        ASAPP/src/utility.cpp
         ASAPP/include/asa/core/exceptions.h
         ASAPP/include/asa/core/init.h
         ASAPP/include/asa/core/state.h

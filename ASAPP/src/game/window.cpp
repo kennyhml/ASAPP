@@ -1,199 +1,270 @@
 #include "asa/game/window.h"
+#include "asa/utility.h"
+#include "asa/core/state.h"
+
 #include <chrono>
 #include <fstream>
 #include <iostream>
 #include <random>
 #include <opencv2/highgui.hpp>
-
-#include "../../include/asa/utility.h"
-#include "asa/core/config.h"
-#include "asa/core/state.h"
-#include "asa/game/resources.h"
+#include <tesseract/baseapi.h>
 
 namespace asa::window
 {
     namespace
     {
-        BITMAPINFOHEADER get_bitmap_info_header(int width, int height, int bitCount,
-                                                int compression)
+        tesseract::TessBaseAPI* tesseract_engine = nullptr;
+
+        HWND hwnd = nullptr;
+
+        auto CRASH_WIN_TITLE = "The UE-ShooterGame Game has crashed and will close";
+
+
+        // TODO: Paddings need to be tested on other resolutions
+        constexpr auto WINDOWED_PADDING_TOP = 31;
+        constexpr auto WINDOWED_PADDING = 8;
+
+        BITMAPINFOHEADER get_bitmap_info_header(const int width, const int height)
         {
             BITMAPINFOHEADER bi;
             bi.biSize = sizeof(BITMAPINFOHEADER);
             bi.biWidth = width;
             bi.biHeight = -height;
             bi.biPlanes = 1;
-            bi.biBitCount = bitCount;
-            bi.biCompression = compression;
+            bi.biBitCount = 24;
+            bi.biCompression = BI_RGB;
             bi.biSizeImage = 0;
             bi.biXPelsPerMeter = 1;
             bi.biYPelsPerMeter = 2;
             bi.biClrUsed = 3;
             bi.biClrImportant = 4;
-
             return bi;
         }
-    }
 
-    bool init()
-    {
-        tessEngine = new tesseract::TessBaseAPI();
+        BOOL CALLBACK enum_windows_proc(HWND hwnd, LPARAM lparam)
+        {
+            const auto windows = reinterpret_cast<std::map<std::string, HWND>*>(lparam);
 
-        if (tessEngine->Init(core::config::tessdata_path.string().c_str(), "eng")) {
-            std::cerr << "[!] Failed to initialize tesseract!" << std::endl;
-            return false;
-        }
-        std::cout << "[+] Tesseract engine initialized successfully." << std::endl;
-        return true;
-    }
+            constexpr int max = 1024;
+            char window_text[max];
+            GetWindowTextA(hwnd, window_text, max);
 
-    void Color::to_range(int v, cv::Scalar& low, cv::Scalar& high) const
-    {
-        low = cv::Scalar(std::max(0, r - v), std::max(0, g - v), std::max(0, b - v));
-        high = cv::Scalar(std::min(255, r + v), std::min(255, g + v),
-                          std::min(255, b + v));
-    }
-
-    Point Rect::get_random_location(int padding) const
-    {
-        const int x_min = padding;
-        const int x_max = width - padding;
-
-        const int y_min = padding;
-        const int y_max = height - padding;
-
-        std::random_device rd;
-        std::mt19937 gen(rd());
-
-        std::uniform_int_distribution<int> rand_x_range(x_min, x_max);
-        std::uniform_int_distribution<int> rand_y_range(y_min, y_max);
-
-        return Point{x + rand_x_range(gen), y + rand_y_range(gen)};
-    }
-
-    std::optional<Rect> locate_template(const Rect& region, const cv::Mat& templ,
-                                        float threshold, const cv::Mat& mask)
-    {
-        try {
-            cv::Mat image = screenshot(region);
-            return locate_template(image, templ, threshold, mask);
-        } catch (const std::exception& e) {
-            // try to catch errors capturing the screenshot and print it to console (rather than crash)
-            std::cerr << "Exception in locate_template(): " << e.what() << std::endl;
-            return std::nullopt;
+            (*windows)[window_text] = hwnd;
+            return true;
         }
     }
 
-    std::optional<Rect> locate_template(const cv::Mat& source, const cv::Mat& templ,
-                                        const float threshold, const cv::Mat& mask,
-                                        float* highest_match, const int mode)
+    void tesseract_init()
+    {
+        tesseract_engine = new tesseract::TessBaseAPI();
+
+        //TODO: Bake the tessdata into the exe somehow, this is cringe!!!
+        if (tesseract_engine->Init("", "eng")) {
+            // INIT FAILED
+            return;
+        }
+        // INIT SUCCESSFUL
+    }
+
+    cv::Mat screenshot(const cv::Rect& region, bool direct_capture)
+    {
+        if (hwnd && !IsWindow(hwnd)) { hwnd = nullptr; }
+
+        // we cant do direct capture without a window handle
+        direct_capture &= hwnd != nullptr;
+        int32_t width, height;
+
+        if (direct_capture) {
+            RECT rect;
+            GetWindowRect(hwnd, &rect);
+            width = rect.right - rect.left;
+            height = rect.bottom - rect.top;
+
+            if (width != 1920 || height != 1080) {
+                return screenshot(region, false);
+            }
+        } else {
+            width = region.width;
+            height = region.height;
+        }
+
+        HDC dc = direct_capture ? GetWindowDC(hwnd) : GetDC(nullptr);
+        HDC mdc = CreateCompatibleDC(dc);
+        HBITMAP bitmap = CreateCompatibleBitmap(dc, width, height);
+
+        SelectObject(mdc, bitmap);
+        if (direct_capture) {
+            PrintWindow(hwnd, mdc, PW_RENDERFULLCONTENT);
+        } else { BitBlt(mdc, 0, 0, width, height, dc, region.x, region.y, SRCCOPY); }
+
+        BITMAPINFOHEADER bi = get_bitmap_info_header(width, height);
+        if (!direct_capture) { bi.biBitCount = 32; } // Use RGBA for BitBlt
+
+        auto mat = cv::Mat(height, width, direct_capture ? CV_8UC3 : CV_8UC4);
+
+        GetDIBits(mdc, bitmap, 0, height, mat.data,
+                  reinterpret_cast<BITMAPINFO*>(&bi), DIB_RGB_COLORS);
+
+        DeleteObject(bitmap);
+        DeleteDC(mdc);
+        ReleaseDC(hwnd, dc);
+
+        // after using BitBlt we have to drop the alpha channel
+        if (!direct_capture) { cvtColor(mat, mat, cv::COLOR_RGBA2RGB); }
+
+        // either the full screen was requested or we used BitBlt, which already only
+        // captures the area of interest, so no cropping is needed.
+        if ((region.width == 1920 && region.height == 1080) || !direct_capture) {
+            return mat;
+        }
+
+        return mat(region);
+    }
+
+    cv::Vec3b pixel(const cv::Point& point)
+    {
+        HDC hdc = GetWindowDC(nullptr);
+        COLORREF color = GetPixel(hdc, point.x, point.y);
+        ReleaseDC(nullptr, hdc);
+
+        return {GetRValue(color), GetGValue(color), GetBValue(color)};
+    }
+
+    void set_focus()
+    {
+        if (!hwnd) {
+            throw std::exception("set_focus called without a known window handle");
+        }
+        SetForegroundWindow(hwnd);
+    }
+
+    void close()
+    {
+        auto crash = FindWindowExA(nullptr, nullptr, nullptr, CRASH_WIN_TITLE);
+        if (!crash) { crash = FindWindowA(nullptr, "Crash!"); }
+
+        if (crash) { PostMessageW(crash, WM_CLOSE, 0, 0); }
+        PostMessageW(hwnd, WM_CLOSE, 0, 0);
+    }
+
+    std::optional<cv::Rect> locate(const cv::Mat& _template, const cv::Mat& source,
+                                   const float threshold, const bool grayscale,
+                                   const cv::Mat& mask, float* top,
+                                   const int mode)
     {
         cv::Mat result;
-        if (mask.empty()) { matchTemplate(source, templ, result, mode); } else {
-            matchTemplate(source, templ, result, mode, mask);
+        if (grayscale) {
+            cv::Mat _template_gray, source_gray;
+            cv::cvtColor(_template, _template_gray, cv::COLOR_RGB2GRAY);
+            cv::cvtColor(source, source_gray, cv::COLOR_RGB2GRAY);
+
+            if (mask.empty()) {
+                matchTemplate(source, _template, result, mode);
+            } else {
+                cv::matchTemplate(source, _template, result, mode, mask);
+            }
+        } else {
+            if (mask.empty()) {
+                matchTemplate(source, _template, result, mode);
+            } else {
+                cv::matchTemplate(source, _template, result, mode, mask);
+            }
         }
+
 
         double min_val, max_val;
         cv::Point min_loc, max_loc;
-        minMaxLoc(result, &min_val, &max_val, &min_loc, &max_loc);
+        cv::minMaxLoc(result, &min_val, &max_val, &min_loc, &max_loc);
 
         if (mode == cv::TM_SQDIFF || mode == cv::TM_SQDIFF_NORMED) {
             max_val = 1.0 - min_val;
             max_loc = min_loc;
         }
 
-        if (highest_match) { *highest_match = max_val; }
+        if (top) { *top = static_cast<float>(max_val); }
 
         if (max_val < threshold) { return std::nullopt; }
 
-        return Rect(max_loc.x, max_loc.y, templ.cols, templ.rows);
+        return cv::Rect(max_loc.x, max_loc.y, _template.cols, _template.rows);
     }
 
-    std::vector<Rect> locate_all_template(const Rect& region, const cv::Mat& templ,
-                                          float threshold, const cv::Mat& mask)
+    std::optional<cv::Rect> locate(const cv::Mat& _template, const cv::Rect& region,
+                                   const float threshold, const bool grayscale,
+                                   const cv::Mat& mask, float* top,
+                                   const int mode)
     {
-        cv::Mat image = screenshot(region);
-        return locate_all_template(image, templ, threshold, mask);
+        return locate(_template, screenshot(region), threshold, grayscale, mask, top,
+                      mode);
     }
 
-    std::vector<Rect> locate_all_template(const cv::Mat& source, const cv::Mat& templ,
-                                          float threshold, const cv::Mat& mask)
+    std::vector<cv::Rect> locate_all(const cv::Mat& _template, const cv::Mat& source,
+                                     const float threshold, const bool grayscale,
+                                     const cv::Mat& mask)
     {
         cv::Mat match_result;
-        matchTemplate(source, templ, match_result, cv::TM_CCOEFF_NORMED, mask);
+        cv::matchTemplate(source, _template, match_result, cv::TM_CCOEFF_NORMED,
+                          mask);
 
         double min_val, max_val;
         cv::Point min_loc, max_loc;
-        std::vector<Rect> allMatches;
+        std::vector<cv::Rect> ret;
 
         while (true) {
-            minMaxLoc(match_result, &min_val, &max_val, &min_loc, &max_loc);
+            cv::minMaxLoc(match_result, &min_val, &max_val, &min_loc, &max_loc);
             if (max_val < threshold) { break; }
 
-            Rect loc{max_loc.x, max_loc.y, templ.cols, templ.rows};
-            rectangle(match_result, {loc.x - 5, loc.y - 5, 15, 15}, cv::Scalar(0, 0, 0),
-                      cv::FILLED);
-
-            allMatches.push_back(loc);
+            cv::Rect loc{max_loc.x, max_loc.y, _template.cols, _template.rows};
+            rectangle(match_result, {loc.x - 5, loc.y - 5, 15, 15}, {0}, cv::FILLED);
+            ret.push_back(loc);
         }
-        return allMatches;
+        return ret;
     }
 
-    bool match_template(const Rect& region, const cv::Mat& templ, float threshold,
-                        const cv::Mat& mask)
+    std::vector<cv::Rect> locate_all(const cv::Mat& _template, const cv::Rect& region,
+                                     const float threshold, const bool grayscale,
+                                     const cv::Mat& mask)
     {
-        return locate_template(region, templ, threshold, mask) != std::nullopt;
+        return locate_all(_template, screenshot(region), threshold, grayscale, mask);
     }
 
-    bool match_template(const cv::Mat& source, const cv::Mat& templ, float threshold,
-                        const cv::Mat& mask)
+    bool match(const cv::Mat& _template, const cv::Mat& source, const float threshold,
+               const bool grayscale, const cv::Mat& mask)
     {
-        return locate_template(source, templ, threshold, mask) != std::nullopt;
+        return locate(_template, source, threshold, grayscale, mask) != std::nullopt;
     }
+
+    bool match(const cv::Mat& _template, const cv::Rect& region,
+               const float threshold,
+               const bool grayscale, const cv::Mat& mask)
+    {
+        return locate(_template, screenshot(region), threshold, grayscale, mask) !=
+               std::nullopt;
+    }
+
 
     inline std::mutex ocr_mutex;
 
     std::string ocr_threadsafe(const cv::Mat& src, const tesseract::PageSegMode mode,
                                const char* whitelist)
     {
-        std::lock_guard<std::mutex> lock(ocr_mutex);
+        // Mutex extremely important, tesseract engine is not threadsafe!!!
+        std::lock_guard lock(ocr_mutex);
 
-        set_tesseract_image(src);
-        tessEngine->SetPageSegMode(mode);
-        tessEngine->SetVariable("tessedit_char_whitelist", whitelist);
+        tesseract_engine->SetImage(src.data, src.size().width, src.size().height,
+                                   src.channels(), src.step1());
 
-        return tessEngine->GetUTF8Text();
-    }
+        tesseract_engine->SetPageSegMode(mode);
+        tesseract_engine->SetVariable("tessedit_char_whitelist", whitelist);
 
-    cv::Mat get_mask(const Rect& region, const Color& color, float variance)
-    {
-        cv::Mat image = screenshot(region);
-        return get_mask(image, color, variance);
-    }
-
-    cv::Mat get_mask(const cv::Mat& image, const Color& color, float variance)
-    {
-        cv::Scalar low;
-        cv::Scalar high;
-        color.to_bgr().to_range(variance, low, high);
-
-        cv::Mat mask;
-        inRange(image, low, high, mask);
-        return mask;
-    }
-
-    void set_tesseract_image(const cv::Mat& image)
-    {
-        tessEngine->SetImage(image.data, image.size().width, image.size().height,
-                             image.channels(), image.step1());
+        return tesseract_engine->GetUTF8Text();
     }
 
     void get_handle(int timeout, bool verbose)
     {
         using seconds = std::chrono::seconds;
 
-        auto start = std::chrono::system_clock::now();
+        const auto start = std::chrono::system_clock::now();
         auto interval_start = start;
-        bool first_grab = !hWnd;
         bool info = false;
 
         do {
@@ -202,7 +273,7 @@ namespace asa::window
             auto interval_passed = std::chrono::duration_cast<seconds>(
                 now - interval_start);
 
-            hWnd = FindWindowA("UnrealWindow", "ArkAscended");
+            hwnd = FindWindowA("UnrealWindow", "ArkAscended");
 
             if (time_passed.count() > timeout && timeout != 0) {
                 if (verbose) {
@@ -211,31 +282,18 @@ namespace asa::window
                 return;
             }
 
-            if (verbose && ((!hWnd && interval_passed.count() > 10) || !info)) {
+            if (verbose && ((!hwnd && interval_passed.count() > 10) || !info)) {
                 std::cout << "[+] Trying to find the window..." << std::endl;
                 interval_start = now;
                 info = true;
             }
-        } while (!hWnd);
-
-        RECT rect = get_window_rect();
-        width = rect.right - rect.left;
-        height = rect.bottom - rect.top;
-
-        if (first_grab && verbose) {
-            std::cout << std::format("\t[-] Set window handle! Width: {}, height: {}",
-                                     width, height) << std::endl;
-        }
+        } while (!hwnd);
     }
-
-    // TODO: Paddings need to be tested on other resolutions
-    constexpr auto WINDOWED_PADDING_TOP = 31;
-    constexpr auto WINDOWED_PADDING = 8;
 
     RECT get_window_rect()
     {
         RECT rect;
-        GetWindowRect(hWnd, &rect);
+        GetWindowRect(hwnd, &rect);
 
         if (get_user_setting<int>("FullscreenMode") == 0) {
             rect.left += WINDOWED_PADDING;
@@ -247,293 +305,169 @@ namespace asa::window
         return rect;
     }
 
-    cv::Mat screenshot(const Rect& region, HWND window)
-    {
-        int window_width = 0;
-        int window_height = 0;
-
-        if (hWnd) {
-            RECT rect;
-            GetWindowRect(hWnd, &rect);
-            window_width = rect.right - rect.left;
-            window_height = rect.bottom - rect.top;
-        } else {
-            window_width = region.width;
-            window_height = region.height;
-        }
-
-        HDC dc = hWnd ? GetWindowDC(hWnd) : GetDC(nullptr);
-        HDC mdc = CreateCompatibleDC(dc);
-        HBITMAP bitmap = CreateCompatibleBitmap(dc, window_width, window_height);
-
-        SelectObject(mdc, bitmap);
-        if (hWnd != nullptr) {
-            PrintWindow(hWnd, mdc, PW_RENDERFULLCONTENT);
-        } else {
-            BitBlt(mdc, 0, 0, region.width, region.height, dc, region.x, region.y,
-                   SRCCOPY);
-        }
-
-        BITMAPINFOHEADER bi = get_bitmap_info_header(window_width, window_height, 32,
-                                                     BI_RGB);
-
-        auto mat = cv::Mat(window_height, window_width, CV_8UC4);
-        GetDIBits(mdc, bitmap, 0, window_height, mat.data,
-                  reinterpret_cast<BITMAPINFO*>(&bi), DIB_RGB_COLORS);
-
-        DeleteObject(bitmap);
-        DeleteDC(mdc);
-        ReleaseDC(window, dc);
-
-        cv::Mat result;
-        cvtColor(mat, result, cv::COLOR_RGBA2RGB);
-
-
-        if (window == hWnd && get_user_setting<int>("FullscreenMode") == 0) {
-            result = result(cv::Rect(WINDOWED_PADDING, WINDOWED_PADDING_TOP,
-                                     window_width - WINDOWED_PADDING * 2,
-                                     window_height - WINDOWED_PADDING_TOP -
-                                     WINDOWED_PADDING));
-        }
-
-        if (!region.width && !region.height) { return result; }
-        return result(cv::Rect(region.x, region.y, region.width, region.height)).clone();
-    }
-
     bool set_foreground()
     {
-        if (!hWnd) {
-            std::cout << "[!] Cant focus window, get the hWnd first." << std::endl;
-            return false;
-        }
-        return SetForegroundWindow(hWnd) != NULL;
+        return SetForegroundWindow(hwnd) != NULL;
     }
 
-    bool set_foreground_but_hidden()
+    bool has_crash_popup()
     {
-        return set_foreground() && SetWindowPos(hWnd, HWND_BOTTOM, 0, 0, 0, 0,
-                                                SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE);
+        return FindWindowExA(nullptr, nullptr, nullptr, CRASH_WIN_TITLE)
+               || FindWindowA(nullptr, "Crash!");
     }
 
-    bool has_crashed_popup()
-    {
-        if (FindWindowExA(nullptr, nullptr, nullptr,
-                          "The UE-ShooterGame Game has crashed and will close") !=
-            nullptr) {
-            std::cout << "UE-ShooterGame crash window found" << std::endl;
-            return true;
-        }
-        if (FindWindowA(nullptr, "Crash!")) {
-            std::cout << "Crash window found" << std::endl;
-            return true;
-        }
-        return false;
-    }
-
-    void set_mouse_pos(const Point& location)
+    void set_mouse_pos(const cv::Point& location)
     {
         auto r = get_window_rect();
         SetCursorPos(location.x + r.left, location.y + r.top);
     }
 
-    void set_mouse_pos(int x, int y)
-    {
-        auto r = get_window_rect();
-        SetCursorPos(x + r.left, y + r.top);
-    }
 
-    void click_at(const Point& position, controls::MouseButton button,
-                  std::chrono::milliseconds delay)
+    void click_at(const cv::Point& position, const controls::MouseButton button,
+                  const std::chrono::milliseconds delay)
     {
         post_mouse_press_at(position, button);
+        checked_sleep(delay);
     }
 
-    void down(const action_mapping& input, std::chrono::milliseconds delay)
+    void down(const action_mapping& input, const std::chrono::milliseconds delay)
     {
         controls::down(input, delay);
     }
 
-    void up(const action_mapping& input, std::chrono::milliseconds delay)
+    void up(const action_mapping& input, const std::chrono::milliseconds delay)
     {
         controls::release(input, delay);
     }
 
-    void press(const action_mapping& input, bool catchCursor,
-               std::chrono::milliseconds delay)
+    void press(const action_mapping& input, const std::chrono::milliseconds delay)
     {
         controls::press(input, delay);
     }
 
-    void down(const std::string& key, std::chrono::milliseconds delay)
+    void down(const std::string& key, const std::chrono::milliseconds delay)
     {
         controls::key_down(key, delay);
     }
 
-    void up(const std::string& key, std::chrono::milliseconds delay)
+    void up(const std::string& key, const std::chrono::milliseconds delay)
     {
         controls::key_up(key, delay);
     }
 
-    void press(const std::string& key, bool catchCursor, std::chrono::milliseconds delay)
+    void press(const std::string& key, const std::chrono::milliseconds delay)
     {
         controls::key_press(key, delay);
     }
 
-    void post_down(const action_mapping& input, std::chrono::milliseconds delay)
+    void post_down(const action_mapping& input, const std::chrono::milliseconds delay)
     {
         controls::is_mouse_input(input)
             ? post_mouse_down(controls::str_to_button.at(input.key), delay)
             : post_key_down(input.key, delay);
     }
 
-    void post_up(const action_mapping& input, std::chrono::milliseconds delay)
+    void post_up(const action_mapping& input, const std::chrono::milliseconds delay)
     {
         controls::is_mouse_input(input)
             ? post_mouse_up(controls::str_to_button.at(input.key), delay)
             : post_key_up(input.key, delay);
     }
 
-    void post_press(const action_mapping& input, bool catchCursor,
-                    std::chrono::milliseconds delay)
+    void post_press(const action_mapping& input, const std::chrono::milliseconds delay)
     {
         if (controls::is_mouse_input(input)) {
-            post_mouse_press(controls::str_to_button.at(input.key), catchCursor, delay);
-        } else { post_key_press(input.key, catchCursor, delay); }
+            post_mouse_press(controls::str_to_button.at(input.key), delay);
+        } else { post_key_press(input.key, delay); }
     }
 
     void post_key_down(const std::string& key, std::chrono::milliseconds delay)
     {
-        PostMessageW(hWnd, WM_KEYDOWN, controls::get_virtual_keycode(key), NULL);
-        core::sleep_for(delay);
+        PostMessageW(hwnd, WM_KEYDOWN, controls::get_virtual_keycode(key), NULL);
+        checked_sleep(delay);
     }
 
     void post_key_up(const std::string& key, std::chrono::milliseconds delay)
     {
-        PostMessageW(hWnd, WM_KEYUP, controls::get_virtual_keycode(key), NULL);
-        core::sleep_for(delay);
+        PostMessageW(hwnd, WM_KEYUP, controls::get_virtual_keycode(key), NULL);
+        checked_sleep(delay);
     }
 
-    void post_key_press(const std::string& key, bool catchCursor,
-                        std::chrono::milliseconds delay)
+    void post_key_press(const std::string& key, const std::chrono::milliseconds delay)
     {
-        POINT prevPos;
-        if (catchCursor) { GetCursorPos(&prevPos); }
-
         post_key_down(key);
         post_key_up(key);
-
-        if (catchCursor) { reset_cursor(prevPos); }
+        checked_sleep(delay);
     }
 
-    void post_char(char c) { PostMessageW(hWnd, WM_CHAR, c, NULL); }
+    void post_char(const char c) { PostMessageW(hwnd, WM_CHAR, c, NULL); }
 
-    void post_mouse_down(controls::MouseButton button, std::chrono::milliseconds delay)
+    void post_mouse_down(const controls::MouseButton button,
+                         const std::chrono::milliseconds delay)
     {
         using controls::MouseButton;
         switch (button) {
-            case MouseButton::LEFT: PostMessageW(hWnd, WM_LBUTTONDOWN, MK_LBUTTON, NULL);
+            case MouseButton::LEFT:
+                PostMessageW(hwnd, WM_LBUTTONDOWN, MK_LBUTTON, NULL);
                 break;
-            case MouseButton::RIGHT: PostMessageW(hWnd, WM_RBUTTONDOWN, MK_RBUTTON, NULL);
+            case MouseButton::RIGHT:
+                PostMessageW(hwnd, WM_RBUTTONDOWN, MK_RBUTTON, NULL);
                 break;
             case MouseButton::MIDDLE:
-                PostMessageW(hWnd, WM_MBUTTONDOWN, MK_MBUTTON, NULL);
+                PostMessageW(hwnd, WM_MBUTTONDOWN, MK_MBUTTON, NULL);
                 break;
-            case MouseButton::MOUSE4: PostMessageW(hWnd, WM_XBUTTONDOWN, MK_XBUTTON1,
-                                                   NULL);
+            case MouseButton::MOUSE4:
+                PostMessageW(hwnd, WM_XBUTTONDOWN, MK_XBUTTON1, NULL);
                 break;
-            case MouseButton::MOUSE5: PostMessageW(hWnd, WM_XBUTTONDOWN, MK_XBUTTON2,
-                                                   NULL);
+            case MouseButton::MOUSE5:
+                PostMessageW(hwnd, WM_XBUTTONDOWN, MK_XBUTTON2, NULL);
                 break;
         }
-        core::sleep_for(delay);
+        checked_sleep(delay);
     }
 
-    void post_mouse_up(controls::MouseButton button, std::chrono::milliseconds delay)
+    void post_mouse_up(const controls::MouseButton button,
+                       const std::chrono::milliseconds delay)
     {
         using controls::MouseButton;
         switch (button) {
-            case MouseButton::LEFT: PostMessageW(hWnd, WM_LBUTTONUP, MK_LBUTTON, NULL);
+            case MouseButton::LEFT: PostMessageW(hwnd, WM_LBUTTONUP, MK_LBUTTON, NULL);
                 break;
-            case MouseButton::RIGHT: PostMessageW(hWnd, WM_RBUTTONUP, MK_RBUTTON, NULL);
+            case MouseButton::RIGHT: PostMessageW(hwnd, WM_RBUTTONUP, MK_RBUTTON, NULL);
                 break;
-            case MouseButton::MIDDLE: PostMessageW(hWnd, WM_MBUTTONUP, MK_MBUTTON, NULL);
+            case MouseButton::MIDDLE: PostMessageW(hwnd, WM_MBUTTONUP, MK_MBUTTON, NULL);
                 break;
-            case MouseButton::MOUSE4: PostMessageW(hWnd, WM_XBUTTONUP, MK_XBUTTON1, NULL);
+            case MouseButton::MOUSE4: PostMessageW(hwnd, WM_XBUTTONUP, MK_XBUTTON1, NULL);
                 break;
-            case MouseButton::MOUSE5: PostMessageW(hWnd, WM_XBUTTONUP, MK_XBUTTON2, NULL);
+            case MouseButton::MOUSE5: PostMessageW(hwnd, WM_XBUTTONUP, MK_XBUTTON2, NULL);
                 break;
         }
-        core::sleep_for(delay);
+        checked_sleep(delay);
     }
 
-    void post_mouse_press(controls::MouseButton button, bool catchCursor,
-                          std::chrono::milliseconds delay)
+    void post_mouse_press(const controls::MouseButton button,
+                          const std::chrono::milliseconds delay)
     {
-        POINT prevPos;
-        if (catchCursor) { GetCursorPos(&prevPos); }
-
         post_mouse_down(button, delay);
         post_mouse_up(button);
-
-        if (catchCursor) { reset_cursor(prevPos); }
+        checked_sleep(delay);
     }
 
-    void post_mouse_press_at(const Point& position, controls::MouseButton button)
+    void post_mouse_press_at(const cv::Point& position,
+                             const controls::MouseButton button)
     {
-        if (GetForegroundWindow() != hWnd) {
+        if (GetForegroundWindow() != hwnd) {
             set_foreground();
-            core::sleep_for(std::chrono::milliseconds(100));
+            checked_sleep(100ms);
         }
 
         LPARAM lParam = MAKELPARAM(position.x, position.y);
         if (button == controls::MouseButton::LEFT) {
-            PostMessageW(hWnd, WM_LBUTTONDOWN, MK_LBUTTON, lParam);
-        } else { PostMessageW(hWnd, WM_RBUTTONDOWN, MK_RBUTTON, lParam); }
+            PostMessageW(hwnd, WM_LBUTTONDOWN, MK_LBUTTON, lParam);
+        } else { PostMessageW(hwnd, WM_RBUTTONDOWN, MK_RBUTTON, lParam); }
 
         if (button == controls::MouseButton::LEFT) {
-            PostMessageW(hWnd, WM_LBUTTONUP, MK_LBUTTON, lParam);
-        } else { PostMessageW(hWnd, WM_RBUTTONUP, MK_RBUTTON, lParam); }
-    }
-
-    void reset_cursor(POINT& previousPosition)
-    {
-        auto start = std::chrono::system_clock::now();
-        POINT curr_pos;
-        GetCursorPos(&curr_pos);
-
-        while (!util::timedout(start, std::chrono::milliseconds(250))) {
-            while (curr_pos.x != width / 2 && curr_pos.y != height / 2) {
-                previousPosition = curr_pos;
-                GetCursorPos(&curr_pos);
-            }
-            SetCursorPos(previousPosition.x, previousPosition.y);
-        }
-    }
-
-    void post_close()
-    {
-        if (const auto hwnd = FindWindowExA(nullptr, nullptr, nullptr,
-                                            "The UE-ShooterGame Game has crashed and will close")
-            ; hwnd != nullptr) {
-            std::cout << "Closed crash popup" << std::endl;
-            PostMessageW(hwnd, WM_CLOSE, 0, 0);
-        }
-
-        if (const auto hwnd = FindWindowA(nullptr, "Crash!"); hwnd != nullptr) {
-            std::cout << "Closed crash popup" << std::endl;
-            PostMessageW(hwnd, WM_CLOSE, 0, 0);
-        }
-
-        if (const auto hwnd = FindWindowA("UnrealWindow", "ArkAscended"); hwnd !=
-            nullptr) {
-            std::cout << "Closed game window" << std::endl;
-            PostMessageW(hwnd, WM_CLOSE, 0, 0);
-        }
-    }
-
-    bool is_playing_transition_movie()
-    {
-        return match_template(Rect(1569, 698, 342, 364),
-                              resources::interfaces::server_transition);
+            PostMessageW(hwnd, WM_LBUTTONUP, MK_LBUTTON, lParam);
+        } else { PostMessageW(hwnd, WM_RBUTTONUP, MK_RBUTTON, lParam); }
     }
 }

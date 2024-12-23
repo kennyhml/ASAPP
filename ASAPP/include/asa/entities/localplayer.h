@@ -38,79 +38,162 @@ using teleport_flags_t = int32_t;
 
 namespace asa
 {
+    /**
+     * @brief Represents the local player of the game and serves as a controller.
+     *
+     * Provides functionality to move the player and it's view angles, mount or access
+     * entities and containers as well as most other interactions that involve the
+     * local player directly.
+     *
+     * The local player instance may be obtained through @link get_local_player.
+     */
     class local_player final : public base_entity
     {
     public:
         /**
-         * @brief Gets the local player inventory component.
+         * @brief Gets the local players inventory component.
+         *
+         * @returns The @link local_inventory component of the player.
          */
         [[nodiscard]] local_inventory* get_inventory() const override;
 
         /**
          * @brief Checks whether the local player is currently alive.
+         *
+         * @returns True if the player is alive, false otherwise.
          */
         [[nodiscard]] bool is_alive() const;
 
         /**
          * @brief Checks whether the local player is out of water.
+         *
+         * @returns True if the player is out of water, false otherwise.
          */
         [[nodiscard]] bool is_out_of_water() const;
 
         /**
          * @brief Checks whether the local player is out of food.
+         *
+         * @returns True if the player is out of food, false otherwise.
          */
         [[nodiscard]] bool is_out_of_food() const;
 
         /**
          * @brief Checks whether the local player is broken bones.
+         *
+         * @returns True if the player is broken bones, false otherwise.
          */
         [[nodiscard]] bool is_broken_bones() const;
 
         /**
          * @brief Checks whether the local player is out of overweight.
+         *
+         * @returns True if the player is overweight, false otherwise.
          */
         [[nodiscard]] bool is_overweight() const;
 
         /**
          * @brief Checks whether a certain item was received.
+         *
+         * @returns True if the player has received the item, false otherwise.
          */
         [[nodiscard]] bool received_item(item&) const;
 
         /**
-         * @brief Cchecks whether a certain item was deposited.
+         * @brief Checks whether a certain item was deposited.
+         *
+         * @return True if the player has deposited the item, false otherwise.
          */
         [[nodiscard]] bool deposited_item(item&) const;
 
-        [[nodiscard]] bool is_in_spawn_animation() const;
-
+        /**
+         * @brief Checks whether the player is currently in a travel screen.
+         *
+         * @return True if the player is in a travel screen, false otherwise.
+         */
         [[nodiscard]] bool is_in_travel_screen() const;
 
-        [[nodiscard]] bool is_in_connect_screen() const;
-
+        /**
+         * @brief Checks whether the player is currently riding a mount.
+         *
+         * @return True if the player is riding a mount, false otherwise.
+         */
         [[nodiscard]] bool is_riding_mount() const;
 
+        /**
+         * @brief Checks whether the player can currently access a bed.
+         *
+         * @return True if a bed is accessible, false otherwise.
+         */
         [[nodiscard]] bool can_access_bed() const;
 
+        /**
+         * @brief Checks whether the player can currently access an inventory.
+         *
+         * @return True if an inventory is accessible, false otherwise.
+         */
         [[nodiscard]] bool can_access_inventory() const;
 
+        /**
+         * @brief Checks whether the player has a default destination available.
+         *
+         * @return True if a default teleporter destination is available, false otherwise.
+         */
         [[nodiscard]] bool can_use_default_teleport() const;
 
+        /**
+         * @brief Deposits the given item into a dedicated storage.
+         *
+         * @param amount_out If provided, the amount of the item that was deposited.
+         *
+         * @return True if any items were deposited, false otherwise.
+         *
+         * @throws deposit_failed If the deposit was not successful.
+         */
         bool deposit_into_dedi(item&, int* amount_out);
 
-        bool withdraw_from_dedi(item&, int* amount_out);
+        /**
+         * @brief Attempts to turn to the waypoint with the provided color.
+         *
+         * @param color The color of the waypoint icon.
+         * @param variance The variance to match the color with.
+         *
+         * @return Whether a waypoint was found and targetted.
+         */
+        bool turn_to_waypoint(const cv::Vec3b& color, float variance);
 
-        bool get_amount_added(item&, int& amount_out);
-
-        bool get_amount_removed(item&, int& amount_out);
-
-        bool turn_to_closest_waypoint(const cv::Vec3b& color, float variance);
-
+        /**
+         * @brief Checks if the structure can be accessed.
+         *
+         * TODO: If no "access inventory" is available, optionally check action wheel
+         *
+         * @return True if the structure is accessible, false otherwise.
+         */
         [[nodiscard]] bool can_access(const base_structure&) const;
 
-        [[nodiscard]] bool can_access(const base_entity&) const;
+        /**
+         * @brief Checks if the entity can be accessed.
+         *
+         * TODO: If no "access inventory" or "ride" is available, optionally check action wheel
+         *
+         * @return True if the entity is accessible, false otherwise.
+         */
+        [[nodiscard]] bool can_access(const dino_entity&) const;
 
+        /**
+         * @brief Checks if the entity can be ridden.
+         *
+         * TODO: If no "ride" is available, optionally check action wheel
+         *
+         * @return True if the entity is rideable, false otherwise.
+         */
         [[nodiscard]] bool can_ride(const dino_entity&) const;
 
+        /**
+         * @brief Checks if the player is currently able to sit down.
+         *
+         * @return True if its possible to sit down, false otherwise.
+         */
         [[nodiscard]] bool can_sit_down() const;
 
         void access(const base_entity&, std::chrono::seconds max = 30s);
@@ -162,11 +245,6 @@ namespace asa
         void get_off_bed();
 
         void suicide();
-
-        /**
-         * @brief Stores the current state, then reconnects & restores the original state.
-         */
-        void reconnect();
 
         /**
          * @brief Override to ensure we leave any crouched / proned states first.

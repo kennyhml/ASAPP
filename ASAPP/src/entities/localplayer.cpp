@@ -17,7 +17,7 @@ namespace asa
     {
         get_hud()->toggle_extended(true);
         const bool result = utility::await([] {
-            return get_hud()->extended_information_is_toggled();
+            return get_hud()->is_extended_info_toggled();
         }, 300ms);
 
         get_hud()->toggle_extended(false);
@@ -67,18 +67,18 @@ namespace asa
         return mean[0] > 240.f;
     }
 
-    bool local_player::is_in_connect_screen() const
-    {
-        static window::Rect roi(94, 69, 1751, 883);
-
-        cv::Mat image = screenshot(roi);
-        cv::Mat gray;
-        cvtColor(image, gray, cv::COLOR_BGR2GRAY);
-
-        cv::Scalar mean, stddev;
-        meanStdDev(gray, mean, stddev);
-        return mean[0] < 5.f;
-    }
+    // bool local_player::is_in_connect_screen() const
+    // {
+    //     static window::Rect roi(94, 69, 1751, 883);
+    //
+    //     cv::Mat image = screenshot(roi);
+    //     cv::Mat gray;
+    //     cvtColor(image, gray, cv::COLOR_BGR2GRAY);
+    //
+    //     cv::Scalar mean, stddev;
+    //     meanStdDev(gray, mean, stddev);
+    //     return mean[0] < 5.f;
+    // }
 
     bool local_player::is_riding_mount() const
     {
@@ -102,9 +102,9 @@ namespace asa
 
     bool local_player::deposit_into_dedi(item& item, int* amount_out)
     {
-        auto deposited = [this, &item, amount_out]() -> bool {
-            if (amount_out) { return get_amount_removed(item, *amount_out); }
-            return deposited_item(item);
+        auto deposited = [&item, amount_out]() -> bool {
+            if (amount_out) { return get_hud()->count_items_removed(item, *amount_out); }
+            return get_hud()->item_removed(item, nullptr);
         };
 
         const auto start = std::chrono::system_clock::now();
@@ -113,26 +113,11 @@ namespace asa
                 throw deposit_failed(item.get_name());
             }
             window::press(get_action_mapping("Use"));
-        } while (!utility::await(deposited, std::chrono::seconds(5)));
+        } while (!utility::await(deposited, 5s));
         return true;
     }
 
-    bool local_player::withdraw_from_dedi(item& item, int* amount_out)
-    {
-        return false;
-    }
-
-    bool local_player::get_amount_added(item& item, int& amount_out)
-    {
-        return get_hud()->count_items_added(item, amount_out);
-    }
-
-    bool local_player::get_amount_removed(item& item, int& amount_out)
-    {
-        return get_hud()->count_items_removed(item, amount_out);
-    }
-
-    bool local_player::turn_to_closest_waypoint(const cv::Vec3b& color,
+    bool local_player::turn_to_waypoint(const cv::Vec3b& color,
                                                 const float variance)
     {
         const cv::Mat screen = window::screenshot();
@@ -181,7 +166,7 @@ namespace asa
             controls::mouse_press(controls::RIGHT);
             window::press(get_action_mapping("Use"));
             checked_sleep(std::chrono::seconds(3));
-        } while (get_hud()->extended_information_is_toggled());
+        } while (get_hud()->is_extended_info_toggled());
         while (!spawn_map->is_open()) {}
 
         reset_state();
@@ -247,13 +232,11 @@ namespace asa
     bool local_player::can_access(const base_structure&) const
     {
         return get_hud()->can_access_inventory();
-        // TODO: if ghud fails use the action wheel
     }
 
-    bool local_player::can_access(const base_entity&) const
+    bool local_player::can_access(const dino_entity& entity) const
     {
-        return get_hud()->can_access_inventory();
-        // TODO: if ghud fails use the action wheel
+        return get_hud()->can_access_inventory() || can_ride(entity);
     }
 
     bool local_player::can_ride(const dino_entity&) const

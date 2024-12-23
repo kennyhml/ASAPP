@@ -57,4 +57,6 @@ namespace asa
     * @param id The callback to be removed.
     */
     void remove_state_callback(const std::string& id);
+
+    bool is_playing_movie();
 }

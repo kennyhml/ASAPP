@@ -1,193 +1,200 @@
 #pragma once
 #define WIN32_LEAN_AND_MEAN
+#include "controls.h"
 
-#include <format>
 #include <optional>
 #include <string>
 #include <vector>
 #include <Windows.h>
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
-#include <tesseract/baseapi.h>
-#include "controls.h"
-
+#include <tesseract/publictypes.h>
 
 namespace asa::window
 {
-    bool init();
+    /**
+     * @brief Attempts to initialize tesseract if its not already initialized.
+     */
+    void tesseract_init();
 
-    inline tesseract::TessBaseAPI* tessEngine = nullptr;
-    inline HWND hWnd = nullptr;
-    inline int width = NULL;
-    inline int height = cv::countNonZero(cv::Mat());;
+    void find(std::chrono::seconds timeout = 60s);
 
-    struct Point
-    {
-        int x{0};
-        int y{0};
-    };
+    bool set_foreground();
 
-    struct Point2D
-    {
-        double x{0};
-        double y{0};
-    };
+    RECT get_boundaries();
 
-    struct Color
-    {
-        int r{0};
-        int g{0};
-        int b{0};
+    bool has_crash_popup();
 
-        Color to_bgr() const { return Color(b, g, r); }
+    /**
+     * @brief Captures a screenshot of the window using the window handle and windows
+     * PrintWindow function so that anything on top of the window will not interfere.
+     *
+     * @param region A cv::Rect containing the area of the window to screenshot.
+     * @param direct_capture Whether to capture the window based on the hwnd.
+     * @return A cv::Mat containing the screenshot of the window.
+     */
+    [[nodiscard]] cv::Mat screenshot(const cv::Rect& region = {0, 0, 1920, 1080},
+                                     bool direct_capture = true);
 
-        void to_range(int variance, cv::Scalar& low, cv::Scalar& high) const;
-    };
+    /**
+     * @brief Gets the pixel color at the given coordinate using the window handle so that
+     * anything on top of the window will not interefere.
+     *
+     * @param point The cv::Point containing x- and y-position of the pixel in question.
+     *
+     * @return A cv::Scalar containing the result in RGB format.
+     */
+    [[nodiscard]] cv::Vec3b pixel(const cv::Point& point);
 
-    struct Rect
-    {
-        Rect() = default;
+    /**
+     * @brief Set focus on the window, must have called get_hwnd before.
+     */
+    void set_focus();
 
-        Rect(cv::Rect cvr) : Rect(cvr.x, cvr.y, cvr.width, cvr.height) {}
+    /**
+     * @brief Sends a WM_POST message to the window to close it.
+     */
+    void close();
 
+    /**
+     * @brief Locates a template within a given image.
+     *
+     * @param _template The template to match, must already be loaded into memory.
+     * @param source The source image to find the template in.
+     * @param threshold The minimum confidence for a match to be considered.
+     * @param mask [OPTIONAL] A mask to exclude an area of the template in the match.
+     * @param top  [OPTIONAL] A pointer to a float to store the best match in.
+     * @param mode [OPTIONAL] The mode used to template match, default TM_CCOEFF_NORMED.
+     *
+     * @return An std::optional containing a cv::Rect of where the template matched.
+     */
+    [[nodiscard]] std::optional<cv::Rect> locate(const cv::Mat& _template,
+                                                 const cv::Mat& source,
+                                                 float threshold = 0.7,
+                                                 bool grayscale = false,
+                                                 const cv::Mat& mask = {},
+                                                 float* top = nullptr,
+                                                 int mode = cv::TM_CCOEFF_NORMED);
 
-        Rect(int x, int y, int width, int height) : x(x), y(y), width(width),
-                                                    height(height) {};
-        int x{0};
-        int y{0};
-        int width{0};
-        int height{0};
+    /**
+    * @brief Locates a template within a given region on the screen.
+    *
+    * @param _template The template to match, must already be loaded into memory.
+    * @param region The region of the screen to match the template in.
+    * @param threshold The minimum confidence for a match to be considered.
+    * @param mask [OPTIONAL] A mask to exclude an area of the template in the match.
+    * @param top  [OPTIONAL] A pointer to a float to store the best match in.
+    * @param mode [OPTIONAL] The mode used to template match, default TM_CCOEFF_NORMED.
+    *
+    * @return An std::optional containing a cv::Rect of where the template matched.
+    */
+    [[nodiscard]] std::optional<cv::Rect> locate(const cv::Mat& _template,
+                                                 const cv::Rect& region,
+                                                 float threshold = 0.7,
+                                                 bool grayscale = false,
+                                                 const cv::Mat& mask = {},
+                                                 float* top = nullptr,
+                                                 int mode = cv::TM_CCOEFF_NORMED);
 
-        const Point& get_end_point() const { return Point(x + width, y + height); }
+    /**
+    * @brief Locates ALL matches of a template within a given image.
+    *
+    * @param _template The template to match, must already be loaded into memory.
+    * @param source The source image to find the template in.
+    * @param threshold The minimum confidence for a match to be considered.
+    * @param mask [OPTIONAL] A mask to exclude an area of the template in the match.
+    *
+    * @return A vector consisting of cv::Rect's of the matches found.
+    */
+    [[nodiscard]] std::vector<cv::Rect> locate_all(const cv::Mat& _template,
+                                                   const cv::Mat& source,
+                                                   float threshold = 0.7,
+                                                   bool grayscale = false,
+                                                   const cv::Mat& mask = {});
 
-        Point get_random_location(int padding) const;
+    /**
+    * @brief Locates ALL matches of a template within a given region on the screen.
+    *
+    * @param _template The template to match, must already be loaded into memory.
+    * @param region The region of the screen to match the template in.
+    * @param threshold The minimum confidence for a match to be considered.
+    * @param mask [OPTIONAL] A mask to exclude an area of the template in the match.
+    *
+    * @return A vector consisting of cv::Rect's of the matches found.
+    */
+    [[nodiscard]] std::vector<cv::Rect> locate_all(const cv::Mat& _template,
+                                                   const cv::Rect& region,
+                                                   float threshold = 0.7,
+                                                   bool grayscale = false,
+                                                   const cv::Mat& mask = {});
 
-        cv::Rect to_cv() const { return {x, y, width, height}; }
-    };
+    /**
+    * @brief Thin wrapper of window::locate to return a boolean instead of std::optional.
+    *
+    * @param _template The template to match, must already be loaded into memory.
+    * @param source The source image to find the template in.
+    * @param threshold The minimum confidence for a match to be considered.
+    * @param mask [OPTIONAL] A mask to exclude an area of the template in the match.
+    *
+    * @return True if a match was found, false otherwise.
+    */
+    [[nodiscard]] bool match(const cv::Mat& _template, const cv::Mat& source,
+                             float threshold = 0.7, bool grayscale = false,
+                             const cv::Mat& mask = {});
 
-    std::optional<Rect> locate_template(const Rect& region, const cv::Mat& templ,
-                                        float threshold = 0.7,
-                                        const cv::Mat& mask = cv::Mat());
-
-    std::optional<Rect> locate_template(const cv::Mat& source, const cv::Mat& templ,
-                                        float threshold = 0.7,
-                                        const cv::Mat& mask = cv::Mat(),
-                                        float* highest_match = nullptr,
-                                        int mode = cv::TM_CCOEFF_NORMED);
-
-    std::vector<Rect> locate_all_template(const Rect& region, const cv::Mat& templ,
-                                          float threshold = 0.7,
-                                          const cv::Mat& mask = cv::Mat());
-
-    std::vector<Rect> locate_all_template(const cv::Mat& source, const cv::Mat& templ,
-                                          float threshold = 0.7,
-                                          const cv::Mat& mask = cv::Mat());
-
-    bool match_template(const Rect& region, const cv::Mat& templ, float threshold = 0.7,
-                        const cv::Mat& mask = cv::Mat());
-
-    bool match_template(const cv::Mat& source, const cv::Mat& templ,
-                        float threshold = 0.7, const cv::Mat& mask = cv::Mat());
+    /**
+    * @brief Thin wrapper of window::locate to return a boolean instead of std::optional.
+    *
+    * @param _template The template to match, must already be loaded into memory.
+    * @param region The region of the screen to match the template in.
+    * @param threshold The minimum confidence for a match to be considered.
+    * @param mask [OPTIONAL] A mask to exclude an area of the template in the match.
+    *
+    * @return True if a match was found, false otherwise.
+    */
+    [[nodiscard]] bool match(const cv::Mat& _template, const cv::Rect& region,
+                             float threshold = 0.7, bool grayscale = false,
+                             const cv::Mat& mask = {});
 
     std::string ocr_threadsafe(const cv::Mat& src, tesseract::PageSegMode mode,
                                const char* whitelist);
 
-    cv::Mat get_mask(const cv::Mat& image, const Color& color, float variance);
+    void set_mouse_pos(const cv::Point&);
 
-    cv::Mat get_mask(const Rect& region, const Color& color, float variance);
+    void click_at(const cv::Point&, controls::MouseButton,
+                  std::chrono::milliseconds delay = 5ms);
 
-    void get_handle(int timeout = 60, bool verbose = false);
+    void down(const action_mapping&, std::chrono::milliseconds delay = 1ms);
 
-    cv::Mat screenshot(const Rect& region = Rect(0, 0, 0, 0), HWND window = hWnd);
+    void up(const action_mapping&, std::chrono::milliseconds delay = 1ms);
 
-    RECT get_window_rect();
+    void press(const action_mapping&, std::chrono::milliseconds delay = 5ms);
 
-    void set_tesseract_image(const cv::Mat& image);
+    void down(const std::string& key, std::chrono::milliseconds delay = 0ms);
 
-    inline std::ostream& operator<<(std::ostream& os, Point& point)
-    {
-        return os << std::format("Point(x={}, y={})", point.x, point.y);
-    }
+    void up(const std::string& key, std::chrono::milliseconds delay = 0ms);
 
-    inline std::ostream& operator<<(std::ostream& os, Color& c)
-    {
-        return os << std::format("Color(r={}, g={}, b={})", c.r, c.g, c.b);
-    }
+    void press(const std::string& key, std::chrono::milliseconds delay = 0ms);
 
-    inline std::ostream& operator<<(std::ostream& os, Rect& r)
-    {
-        return os << std::format("Rect(x={}, y={}, width={}, height={})", r.x, r.y,
-                                 r.width, r.height);
-    }
+    void post_down(const action_mapping&, std::chrono::milliseconds delay = 1ms);
 
-    bool set_foreground();
+    void post_up(const action_mapping&, std::chrono::milliseconds delay = 10ms);
 
-    bool set_foreground_but_hidden();
+    void post_press(const action_mapping&, std::chrono::milliseconds delay = 50ms);
 
-    bool has_crashed_popup();
+    void post_key_down(const std::string& key, std::chrono::milliseconds delay = 0ms);
 
-    void set_mouse_pos(const Point&);
+    void post_key_up(const std::string& key, std::chrono::milliseconds delay = 0ms);
 
-    void set_mouse_pos(int x, int y);
-
-    void click_at(const Point&, controls::MouseButton,
-                  std::chrono::milliseconds delay = std::chrono::milliseconds(50));
-
-    void down(const action_mapping&,
-              std::chrono::milliseconds delay = std::chrono::milliseconds(10));
-
-    void up(const action_mapping&,
-            std::chrono::milliseconds delay = std::chrono::milliseconds(10));
-
-    void press(const action_mapping&, bool catch_cursor = false,
-               std::chrono::milliseconds delay = std::chrono::milliseconds(50));
-
-    void down(const std::string& key,
-              std::chrono::milliseconds delay = std::chrono::milliseconds(0));
-
-    void up(const std::string& key,
-            std::chrono::milliseconds delay = std::chrono::milliseconds(0));
-
-    void press(const std::string& key, bool catch_cursor = false,
-               std::chrono::milliseconds delay = std::chrono::milliseconds(0));
-
-    void post_down(const action_mapping&,
-                   std::chrono::milliseconds delay = std::chrono::milliseconds(10));
-
-    void post_up(const action_mapping&,
-                 std::chrono::milliseconds delay = std::chrono::milliseconds(10));
-
-    void post_press(const action_mapping&, bool catch_cursor = false,
-                    std::chrono::milliseconds delay = std::chrono::milliseconds(50));
-
-    void post_key_down(const std::string& key,
-                       std::chrono::milliseconds delay = std::chrono::milliseconds(0));
-
-    void post_key_up(const std::string& key,
-                     std::chrono::milliseconds delay = std::chrono::milliseconds(0));
-
-    void post_key_press(const std::string& key, bool catch_cursor = false,
-                        std::chrono::milliseconds delay = std::chrono::milliseconds(0));
+    void post_key_press(const std::string& key, std::chrono::milliseconds delay = 0ms);
 
     void post_char(char c);
 
-    void post_mouse_down(controls::MouseButton,
-                         std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+    void post_mouse_down(controls::MouseButton, std::chrono::milliseconds delay = 10ms);
 
-    void post_mouse_up(controls::MouseButton,
-                       std::chrono::milliseconds delay = std::chrono::milliseconds(10));
+    void post_mouse_up(controls::MouseButton, std::chrono::milliseconds delay = 10ms);
 
-    void post_mouse_press(controls::MouseButton, bool catch_cursor = false,
-                          std::chrono::milliseconds delay =
-                              std::chrono::milliseconds(100));
+    void post_mouse_press(controls::MouseButton, std::chrono::milliseconds delay = 100ms);
 
-    void post_mouse_press_at(const Point&, controls::MouseButton);
-
-    void reset_cursor(POINT& previousPosition);
-
-    void post_close();
-
-    bool is_playing_transition_movie();
-
-
+    void post_mouse_press_at(const cv::Point&, controls::MouseButton);
 }

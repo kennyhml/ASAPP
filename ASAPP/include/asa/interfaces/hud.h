@@ -13,16 +13,6 @@ namespace asa
 
         hud& operator=(const hud&) = delete;
 
-        [[nodiscard]] bool is_mount_overweight() { return false; };
-
-        [[nodiscard]] bool is_mount_low() { return false; };
-
-        [[nodiscard]] bool is_mount_out_of_food() { return false; };
-
-        [[nodiscard]] bool is_mount_out_of_stamina() { return false; };
-
-        [[nodiscard]] bool is_mount_sprinting() { return false; };
-
         [[nodiscard]] bool mount_hud_available();
 
         [[nodiscard]] bool mount_has_level_up();
@@ -45,19 +35,19 @@ namespace asa
 
         [[nodiscard]] bool can_default_teleport() const;
 
-        [[nodiscard]] static bool can_fast_travel();
-
-        [[nodiscard]] static bool can_teleport();
-
-        [[nodiscard]] bool can_access_inventory() const;
-
-        [[nodiscard]] bool can_ride() const;
-
-        [[nodiscard]] bool can_sit_down() const;
-
-        [[nodiscard]] bool can_deposit() const;
-
-        [[nodiscard]] bool can_pick_up() const;
+        //[[nodiscard]] static bool can_fast_travel();
+        //
+        //[[nodiscard]] static bool can_teleport();
+        //
+        //[[nodiscard]] bool can_access_inventory() const;
+        //
+        //[[nodiscard]] bool can_ride() const;
+        //
+        //[[nodiscard]] bool can_sit_down() const;
+        //
+        //[[nodiscard]] bool can_deposit() const;
+        //
+        //[[nodiscard]] bool can_pick_up() const;
 
         [[nodiscard]] bool detected_enemy();
 
@@ -69,7 +59,7 @@ namespace asa
 
         [[nodiscard]] bool is_boss_ongoing();
 
-        [[nodiscard]] bool extended_information_is_toggled() const;
+        [[nodiscard]] bool is_extended_info_toggled() const;
 
         /**
          * @brief Checks whether an item was removed in the given area
