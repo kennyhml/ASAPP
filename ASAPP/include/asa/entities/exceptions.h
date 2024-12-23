@@ -1,6 +1,7 @@
 #pragma once
 #include "baseentity.h"
 #include "asa/core/exceptions.h"
+#include "asa/structures/basestructure.h"
 
 namespace asa
 {
@@ -12,21 +13,15 @@ namespace asa
     public:
         explicit entity_error(const base_entity* t_entity);
 
-        entity_error(base_entity* t_entity, std::string t_info);
+        entity_error(const base_entity* t_entity, std::string t_info);
 
         /**
          * @brief Gets the pointer to the entity this error occured on.
          */
-        [[nodiscard]] base_entity* get_entity() const { return entity_; };
-
-        /**
-         * @brief Gets the error information that was provided.
-         */
-        [[nodiscard]] const char* what() const noexcept override;
+        [[nodiscard]] const base_entity* get_entity() const { return entity_; };
 
     private:
-        std::string info_;
-        base_entity* entity_;
+        const base_entity* entity_;
     };
 
     /**
@@ -36,6 +31,30 @@ namespace asa
     {
     public:
         explicit entity_access_failed(const base_entity* t_entity);
+    };
+
+    /**
+     * @brief Thrown when an entity could not be accessed.
+     */
+    class structure_access_failed final : public entity_error
+    {
+    public:
+        explicit structure_access_failed(const base_structure* t_entity);
+    };
+
+    /**
+     * @brief Thrown when an entity could not be accessed.
+     */
+    class target_not_in_range final : public entity_error
+    {
+    public:
+        explicit target_not_in_range(const std::string& t_target);
+    };
+
+    class deposit_failed final : public entity_error
+    {
+    public:
+        explicit deposit_failed(const std::string& t_what);
     };
 
     /**

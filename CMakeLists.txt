@@ -6,7 +6,6 @@ add_library(asapp STATIC
         ASAPP/src/core/init.cpp
         ASAPP/src/core/state.cpp
         ASAPP/src/entities/baseentity.cpp
-        ASAPP/src/entities/dinoentity.cpp
         ASAPP/src/entities/exceptions.cpp
         ASAPP/src/entities/localplayer.cpp
         ASAPP/src/interfaces/baseentitiyinfo.cpp
@@ -125,6 +124,7 @@ add_library(asapp STATIC
         ASAPP/include/asa/interfaces/maps/maps.h
         ASAPP/include/asa/core/managedthread.h
         ASAPP/src/core/managedthread.cpp
+        ASAPP/include/asa/structures/structures.h
 )
 
 set_target_properties(asapp PROPERTIES

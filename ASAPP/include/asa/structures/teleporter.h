@@ -14,7 +14,7 @@ namespace asa
             LARGE
         };
 
-        explicit teleporter(std::string t_name, const Size t_size)
+        explicit teleporter(std::string t_name, const Size t_size = SMALL)
             : interactable(std::move(t_name), &get_action_mapping("Use"),
                            std::make_unique<teleport_map>()), size_(t_size) {}
 

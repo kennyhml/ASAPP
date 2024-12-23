@@ -1,6 +1,6 @@
 #pragma once
-#include "asa/interfaces/actionwheel.h"
-#include "asa/interfaces/baseinventory.h"
+#include "asa/interfaces/wheels/baseactionwheel.h"
+#include "asa/interfaces/inventories/baseinventory.h"
 
 namespace asa
 {
@@ -22,9 +22,7 @@ namespace asa
          * @param t_inv An inventory component that belongs to this entity, created if null.
          */
         explicit base_entity(std::string t_name,
-                             std::unique_ptr<base_inventory> t_inv = nullptr)
-            : name_(std::move(t_name)),
-              inventory_(t_inv ? std::move(t_inv) : std::make_unique<base_inventory>()) {}
+                             std::unique_ptr<base_inventory> t_inv = nullptr);
 
         /**
          * @brief Gets the name of the entity.

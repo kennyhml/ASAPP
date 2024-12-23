@@ -2,14 +2,16 @@
 
 #include "asa/items/item.h"
 #include "asa/game/window.h"
-#include "asa/interfaces/interface.h"
 
-namespace asa::interfaces
+namespace asa
 {
-    class hud : public interface
+    class hud
     {
     public:
-        [[nodiscard]] bool is_open() const override { return true; }
+        // Prevent copying
+        hud(const hud&) = delete;
+
+        hud& operator=(const hud&) = delete;
 
         [[nodiscard]] bool is_mount_overweight() { return false; };
 
@@ -116,7 +118,11 @@ namespace asa::interfaces
          */
         void toggle_extended(bool on, bool force = false);
 
+        friend std::shared_ptr<hud> get_hud();
+
     private:
+        hud() = default;
+
         bool detect_push_notification(const cv::Mat& notification, float variance = 0.7f);
 
         window::Color blink_red_state_{109, 54, 52};
@@ -142,4 +148,6 @@ namespace asa::interfaces
 
         bool extended_toggled_ = false;
     };
+
+    std::shared_ptr<hud> get_hud();
 }

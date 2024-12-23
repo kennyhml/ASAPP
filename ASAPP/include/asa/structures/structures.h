@@ -1,0 +1,9 @@
+#pragma once
+#include "cave_loot_crate.h"
+#include "container.h"
+#include "crafting_station.h"
+#include "dedicated_storage.h"
+#include "interactable.h"
+#include "teleporter.h"
+#include "simple_bed.h"
+#include "tributeable.h"

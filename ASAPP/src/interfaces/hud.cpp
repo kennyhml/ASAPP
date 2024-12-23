@@ -458,4 +458,10 @@ namespace asa::interfaces
         const cv::Mat mask = window::get_mask(harvest_action_area, color, 10);
         return cv::countNonZero(mask) > 300;
     }
+
+    std::shared_ptr<hud> get_hud()
+    {
+        static auto instance = std::make_shared<hud>();
+        return instance;
+    }
 }

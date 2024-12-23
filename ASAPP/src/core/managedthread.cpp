@@ -18,6 +18,7 @@ namespace asa
     void managed_thread::start()
     {
         thread_ = std::make_unique<boost::thread>(target_);
+        set_state(RUNNING);
     }
 
     managed_thread::ThreadState managed_thread::get_state() const

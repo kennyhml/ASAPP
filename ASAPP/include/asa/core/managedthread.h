@@ -5,9 +5,21 @@
 
 namespace asa
 {
+    /**
+     * @brief A wrapper around a boost thread that allows concrete control over a
+     * certain thread addressed by an identifier.
+     *
+     * Provides simple methods to start, pause, resume and terminate individual threads
+     * and obtain all their states.
+     *
+     * Thread state checks are performed through a call to `checked_sleep`.
+     */
     struct managed_thread
     {
     public:
+        /**
+         * @brief The possible states a thread can be in. Initially READY.
+         */
         enum ThreadState : int32_t
         {
             READY,
@@ -16,20 +28,49 @@ namespace asa
             RUNNING
         };
 
+        /**
+         * @brief Creates a managed thread with a unique identifier and a target function.
+         *
+         * @param t_id The identifier of the thread, should be unique.
+         * @param t_target The target function to be executed by the thread.
+         */
         managed_thread(std::string t_id, std::function<void()> t_target);
 
+        /**
+         * @brief Starts the thread immediately.
+         */
         void start();
 
+        /**
+         * @brief Gets the current state of the thread.
+         */
         [[nodiscard]] ThreadState get_state() const;
 
+        /**
+         * @brief Checks whether this thread has been started.
+         */
         [[nodiscard]] bool has_started() const;
 
+        /**
+         * @brief Checks whether this thread has (fully) terminated.
+         */
         [[nodiscard]] bool has_terminated() const;
 
+        /**
+         * @brief Gets the underlying boost thread.
+         */
         [[nodiscard]] boost::thread* get_thread() const;
 
+        /**
+         * @brief Gets the identifier that the thread was created with.
+         */
         [[nodiscard]] const std::string& get_id() const;
 
+        /**
+         * @brief Sets the state to the provided state.
+         *
+         * @param state The state to set this thread to, e.g TERMINATED.
+         */
         void set_state(ThreadState state);
 
     private:
@@ -42,6 +83,10 @@ namespace asa
         std::unique_ptr<boost::thread> thread_ = nullptr;
     };
 
+    /**
+     * @brief Raised by a thread when it was interrupted by one if its state callbacks
+     * or the termination flag was set.
+     */
     struct thread_interruped : std::exception
     {
     public:

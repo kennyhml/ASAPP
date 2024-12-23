@@ -1,41 +1,29 @@
 #include "asa/entities/exceptions.h"
 #include "asa/entities/localplayer.h"
 
-namespace asa::entities
+namespace asa
 {
-    EntityError::EntityError(const BaseEntity* t_entity)
-            : info("Unspecified EntityError"), entity(t_entity) {}
+    entity_error::entity_error(const base_entity* t_entity)
+        : asapp_error("Unspecified entity_error"), entity_(t_entity) {}
 
-    EntityError::EntityError(const BaseEntity* t_entity, std::string t_info)
-            : info("EntityError: " + std::move(t_info)), entity(t_entity) {}
+    entity_error::entity_error(const base_entity* t_entity, std::string t_info)
+        : asapp_error("entity_error: " + std::move(t_info)), entity_(t_entity) {}
 
-    const char* EntityError::what() const noexcept { return info.c_str(); }
+    entity_access_failed::entity_access_failed(const base_entity* t_entity)
+        : entity_error(t_entity,
+                       std::format("Failed to access '{}'!", t_entity->get_name())) {}
 
-    EntityNotAccessed::EntityNotAccessed(const BaseEntity* entity)
-            : EntityError(entity, "Failed to access " + entity->get_name()) {}
+    entity_mount_failed::entity_mount_failed(const base_entity* t_entity)
+        : entity_error(t_entity,
+                       std::format("Failed to mount '{}'!", t_entity->get_name())) {}
 
+    suicide_failed::suicide_failed()
+        : entity_error(nullptr, "Failed to suicide!") {}
 
-    EntityNotMounted::EntityNotMounted(const DinoEntity* mount)
-            : EntityError(mount, "Failed to mount " + mount->get_name()) {}
+    travel_failed::travel_failed(const std::string& t_where)
+        : entity_error(nullptr, std::format("Failed to travel to '{}'!", t_where)) {}
 
-    SuicideFailedError::SuicideFailedError()
-            : EntityError(local_player.get(), "Failed to suicide.") {}
-
-    FastTravelFailedError::FastTravelFailedError(const std::string& t_where)
-            : EntityError(local_player.get(),
-                          std::format("Failed to travel to '{}'", t_where)) {}
-
-    FastTravelFailedError::FastTravelFailedError(const std::string& t_where,
-                                                 const std::string& t_why) : EntityError(
-            local_player.get(),
-            std::format("Failed to travel to '{}' - {}", t_where, t_why)) {}
-
-
-    TeleportFailedError::TeleportFailedError(const std::string& t_where,
-                                             const std::string& t_why) : EntityError(
-            local_player.get(),
-            std::format("Failed to teleport to '{}' - {}", t_where, t_why)) {}
-
-
+    travel_failed::travel_failed(const std::string& t_where,
+                                 const std::string& t_why)
+        : entity_error(nullptr, std::format("Failed to travel to '{}': {}!", t_where, t_why)) {}
 }
-

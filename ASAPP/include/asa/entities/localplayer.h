@@ -2,10 +2,7 @@
 #include "baseentity.h"
 #include "dinoentity.h"
 
-#include "asa/structures/basestructure.h"
-#include "asa/structures/container.h"
-#include "asa/structures/simple_bed.h"
-#include "asa/structures/teleporter.h"
+#include "asa/structures/structures.h"
 #include "asa/interfaces/inventories/localinventory.h"
 
 enum AccessFlags_ : uint32_t
@@ -35,25 +32,15 @@ enum TeleportFlags_ : uint32_t
     TeleportFlags_UnsafeLoad = 1 << 2,       // Assume an instant teleport, lag unsafe.
 };
 
-using AccessFlags = int32_t;
-using TravelFlags = int32_t;
-using TeleportFlags = int32_t;
+using access_flags_t = int32_t;
+using travel_flags_t = int32_t;
+using teleport_flags_t = int32_t;
 
 namespace asa
 {
     class local_player final : public base_entity
     {
     public:
-
-        /**
-         * @brief Gets the local player controller.
-         */
-        [[nodiscard]] static local_player* get()
-        {
-            std::call_once(init_flag, []() { instance.reset(new local_player()); });
-            return instance.get();
-        }
-
         /**
          * @brief Gets the local player inventory component.
          */
@@ -100,6 +87,8 @@ namespace asa
 
         [[nodiscard]] bool is_in_connect_screen() const;
 
+        [[nodiscard]] bool is_riding_mount() const;
+
         [[nodiscard]] bool can_access_bed() const;
 
         [[nodiscard]] bool can_access_inventory() const;
@@ -124,20 +113,19 @@ namespace asa
 
         [[nodiscard]] bool can_sit_down() const;
 
-        void access(const base_entity&, std::chrono::seconds timeout = 30s);
+        void access(const base_entity&, std::chrono::seconds max = 30s);
 
-        void access(const container&, std::chrono::seconds timeout = 30s);
+        void access(const container&, std::chrono::seconds max = 30s);
 
-        void access(const interactable&, std::chrono::seconds timeout = 30s);
+        void access(const interactable&, std::chrono::seconds max = 30s);
 
-        void access(const simple_bed&, AccessFlags);
+        void access(const simple_bed&, access_flags_t);
 
-        void lay_on(const simple_bed&, AccessFlags);
+        void lay_on(const simple_bed&, access_flags_t);
 
+        void pick_up_one() const;
 
-        void pick_up_one() const { controls::press(settings::use); }
-
-        void pick_up_all() const { controls::press(settings::access_inventory); }
+        void pick_up_all() const;
 
         /**
          * @brief Mounts the local player onto a given (rideable) entity.
@@ -157,8 +145,8 @@ namespace asa
          * @param dst The teleporter that serves as the destination.
          * @param flags Flags to control the teleport process.
          */
-        void teleport_to(const structures::Teleporter& dst,
-                         TeleportFlags flags = TeleportFlags_None);
+        void teleport_to(const teleporter& dst,
+                         teleport_flags_t flags = TeleportFlags_None);
 
         /**
          * @brief Fast travels to a target destination.
@@ -167,9 +155,9 @@ namespace asa
          * @param access_flags Flags to control the process of accessing the bed.
          * @param travel_flags Flags to control the travelling process.
          */
-        void fast_travel_to(const structures::SimpleBed& dst,
-                            AccessFlags access_flags = AccessFlags_Default,
-                            TravelFlags travel_flags = TravelFlags_None);
+        void fast_travel_to(const simple_bed& dst,
+                            access_flags_t access_flags = AccessFlags_Default,
+                            travel_flags_t travel_flags = TravelFlags_None);
 
         void get_off_bed();
 
@@ -203,7 +191,7 @@ namespace asa
         /**
          * @brief Handles the access direction of an access flag bitfield.
          */
-        void handle_access_direction(AccessFlags);
+        void handle_access_direction(access_flags_t);
 
         /**
          * @brief Gets the current yaw angle of the player's view.
@@ -331,6 +319,8 @@ namespace asa
 
         bool pass_teleport_screen(bool access_flag = false);
 
+        friend std::shared_ptr<local_player> get_local_player();
+
         int current_yaw_ = 0; // degrees of our view left and right, between -180 and 180
         int current_pitch_ = 0; // degrees of our view bottom to top, between -90 and 90
 
@@ -343,4 +333,6 @@ namespace asa
 
         std::chrono::system_clock::time_point last_jumped_;
     };
+
+    [[nodiscard]] std::shared_ptr<local_player> get_local_player();
 }
