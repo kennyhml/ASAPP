@@ -1,5 +1,4 @@
 #include "asa/game/settings.h"
-#include "asa/core/config.h"
 
 #include <fstream>
 #include <iostream>

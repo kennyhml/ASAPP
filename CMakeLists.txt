@@ -11,32 +11,30 @@ add_library(asapp STATIC
         src/entities/baseentity.cpp
         src/entities/exceptions.cpp
         src/entities/localplayer.cpp
-        src/interfaces/baseentitiyinfo.cpp
+        src/interfaces/info/baseentitiyinfo.cpp
         src/game/controls.cpp
-        src/game/resources.cpp
         src/game/settings.cpp
         src/game/window.cpp
-        src/interfaces/actionwheel.cpp
-        src/interfaces/baseinventory.cpp
-        src/interfaces/base_travel_map.cpp
+        src/interfaces/wheels/baseactionwheel.cpp
+        src/interfaces/inventories/baseinventory.cpp
+        src/interfaces/maps/basetravelmap.cpp
         src/interfaces/components/button.cpp
         src/interfaces/components/search_bar.cpp
         src/interfaces/components/slot.cpp
         src/interfaces/console.cpp
-        src/interfaces/craftinginventory.cpp
-        src/interfaces/dedicated_storage_info.cpp
+        src/interfaces/inventories/craftinginventory.cpp
+        src/interfaces/info/dedicatedstorageinfo.cpp
         src/interfaces/exceptions.cpp
         src/interfaces/hud.cpp
-        src/interfaces/interfacemanager.cpp
-        src/interfaces/localinventory.cpp
+        src/interfaces/inventories/localinventory.cpp
         src/interfaces/main_menu.cpp
         src/interfaces/mode_select.cpp
-        src/interfaces/player_info.cpp
+        src/interfaces/info/playerinfo.cpp
         src/interfaces/server_select.cpp
-        src/interfaces/spawnmap.cpp
-        src/interfaces/structureinfo.cpp
-        src/interfaces/teleportmap.cpp
-        src/interfaces/travelmap.cpp
+        src/interfaces/maps/spawnmap.cpp
+        src/interfaces/info/structureinfo.cpp
+        src/interfaces/maps/teleportmap.cpp
+        src/interfaces/maps/travelmap.cpp
         src/interfaces/tribe_manager.cpp
         src/items/exceptions.cpp
         src/items/item.cpp
@@ -57,7 +55,6 @@ add_library(asapp STATIC
         include/asa/entities/exceptions.h
         include/asa/entities/localplayer.h
         include/asa/game/controls.h
-        include/asa/game/resources.h
         include/asa/game/settings.h
         include/asa/game/window.h
         include/asa/interfaces/wheels/baseactionwheel.h
@@ -73,9 +70,9 @@ add_library(asapp STATIC
         include/asa/interfaces/components/tooltip.h
         include/asa/interfaces/console.h
         include/asa/interfaces/info/containerinfo.h
-        include/asa/interfaces/inventories/crafting_inventory.h
-        include/asa/interfaces/info/dedicated_storage_info.h
-        include/asa/interfaces/info/dino_info.h
+        include/asa/interfaces/inventories/craftinginventory.h
+        include/asa/interfaces/info/dedicatedstorageinfo.h
+        include/asa/interfaces/info/dinoinfo.h
         include/asa/interfaces/exceptions.h
         include/asa/interfaces/hud.h
         include/asa/interfaces/interface.h
@@ -84,11 +81,11 @@ add_library(asapp STATIC
         include/asa/interfaces/main_menu.h
         include/asa/interfaces/menu.h
         include/asa/interfaces/mode_select.h
-        include/asa/interfaces/info/player_info.h
+        include/asa/interfaces/info/playerinfo.h
         include/asa/interfaces/server_select.h
-        include/asa/interfaces/maps/spawn_map.h
-        include/asa/interfaces/maps/teleport_map.h
-        include/asa/interfaces/maps/travel_map.h
+        include/asa/interfaces/maps/spawnmap.h
+        include/asa/interfaces/maps/teleportmap.h
+        include/asa/interfaces/maps/travelmap.h
         include/asa/interfaces/tribe_manager.h
         include/asa/items/exceptions.h
         include/asa/items/item.h
@@ -111,12 +108,12 @@ add_library(asapp STATIC
         src/network/server.cpp
         src/network/queries.cpp
         src/interfaces/components/tooltip.cpp
-        src/interfaces/dino_info.cpp
+        src/interfaces/info/dinoinfo.cpp
         include/asa/interfaces/inventories/dinoinventory.h
-        src/interfaces/dinoinventory.cpp
+        src/interfaces/inventories/dinoinventory.cpp
         src/interfaces/menu.cpp
         include/asa/interfaces/inventories/tribute_inventory.h
-        src/interfaces/tributeinventory.cpp
+        src/interfaces/inventories/tributeinventory.cpp
         include/asa/structures/tributeable.h
         src/structures/tributable.cpp
         include/asa/game/game.h

@@ -23,8 +23,8 @@ namespace asa
     private:
         search_bar searchbar_{1577, 172, 184, 46};
 
-        window::Rect joining_text_{717, 469, 507, 20};
-        window::Rect joining_text_2_{828, 357, 266, 66};
+        cv::Rect joining_text_{717, 469, 507, 20};
+        cv::Rect joining_text_2_{828, 357, 266, 66};
 
         button official_button_{571, 182, 116, 49};
         button refresh_button_{834, 932, 275, 39};

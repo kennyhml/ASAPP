@@ -6,7 +6,8 @@ namespace asa
 {
     struct destination_not_found : std::exception
     {
-        explicit destination_not_found(const std::string& t_dst_name);
+        explicit destination_not_found(const std::string& t_dst_name)
+            : info_(std::format("No destination for '{}' exists.", t_dst_name)) {}
 
         [[nodiscard]] char const* what() const override { return info_.c_str(); };
 
@@ -16,7 +17,8 @@ namespace asa
 
     struct destination_not_ready : std::exception
     {
-        explicit destination_not_ready(const std::string& t_dst_name);
+        explicit destination_not_ready(const std::string& t_dst_name)
+            : info_(std::format("No destination for '{}' is ready.", t_dst_name)) {}
 
         [[nodiscard]] char const* what() const override { return info_.c_str(); };
 

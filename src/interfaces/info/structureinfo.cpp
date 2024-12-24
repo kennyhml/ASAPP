@@ -1,14 +1,14 @@
-#include "../../include/asa/interfaces/info/containerinfo.h"
+#include "asa/utility.h"
+#include "asa/interfaces/info/containerinfo.h"
 
-namespace asa::interfaces
+namespace asa
 {
     namespace
     {
-        float get_filled(const window::Rect& bar)
+        float get_filled(const cv::Rect& bar)
         {
-            static constexpr window::Color fill_color{1, 156, 136};
-            const auto mask = window::get_mask(bar, fill_color, 10);
-            const int green = cv::countNonZero(mask);
+            static constexpr cv::Vec3b fill_color{1, 156, 136};
+            const int green = utility::count_matches(bar, fill_color, 10);
 
             return static_cast<float>(green) / static_cast<float>(bar.width);
         }

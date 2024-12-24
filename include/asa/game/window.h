@@ -9,6 +9,7 @@
 #include <opencv2/core.hpp>
 #include <opencv2/imgproc.hpp>
 #include <tesseract/publictypes.h>
+#include "asa/game/embedded.h"
 
 namespace asa::window
 {

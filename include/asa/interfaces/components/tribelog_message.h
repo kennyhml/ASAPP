@@ -32,15 +32,15 @@ namespace asa
             ENEMY_PLAYER_KILLED, // Player of an enemy tribe was killed (purple)
         };
 
-        struct Timestamp
+        struct timestamp
         {
             int32_t day, hour, minute, second;
 
-            bool operator>(const Timestamp& other) const { return sum() > other.sum(); }
+            bool operator>(const timestamp& other) const { return sum() > other.sum(); }
 
-            bool operator<(const Timestamp& other) const { return sum() < other.sum(); }
+            bool operator<(const timestamp& other) const { return sum() < other.sum(); }
 
-            bool operator==(const Timestamp& other) const { return sum() == other.sum(); }
+            bool operator==(const timestamp& other) const { return sum() == other.sum(); }
 
             /**
              * @Brief Gets the sum of seconds passed between the creation of the server
@@ -58,11 +58,11 @@ namespace asa
              *
              * @param raw The string to extract the timestamp from.
              */
-            static Timestamp parse(const std::string& raw);
+            static timestamp parse(const std::string& raw);
         };
 
     public:
-        Timestamp timestamp;
+        timestamp time;
         EventType type = UNKNOWN;
 
         std::string content;
@@ -72,7 +72,7 @@ namespace asa
 
         [[nodiscard]] std::string to_string() const
         {
-            return std::format("{}: {}", timestamp.to_string(), content);
+            return std::format("{}: {}", time.to_string(), content);
         }
     };
 

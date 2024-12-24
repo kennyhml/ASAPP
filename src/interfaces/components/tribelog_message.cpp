@@ -2,8 +2,9 @@
 #include <regex>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 
-namespace asa::interfaces::components
+namespace asa
 {
     namespace
     {
@@ -18,20 +19,20 @@ namespace asa::interfaces::components
             R"(Day ([0-9]+), ([0-9]+):([0-9]+):([0-9]+)(: (.*))?)");
     }
 
-    int64_t tribelog_message::Timestamp::sum() const
+    int64_t tribelog_message::timestamp::sum() const
     {
         return second + (minute * 60) + (hour * 3600) + (day * 86400);
     }
 
 
-    std::string tribelog_message::Timestamp::to_string() const
+    std::string tribelog_message::timestamp::to_string() const
     {
         return std::format("Day {}, {}:{}:{}", day, fill_zeros(hour, 2),
                            fill_zeros(minute, 2), fill_zeros(second, 2));
     }
 
 
-    tribelog_message::Timestamp tribelog_message::Timestamp::parse(const std::string& raw)
+    tribelog_message::timestamp tribelog_message::timestamp::parse(const std::string& raw)
     {
         std::smatch sm;
         if (regex_search(raw, sm, TIMESTAMP_PATTERN) && sm.size() > 4) {

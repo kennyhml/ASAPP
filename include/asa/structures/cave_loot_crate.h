@@ -19,7 +19,7 @@ namespace asa
 
         Quality get_crate_quality();
 
-        std::optional<window::Rect> get_info_area();
+        std::optional<cv::Rect> get_info_area();
 
         static std::string quality_to_string(Quality);
 

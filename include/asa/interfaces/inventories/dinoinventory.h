@@ -1,6 +1,6 @@
 #pragma once
 #include "baseinventory.h"
-#include "asa/interfaces/info/dino_info.h"
+#include "asa/interfaces/info/dinoinfo.h"
 
 namespace asa
 {

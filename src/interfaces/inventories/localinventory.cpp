@@ -1,30 +1,25 @@
-#include "asa/interfaces/localinventory.h"
-#include "../../include/asa/utility.h"
-#include "../../include/asa/game/settings.h"
+#include "asa/interfaces/inventories/localinventory.h"
+#include "asa/utility.h"
+#include "asa/game/settings.h"
 #include "asa/interfaces/exceptions.h"
 
-namespace asa::interfaces
+namespace asa
 {
-    void LocalInventory::open()
+    void local_inventory::open()
     {
         const auto start = std::chrono::system_clock::now();
         while (!is_open()) {
-            window::press(settings::show_my_inventory, true);
-            if (util::await([this]() { return is_open(); }, std::chrono::seconds(5))) {
-                break;
-            }
-
-            if (util::timedout(start, std::chrono::seconds(30))) {
-                throw failed_to_open(this);
-            }
+            window::press(get_action_mapping("ShowMyInventory"));
+            if (utility::await([this] { return is_open(); }, 5s)) { break; }
+            if (utility::timedout(start, 30s)) { throw failed_to_open(this); }
         }
     }
 
-    void LocalInventory::switch_to(const Tab tab)
+    void local_inventory::switch_to(const Tab tab)
     {
         assert_open(__func__);
 
-        InvTabButton* button = nullptr;
+        inv_tab_button* button = nullptr;
         switch (tab) {
             case INVENTORY: button = &inventory_tab;
                 break;
@@ -38,16 +33,16 @@ namespace asa::interfaces
         const auto start = std::chrono::system_clock::now();
         while (!button->is_selected()) {
             button->press();
-            if (util::await([button]() { return button->is_selected(); },
+            if (utility::await([button]() { return button->is_selected(); },
                             std::chrono::seconds(5))) { return; }
 
-            if (util::timedout(start, std::chrono::seconds(30))) {
+            if (utility::timedout(start, std::chrono::seconds(30))) {
                 throw interface_error(this, "Failed to open tab " + std::to_string(tab));
             }
         }
     }
 
-    void LocalInventory::equip(items::Item& item, const player_info::Slot slot)
+    void local_inventory::equip(item& item, const player_info::Slot slot)
     {
         assert_open(__func__);
         search_bar.search_for(item.get_name());
@@ -69,8 +64,8 @@ namespace asa::interfaces
 
         select_info_tab();
         do {
-            window::press(settings::action_mappings::use);
-        } while (!util::await([this, &item, slot]() {
+            window::press(get_action_mapping("Use"));
+        } while (!utility::await([this, &item, slot]() {
             return get_info()->get_slot(slot).has(item);
         }, 5s));
     }

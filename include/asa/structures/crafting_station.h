@@ -1,6 +1,6 @@
 #pragma once
 #include "container.h"
-#include "asa/interfaces/inventories/crafting_inventory.h"
+#include "asa/interfaces/inventories/craftinginventory.h"
 
 namespace asa
 {

@@ -21,7 +21,7 @@ namespace asa
         void select_lay_on() const;
 
     private:
-        window::Rect name_area{815, 461, 294, 160};
-        window::Rect area{683, 253, 543, 556};
+        cv::Rect name_area{815, 461, 294, 160};
+        cv::Rect area{683, 253, 543, 556};
     };
 }

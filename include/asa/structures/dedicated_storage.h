@@ -1,7 +1,7 @@
 #pragma once
 #include "container.h"
 #include "asa/interfaces/inventories/baseinventory.h"
-#include "asa/interfaces/info/dedicated_storage_info.h"
+#include "asa/interfaces/info/dedicatedstorageinfo.h"
 
 namespace asa
 {
@@ -12,13 +12,6 @@ namespace asa
             : container(
                 std::move(name), 1800, nullptr,
                 std::make_unique<dedicated_storage_info>()) {}
-
-        /**
-         * @brief Checks whether depositing into the dedicated storage is possible.
-         * 
-         * @return True if we can deposit items into the dedi, false otherwise.
-         */
-        [[nodiscard]] bool can_deposit() const;
 
         /**
          * @brief Gets the info interface component of the dedicated storage. 

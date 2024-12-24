@@ -8,20 +8,16 @@
 #include <random>
 #include <opencv2/highgui.hpp>
 #include <tesseract/baseapi.h>
-#include "asa/game/embedded.h"
 
 namespace asa::window
 {
     namespace
     {
-
-
         tesseract::TessBaseAPI* tesseract_engine = nullptr;
 
         HWND hwnd = nullptr;
 
         auto CRASH_WIN_TITLE = "The UE-ShooterGame Game has crashed and will close";
-
 
         // TODO: Paddings need to be tested on other resolutions
         constexpr auto WINDOWED_PADDING_TOP = 31;

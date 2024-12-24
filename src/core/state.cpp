@@ -2,6 +2,8 @@
 #include "asa/core/managedthread.h"
 #include "asa/core/state.h"
 
+#include "asa/game/window.h"
+
 namespace asa
 {
     namespace
@@ -68,5 +70,11 @@ namespace asa
     void register_state_callback(std::string id, state_check_callback_t callback)
     {
         state_check_callbacks.emplace(std::move(id), std::move(callback));
+    }
+
+    bool is_playing_movie()
+    {
+        return window::match(embedded::interfaces::server_transition,
+                             cv::Rect{1569, 698, 342, 364});
     }
 }

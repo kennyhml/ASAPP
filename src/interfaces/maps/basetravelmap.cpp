@@ -1,34 +1,27 @@
-#include "asa/interfaces/basetravelmap.h"
-#include <opencv2/highgui.hpp>
+#include "asa/interfaces/maps/basetravelmap.h"
+#include "asa/interfaces/maps/exceptions.h"
 #include "asa/core/state.h"
-#include "../../include/asa/utility.h"
-#include "asa/game/resources.h"
+#include "asa/utility.h"
 
-namespace asa::interfaces
+namespace asa
 {
-    destination_not_ready::DestinationNotReady(const std::string& t_dst_name)
-        : info_(std::format("No destination for '{}' is ready.", t_dst_name)) {}
-
-    destination_not_found::DestinationNotFound(const std::string& t_dst_name)
-        : info_(std::format("No destination for '{}' exists.", t_dst_name)) {}
-
     bool base_travel_map::destination_button::is_ready() const
     {
-        const cv::Mat mask = window::get_mask(area, text_color, 30);
-        mask |= window::get_mask(area, text_selected_color, 30);
+        const cv::Mat mask = utility::mask(area, text_color, 30);
+        mask |= utility::mask(area, text_selected_color, 30);
         return cv::countNonZero(mask) > 100;
     }
 
     bool base_travel_map::destination_button::is_on_cooldown() const
     {
-        const cv::Mat mask = window::get_mask(area, text_cooldown_color, 30);
+        const cv::Mat mask = utility::mask(area, text_cooldown_color, 30);
         return cv::countNonZero(mask) > 100;
     }
 
     bool base_travel_map::destination_button::is_selected() const
     {
-        const cv::Mat mask = window::get_mask(area, selected_color, 30);
-        mask |= window::get_mask(area, hovered_selected_color, 30);
+        const cv::Mat mask = utility::mask(area, selected_color, 30);
+        mask |= utility::mask(area, hovered_selected_color, 30);
 
         return cv::countNonZero(mask) > 300;
     }
@@ -36,7 +29,7 @@ namespace asa::interfaces
     void base_travel_map::destination_button::select()
     {
         do { press(); }
-        while (!util::await([this]() { return is_selected(); }, std::chrono::seconds(3)));
+        while (!utility::await([this]() { return is_selected(); }, 3s));
     }
 
     base_travel_map::base_travel_map()
@@ -48,24 +41,24 @@ namespace asa::interfaces
 
     bool base_travel_map::is_open() const
     {
-        return window::match_template(this->day_time_, resources::interfaces::day);
+        return window::match(embedded::interfaces::day, day_time_);
     }
 
     bool base_travel_map::can_confirm_travel() const
     {
-        static constexpr window::Color ready_color{158, 88, 18};
+        static constexpr cv::Vec3b ready_color{158, 88, 18};
 
-        const auto mask = window::get_mask(confirm_button.area, ready_color, 20);
+        const auto mask = utility::mask(confirm_button.area, ready_color, 20);
         return cv::countNonZero(mask) > 50;
     }
 
     std::vector<base_travel_map::destination_button> base_travel_map::get_destinations() const
     {
-        std::vector<DestinationButton> ret;
+        std::vector<destination_button> ret;
 
         for (const auto& roi : destination_slots_) {
             // create an imaginary button for now.
-            const DestinationButton button(roi.x, roi.y);
+            const destination_button button(roi.x, roi.y);
             // button doesnt exist, end of the list reached.
             if (!(button.is_ready() || button.is_on_cooldown())) { break; }
             ret.push_back(button);
@@ -81,21 +74,21 @@ namespace asa::interfaces
         // lagging or something.
         const auto start = std::chrono::system_clock::now();
         while (results.empty()) {
-            if (util::timedout(start, std::chrono::seconds(5))) {
-                throw DestinationNotFound(name);
+            if (utility::timedout(start, std::chrono::seconds(5))) {
+                throw destination_not_found(name);
             }
             results = get_destinations();
         }
 
         const auto it = std::ranges::find_if(
-            results, [](const DestinationButton& b) -> bool { return b.is_ready(); });
+            results, [](const destination_button& b) -> bool { return b.is_ready(); });
 
         if (it == results.end()) {
             if (wait_ready) {
-                core::sleep_for(std::chrono::seconds(5));
+                checked_sleep(std::chrono::seconds(5));
                 return get_ready_destination(name, wait_ready);
             }
-            throw DestinationNotReady(name);
+            throw destination_not_ready(name);
         }
         return *it;
     }

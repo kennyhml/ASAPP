@@ -33,7 +33,7 @@ namespace asa
         std::string get_name() override { return ""; }
 
     private:
-        window::Rect health_bar_{768, 512, 382, 6};
-        window::Rect slots_bar_{768, 548, 382, 6};
+        cv::Rect health_bar_{768, 512, 382, 6};
+        cv::Rect slots_bar_{768, 548, 382, 6};
     };
 }

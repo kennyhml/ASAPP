@@ -1,6 +1,6 @@
 #pragma once
 #include "baseinventory.h"
-#include "asa/interfaces/info/player_info.h"
+#include "asa/interfaces/info/playerinfo.h"
 
 namespace asa
 {

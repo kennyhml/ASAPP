@@ -32,6 +32,17 @@ namespace asa::utility
     cv::Mat mask(const cv::Mat& image, const cv::Vec3b& color, int variance);
 
     /**
+     * @brief Masks the given image using a given color and variance.
+     *
+     * @param roi The area of the image to create the mask of.
+     * @param color The color to mask the image for.
+     * @param variance The variance a color may have from the given color
+     *
+     * @return A mask of the given image where each matching pixel is 1, else 0.
+     */
+    cv::Mat mask(const cv::Rect& roi, const cv::Vec3b& color, int variance);
+
+    /**
      * @brief Helper function to create a low and high color range from a color & variance.
      */
     void get_ranges(const cv::Vec3b& src, cv::Vec3b& low, cv::Vec3b& high, int v);
@@ -41,6 +52,12 @@ namespace asa::utility
      * allowing for a given variance.
      */
     int count_matches(const cv::Mat& img, const cv::Vec3b& color, int variance);
+
+    /**
+     * @brief Counts the amount of pixels that match a given color within a given image,
+     * allowing for a given variance.
+     */
+    int count_matches(const cv::Rect& img, const cv::Vec3b& color, int variance);
 
     bool pixel_matches(const cv::Vec3b& c1, const cv::Vec3b& c2, int tolerance);
 
@@ -72,6 +89,7 @@ namespace asa::utility
 
     bool iequal(const std::string& a, const std::string& b);
 
+    cv::Point center_of(const cv::Rect& rect);
 
     /**
      * @brief Returns a string with all common OCR mistakes in a src string

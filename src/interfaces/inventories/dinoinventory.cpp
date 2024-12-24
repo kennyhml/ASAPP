@@ -1,10 +1,9 @@
-#include "asa/interfaces/dinoinventory.h"
+#include "asa/interfaces/inventories/dinoinventory.h"
+#include "asa/utility.h"
 
-#include "../../include/asa/utility.h"
-
-namespace asa::interfaces
+namespace asa
 {
-    void DinoInventory::equip(items::Item& item, const dino_info::Slot slot)
+    void dino_inventory::equip(item& item, const dino_info::slot slot)
     {
         assert_open(__func__);
         search_bar.search_for(item.get_name());
@@ -25,8 +24,8 @@ namespace asa::interfaces
         }
 
         do {
-            window::press(settings::action_mappings::use);
-        } while (!util::await([this, &item, slot]() {
+            window::press(get_action_mapping("Use"));
+        } while (!utility::await([this, &item, slot] {
             return get_info()->get_slot(slot).has(item);
         }, 5s));
     }

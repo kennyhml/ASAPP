@@ -1,54 +1,47 @@
 #include "asa/interfaces/console.h"
+#include "asa/utility.h"
 
-#include <iostream>
-#include <../../include/asa/util.h>
-
-
-namespace asa::interfaces
+namespace asa
 {
     bool console::is_open() const
     {
-        static constexpr window::Color gray{140,140,140};
+        static constexpr cv::Vec3b gray{140, 140, 140};
 
-        return cv::countNonZero(window::get_mask(bar_lower_, gray, 5)) > 500; 
+        return utility::count_matches(bar_lower_, gray, 5) > 500;
     }
 
     void console::open()
     {
         if (is_open()) { return; }
 
-        do { window::press(settings::console); }
-        while (!util::await([this]() -> bool { return is_open(); },
-                            std::chrono::seconds(5)));
+        do {
+            window::press(get_action_mapping("ConsoleKeys"));
+        } while (!utility::await([this]() -> bool { return is_open(); }, 5s));
     }
 
     void console::close()
     {
         if (!is_open()) { return; }
 
-        do { window::press("enter"); }
-        while (!util::await([this]() -> bool { return !is_open(); },
-                            std::chrono::seconds(5)));
+        do { window::press("enter"); } while (!utility::await(
+            [this]() -> bool { return !is_open(); }, 5s));
     }
 
     void console::execute(const std::string& command)
     {
         open();
-        util::set_clipboard(command);
+        utility::set_clipboard(command);
         controls::key_combination_press("ctrl", "v");
 
         // Keep trying to press enter until console closed
         int counter = 0;
         do {
             // Only try to close the console 12 times (aka 1min)
-            if(counter > 12) {
+            if (counter > 12) {
                 break;
             }
             window::press("enter");
             counter++;
-        } while (!util::await([this] { return !is_open(); }, std::chrono::seconds(5)));
+        } while (!utility::await([this] { return !is_open(); }, 5s));
     }
-
-
-
 }

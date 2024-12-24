@@ -1,6 +1,6 @@
 #pragma once
 #include "interactable.h"
-#include "asa/interfaces/maps/teleport_map.h"
+#include "asa/interfaces/maps/teleportmap.h"
 
 namespace asa
 {

@@ -1,6 +1,6 @@
 #pragma once
 #include "baseinventory.h"
-#include "crafting_inventory.h"
+#include "craftinginventory.h"
 #include "dinoinventory.h"
 #include "inventories.h"
 #include "localinventory.h"

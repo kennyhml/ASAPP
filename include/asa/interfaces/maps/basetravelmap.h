@@ -37,12 +37,12 @@ namespace asa
             void select();
 
         private:
-            static constexpr window::Color hovered_selected_color{83, 39, 1};
-            static constexpr window::Color selected_color{128, 64, 2};
+            static constexpr cv::Vec3b hovered_selected_color{83, 39, 1};
+            static constexpr cv::Vec3b selected_color{128, 64, 2};
 
-            static constexpr window::Color text_selected_color{255, 255, 255};
-            static constexpr window::Color text_color{133, 226, 243};
-            static constexpr window::Color text_cooldown_color{70, 120, 138};
+            static constexpr cv::Vec3b text_selected_color{255, 255, 255};
+            static constexpr cv::Vec3b text_color{133, 226, 243};
+            static constexpr cv::Vec3b text_cooldown_color{70, 120, 138};
         };
 
     public:
@@ -89,8 +89,8 @@ namespace asa
             const std::string& name, bool wait_ready) const;
 
     protected:
-        std::array<window::Rect, 12> destination_slots_;
-        window::Rect day_time_{1570, 77, 272, 54};
+        std::array<cv::Rect, 12> destination_slots_;
+        cv::Rect day_time_{1570, 77, 272, 54};
         button confirm_button{1461, 931, 367, 60, 10};
     };
 }

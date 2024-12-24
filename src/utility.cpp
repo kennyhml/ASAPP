@@ -3,6 +3,7 @@
 #include <string>
 #include <Windows.h>
 #include "asa/core/state.h"
+#include "asa/game/window.h"
 
 namespace asa::utility
 {
@@ -58,6 +59,11 @@ namespace asa::utility
         return mask;
     }
 
+    cv::Mat mask(const cv::Rect& roi, const cv::Vec3b& color, int variance)
+    {
+        return mask(window::screenshot(roi), color, variance);
+    }
+
     void get_ranges(const cv::Vec3b& src, cv::Vec3b& low, cv::Vec3b& high, const int v)
     {
         auto [b, g, r] = src.val;
@@ -75,6 +81,11 @@ namespace asa::utility
     {
         const cv::Mat masked = mask(img, color, variance);
         return cv::countNonZero(masked);
+    }
+
+    int count_matches(const cv::Rect& img, const cv::Vec3b& color, int variance)
+    {
+        return count_matches(window::screenshot(img), color, variance);
     }
 
     bool pixel_matches(const cv::Vec3b& c1, const cv::Vec3b& c2, const int tolerance)
@@ -168,6 +179,11 @@ namespace asa::utility
             return std::tolower(static_cast<unsigned char>(ca)) == std::tolower(
                        static_cast<unsigned char>(cb));
         });
+    }
+
+    cv::Point center_of(const cv::Rect& rect)
+    {
+        return {rect.x + rect.width / 2, rect.y + rect.height / 2};
     }
 
     std::string fix(const std::string& src,

@@ -14,7 +14,7 @@ namespace asa
         {
             using item_slot::item_slot;
 
-            window::Rect get_slot_description_area() const
+            cv::Rect get_slot_description_area() const
             {
                 return {area.x, area.y + 68, 87, 17};
             }
@@ -37,7 +37,7 @@ namespace asa
 
         virtual const gear_slot& get_slot(const int slot) const
         {
-            return gear_slots.at(slot);
+            return gear_slots_.at(slot);
         };
 
         /**
@@ -87,8 +87,8 @@ namespace asa
         virtual bool can_level_up() { return false; }
 
     protected:
-        std::array<gear_slot, 6> gear_slots;
-        window::Rect info_area{859, 177, 200, 275};
-        button toggle_buffs_button{765, 866, 392, 36};
+        std::array<gear_slot, 6> gear_slots_;
+        cv::Rect info_area_{859, 177, 200, 275};
+        button toggle_buffs_button_{765, 866, 392, 36};
     };
 }

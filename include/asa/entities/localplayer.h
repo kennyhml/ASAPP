@@ -32,6 +32,19 @@ enum TeleportFlags_ : uint32_t
     TeleportFlags_UnsafeLoad = 1 << 2,       // Assume an instant teleport, lag unsafe.
 };
 
+enum PlayerInteraction : uint32_t
+{
+    PlayerInteraction_Teleport,
+    PlayerInteraction_DefaultTeleport,
+    PlayerInteraction_FastTravel,
+    PlayerInteraction_SitDown,
+    PlayerInteraction_Deposit,
+    PlayerInteraction_PickUp,
+    PlayerInteraction_AccessInventory,
+    PlayerInteraction_AccessBed,
+    PlayerInteraction_MountDino
+};
+
 using access_flags_t = int32_t;
 using travel_flags_t = int32_t;
 using teleport_flags_t = int32_t;
@@ -120,26 +133,7 @@ namespace asa
          */
         [[nodiscard]] bool is_riding_mount() const;
 
-        /**
-         * @brief Checks whether the player can currently access a bed.
-         *
-         * @return True if a bed is accessible, false otherwise.
-         */
-        [[nodiscard]] bool can_access_bed() const;
-
-        /**
-         * @brief Checks whether the player can currently access an inventory.
-         *
-         * @return True if an inventory is accessible, false otherwise.
-         */
-        [[nodiscard]] bool can_access_inventory() const;
-
-        /**
-         * @brief Checks whether the player has a default destination available.
-         *
-         * @return True if a default teleporter destination is available, false otherwise.
-         */
-        [[nodiscard]] bool can_use_default_teleport() const;
+        [[nodiscard]] bool can_perform(PlayerInteraction) const;
 
         /**
          * @brief Deposits the given item into a dedicated storage.
@@ -161,40 +155,6 @@ namespace asa
          * @return Whether a waypoint was found and targetted.
          */
         bool turn_to_waypoint(const cv::Vec3b& color, float variance);
-
-        /**
-         * @brief Checks if the structure can be accessed.
-         *
-         * TODO: If no "access inventory" is available, optionally check action wheel
-         *
-         * @return True if the structure is accessible, false otherwise.
-         */
-        [[nodiscard]] bool can_access(const base_structure&) const;
-
-        /**
-         * @brief Checks if the entity can be accessed.
-         *
-         * TODO: If no "access inventory" or "ride" is available, optionally check action wheel
-         *
-         * @return True if the entity is accessible, false otherwise.
-         */
-        [[nodiscard]] bool can_access(const dino_entity&) const;
-
-        /**
-         * @brief Checks if the entity can be ridden.
-         *
-         * TODO: If no "ride" is available, optionally check action wheel
-         *
-         * @return True if the entity is rideable, false otherwise.
-         */
-        [[nodiscard]] bool can_ride(const dino_entity&) const;
-
-        /**
-         * @brief Checks if the player is currently able to sit down.
-         *
-         * @return True if its possible to sit down, false otherwise.
-         */
-        [[nodiscard]] bool can_sit_down() const;
 
         void access(const base_entity&, std::chrono::seconds max = 30s);
 

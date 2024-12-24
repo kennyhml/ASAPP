@@ -56,9 +56,9 @@ namespace asa
 
     bool local_player::is_in_travel_screen() const
     {
-        static window::Rect roi(94, 69, 1751, 883);
+        static cv::Rect roi(94, 69, 1751, 883);
 
-        cv::Mat image = screenshot(roi);
+        cv::Mat image = window::screenshot(roi);
         cv::Mat gray;
         cvtColor(image, gray, cv::COLOR_BGR2GRAY);
 
@@ -69,7 +69,7 @@ namespace asa
 
     // bool local_player::is_in_connect_screen() const
     // {
-    //     static window::Rect roi(94, 69, 1751, 883);
+    //     static cv::Rect roi(94, 69, 1751, 883);
     //
     //     cv::Mat image = screenshot(roi);
     //     cv::Mat gray;
@@ -85,19 +85,33 @@ namespace asa
         return get_hud()->mount_hud_available();
     }
 
-    bool local_player::can_access_bed() const
+    bool local_player::can_perform(const PlayerInteraction interaction) const
     {
-        return get_hud()->can_fast_travel();
-    }
+        switch (interaction) {
+            case PlayerInteraction_DefaultTeleport:
+                return get_hud()->can_default_teleport();
+        }
 
-    bool local_player::can_access_inventory() const
-    {
-        return get_hud()->can_access_inventory();
-    }
+        cv::Mat screen = window::screenshot();
+        const auto narrowed = utility::find_multi_interactable_line(screen);
+        if (!narrowed.has_value()) { return false; }
 
-    bool local_player::can_use_default_teleport() const
-    {
-        return get_hud()->can_default_teleport();
+        const cv::Rect roi = {narrowed->x, narrowed->y - 25, narrowed->width, 25};
+
+        switch (interaction) {
+            case PlayerInteraction_Teleport:
+                return window::match(embedded::text::teleport_to, screen(roi));
+            case PlayerInteraction_AccessBed:
+                return window::match(embedded::text::fast_travel, screen(roi));
+            case PlayerInteraction_SitDown:
+                return window::match(embedded::text::sit_on, screen(roi));
+            case PlayerInteraction_Deposit:
+                return window::match(embedded::text::deposit, screen(roi));
+            case PlayerInteraction_PickUp:
+                return window::match(embedded::text::pick_up, screen(roi));
+            case PlayerInteraction_AccessInventory:
+                return window::match(embedded::text::access_inventory, screen(roi));
+        }
     }
 
     bool local_player::deposit_into_dedi(item& item, int* amount_out)
@@ -118,10 +132,10 @@ namespace asa
     }
 
     bool local_player::turn_to_waypoint(const cv::Vec3b& color,
-                                                const float variance)
+                                        const float variance)
     {
         const cv::Mat screen = window::screenshot();
-        const cv::Mat masked = window::get_mask(screen, color, variance);
+        const cv::Mat masked = utility::mask(screen, color, variance);
 
         std::vector<std::vector<cv::Point> > contours;
         cv::findContours(masked, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
@@ -229,26 +243,6 @@ namespace asa
         is_crouched_ = false;
     }
 
-    bool local_player::can_access(const base_structure&) const
-    {
-        return get_hud()->can_access_inventory();
-    }
-
-    bool local_player::can_access(const dino_entity& entity) const
-    {
-        return get_hud()->can_access_inventory() || can_ride(entity);
-    }
-
-    bool local_player::can_ride(const dino_entity&) const
-    {
-        return get_hud()->can_ride();
-    }
-
-    bool local_player::can_sit_down() const
-    {
-        return get_hud()->can_sit_down();
-    }
-
     void local_player::access(const base_entity& entity, const std::chrono::seconds max)
     {
         // Make sure it's not already open, otherwise we would be closing it.
@@ -256,7 +250,7 @@ namespace asa
 
         const auto start = std::chrono::system_clock::now();
         do {
-            window::press(get_action_mapping("Access Inventory"), true);
+            window::press(get_action_mapping("Access Inventory"));
             if (utility::timedout(start, max)) {
                 throw entity_access_failed(&entity);
             }
@@ -276,12 +270,12 @@ namespace asa
         auto start = std::chrono::system_clock::now();
 
         do {
-            window::press(structure.get_interact_key(), true);
+            window::press(structure.get_interact_key());
             if (utility::timedout(start, max)) {
                 // before we throw the error, lets try to reconnect and restore our
                 // state in order to handle the render bug
                 if (!has_reconnected) {
-                    reconnect();
+                    // reconnect();
                     start = std::chrono::system_clock::now();
                     has_reconnected = true;
                 } else {
@@ -315,7 +309,9 @@ namespace asa
             if (!special_access_set) { handle_access_direction(flags); }
 
             // If a bag is seen, give it a few seconds to disappear.
-            if (!utility::await([this]() -> bool { return !can_access(bag); }, 3s)) {
+            if (!utility::await([this] {
+                return !can_perform(PlayerInteraction_AccessInventory);
+            }, 3s)) {
                 access(bag);
                 // Check health level to ensure its an item cache.
                 if (bag.get_info()->get_health_level() == 0.f) {
@@ -327,12 +323,14 @@ namespace asa
             }
 
             if (special_access_set) { set_pitch(90); }
-            if (utility::await(hud::can_fast_travel, 1s)) {
-                break;
-            }
+            if (utility::await([this] {
+                return can_perform(PlayerInteraction_FastTravel);
+            }, 1s)) { break; }
             if (special_access_set) {
                 set_pitch(-90);
-                if (utility::await(hud::can_fast_travel, 1s)) { break; }
+                if (utility::await([this] {
+                    return can_perform(PlayerInteraction_FastTravel);
+                }, 1s)) { break; }
             }
 
             // Still unable to see the bed, either missing or not yet loaded.
@@ -341,7 +339,9 @@ namespace asa
             }
 
             // TODO: Implement the action wheel as 2nd indicator we are unable to access it
-            if (!utility::await(hud::can_fast_travel, 5s) && attempt != 2) {
+            if (!utility::await([this] {
+                return can_perform(PlayerInteraction_FastTravel);
+            }, 5s) && attempt != 2) {
                 reset_pitch();
             }
         }
@@ -358,19 +358,18 @@ namespace asa
         controls::down(get_action_mapping("Use"));
         checked_sleep(2s);
 
-        const auto location = window::locate_template(window::Rect{683, 253, 543, 556},
-                                                      resources::wheel_icon::lay_on);
+        const auto location = window::locate(embedded::wheel_actions::lay_on,
+                                             cv::Rect{683, 253, 543, 556});
         if (!location.has_value()) {
             throw std::exception("Failed to locate lay_on position");
         }
 
-        const auto pos = location->get_random_location(3);
-        window::set_mouse_pos(pos.x + 683, pos.y + 253);
+        const auto pos = utility::center_of(*location);
+        window::set_mouse_pos({pos.x + 683, pos.y + 253});
 
         checked_sleep(1s);
         controls::release(get_action_mapping("Use"));
     }
-
 
     void local_player::mount(dino_entity& entity)
     {
@@ -498,7 +497,10 @@ namespace asa
             // so we can simply reuse our bed logic
             if (is_in_travel_screen()) { return pass_travel_screen(false); }
             if (utility::timedout(start, 30s)) { return false; }
-            if (access_flag && can_access_inventory()) { return true; }
+
+            if (access_flag && can_perform(PlayerInteraction_AccessInventory)) {
+                return true;
+            }
 
             if (is_riding_mount_ && utility::timedout(start, 2s)) {
                 go_forward(100ms);

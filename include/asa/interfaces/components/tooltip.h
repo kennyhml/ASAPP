@@ -18,7 +18,7 @@ namespace asa
          * @param area The area of the tooltip to be created (thats hovered)
          * @return
          */
-        static item_tooltip from_hovered(const window::Rect& area);
+        static item_tooltip from_hovered(const cv::Rect& area);
 
         /**
          * @return Gets the image of the tooltip, an image must have been taken before.
@@ -30,7 +30,7 @@ namespace asa
          */
         void take_image() { image_ = window::screenshot(area); }
 
-        [[nodiscard]] std::optional<window::Rect> get_durability_area() const;
+        [[nodiscard]] std::optional<cv::Rect> get_durability_area() const;
 
 
     private:

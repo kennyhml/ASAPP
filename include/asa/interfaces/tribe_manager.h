@@ -10,7 +10,7 @@ namespace asa
     using log_update_callback_t = std::function<void(const log_entries_t& all,
                                                      const log_entries_t& new_)>;
 
-    class tribe_manager : public interface
+    class tribe_manager final : public interface
     {
     public:
         /**
@@ -70,7 +70,7 @@ namespace asa
          *
          * @return A vector containing the sorted tribelog message from bottom to top.
          */
-        [[nodiscard]] std::vector<window::Rect> collect_entries(const cv::Mat& src) const;
+        [[nodiscard]] std::vector<cv::Rect> collect_entries(const cv::Mat& src) const;
 
         /**
          * @brief Roughly determines a messages event type based on the dominant color.
@@ -122,13 +122,13 @@ namespace asa
          * @param msg The message to check whether it's new or previously known.
          * @param allow_equal Allow same time days to be considered new.
          */
-        [[nodiscard]] bool is_new_message(tribelog_message::Timestamp msg,
+        [[nodiscard]] bool is_new_message(tribelog_message::timestamp msg,
                                           bool allow_equal) const;
 
         log_entries_t tribelog_;
         button close_button_{1781, 49, 36, 33};
         button tribe_manager_button{908, 55, 52, 52};
 
-        window::Rect tribe_log_area{780, 216, 380, 576};
+        cv::Rect tribe_log_area{780, 216, 380, 576};
     };
 }

@@ -16,42 +16,42 @@ namespace asa
          * 
          * @return A rectangle containing the x, y, width and height of the stack size area.
          */
-        [[nodiscard]] window::Rect get_stack_size_area() const;
+        [[nodiscard]] cv::Rect get_stack_size_area() const;
 
         /**
          * @brief Computes the rect of the armor / damage icon for this slot.
          * 
          * @return A rectangle containing the x, y, width and height of the icon area.
          */
-        [[nodiscard]] window::Rect get_armor_or_damage_icon_area() const;
+        [[nodiscard]] cv::Rect get_armor_or_damage_icon_area() const;
 
         /**
          * @brief Computes the rect of the spoil / dura bar for this slot.
          * 
          * @return A rectangle containing the x, y, width and height of the bar.
          */
-        [[nodiscard]] window::Rect get_spoil_or_durability_bar_area() const;
+        [[nodiscard]] cv::Rect get_spoil_or_durability_bar_area() const;
 
         /**
          * @brief Computes the rect of the folder name for this slot.
          * 
          * @return A rectangle containing the x, y, width and height of the folder name.
          */
-        [[nodiscard]] window::Rect get_folder_name_area() const;
+        [[nodiscard]] cv::Rect get_folder_name_area() const;
 
         /**
          * @brief Computes the rect where the weight value is displayed for this slot.
          * 
          * @return A rectangle containing the x, y, width and height of the weight value.
          */
-        [[nodiscard]] window::Rect get_weight_area() const;
+        [[nodiscard]] cv::Rect get_weight_area() const;
 
         /**
          * @brief Computes the rect where the weight value is displayed for this slot.
          * 
          * @return A rectangle containing the x, y, width and height of the weight value.
          */
-        [[nodiscard]] window::Rect get_hovered_area() const;
+        [[nodiscard]] cv::Rect get_hovered_area() const;
 
         /**
          * @brief Gets the tooltip of a hovered item.
@@ -125,7 +125,7 @@ namespace asa
          * 
          * @note Designed to help the item determination process to narrow down the options.
          */
-        struct PrederminationResult final
+        struct predetermination_result final
         {
         public:
             bool has_armor_modifier{false};
@@ -134,12 +134,12 @@ namespace asa
             bool has_spoil_bar{false};
             bool has_durability_bar{false};
 
-            [[nodiscard]] bool matches(const items::ItemData& data) const;
+            [[nodiscard]] bool matches(const item_data& data) const;
 
-            [[nodiscard]] bool matches(items::ItemData::ItemType type) const;
+            [[nodiscard]] bool matches(item_data::ItemType type) const;
         };
 
-        friend std::ostream& operator<<(std::ostream& os, const PrederminationResult& d);
+        friend std::ostream& operator<<(std::ostream& os, const predetermination_result& d);
 
     private:
         /**
@@ -204,7 +204,7 @@ namespace asa
          * 
          * @return True if the item is a blueprint, false otherwise.
          */
-        [[nodiscard]] bool is_blueprint(const items::ItemData& data) const;
+        [[nodiscard]] bool is_blueprint(const item_data& data) const;
 
         /**
          * @brief Determines the quality of the item in the slot.
@@ -214,14 +214,14 @@ namespace asa
          * 
          * @return An enum value representing the quality of the item.
          */
-        [[nodiscard]] items::ItemData::ItemQuality get_quality() const;
+        [[nodiscard]] item_data::ItemQuality get_quality() const;
 
         /**
          * @brief Collects data about the item without knowing the item itself.
          * 
          * @return The result containing the collected data.
          */
-        [[nodiscard]] PrederminationResult predetermine() const;
+        [[nodiscard]] predetermination_result predetermine() const;
 
         mutable cv::Mat last_img_;
     };

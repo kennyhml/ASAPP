@@ -6,10 +6,10 @@ using json = nlohmann::json;
 namespace asa
 {
     /**
-     * @class ItemData
+     * @class item_data
      * @brief Contains all relevant data of an item.
      */
-    struct ItemData
+    struct item_data
     {
     public:
         enum ItemType
@@ -46,10 +46,10 @@ namespace asa
          *
          * @return An ItemData object.
          */
-        explicit ItemData(const std::string& t_name, const json& t_data,
+        explicit item_data(const std::string& t_name, const json& t_data,
                           bool t_is_blueprint = false, ItemQuality t_quality = PRIMITIVE);
 
-        bool operator==(const ItemData&) const = default;
+        bool operator==(const item_data&) const = default;
 
         std::filesystem::path icon_path;
         ItemType type;

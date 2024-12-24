@@ -9,8 +9,6 @@ namespace asa
     class interface_error : public asapp_error
     {
         const interface* _interface;
-        std::string info;
-
     public:
         interface_error(const interface* t_interface, std::string t_info);
 

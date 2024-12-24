@@ -26,6 +26,6 @@ namespace asa
         virtual std::string get_name() { return ""; }
 
     protected:
-        window::Rect area{747, 109, 429, 806};
+        cv::Rect area{747, 109, 429, 806};
     };
 }

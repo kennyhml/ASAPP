@@ -44,7 +44,7 @@ namespace asa
          * 
          * @return A rect containing x, y, width and height of the inventories area.
          */
-        [[nodiscard]] window::Rect get_area() const { return area_; }
+        [[nodiscard]] cv::Rect get_area() const { return area_; }
 
         /**
          * @brief Checks whether this inventory is currently being received (loaded).
@@ -297,12 +297,12 @@ namespace asa
          */
         [[nodiscard]] std::vector<std::unique_ptr<item> > get_current_page_items(
             std::vector<std::string>* allowed_items = nullptr,
-            std::vector<ItemData::ItemType>* allowed_categories = nullptr,
+            std::vector<item_data::ItemType>* allowed_categories = nullptr,
             int num_threads = 5) const;
 
         std::array<item_slot, 36> slots;
         search_bar search_bar;
-        window::Rect item_area;
+        cv::Rect item_area;
 
     protected:
         struct management_button : button
@@ -336,8 +336,8 @@ namespace asa
         management_button folder_view_button_;
 
         bool is_remote_inventory_;
-        window::Rect area_;
-        window::Rect recv_remote_inv_area_{1340, 511, 295, 34};
+        cv::Rect area_;
+        cv::Rect recv_remote_inv_area_{1340, 511, 295, 34};
         button close_button_{1781, 49, 36, 33};
 
         combo_box item_filter;
@@ -346,6 +346,6 @@ namespace asa
         std::unique_ptr<base_info> info_;
 
     private:
-        void init_slots(const window::Point& origin);
+        void init_slots(const cv::Point& origin);
     };
 }

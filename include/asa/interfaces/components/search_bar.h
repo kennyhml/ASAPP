@@ -1,7 +1,6 @@
 #pragma once
-
-#include <string>
 #include "interface_component.h"
+#include <string>
 
 namespace asa
 {

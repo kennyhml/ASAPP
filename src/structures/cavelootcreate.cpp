@@ -1,11 +1,10 @@
-#include "../../include/asa/utility.h"
-#include <iostream>
-#include <opencv2/highgui.hpp>
-
-#include "asa/game/resources.h"
 #include "asa/structures/cave_loot_crate.h"
+#include "asa/utility.h"
+#include <iostream>
 
-namespace asa::structures
+#include <iostream>
+
+namespace asa
 {
     namespace
     {
@@ -19,7 +18,7 @@ namespace asa::structures
             "QualityTier4", "SwampCaveTier3", "IceCaveTier3", "UnderwaterCaveTier3"
         };
 
-        constexpr window::Color tooltip_white{196, 196, 195};
+        constexpr cv::Vec3b tooltip_white{196, 196, 195};
 
         bool is_in_tier(const std::string& crate, const std::vector<std::string>& tier)
         {
@@ -31,7 +30,7 @@ namespace asa::structures
 
     cave_loot_crate::Quality cave_loot_crate::get_crate_quality()
     {
-        if (util::is_only_one_bit_set(quality_flags_)) {
+        if (utility::is_only_one_bit_set(quality_flags_)) {
             return static_cast<Quality>(quality_flags_);
         }
 
@@ -41,7 +40,7 @@ namespace asa::structures
             return ANY;
         }
 
-        const auto mask = get_mask(tooltip_area.value(), tooltip_white, 50);
+        const auto mask = utility::mask(tooltip_area.value(), tooltip_white, 50);
         const std::string res = window::ocr_threadsafe(
             mask, tesseract::PSM_SINGLE_LINE, "");
 
@@ -49,20 +48,18 @@ namespace asa::structures
         return get_quality_from_tooltip(res);
     }
 
-    std::optional<window::Rect> cave_loot_crate::get_info_area()
+    std::optional<cv::Rect> cave_loot_crate::get_info_area()
     {
-        const auto match_loc = locate_template(window::Rect(0, 0, 0, 0),
-                                               resources::text::lootcrate);
+        const auto loc = window::locate(embedded::text::lootcrate, cv::Rect(0, 0, 0, 0));
 
-        if (!match_loc.has_value()) { return std::nullopt; }
-
-        return window::Rect(match_loc->x - 250, match_loc->y + match_loc->height + 2, 350,
-                            30);
+        if (!loc.has_value()) { return std::nullopt; }
+        return cv::Rect(loc->x - 250, loc->y + loc->height + 2, 350, 30);
     }
 
-    cave_loot_crate::Quality cave_loot_crate::get_quality_from_tooltip(const std::string& tooltip)
+    cave_loot_crate::Quality cave_loot_crate::get_quality_from_tooltip(
+        const std::string& tooltip)
     {
-        const std::string fixed = util::fix(tooltip, {{"Tierl", "Tier1"}});
+        const std::string fixed = utility::fix(tooltip, {{"Tierl", "Tier1"}});
 
         if (is_in_tier(fixed, BLUE_CRATES)) { return BLUE; }
         if (is_in_tier(fixed, YELLOW_CRATES)) { return YELLOW; }
@@ -74,15 +71,16 @@ namespace asa::structures
     std::string cave_loot_crate::quality_to_string(const Quality quality)
     {
         switch (quality) {
-        case RED: return "RED";
-        case YELLOW: return "YELLOW";
-        case BLUE: return "BLUE";
-        case ANY: return "ANY";
+            case RED: return "RED";
+            case YELLOW: return "YELLOW";
+            case BLUE: return "BLUE";
+            case ANY: return "ANY";
         }
         return "";
     }
 
-    cave_loot_crate::Quality cave_loot_crate::string_to_quality(const std::string& quality)
+    cave_loot_crate::Quality cave_loot_crate::string_to_quality(
+        const std::string& quality)
     {
         if (quality == "RED") { return RED; }
         if (quality == "YELLOW") { return YELLOW; }

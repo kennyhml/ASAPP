@@ -31,6 +31,8 @@ namespace asa
         void go_to(const std::string& destination, bool wait_ready = false) override;
 
     private:
+        friend std::shared_ptr<spawn_map> get_spawn_map();
+
         void pass_spawn_screen(bool in = true);
 
         search_bar searchbar{93, 941, 240, 50};
@@ -40,6 +42,5 @@ namespace asa
         button beds_button{351, 132, 129, 48};
     };
 
-
-    inline std::unique_ptr<spawn_map> spawn_map = std::make_unique<spawn_map>();
+    std::shared_ptr<spawn_map> get_spawn_map();
 }

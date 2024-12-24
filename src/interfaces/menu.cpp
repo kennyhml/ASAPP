@@ -1,17 +1,14 @@
 #include "asa/interfaces/menu.h"
-
-#include "asa/core/state.h"
-#include "asa/game/resources.h"
-#include "asa/game/window.h"
 #include "asa/interfaces/exceptions.h"
-#include "../../include/asa/utility.h"
+#include "asa/game/window.h"
+#include "asa/utility.h"
+#include "asa/core/state.h"
 
-namespace asa::interfaces
+namespace asa
 {
     bool menu::is_open() const
     {
-        return window::match_template(window::Rect(894, 416, 143, 35),
-                                      resources::text::resume);
+        return window::match(embedded::text::resume, cv::Rect(894, 416, 143, 35));
     }
 
     void menu::open()
@@ -21,16 +18,16 @@ namespace asa::interfaces
         while (!is_open()) {
             controls::key_press("esc");
 
-            if (util::await([this] { return is_open(); }, 3s)) {
+            if (utility::await([this] { return is_open(); }, 3s)) {
                 break;
             }
 
             // Increased timeout to 60 seconds
-            if (util::timedout(start, 60s)) {
+            if (utility::timedout(start, 60s)) {
                 throw failed_to_open(this);
             }
         }
-        core::sleep_for(1s);
+        checked_sleep(1s);
     }
 
     void menu::close()
@@ -40,15 +37,15 @@ namespace asa::interfaces
         while (is_open()) {
             controls::key_press("esc");
 
-            if (util::await([this] { return !is_open(); }, 3s)) {
+            if (utility::await([this] { return !is_open(); }, 3s)) {
                 break;
             }
 
             // Increased timeout to 60 seconds
-            if (util::timedout(start, 60s)) {
+            if (utility::timedout(start, 60s)) {
                 throw failed_to_close(this);
             }
         }
-        core::sleep_for(1s);
+        checked_sleep(1s);
     }
 }
