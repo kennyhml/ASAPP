@@ -9,7 +9,7 @@ namespace asa
 {
     bool spawn_map::is_open() const
     {
-        return window::match(embedded::interfaces::regions, regions_button.area, );
+        return window::match(embedded::interfaces::regions, regions_button.area);
     }
 
     void spawn_map::spawn_at(const int region_index)

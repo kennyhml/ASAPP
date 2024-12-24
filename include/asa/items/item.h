@@ -1,6 +1,6 @@
 #pragma once
 #include "itemdata.h"
-#include <opencv2/imgproc/imgproc.hpp>
+#include "asa/game/window.h"
 
 namespace asa
 {
@@ -11,24 +11,19 @@ namespace asa
          * @brief Constructs an Item object with the given parameters.
          *
          * @param t_name The name of the item.
-         * @param t_is_blueprint Whether the item is a blueprint or not (default = false).
-         * @param t_quality The quality of the item (default = ItemData::PRIMITIVE).
+         * @param t_data The data of the item.
          *
-         * @throws ItemIconNotFound if the icon file for the item does not exist.
          */
-        explicit item(std::string t_name, bool t_is_blueprint = false,
-                      ItemData::ItemQuality t_quality = ItemData::PRIMITIVE);
+        explicit item(std::string t_name, item_data t_data);
 
         /**
          * @brief Creates a copy of an item but as a blueprint or a different quality.
          *
          * @param t_other The item to copy the original data from.
          * @param t_is_blueprint Whether the new item is a blueprint (default = false).
-         * @param t_quality The new quality of the item (default = ItemData::PRIMITIVE).
-         *
-         * @throws ItemIconNotFound if the icon file for the item does not exist.
+         * @param t_quality The new quality of the item (default = item_data::PRIMITIVE).
          */
-        item(const item& t_other, bool t_is_blueprint, ItemData::ItemQuality t_quality);
+        item(const item& t_other, bool t_is_blueprint, item_data::ItemQuality t_quality);
 
         item(const item& t_other) = default;
 
@@ -40,9 +35,9 @@ namespace asa
         /**
          * @brief Gets a view at the data of the item.
          *
-         * @return A reference to the items ItemData object.
+         * @return A reference to the items item_data object.
          */
-        [[nodiscard]] const ItemData& get_data() const { return data_; }
+        [[nodiscard]] const item_data& get_data() const { return data_; }
 
         /**
          * @brief Gets the items (in-game) name.
@@ -114,7 +109,7 @@ namespace asa
 
     private:
         std::string name_;
-        ItemData data_;
+        item_data data_;
 
         cv::Mat icon_;
         cv::Mat rgba_inv_icon_;
@@ -125,4 +120,10 @@ namespace asa
         cv::Mat notif_icon_mask_;
         cv::Mat notif_icon_;
     };
+
+    void load();
+
+    const item& get_item(const std::string& name);
+
+    const std::map<std::string, std::unique_ptr<item> >& get_all_items();
 }

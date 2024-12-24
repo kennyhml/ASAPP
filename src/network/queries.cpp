@@ -4,7 +4,7 @@
 #include <curl/curl.h>
 #include <nlohmann/json.hpp>
 
-namespace asa::network
+namespace asa
 {
     namespace
     {
@@ -61,15 +61,15 @@ namespace asa::network
         return std::nullopt;
     }
 
-    bool query(server& server)
+    bool query(server& sv)
     {
-        const std::optional<server> other = get_server(server.name);
+        const std::optional<server> other = get_server(sv.name);
 
         if (!other.has_value()) {
-            server.is_online = false;
+            sv.is_online = false;
             return false;
         }
-        server = other.value();
+        sv = other.value();
         return true;
     }
 }

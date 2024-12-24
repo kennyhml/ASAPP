@@ -36,10 +36,8 @@ add_library(asapp STATIC
         src/interfaces/maps/teleportmap.cpp
         src/interfaces/maps/travelmap.cpp
         src/interfaces/tribe_manager.cpp
-        src/items/exceptions.cpp
         src/items/item.cpp
         src/items/itemdata.cpp
-        src/items/items.cpp
         src/structures/cavelootcreate.cpp
         src/structures/container.cpp
         src/structures/crafting_station.cpp
@@ -87,10 +85,8 @@ add_library(asapp STATIC
         include/asa/interfaces/maps/teleportmap.h
         include/asa/interfaces/maps/travelmap.h
         include/asa/interfaces/tribe_manager.h
-        include/asa/items/exceptions.h
         include/asa/items/item.h
         include/asa/items/itemdata.h
-        include/asa/items/items.h
         include/asa/structures/basestructure.h
         include/asa/structures/cave_loot_crate.h
         include/asa/structures/container.h
@@ -126,6 +122,7 @@ add_library(asapp STATIC
         src/core/managedthread.cpp
         include/asa/structures/structures.h
         include/asa/game/embedded.h
+        include/asa/items/exceptions.h
 )
 
 set_target_properties(asapp PROPERTIES

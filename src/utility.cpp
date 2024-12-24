@@ -10,7 +10,7 @@ namespace asa::utility
     std::optional<cv::Rect> find_multi_interactable_line(
         const cv::Mat& src, bool* match_full)
     {
-        static constexpr cv::Vec3b cyan{0, 255, 255};
+        static cv::Vec3b cyan{0, 255, 255};
         const auto img = mask(src, cyan, 10);
         if (match_full) {
             *match_full = cv::countNonZero(img) > 200;
@@ -68,13 +68,13 @@ namespace asa::utility
     {
         auto [b, g, r] = src.val;
 
-        low = cv::Vec3b(max(0, r - v),
-                        max(0, g - v),
-                        max(0, b - v));
+        low = cv::Vec3b(std::max(0, r - v),
+                        std::max(0, g - v),
+                        std::max(0, b - v));
 
-        high = cv::Vec3b(min(255, r + v),
-                         min(255, g + v),
-                         min(255, b + v));
+        high = cv::Vec3b(std::min(255, r + v),
+                         std::min(255, g + v),
+                         std::min(255, b + v));
     }
 
     int count_matches(const cv::Mat& img, const cv::Vec3b& color, const int variance)

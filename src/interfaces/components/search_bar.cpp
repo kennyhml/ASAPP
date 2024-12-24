@@ -8,11 +8,12 @@ namespace asa
 {
     namespace
     {
-        constexpr cv::Vec3b text_color{134, 234, 255};
+        cv::Vec3b text_color{134, 234, 255};
     }
 
     bool search_bar::has_text_entered()
     {
+
         // keep track of a high and low count over the course of 500ms
         // to then evaluate the differences between them.
         const auto start = std::chrono::system_clock::now();

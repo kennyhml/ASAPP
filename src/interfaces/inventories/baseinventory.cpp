@@ -11,7 +11,7 @@ namespace asa
 {
     namespace
     {
-        constexpr int MAX_ITEMS_PER_PAGE = 36;
+         constexpr int MAX_ITEMS_PER_PAGE = 36;
     }
 
     base_inventory::base_inventory(const bool t_remote, std::unique_ptr<base_info> t_info)
@@ -32,25 +32,25 @@ namespace asa
 
     bool base_inventory::management_button::is_toggled() const
     {
-        static constexpr cv::Vec3b toggled_color{128, 231, 255};
+        static cv::Vec3b toggled_color{128, 231, 255};
         return utility::count_matches(area, toggled_color, 10) > 30;
     }
 
     bool base_inventory::management_button::is_available() const
     {
-        static constexpr cv::Vec3b base_color{0, 140, 171};
+        static  cv::Vec3b base_color{0, 140, 171};
         return utility::count_matches(area, base_color, 10) > 20;
     }
 
     bool base_inventory::inv_tab_button::is_selected() const
     {
-        static constexpr cv::Vec3b selected_color{188, 244, 255};
+        static  cv::Vec3b selected_color{188, 244, 255};
         return utility::count_matches(area, selected_color, 10) > 100;
     }
 
     bool base_inventory::inv_tab_button::exists() const
     {
-        static constexpr cv::Vec3b inactive_color{80, 141, 155};
+        static  cv::Vec3b inactive_color{80, 141, 155};
         return utility::count_matches(area, inactive_color, 10) > 100 || is_selected();
     }
 
@@ -59,7 +59,7 @@ namespace asa
         assert_open(__func__);
         if (!is_remote_inventory_) { return false; }
 
-        static constexpr cv::Vec3b text_color{191, 243, 255};
+        static  cv::Vec3b text_color{191, 243, 255};
         return utility::count_matches(recv_remote_inv_area_, text_color, 25) > 100;
     }
 

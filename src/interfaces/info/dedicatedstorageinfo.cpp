@@ -12,7 +12,7 @@ namespace asa
 
     bool dedicated_storage_info::can_withdraw(const WithdrawOption option)
     {
-        static constexpr cv::Vec3b text_color{144, 222, 244};
+        static cv::Vec3b text_color{144, 222, 244};
 
         const auto img = window::screenshot(get_button_of(option).area);
         return utility::count_matches(img, text_color, 20) > 50;

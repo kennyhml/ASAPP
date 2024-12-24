@@ -232,14 +232,14 @@ namespace asa
 
     bool hud::mount_has_level_up()
     {
-        static constexpr cv::Vec3b blink_color{50, 224, 239};
+        static cv::Vec3b blink_color{50, 224, 239};
 
         return is_blinking(dino_xp, blink_color, 70, std::chrono::milliseconds(700));
     }
 
     bool hud::mount_hud_available()
     {
-        static constexpr cv::Vec3b text{255, 255, 255};
+        static cv::Vec3b text{255, 255, 255};
         static cv::Rect roi(1869, 48, 15, 10);
 
         const bool was_hud_toggled = is_extended_info_toggled();
@@ -256,7 +256,7 @@ namespace asa
 
     bool hud::is_mount_capped()
     {
-        static constexpr cv::Vec3b black_weight{0, 0, 0};
+        static cv::Vec3b black_weight{0, 0, 0};
 
         cv::Mat img = window::screenshot(dino_weightcapped);
         const cv::Mat mask = utility::mask(img, black_weight, 0);
@@ -265,7 +265,7 @@ namespace asa
 
     bool hud::is_player_capped()
     {
-        static constexpr cv::Vec3b black_weight{0, 0, 0};
+        static cv::Vec3b black_weight{0, 0, 0};
 
         cv::Mat img = window::screenshot(player_weightcapped);
         const cv::Mat mask = utility::mask(img, black_weight, 0);
@@ -274,16 +274,16 @@ namespace asa
 
     bool hud::can_harvest_target() const
     {
-        constexpr cv::Vec3b color(123, 154, 155);
+        cv::Vec3b color(123, 154, 155);
 
         cv::Mat img = window::screenshot(harvest_action_area);
         const cv::Mat mask = utility::mask(img, color, 10);
         return cv::countNonZero(mask) > 300;
     }
 
-    std::shared_ptr<hud> get_hud()
+    hud* get_hud()
     {
-        static auto instance = std::make_shared<hud>();
+        static auto instance = new hud();
         return instance;
     }
 }

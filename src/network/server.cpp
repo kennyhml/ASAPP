@@ -1,6 +1,6 @@
 #include "asa/network/server.h"
 
-namespace asa::network
+namespace asa
 {
     server server::from_json(const nlohmann::json& data)
     {

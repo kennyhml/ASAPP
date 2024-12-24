@@ -93,7 +93,7 @@ namespace asa
          */
         void toggle_extended(bool on, bool force = false);
 
-        friend std::shared_ptr<hud> get_hud();
+        friend hud* get_hud();
 
     private:
         hud() = default;
@@ -124,5 +124,5 @@ namespace asa
         bool extended_toggled_ = false;
     };
 
-    std::shared_ptr<hud> get_hud();
+    hud* get_hud();
 }

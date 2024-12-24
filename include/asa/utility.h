@@ -2,8 +2,7 @@
 #include <chrono>
 #include <functional>
 #include <map>
-
-#include "opencv2/imgproc.hpp"
+#include "game/window.h"
 
 namespace asa::utility
 {

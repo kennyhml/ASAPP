@@ -54,7 +54,7 @@ namespace asa
 
     thread_interruped::thread_interruped(std::string t_thread_id, std::string t_why)
         : id(std::move(t_thread_id)), why(std::move(t_why)),
-          what_(std::format("Thread '{}' was interrupted by '{}'!")) {}
+          what_(std::format("Thread '{}' was interrupted by '{}'!", id, why)) {}
 
     char const* thread_interruped::what() const
     {

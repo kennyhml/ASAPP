@@ -7,7 +7,7 @@ namespace asa
     {
         float get_filled(const cv::Rect& bar)
         {
-            static constexpr cv::Vec3b fill_color{1, 156, 136};
+            static cv::Vec3b fill_color{1, 156, 136};
             const int green = utility::count_matches(bar, fill_color, 10);
 
             return static_cast<float>(green) / static_cast<float>(bar.width);

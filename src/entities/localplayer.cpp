@@ -181,7 +181,7 @@ namespace asa
             window::press(get_action_mapping("Use"));
             checked_sleep(std::chrono::seconds(3));
         } while (get_hud()->is_extended_info_toggled());
-        while (!spawn_map->is_open()) {}
+        while (!get_spawn_map()->is_open()) {}
 
         reset_state();
         get_hud()->toggle_extended(false, true);
@@ -578,9 +578,9 @@ namespace asa
         is_riding_mount_ = false;
     }
 
-    std::shared_ptr<local_player> get_local_player()
+    local_player* get_local_player()
     {
-        static auto instance = std::make_shared<local_player>();
+        static auto instance = new local_player();
         return instance;
     }
 }

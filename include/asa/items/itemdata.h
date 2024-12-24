@@ -1,8 +1,6 @@
 #pragma once
 #include <nlohmann/json.hpp>
 
-using json = nlohmann::json;
-
 namespace asa
 {
     /**
@@ -46,7 +44,7 @@ namespace asa
          *
          * @return An ItemData object.
          */
-        explicit item_data(const std::string& t_name, const json& t_data,
+        explicit item_data(const std::string& t_name, const nlohmann::json& t_data,
                           bool t_is_blueprint = false, ItemQuality t_quality = PRIMITIVE);
 
         bool operator==(const item_data&) const = default;

@@ -10,5 +10,5 @@ namespace asa
     structure_error::structure_error(const base_structure* t_structure)
         : structure_error(t_structure, "Unknown structure_error!") {};
 
-    const char* structure_error::what() const noexcept { return this->info.c_str(); }
+    const char* structure_error::what() const noexcept { return info.c_str(); }
 }

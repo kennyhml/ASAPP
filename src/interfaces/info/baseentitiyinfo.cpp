@@ -8,7 +8,7 @@ namespace asa
     {
         float get_fill_amount(const cv::Rect& bar)
         {
-            static constexpr cv::Vec3b color{1, 156, 136};
+            static cv::Vec3b color{1, 156, 136};
 
             const cv::Mat img = window::screenshot(bar);
             const int filled = utility::count_matches(img, color, 20);

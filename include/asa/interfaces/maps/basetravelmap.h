@@ -37,12 +37,12 @@ namespace asa
             void select();
 
         private:
-            static constexpr cv::Vec3b hovered_selected_color{83, 39, 1};
-            static constexpr cv::Vec3b selected_color{128, 64, 2};
+           cv::Vec3b hovered_selected_color{83, 39, 1};
+           cv::Vec3b selected_color{128, 64, 2};
 
-            static constexpr cv::Vec3b text_selected_color{255, 255, 255};
-            static constexpr cv::Vec3b text_color{133, 226, 243};
-            static constexpr cv::Vec3b text_cooldown_color{70, 120, 138};
+           cv::Vec3b text_selected_color{255, 255, 255};
+           cv::Vec3b text_color{133, 226, 243};
+           cv::Vec3b text_cooldown_color{70, 120, 138};
         };
 
     public:

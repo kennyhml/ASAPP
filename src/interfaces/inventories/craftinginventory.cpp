@@ -7,7 +7,7 @@ namespace asa
     bool crafting_inventory::is_crafting() const
     {
         assert_open(__func__);
-        static constexpr cv::Vec3b text{154, 229, 250};
+        static cv::Vec3b text{154, 229, 250};
 
         return utility::count_matches(cancel_queue_button_.area, text, 20) > 100;
     }
@@ -15,7 +15,7 @@ namespace asa
     bool crafting_inventory::is_tab_selected(const Tab tab) const
     {
         assert_open(__func__);
-        static constexpr cv::Vec3b underline{255, 255, 255};
+        static cv::Vec3b underline{255, 255, 255};
 
         const auto& button = (tab == INVENTORY) ? inventory_button_ : crafting_button_;
         return utility::count_matches(button.area, underline, 20) > 70;

@@ -11,7 +11,7 @@
 
 namespace asa
 {
-    using tribelog_message::EventType;
+    using EventType = tribelog_message::EventType;
 
     namespace
     {
@@ -60,7 +60,7 @@ namespace asa
 
         tribelog_message::timestamp parse_timestamp(const cv::Mat& src)
         {
-            static constexpr cv::Vec3b time_rgb{192, 192, 192};
+            static cv::Vec3b time_rgb{192, 192, 192};
 
             const cv::Mat mask = utility::mask(src, time_rgb, 120);
             const std::string raw = window::ocr_threadsafe(
@@ -71,7 +71,7 @@ namespace asa
 
         std::string parse_content(const cv::Mat& src, const EventType event)
         {
-            static constexpr cv::Vec3b turret_name_color{192, 192, 192};
+            static cv::Vec3b turret_name_color{192, 192, 192};
 
             const cv::Mat mask = utility::mask(src, EVENT_COLORS.at(event), 130);
 
@@ -153,7 +153,7 @@ namespace asa
     void tribe_manager::update_tribelogs(const log_update_callback_t& on_finish,
                                          const std::chrono::seconds receive_for)
     {
-        static constexpr std::chrono::milliseconds min_recv_time{500};
+        static std::chrono::milliseconds min_recv_time{500};
         const bool was_open = is_open();
 
         open();

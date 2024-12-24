@@ -350,14 +350,13 @@ namespace asa
         void reset_state();
 
     private:
-        explicit local_player()
-            : base_entity("You", std::make_unique<local_inventory>()) {}
+        local_player() : base_entity("You", std::make_unique<local_inventory>()) {}
 
         bool pass_travel_screen(bool in = true, bool out = true);
 
         bool pass_teleport_screen(bool access_flag = false);
 
-        friend std::shared_ptr<local_player> get_local_player();
+        friend local_player* get_local_player();
 
         int current_yaw_ = 0; // degrees of our view left and right, between -180 and 180
         int current_pitch_ = 0; // degrees of our view bottom to top, between -90 and 90
@@ -372,5 +371,5 @@ namespace asa
         std::chrono::system_clock::time_point last_jumped_;
     };
 
-    [[nodiscard]] std::shared_ptr<local_player> get_local_player();
+    [[nodiscard]] local_player* get_local_player();
 }

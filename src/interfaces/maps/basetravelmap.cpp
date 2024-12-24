@@ -46,7 +46,7 @@ namespace asa
 
     bool base_travel_map::can_confirm_travel() const
     {
-        static constexpr cv::Vec3b ready_color{158, 88, 18};
+        static cv::Vec3b ready_color{158, 88, 18};
 
         const auto mask = utility::mask(confirm_button.area, ready_color, 20);
         return cv::countNonZero(mask) > 50;

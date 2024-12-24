@@ -28,7 +28,7 @@ namespace asa
     template<typename T>
     T get_user_setting(const std::string& key)
     {
-        return std::get<T>(_user_settings_mappings.at(key));
+        return std::any_cast<T>(_user_settings_mappings.at(key));
     }
 
     [[nodiscard]] const action_mapping& get_action_mapping(const std::string& key);

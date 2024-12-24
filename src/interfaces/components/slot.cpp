@@ -1,10 +1,5 @@
 #include "asa/interfaces/components/slot.h"
-
-#include "asa/items/items.h"
 #include "asa/utility.h"
-
-#include <iostream>
-
 
 namespace asa
 {
@@ -19,7 +14,7 @@ namespace asa
             {item_data::ASCENDANT, cv::Vec3b{2, 167, 172}}
         };
 
-        constexpr int CACHED_LOC_PADDING = 5;
+        int CACHED_LOC_PADDING = 5;
         std::unordered_map<std::string, cv::Rect> cached_locs{};
 
         bool has_blueprint_variant(const item_data::ItemType type)
@@ -95,7 +90,7 @@ namespace asa
     std::unique_ptr<item_tooltip> item_slot::get_tooltip() const
     {
         using contour = std::vector<cv::Point>;
-        static constexpr cv::Vec3b color{121, 244, 253};
+        static cv::Vec3b color{121, 244, 253};
 
         if (!is_hovered()) { return nullptr; }
         const cv::Mat mask = utility::mask(cv::Rect(0, 0, 1920, 1080), color, 10);
@@ -121,14 +116,14 @@ namespace asa
 
     bool item_slot::is_empty() const
     {
-        static constexpr cv::Vec3b weight_text_color{128, 231, 255};
+        static cv::Vec3b weight_text_color{128, 231, 255};
         const cv::Mat masked = utility::mask(get_weight_area(), weight_text_color, 35);
         return countNonZero(masked) < 10;
     }
 
     bool item_slot::is_folder() const
     {
-        static constexpr cv::Vec3b folder_name_color{182, 237, 248};
+        static cv::Vec3b folder_name_color{182, 237, 248};
         const cv::Mat masked = utility::mask(get_folder_name_area(), folder_name_color,
                                              30);
         return cv::countNonZero(masked) > 20;
@@ -136,7 +131,7 @@ namespace asa
 
     bool item_slot::is_hovered() const
     {
-        static constexpr cv::Vec3b hovered_white{255, 255, 255};
+        static cv::Vec3b hovered_white{255, 255, 255};
         const auto roi = get_hovered_area();
 
         return cv::countNonZero(utility::mask(roi, hovered_white, 20)) > 200;
@@ -225,7 +220,7 @@ namespace asa
 
     bool item_slot::get_item_durability(float& durability_out) const
     {
-        static constexpr cv::Vec3b color{1, 156, 136};
+        static cv::Vec3b color{1, 156, 136};
 
         auto roi = get_spoil_or_durability_bar_area();
         roi.y += 2;
@@ -255,8 +250,8 @@ namespace asa
     bool item_slot::has_spoil_timer() const
     {
         const auto bar = get_spoil_or_durability_bar_area();
-        static constexpr cv::Vec3b spoil_color{0, 214, 161};
-        static constexpr cv::Vec3b spoiled_color{28, 110, 73};
+        static cv::Vec3b spoil_color{0, 214, 161};
+        static cv::Vec3b spoiled_color{28, 110, 73};
 
         const cv::Mat left = utility::mask(bar, spoil_color, 20);
         const cv::Mat spoiled = utility::mask(bar, spoiled_color, 20);
@@ -266,8 +261,8 @@ namespace asa
     bool item_slot::has_durability() const
     {
         const auto bar = get_spoil_or_durability_bar_area();
-        static constexpr cv::Vec3b dura_color{1, 156, 136};
-        static constexpr cv::Vec3b dura_lost_color{6, 25, 38};
+        static cv::Vec3b dura_color{1, 156, 136};
+        static cv::Vec3b dura_lost_color{6, 25, 38};
 
         const cv::Mat left = utility::mask(bar, dura_color, 20);
         const cv::Mat lost = utility::mask(bar, dura_lost_color, 20);
@@ -276,7 +271,7 @@ namespace asa
 
     bool item_slot::is_stack() const
     {
-        static constexpr cv::Vec3b stack_count_color{128, 231, 255};
+        static cv::Vec3b stack_count_color{128, 231, 255};
         const auto bar = get_stack_size_area();
         const auto mask = utility::mask(bar, stack_count_color, 20);
         return cv::countNonZero(mask) > 30;

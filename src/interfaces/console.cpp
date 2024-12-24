@@ -5,7 +5,7 @@ namespace asa
 {
     bool console::is_open() const
     {
-        static constexpr cv::Vec3b gray{140, 140, 140};
+        static cv::Vec3b gray{140, 140, 140};
 
         return utility::count_matches(bar_lower_, gray, 5) > 500;
     }

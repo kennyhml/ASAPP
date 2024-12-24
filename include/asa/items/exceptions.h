@@ -1,40 +1,26 @@
 #pragma once
-#include <exception>
-#include <filesystem>
+#include "asa/core/exceptions.h"
+#include <string>
+#include <format>
 
 namespace asa
 {
-    class Item;
-
-    class ItemError : public std::exception
+    struct item_not_found final : asapp_error
     {
     public:
-        explicit ItemError(const Item* t_item);
-        explicit ItemError(const Item* t_item, const std::string& t_message);
-
-        const char* what() const override { return info_.c_str(); }
-
-    protected:
-        const Item* item_;
-        std::string info_;
+        explicit item_not_found(const std::string& t_item)
+            : asapp_error(std::format("Unknown item requested: '{}'!", t_item)) {}
     };
 
-    class ItemIconNotFound final : public ItemError
+    struct item_icon_not_found final : asapp_error
     {
-    public:
-        explicit ItemIconNotFound(const std::filesystem::path&);
+        explicit item_icon_not_found(const std::string& t_item)
+            : asapp_error(std::format("Item '{}' is missing icon resource!", t_item)) {}
     };
 
-    class ItemDataNotFound final : public ItemError
+    struct missing_item_field final : asapp_error
     {
-    public:
-        explicit ItemDataNotFound(const std::string& t_item_name);
-    };
-
-    class MissingItemDataFieldError final : public ItemError
-    {
-    public:
-        explicit MissingItemDataFieldError(const std::string& t_item_name,
-                                           const std::string& t_field_name);
+        missing_item_field(const std::string& t_item, const std::string& t_field)
+            : asapp_error(std::format("Item '{}' is missing '{}'!", t_item, t_field)) {}
     };
 }

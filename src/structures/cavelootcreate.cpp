@@ -18,7 +18,7 @@ namespace asa
             "QualityTier4", "SwampCaveTier3", "IceCaveTier3", "UnderwaterCaveTier3"
         };
 
-        constexpr cv::Vec3b tooltip_white{196, 196, 195};
+        cv::Vec3b tooltip_white{196, 196, 195};
 
         bool is_in_tier(const std::string& crate, const std::vector<std::string>& tier)
         {

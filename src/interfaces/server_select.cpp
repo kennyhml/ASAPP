@@ -7,9 +7,9 @@ namespace asa
 {
     bool server_select::is_best_result_selected() const
     {
-        static constexpr cv::Vec3b selected{128, 64, 2};
-        static constexpr cv::Vec3b hovered{83, 39, 1};
-        static constexpr cv::Vec3b mods_color{135, 79, 23};
+        static cv::Vec3b selected{128, 64, 2};
+        static cv::Vec3b hovered{83, 39, 1};
+        static cv::Vec3b mods_color{135, 79, 23};
 
         if (cv::countNonZero(utility::mask(best_result_.area, selected, 15)) > 150) {
             return true;
@@ -29,13 +29,13 @@ namespace asa
 
     bool server_select::can_join() const
     {
-        static constexpr cv::Vec3b joinable{153, 77, 4};
+        static cv::Vec3b joinable{153, 77, 4};
         return cv::countNonZero(utility::mask(join_button_.area, joinable, 20)) > 200;
     }
 
     bool server_select::can_join_last_played() const
     {
-        static constexpr cv::Vec3b last_played_color{142, 219, 231};
+        static cv::Vec3b last_played_color{142, 219, 231};
         return cv::countNonZero(
                    utility::mask(join_last_played_button_.area, last_played_color,
                                  20)) > 50;
@@ -43,8 +43,8 @@ namespace asa
 
     bool server_select::is_joining_server() const
     {
-        static constexpr cv::Vec3b red{255, 0, 0};
-        static constexpr cv::Vec3b text{193, 245, 255};
+        static cv::Vec3b red{255, 0, 0};
+        static cv::Vec3b text{193, 245, 255};
 
         // TODO: This could mistaken a connection timeout error for joining
         cv::Mat mask = utility::mask(joining_text_2_, red, 20);

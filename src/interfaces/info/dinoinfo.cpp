@@ -7,7 +7,7 @@ namespace asa
 {
     bool dino_info::is_open() const
     {
-        static constexpr cv::Vec3b text_color{188, 244, 255};
+        static cv::Vec3b text_color{188, 244, 255};
 
         return utility::count_matches(them_.area, text_color, 20) > 60;
     }
