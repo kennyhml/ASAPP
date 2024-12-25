@@ -13,9 +13,6 @@ namespace asa
         constexpr float SCALE_NOTIF = 0.44f;
         constexpr float SCALE_NOTIF_EXPORT = 0.11f;
 
-        nlohmann::json json_data;
-        std::map<std::string, std::unique_ptr<item> > items;
-
         std::string stringify(const item_data::ItemQuality quality)
         {
             switch (quality) {
@@ -56,9 +53,9 @@ namespace asa
     {
         // Load the image from the embeded data (RGBA)
         try {
-            icon_ = embedded::item_icon_map.at(t_name);
+            icon_ = embedded::item_icon_map.at(name_);
         } catch (const std::out_of_range&) {
-            throw item_icon_not_found(t_name);
+            throw item_icon_not_found(name_);
         };
 
         // Create the inventory icon and mask
@@ -105,28 +102,5 @@ namespace asa
     bool item::is_exported() const
     {
         return (icon_.cols == 256 && icon_.rows == 256);
-    }
-
-    const item& get_item(const std::string& name)
-    {
-        try {
-            return *items.at(name);
-        } catch (const std::out_of_range& e) {
-            throw item_not_found(name);
-        }
-    }
-
-    const std::map<std::string, std::unique_ptr<item> >& get_all_items()
-    {
-        return items;
-    }
-
-    void load_items()
-    {
-        json_data = nlohmann::json::parse(embedded::embedded_json);
-
-        for (auto& [key, value]: json_data.items()) {
-            items.emplace(key, std::make_unique<item>(key, item_data(key, json_data)));
-        }
     }
 }

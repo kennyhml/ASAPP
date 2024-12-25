@@ -120,10 +120,4 @@ namespace asa
         cv::Mat notif_icon_mask_;
         cv::Mat notif_icon_;
     };
-
-    void load();
-
-    const item& get_item(const std::string& name);
-
-    const std::map<std::string, std::unique_ptr<item> >& get_all_items();
 }

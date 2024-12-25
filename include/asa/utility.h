@@ -13,8 +13,7 @@ namespace asa::utility
      *
      * @return The roi to look for the interaction text in if found, else std::nullopt.
      */
-    std::optional<cv::Rect> find_multi_interactable_line(
-        const cv::Mat& src, bool* match_full = nullptr);
+    std::optional<cv::Rect> find_multi_interactable_line(const cv::Mat& src, bool* match_full = nullptr);
 
 
     cv::Rect max_contour(const std::vector<std::vector<cv::Point> >& contours);

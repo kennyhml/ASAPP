@@ -10,7 +10,7 @@ namespace asa
     interface_error::interface_error(const interface* t_interface)
         : interface_error(t_interface, "Unknown interface_error!") {};
 
-    const char* interface_error::what() const noexcept { return this->info.c_str(); }
+    const char* interface_error::what() const noexcept { return info_.c_str(); }
 
     failed_to_open::failed_to_open(const interface* t_interface) : interface_error(
         t_interface, std::format("Failed to open interface")) {};

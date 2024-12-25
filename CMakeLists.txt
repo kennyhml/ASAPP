@@ -123,6 +123,8 @@ add_library(asapp STATIC
         include/asa/structures/structures.h
         include/asa/game/embedded.h
         include/asa/items/exceptions.h
+        include/asa/items/items.h
+        src/items/items.cpp
 )
 
 set_target_properties(asapp PROPERTIES
