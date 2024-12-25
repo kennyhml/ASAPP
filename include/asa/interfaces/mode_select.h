@@ -1,10 +1,10 @@
 #pragma once
-#include "interface.h"
+#include "asainterface.h"
 #include "components/button.h"
 
 namespace asa
 {
-    class mode_select final : public interface
+    class mode_select final : public asainterface
     {
     private:
         button join_game_button{540, 247, 383, 640};

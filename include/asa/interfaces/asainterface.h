@@ -2,10 +2,10 @@
 
 namespace asa
 {
-    class interface
+    class asainterface
     {
     public:
-        virtual ~interface() = default;
+        virtual ~asainterface() = default;
 
         [[nodiscard]] virtual bool is_open() const = 0;
     };

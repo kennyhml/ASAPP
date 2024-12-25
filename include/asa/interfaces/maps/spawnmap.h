@@ -7,8 +7,6 @@ namespace asa
     class spawn_map final : public base_travel_map
     {
     public:
-        using base_travel_map::base_travel_map;
-
         /**
          * @brief Checks whether the spawn map is open.
          */
@@ -31,6 +29,8 @@ namespace asa
         void go_to(const std::string& destination, bool wait_ready = false) override;
 
     private:
+        using base_travel_map::base_travel_map;
+
         friend std::shared_ptr<spawn_map> get_spawn_map();
 
         void pass_spawn_screen(bool in = true);

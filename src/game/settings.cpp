@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 
+#include "asa/core/exceptions.h"
+
 namespace asa
 {
     namespace
@@ -16,6 +18,55 @@ namespace asa
 
         const auto INPUT_SETTINGS_REL = std::filesystem::path(
             R"(ShooterGame\Saved\Config\Windows\Input.ini)");
+
+
+        const std::map<std::string, action_mapping> defaults = {
+            {"AccessInventory", {"AccessInventory", "F"}},
+            {"AltFire", {"AltFire", "LeftControl"}},
+            {"BrakeDino", {"BrakeDino", "X"}},
+            {"CallAttackTarget", {"CallAttackTarget", "Period"}},
+            {"CallAttackTargetNew", {"CallAttackTargetNew", "Equals"}},
+            {"CallFollowDistanceCycleOne", {"CallFollowDistanceCycleOne", "NumPadZero"}},
+            {"CallFollowOne", {"CallFollowOne", "T"}},
+            {"CallLandOne", {"CallLandOne", "None"}},
+            {"CallMoveTo", {"CallMoveTo", "Comma"}},
+            {"CallNeutral", {"CallNeutral", "Hyphen"}},
+            {"CallPassive", {"CallPassive", "Semicolon"}},
+            {"CallSetAggressive", {"CallSetAggressive", "Subtract"}},
+            {"CallStay", {"CallStay", "U"}}, {"CallStayOne", {"CallStayOne", "Y"}},
+            {"ConsoleKeys", {"ConsoleKeys", "Tilde"}}, {"CraftAll", {"CraftAll", "A"}},
+            {"Crouch", {"Crouch", "C"}}, {"Drag", {"Drag", "G"}},
+            {"DropItem", {"DropItem", "O"}}, {"EmoteKey1", {"EmoteKey1", "LeftBracket"}},
+            {"EmoteKey2", {"EmoteKey2", "RightBracket"}},
+            {"Fire", {"Fire", "LeftMouseButton"}},
+            {"ForceCraftButton", {"ForceCraftButton", "LeftAlt"}},
+            {"GiveDefaultWeapon", {"GiveDefaultWeapon", "Q"}},
+            {"GroupAddOrRemoveTame", {"GroupAddOrRemoveTame", "Z"}},
+            {"Jump", {"Jump", "SpaceBar"}},
+            {"OrbitCamToggle", {"OrbitCamToggle", "K"}},
+            {"Ping", {"Ping", "MiddleMouseButton"}}, {"Poop", {"Poop", "Add"}},
+            {"Prone", {"Prone", "X"}}, {"Reload", {"Reload", "R"}},
+            {"RunToggle", {"RunToggle", "LeftShift"}},
+            {"ShowExtendedInfo", {"ShowExtendedInfo", "H"}},
+            {"ShowGlobalChat", {"ShowGlobalChat", "Enter"}},
+            {"ShowMyInventory", {"ShowMyInventory", "Tab"}},
+            {"ShowTribeManager", {"ShowTribeManager", "L"}},
+            {"Targeting", {"Targeting", "RightMouseButton"}},
+            {"ToggleDinoNameTags", {"ToggleDinoNameTags", "End"}},
+            {"ToggleHUDHidden", {"ToggleHUDHidden", "BackSpace"}},
+            {"ToggleMap", {"ToggleMap", "M"}},
+            {"ToggleTooltip", {"ToggleTooltip", "G"}},
+            {"TransferItem", {"TransferItem", "T"}}, {"Use", {"Use", "E"}},
+            {"UseItem1", {"UseItem1", "One"}}, {"UseItem10", {"UseItem10", "V"}},
+            {"UseItem2", {"UseItem2", "Two"}}, {"UseItem3", {"UseItem3", "Three"}},
+            {"UseItem4", {"UseItem4", "Four"}}, {"UseItem5", {"UseItem5", "Five"}},
+            {"UseItem6", {"UseItem6", "F1"}}, {"UseItem7", {"UseItem7", "F2"}},
+            {"UseItem8", {"UseItem8", "F3"}}, {"UseItem9", {"UseItem9", "F4"}},
+            {"WeaponAccessory", {"WeaponAccessory", "N"}},
+            {"ZoomIn", {"ZoomIn", "MouseScrollUp"}},
+            {"ZoomOut", {"ZoomOut", "MouseScrollDown"}}
+        };
+
 
         bool open_file(const std::filesystem::path& path, std::ifstream& out_file)
         {
@@ -52,10 +103,14 @@ namespace asa
 
         std::any convert_settings_value(const std::string& key, const std::string& value)
         {
-            if (key.contains("LastJoinedSessionPer")) { return value; }
-            if (value.contains('.')) { return std::stof(value); }
-            if (value == "True" || value == "False") { return value == "True"; }
-            return std::stoi(value);
+            try {
+                if (key.contains("LastJoinedSessionPer")) { return value; }
+                if (value.contains('.')) { return std::stof(value); }
+                if (value == "True" || value == "False") { return value == "True"; }
+                return std::stoi(value);
+            } catch (const std::invalid_argument& e) {
+                return value;
+            }
         }
 
         void parse_user_settings(const std::istringstream& stream)
@@ -190,6 +245,13 @@ namespace asa
 
     const action_mapping& get_action_mapping(const std::string& key)
     {
-        return *action_mappings.at(key);
+        try {
+            return *action_mappings.at(key);
+        } catch (const std::out_of_range& e) {
+            if (!defaults.contains(key)) {
+                throw asapp_error(std::format("Unknown action mapping: {}!", key));
+            }
+            return defaults.at(key);
+        }
     }
 }

@@ -9,8 +9,8 @@ namespace asa
                    const int t_padding)
         : interface_component(t_x, t_y, t_width, t_height), padding(t_padding) {};
 
-    button::button(cv::Rect t_area, int t_padding) : interface_component(t_area),
-                                                     padding(t_padding) {};
+    button::button(cv::Rect t_area, int t_padding)
+        : interface_component(t_area), padding(t_padding) {};
 
     void button::press()
     {

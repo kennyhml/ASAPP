@@ -18,7 +18,7 @@ namespace asa::window
      */
     void tesseract_init();
 
-    void find(std::chrono::seconds timeout = 60s);
+    void get_handle(std::chrono::seconds timeout = 60s);
 
     bool set_foreground();
 

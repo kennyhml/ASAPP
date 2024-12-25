@@ -279,7 +279,7 @@ namespace asa
                     start = std::chrono::system_clock::now();
                     has_reconnected = true;
                 } else {
-                    throw structure_access_failed(&structure);
+                    throw structure_access_failed(structure);
                 }
             }
         } while (!utility::await([&structure] {

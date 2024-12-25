@@ -1,9 +1,9 @@
 #pragma once
-#include "interface.h"
+#include "asainterface.h"
 
 namespace asa
 {
-    class menu final : public interface
+    class menu final : public asainterface
     {
     public:
         [[nodiscard]] bool is_open() const override;

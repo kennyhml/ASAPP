@@ -39,8 +39,8 @@ namespace asa
     class structure_access_failed final : public entity_error
     {
     public:
-        explicit structure_access_failed(const base_structure* t_entity);
-    };
+        explicit structure_access_failed(const base_structure& t_structure);
+        };
 
     /**
      * @brief Thrown when an entity could not be accessed.
@@ -54,7 +54,7 @@ namespace asa
     class deposit_failed final : public entity_error
     {
     public:
-        explicit deposit_failed(const std::string& t_what);
+        explicit deposit_failed(const std::string& t_what_item);
     };
 
     /**

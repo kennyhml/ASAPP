@@ -54,9 +54,6 @@ namespace asa
                 }
                 std::this_thread::sleep_for(10ms);
             }
-        } else {
-            // We might be in a thread that we didn't register, just let it sleep
-            std::this_thread::sleep_for(duration);
         }
 
         for (auto& [id, callback]: state_check_callbacks) {

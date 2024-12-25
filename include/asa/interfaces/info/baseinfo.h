@@ -1,10 +1,10 @@
 #pragma once
-#include "asa/interfaces/interface.h"
+#include "asa/interfaces/asainterface.h"
 #include "asa/game/window.h"
 
 namespace asa
 {
-    class base_info : public interface
+    class base_info : public asainterface
     {
     public:
         enum struct Stat : uint32_t

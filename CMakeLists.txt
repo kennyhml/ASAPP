@@ -73,7 +73,7 @@ add_library(asapp STATIC
         include/asa/interfaces/info/dinoinfo.h
         include/asa/interfaces/exceptions.h
         include/asa/interfaces/hud.h
-        include/asa/interfaces/interface.h
+        include/asa/interfaces/asainterface.h
         include/asa/interfaces/interfaces.h
         include/asa/interfaces/inventories/localinventory.h
         include/asa/interfaces/main_menu.h

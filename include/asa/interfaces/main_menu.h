@@ -1,10 +1,10 @@
 #pragma once
-#include "interface.h"
+#include "asainterface.h"
 #include "components/button.h"
 
 namespace asa
 {
-    class main_menu final : public interface
+    class main_menu final : public asainterface
     {
     public:
         bool is_open() const override;

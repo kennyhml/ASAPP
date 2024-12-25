@@ -15,16 +15,16 @@ namespace asa
     }
 
     base_inventory::base_inventory(const bool t_remote, std::unique_ptr<base_info> t_info)
-        : transfer_all_button_(t_remote ? 1359 : 336, 176),
-          drop_all_button_(t_remote ? 1406 : 384, 176),
-          new_folder_button_(t_remote ? 1502 : 480, 176),
-          auto_stack_button_(t_remote ? 1549 : 527, 176),
-          folder_view_button_(t_remote ? 1656 : 634, 176),
+        : search_bar(t_remote ? 1207 : 177, 176, 133, 44),
+          item_area(t_remote ? 1205 : 178, 239, 552, 588),
+          transfer_all_button_(t_remote ? 1415 : 393, 176),
+          drop_all_button_(t_remote ? 1463 : 440, 176),
+          new_folder_button_(t_remote ? 1558 : 536, 176),
+          auto_stack_button_(t_remote ? 1606 : 584, 176),
+          folder_view_button_(t_remote ? 1654 : 632, 176),
           is_remote_inventory_(t_remote),
           area_(t_remote ? 1179 : 149, 94, 591, 827),
           item_filter(t_remote ? 1205 : 175, 841, 552, 42),
-          search_bar(t_remote ? 1207 : 177, 176, t_remote ? 133 : 141, 44),
-          item_area(t_remote ? 1205 : 178, 239, 552, 588),
           info_(t_info ? std::move(t_info) : std::make_unique<base_info>())
     {
         init_slots({t_remote ? 1205 : 178, 239});

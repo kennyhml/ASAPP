@@ -1,12 +1,12 @@
 #pragma once
-#include "interface.h"
+#include "asainterface.h"
 #include "asa/game/window.h"
 
 #include <string>
 
 namespace asa
 {
-    class console final : public interface
+    class console final : public asainterface
     {
     public:
         console() = default;

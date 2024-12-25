@@ -1,11 +1,11 @@
 #pragma once
 #include "components/button.h"
 #include "components/search_bar.h"
-#include "interface.h"
+#include "asainterface.h"
 
 namespace asa
 {
-    class server_select final : public interface
+    class server_select final : public asainterface
     {
     public:
         [[nodiscard]] bool is_open() const override;

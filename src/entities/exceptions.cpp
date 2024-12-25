@@ -13,6 +13,17 @@ namespace asa
         : entity_error(t_entity,
                        std::format("Failed to access '{}'!", t_entity->get_name())) {}
 
+    structure_access_failed::structure_access_failed(const base_structure& t_structure)
+        : entity_error(
+            nullptr, std::format("Failed to access '{}'!", t_structure.get_name())) {}
+
+    target_not_in_range::target_not_in_range(const std::string& t_target)
+        : entity_error(
+            nullptr, std::format("Interaction target '{}' not in range!", t_target)) {}
+
+    deposit_failed::deposit_failed(const std::string& t_what_item)
+        : entity_error(nullptr, std::format("Failed to deposit {}!", t_what_item)) {}
+
     entity_mount_failed::entity_mount_failed(const base_entity* t_entity)
         : entity_error(t_entity,
                        std::format("Failed to mount '{}'!", t_entity->get_name())) {}
@@ -25,5 +36,6 @@ namespace asa
 
     travel_failed::travel_failed(const std::string& t_where,
                                  const std::string& t_why)
-        : entity_error(nullptr, std::format("Failed to travel to '{}': {}!", t_where, t_why)) {}
+        : entity_error(
+            nullptr, std::format("Failed to travel to '{}': {}!", t_where, t_why)) {}
 }

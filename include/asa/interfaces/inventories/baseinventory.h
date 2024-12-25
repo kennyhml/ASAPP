@@ -1,5 +1,5 @@
 #pragma once
-#include "asa/interfaces/interface.h"
+#include "asa/interfaces/asainterface.h"
 #include "asa/interfaces/components/components.h"
 #include "asa/interfaces/info/baseinfo.h"
 #include "asa/game/window.h"
@@ -19,7 +19,7 @@ using PopcornFlags = int32_t;
 
 namespace asa
 {
-    class base_inventory : public interface
+    class base_inventory : public asainterface
     {
     public:
         explicit base_inventory(bool t_remote = true,

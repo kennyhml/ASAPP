@@ -27,9 +27,10 @@ namespace asa
         /**
          * @brief Opens the local inventory.
          *
-         * @throws InventoryNotOpenedError If opening the inventory failed.
+         * @throws failed_to_open If opening the inventory failed.
+         *
          */
-        void open();
+        [[maybe_unused]] void open();
 
         /**
          * @brief Switches to the specified tab.
@@ -38,7 +39,7 @@ namespace asa
          *
          * @throws InterfaceError Upon failur to switch to the given tab.
          */
-        void switch_to(Tab tab);
+        [[maybe_unused]] void switch_to(Tab tab);
 
         /**
          * @brief Equips the given item into the target slot.
@@ -46,7 +47,7 @@ namespace asa
          * @param item The item to equip. 
          * @param slot The slot the item will be equipped in.
          */
-        void equip(item& item, player_info::Slot slot);
+        [[maybe_unused]] void equip(item& item, player_info::Slot slot);
 
         inv_tab_button inventory_tab{177, 118, 183, 47};
         inv_tab_button cosmetics_tab{358, 120, 184, 46};

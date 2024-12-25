@@ -1,10 +1,10 @@
 #pragma once
-#include "asa/interfaces/interface.h"
+#include "asa/interfaces/asainterface.h"
 #include "asa/game/window.h"
 
 namespace asa
 {
-    class base_action_wheel : public interface
+    class base_action_wheel : public asainterface
     {
 
     public:

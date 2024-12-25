@@ -1,5 +1,5 @@
 #pragma once
-#include "asa/interfaces/interface.h"
+#include "asa/interfaces/asainterface.h"
 #include "asa/interfaces/components/button.h"
 #include "asa/interfaces/components/search_bar.h"
 
@@ -8,7 +8,7 @@
 
 namespace asa
 {
-    class base_travel_map : public interface
+    class base_travel_map : public asainterface
     {
     public:
         struct destination_button final : button

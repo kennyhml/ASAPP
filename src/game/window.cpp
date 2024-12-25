@@ -9,10 +9,15 @@
 #include <opencv2/highgui.hpp>
 #include <tesseract/baseapi.h>
 
+#include "asa/core/exceptions.h"
+
 namespace asa::window
 {
     namespace
     {
+
+
+
         tesseract::TessBaseAPI* tesseract_engine = nullptr;
 
         HWND hwnd = nullptr;
@@ -56,13 +61,9 @@ namespace asa::window
     void tesseract_init()
     {
         tesseract_engine = new tesseract::TessBaseAPI();
-
-        //TODO: Bake the tessdata into the exe somehow, this is cringe!!!
-        if (tesseract_engine->Init("", "eng")) {
-            // INIT FAILED
-            return;
+        if (tesseract_engine->Init("tessdata", "eng")) {
+            throw asapp_error("Could not initialize tesseract");
         }
-        // INIT SUCCESSFUL
     }
 
     cv::Mat screenshot(const cv::Rect& region, bool direct_capture)
@@ -258,7 +259,7 @@ namespace asa::window
         return tesseract_engine->GetUTF8Text();
     }
 
-    void get_handle(int timeout, bool verbose)
+    void get_handle(std::chrono::seconds timeout)
     {
         using seconds = std::chrono::seconds;
 
@@ -274,14 +275,11 @@ namespace asa::window
 
             hwnd = FindWindowA("UnrealWindow", "ArkAscended");
 
-            if (time_passed.count() > timeout && timeout != 0) {
-                if (verbose) {
-                    std::cout << "[!] Setting window handle failed." << std::endl;
-                }
+            if (time_passed> timeout) {
                 return;
             }
 
-            if (verbose && ((!hwnd && interval_passed.count() > 10) || !info)) {
+            if ((!hwnd && interval_passed.count() > 10) || !info) {
                 std::cout << "[+] Trying to find the window..." << std::endl;
                 interval_start = now;
                 info = true;

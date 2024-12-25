@@ -1,5 +1,5 @@
 #pragma once
-#include "interface.h"
+#include "asainterface.h"
 #include "asa/interfaces/components/button.h"
 #include "asa/interfaces/components/search_bar.h"
 #include "asa/interfaces/components/tribelog_message.h"
@@ -10,7 +10,7 @@ namespace asa
     using log_update_callback_t = std::function<void(const log_entries_t& all,
                                                      const log_entries_t& new_)>;
 
-    class tribe_manager final : public interface
+    class tribe_manager final : public asainterface
     {
     public:
         /**

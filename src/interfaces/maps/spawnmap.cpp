@@ -81,4 +81,9 @@ namespace asa
             checked_sleep(8s);
         }
     }
+
+    std::shared_ptr<spawn_map> get_spawn_map()
+    {
+        return std::make_shared<spawn_map>();
+    }
 }

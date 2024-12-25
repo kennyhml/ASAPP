@@ -1,7 +1,7 @@
 #pragma once
 #include "basestructure.h"
 #include "asa/game/settings.h"
-#include "asa/interfaces/interface.h"
+#include "asa/interfaces/asainterface.h"
 
 namespace asa
 {
@@ -9,7 +9,7 @@ namespace asa
     {
     public:
         interactable(std::string name, const action_mapping* t_interact_key,
-                     std::unique_ptr<interface> t_interface)
+                     std::unique_ptr<asainterface> t_interface)
             : base_structure(std::move(name)), interface_(std::move(t_interface)),
               interact_key_(t_interact_key) {}
 
@@ -23,13 +23,13 @@ namespace asa
             return *interact_key_;
         }
 
-        [[nodiscard]] virtual interface* get_interface() const
+        [[nodiscard]] virtual asainterface* get_interface() const
         {
             return interface_.get();
         }
 
     protected:
-        std::unique_ptr<interface> interface_;
+        std::unique_ptr<asainterface> interface_;
         const action_mapping* interact_key_;
     };
 }
