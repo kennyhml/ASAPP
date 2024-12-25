@@ -72,7 +72,7 @@ namespace asa
          *
          * @return The icon of this item sized for the inventory.
          */
-        const cv::Mat& get_inventory_icon();
+        [[nodiscard]] const cv::Mat& get_inventory_icon() const { return inv_icon_; }
 
         /** 
          * @brief Creates a bitmask (CV_8UC1) for the alpha channel of the inventory icon.
@@ -83,7 +83,7 @@ namespace asa
          *
          * @return The mask of this item sized for the inventory.
          */
-        const cv::Mat& get_inventory_icon_mask();
+        [[nodiscard]] const cv::Mat& get_inventory_icon_mask() const { return inv_icon_mask_; }
 
         /** 
          * @brief Creates a mat (CV_8UC3) holding the items icon sized to match notifications.
@@ -94,7 +94,7 @@ namespace asa
          *
          * @return The icon of this item sized for the notifications.
          */
-        const cv::Mat& get_notification_icon();
+        [[nodiscard]] const cv::Mat& get_notification_icon() const { return notif_icon_; }
 
         /** 
          * @brief Creates a bitmask (CV_8UC1) for the alpha channel of the notification icon.
@@ -105,7 +105,7 @@ namespace asa
          *
          * @return The mask of this item sized for the notifications.
          */
-        const cv::Mat& get_notification_icon_mask();
+        [[nodiscard]] const cv::Mat& get_notification_icon_mask() const { return notif_icon_mask_; }
 
     private:
         std::string name_;

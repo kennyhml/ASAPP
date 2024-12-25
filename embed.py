@@ -12,7 +12,11 @@ def conv_files(folder: pathlib.Path, stream: TextIOWrapper):
         if ".ico" in file.name:
             continue
         stream.write(f"inline constexpr uint8_t {file.stem}_data[] = {{\n")
-        image = cv2.imread(str(file))
+
+        if folder.parent != "items":
+            image = cv2.imread(str(file))
+        else:
+            image = cv2.imread(str(file), cv2.IMREAD_UNCHANGED)
 
         height, width, _ = image.shape
         image_data = image.flatten().astype("uint8")
@@ -22,8 +26,9 @@ def conv_files(folder: pathlib.Path, stream: TextIOWrapper):
 
         stream.write("\n};\n")
 
+        channels: int = 4 if folder.parent == "items" else 3
         stream.write(
-            f"inline const cv::Mat {file.stem} = cv::Mat({height}, {width}, CV_8UC3, (uchar*){file.stem}_data);\n"
+            f"inline const cv::Mat {file.stem} = cv::Mat({height}, {width}, CV_8UC{channels}, (uchar*){file.stem}_data);\n"
         )
 
 

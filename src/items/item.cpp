@@ -13,10 +13,6 @@ namespace asa
         constexpr float SCALE_NOTIF = 0.44f;
         constexpr float SCALE_NOTIF_EXPORT = 0.11f;
 
-        inline std::mutex inv_icon_mask_lock;
-        inline std::mutex notif_icon_lock;
-        inline std::mutex notif_icon_mask_lock;
-
         nlohmann::json json_data;
         std::map<std::string, std::unique_ptr<item> > items;
 
@@ -37,7 +33,7 @@ namespace asa
         void convert(const cv::Mat& icon, cv::Mat& icon_rgb, cv::Mat& icon_rgba,
                      const bool resize, const float scale)
         {
-            // If the asset is directley exported from the game files (such as the devkit)
+            // If the asset is directly exported from the game files (such as the devkit)
             // it will be 256x256 with an alpha channel for the transparent background. For
             // 1920x1080 the ideal scale-down-factor is x0.24, if we made the item ourselves
             // (because the devkit one is bad) this step should not be done as the self
@@ -58,11 +54,21 @@ namespace asa
     item::item(std::string t_name, item_data t_data)
         : name_(std::move(t_name)), data_(std::move(t_data))
     {
+        // Load the image from the embeded data (RGBA)
         try {
             icon_ = embedded::item_icon_map.at(t_name);
         } catch (const std::out_of_range&) {
             throw item_icon_not_found(t_name);
         };
+
+        // Create the inventory icon and mask
+        convert(icon_, inv_icon_, rgba_inv_icon_, is_exported(), SCALE_INV);
+        inv_icon_mask_ = utility::mask_alpha_channel(rgba_inv_icon_);
+
+        // Create the notification icon and mask
+        const float sc = is_exported() ? SCALE_NOTIF_EXPORT : SCALE_NOTIF;
+        convert(icon_, notif_icon_, rgba_notif_icon_, true, sc);
+        notif_icon_mask_ = utility::mask_alpha_channel(rgba_notif_icon_);
     };
 
     item::item(const item& t_other, const bool t_is_blueprint,
@@ -96,50 +102,24 @@ namespace asa
         return name_;
     }
 
-    inline std::mutex inv_icon_lock;
-
-    const cv::Mat& item::get_inventory_icon()
+    bool item::is_exported() const
     {
-        std::lock_guard lock(inv_icon_lock);
-        if (inv_icon_.empty()) {
-            convert(icon_, inv_icon_, rgba_inv_icon_, is_exported(), SCALE_INV);
-        }
-        return inv_icon_;
+        return (icon_.cols == 256 && icon_.rows == 256);
     }
 
-
-    const cv::Mat& item::get_inventory_icon_mask()
+    const item& get_item(const std::string& name)
     {
-        std::lock_guard lock(inv_icon_mask_lock);
-        if (inv_icon_mask_.empty()) {
-            if (rgba_inv_icon_.empty()) { get_inventory_icon(); }
-            inv_icon_mask_ = utility::mask_alpha_channel(rgba_inv_icon_);
+        try {
+            return *items.at(name);
+        } catch (const std::out_of_range& e) {
+            throw item_not_found(name);
         }
-        return inv_icon_mask_;
     }
 
-    const cv::Mat& item::get_notification_icon()
+    const std::map<std::string, std::unique_ptr<item> >& get_all_items()
     {
-        std::lock_guard lock(notif_icon_lock);
-        if (notif_icon_.empty()) {
-            const float sc = is_exported() ? SCALE_NOTIF_EXPORT : SCALE_NOTIF;
-            convert(icon_, notif_icon_, rgba_notif_icon_, true, sc);
-        }
-        return notif_icon_;
+        return items;
     }
-
-
-    const cv::Mat& item::get_notification_icon_mask()
-    {
-        std::lock_guard lock(notif_icon_mask_lock);
-        if (notif_icon_mask_.empty()) {
-            if (rgba_notif_icon_.empty()) { get_notification_icon(); }
-            notif_icon_mask_ = utility::mask_alpha_channel(rgba_notif_icon_);
-        }
-        return notif_icon_mask_;
-    }
-
-    bool item::is_exported() const { return (icon_.cols == 256 && icon_.rows == 256); }
 
     void load_items()
     {
