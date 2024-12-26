@@ -1,7 +1,7 @@
-#include "asa/interfaces/maps/teleportmap.h"
+#include "asa/ui/maps/teleportmap.h"
 #include "asa/utility.h"
 #include "asa/core/state.h"
-#include "asa/interfaces/exceptions.h"
+#include "asa/ui/exceptions.h"
 
 namespace asa
 {

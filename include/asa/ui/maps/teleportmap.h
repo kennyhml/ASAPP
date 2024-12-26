@@ -1,6 +1,6 @@
 #pragma once
 #include "basetravelmap.h"
-#include "asa/interfaces/components/search_bar.h"
+#include "asa/ui/components/search_bar.h"
 
 namespace asa
 {

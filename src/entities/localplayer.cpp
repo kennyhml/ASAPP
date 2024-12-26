@@ -1,7 +1,7 @@
 #include "asa/entities/localplayer.h"
 #include "asa/entities/exceptions.h"
 #include "asa/network/queries.h"
-#include "asa/interfaces/interfaces.h"
+#include "asa/ui/interfaces.h"
 #include "asa/game/game.h"
 #include "asa/utility.h"
 #include "asa/core/state.h"

@@ -1,7 +1,7 @@
 #pragma once
-#include "asa/interfaces/asainterface.h"
-#include "asa/interfaces/components/components.h"
-#include "asa/interfaces/info/baseinfo.h"
+#include "asa/ui/asainterface.h"
+#include "asa/ui/components/components.h"
+#include "asa/ui/info/baseinfo.h"
 #include "asa/game/window.h"
 
 #include <array>
@@ -81,7 +81,7 @@ namespace asa
          * 
          * @return True if at least one occurence of the item is found, false otherwise.
          */
-        virtual bool has(item& item, bool search = false);
+        bool has(const item& item, bool search = false);
 
         /**
          * @brief Counts how many stacks of a given item are located in an inventory.
@@ -94,7 +94,7 @@ namespace asa
          *
          * @return Whether the counted amount was smaller than the max inventory page.
          */
-        virtual bool count_stacks(item& item, int& count_out, bool search = false);
+        bool count_stacks(const item& item, int& count_out, bool search = false);
 
         /**
          * @brief Finds the slot of a given item in the inventory.
@@ -104,59 +104,64 @@ namespace asa
          * 
          * @return A pointer to the slow that the item is located in, or nullptr if not found.
          */
-        virtual const item_slot* find_item(item&, bool is_searched = false,
-                                           bool search_for = false);
+        const item_slot* find_item(const item&, bool is_searched = false,
+                                   bool search_for = false);
 
         /**
          * @brief Popcorns a given amount of an item from the inventory.
          * 
          * @param item The item to popcorn.
          * @param stacks The amount of stacks to popcorn, default all (-1).
-         * @param stacks_dropped Optional integer pointer for how many stacks were dropped.
+         * @param dropped Optional integer pointer for how many stacks were dropped.
          */
-        virtual void popcorn(item& item, int stacks = -1,
-                             int* stacks_dropped = nullptr);
+        [[maybe_unused]] base_inventory& popcorn(
+            const item& item, int stacks = -1, int* dropped = nullptr);
 
         /**
          * @brief Popcorns n-slots from the inventory.
          * \param num_slots How many slots to popcorn.
          */
-        virtual void popcorn(int num_slots);
+        [[maybe_unused]] base_inventory& popcorn(int num_slots);
 
         /**
          * @brief Popcorns al items from the inventory. 
          */
-        void popcorn_all(PopcornFlags = PopcornFlags_Default);
+        [[maybe_unused]] base_inventory& popcorn_all(PopcornFlags = PopcornFlags_Default);
 
         /**
          * @brief Takes the item located at a given slot.
          * 
          * @param slot The slot to take the item from.
          */
-        virtual void take_slot(const item_slot& slot);
+        [[maybe_unused]] base_inventory& take_slot(const item_slot& slot);
 
         /**
          * @brief Takes the item located at a given slot.
          * 
          * @param index The index of the slot to take the item from.
          */
-        virtual void take_slot(const int index) { return take_slot(slots[index]); }
+        [[maybe_unused]] base_inventory& take_slot(const int index)
+        {
+            return take_slot(slots[index]);
+        }
 
         /**
          * @brief Selects the given slot.
          * 
          * @param slot The slot to select.
          */
-        void select_slot(const item_slot& slot, bool hovered_check = true,
-                         bool tooltip_check = false) const;
+        [[maybe_unused]] base_inventory& select_slot(const item_slot& slot,
+                                                     bool hovered_check = true,
+                                                     bool tooltip_check = false);
 
         /**
           * @brief Selects the given slot by index.
           *
           * @index The index of the slot to select.
           */
-        void select_slot(const int index, bool hovered_check = true,
-                         bool tooltip_check = false) const
+        [[maybe_unused]] base_inventory& select_slot(
+            const int index, const bool hovered_check = true,
+            const bool tooltip_check = false)
         {
             return select_slot(slots[index], hovered_check, tooltip_check);
         }
@@ -167,24 +172,24 @@ namespace asa
          * @remarks Uses the x button instead of the esc key in order to prevent
          * a double press in extreme cases (game froze, bad fps, bad timing...)
          */
-        void close();
+        [[maybe_unused]] base_inventory& close();
 
         /**
          * @brief Drops all items frop the inventory.
          */
-        void drop_all();
+        [[maybe_unused]] base_inventory& drop_all();
 
         /**
          * @brief Drops all of the given item from the inventory.
          * @param item The item to drop all of.
          */
-        void drop_all(const item& item);
+        [[maybe_unused]] base_inventory& drop_all(const item& item);
 
         /**
          * @brief Searches a term and drops all of the matches.
          * @param term The term to filter and drop all for.
          */
-        void drop_all(const std::string& term);
+        [[maybe_unused]] base_inventory& drop_all(const std::string& term);
 
         /**
          * @brief Transfers all items to another inventory.
@@ -193,7 +198,7 @@ namespace asa
          *
          * @remarks The pointer to the receiving end may help to confirm transfers.
          */
-        void transfer_all(base_inventory* receiver = nullptr);
+        [[maybe_unused]] base_inventory& transfer_all(base_inventory* receiver = nullptr);
 
         /**
          * @brief Transfers all of a given item into another inventory.
@@ -203,7 +208,8 @@ namespace asa
          *
          * @remarks The pointer to the receiving end may help to confirm transfers.
          */
-        void transfer_all(const item& item, base_inventory* receiver = nullptr);
+        [[maybe_unused]] base_inventory& transfer_all(
+            const item& item, base_inventory* receiver = nullptr);
 
         /**
          * @brief Transfers all of a given item into another inventory.
@@ -213,7 +219,8 @@ namespace asa
          *
          * @remarks The pointer to the receiving end may help to confirm transfers.
          */
-        void transfer_all(const std::string& term, base_inventory* receiver = nullptr);
+        [[maybe_unused]] base_inventory& transfer_all(const std::string& term,
+                                                      base_inventory* receiver = nullptr);
 
         /**
          * @brief Transfers n-items into another inventory.
@@ -225,8 +232,9 @@ namespace asa
          *
          * @remarks The pointer to the receiving end may help to confirm transfers.
          */
-        void transfer(item& item, int stacks = 1,
-                      base_inventory* receiver = nullptr, bool search = true);
+        [[maybe_unused]] base_inventory& transfer(const item& item, int stacks = 1,
+                                                  base_inventory* receiver = nullptr,
+                                                  bool search = true);
 
         /**
          * @brief Transfers a given amount of rows of a given item.
@@ -236,13 +244,13 @@ namespace asa
          *
          * @remark The amount of rows transferred is not checked but guessed.
          */
-        void transfer_rows(const item& item, int rows);
+        [[maybe_unused]] base_inventory& transfer_rows(const item& item, int rows);
 
         /**
          * @brief Selects the info tab i.e the THEM / STRUCTURE tab for
          * remote inventories and the YOU tab for the local inventory.
          */
-        void select_info_tab();
+        [[maybe_unused]] base_inventory& select_info_tab();
 
         /**
          * @brief Transfers rows of a given item for a given duration.
@@ -252,12 +260,8 @@ namespace asa
          *
          * @remark The amount of rows transferred is not checked but guessed.
          */
-        void transfer_rows(const item& item, std::chrono::seconds duration);
-
-        /**
-         * @brief Sets the item filter
-         */
-        void set_filter();
+        [[maybe_unused]] base_inventory& transfer_rows(const item& item,
+                                                       std::chrono::seconds duration);
 
         /**
          * @brief Creates a new folder given a name.
@@ -266,22 +270,17 @@ namespace asa
          *
          * @remarks Folder names must contain at least 2 characters.
          */
-        void make_new_folder(const std::string& folder_name);
+        [[maybe_unused]] base_inventory& make_new_folder(const std::string& folder_name);
 
         /**
          * @brief Auto stack all items in the inventory.
          */
-        void auto_stack();
-
-        /**
-         * @brief Toggles the folder view in the inventory.
-         */
-        void toggle_folder_view();
+        [[maybe_unused]] base_inventory& auto_stack();
 
         /**
          * @brief Toggles the inventory item tooltip on / off.
          */
-        void toggle_tooltips() const;
+        [[maybe_unused]] base_inventory& toggle_tooltips();
 
         /**
          * @brief Retrieves all items from the currently visible page.

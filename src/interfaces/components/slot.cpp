@@ -1,4 +1,4 @@
-#include "asa/interfaces/components/slot.h"
+#include "asa/ui/components/slot.h"
 #include "asa/utility.h"
 
 namespace asa
@@ -137,7 +137,7 @@ namespace asa
         return cv::countNonZero(utility::mask(roi, hovered_white, 20)) > 200;
     }
 
-    bool item_slot::has(item& item, float* accuracy_out,
+    bool item_slot::has(const item& item, float* accuracy_out,
                         const bool cache_img) const
     {
         const bool is_cached = cached_locs.contains(item.get_name());

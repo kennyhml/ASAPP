@@ -2,7 +2,7 @@
 #include "info/infos.h"
 #include "maps/maps.h"
 #include "components/components.h"
-#include "inventories/inventories.h"
+#include "storage/inventories.h"
 #include "wheels/baseactionwheel.h"
 
 #include "console.h"

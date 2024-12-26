@@ -1,6 +1,6 @@
 #include "asa/utility.h"
 #include "asa/core/state.h"
-#include "asa/interfaces/info/baseentityinfo.h"
+#include "asa/ui/info/baseentityinfo.h"
 
 namespace asa
 {

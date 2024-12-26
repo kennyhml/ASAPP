@@ -1,7 +1,7 @@
 #pragma once
 #include "baseinfo.h"
-#include "asa/interfaces/components/button.h"
-#include "asa/interfaces/components/slot.h"
+#include "asa/ui/components/button.h"
+#include "asa/ui/components/slot.h"
 
 #include <array>
 

@@ -1,4 +1,4 @@
-#include "asa/interfaces/components/tooltip.h"
+#include "asa/ui/components/tooltip.h"
 
 namespace asa
 {

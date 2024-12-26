@@ -1,6 +1,6 @@
 #pragma once
+#include "asa/ui/info/dinoinfo.h"
 #include "baseinventory.h"
-#include "asa/interfaces/info/dinoinfo.h"
 
 namespace asa
 {
@@ -23,6 +23,6 @@ namespace asa
          * @param item The item object to equip. The first result is used.
          * @param slot The slot the item will be equipped in.
          */
-        void equip(item& item, dino_info::slot slot);
+        void equip(const item& item, dino_info::slot slot);
     };
 }

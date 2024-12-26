@@ -1,4 +1,4 @@
-#include "asa/interfaces/info/dinoinfo.h"
+#include "asa/ui/info/dinoinfo.h"
 
 #include "asa/utility.h"
 

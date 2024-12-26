@@ -1,7 +1,7 @@
 #pragma once
 #include "container.h"
-#include "asa/interfaces/inventories/baseinventory.h"
-#include "asa/interfaces/info/dedicatedstorageinfo.h"
+#include "asa/ui/storage/baseinventory.h"
+#include "asa/ui/info/dedicatedstorageinfo.h"
 
 namespace asa
 {

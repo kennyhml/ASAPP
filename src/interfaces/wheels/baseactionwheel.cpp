@@ -1,4 +1,4 @@
-#include "asa/interfaces/wheels/baseactionwheel.h"
+#include "asa/ui/wheels/baseactionwheel.h"
 #include "asa/utility.h"
 #include "asa/core/state.h"
 

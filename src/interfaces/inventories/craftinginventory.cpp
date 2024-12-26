@@ -1,4 +1,4 @@
-#include "asa/interfaces/inventories/craftinginventory.h"
+#include "asa/ui/storage/craftinginventory.h"
 #include "asa/core/state.h"
 #include "asa/utility.h"
 

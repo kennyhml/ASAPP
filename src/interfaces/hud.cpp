@@ -1,4 +1,4 @@
-#include "asa/interfaces/hud.h"
+#include "asa/ui/hud.h"
 #include "asa/utility.h"
 #include "asa/game/game.h"
 

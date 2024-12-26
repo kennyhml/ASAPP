@@ -1,5 +1,5 @@
 #include <iostream>
-#include "asa/interfaces/components/search_bar.h"
+#include "asa/ui/components/search_bar.h"
 #include "../../../include/asa/utility.h"
 #include "asa/core/state.h"
 #include "asa/game/controls.h"

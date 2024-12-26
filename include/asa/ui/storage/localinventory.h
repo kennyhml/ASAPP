@@ -1,6 +1,6 @@
 #pragma once
 #include "baseinventory.h"
-#include "asa/interfaces/info/playerinfo.h"
+#include "asa/ui/info/playerinfo.h"
 
 namespace asa
 {
@@ -30,7 +30,7 @@ namespace asa
          * @throws failed_to_open If opening the inventory failed.
          *
          */
-        [[maybe_unused]] void open();
+        [[maybe_unused]] local_inventory& open();
 
         /**
          * @brief Switches to the specified tab.
@@ -39,7 +39,7 @@ namespace asa
          *
          * @throws InterfaceError Upon failur to switch to the given tab.
          */
-        [[maybe_unused]] void switch_to(Tab tab);
+        [[maybe_unused]] local_inventory& switch_to(Tab tab);
 
         /**
          * @brief Equips the given item into the target slot.
@@ -47,10 +47,10 @@ namespace asa
          * @param item The item to equip. 
          * @param slot The slot the item will be equipped in.
          */
-        [[maybe_unused]] void equip(item& item, player_info::Slot slot);
+        [[maybe_unused]] local_inventory& equip(item& item, player_info::Slot slot);
 
-        inv_tab_button inventory_tab{177, 118, 183, 47};
-        inv_tab_button cosmetics_tab{358, 120, 184, 46};
-        inv_tab_button crafting_tab{542, 120, 183, 45};
+        inv_tab_button inventory_tab{179, 119, 175, 45};
+        inv_tab_button cosmetics_tab{362, 119, 182, 45};
+        inv_tab_button crafting_tab{542, 118, 184, 48};
     };
 }

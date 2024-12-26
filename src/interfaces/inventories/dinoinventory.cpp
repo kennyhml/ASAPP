@@ -1,9 +1,9 @@
-#include "asa/interfaces/inventories/dinoinventory.h"
+#include "asa/ui/storage/dinoinventory.h"
 #include "asa/utility.h"
 
 namespace asa
 {
-    void dino_inventory::equip(item& item, const dino_info::slot slot)
+    void dino_inventory::equip(const item& item, const dino_info::slot slot)
     {
         assert_open(__func__);
         search_bar.search_for(item.get_name());

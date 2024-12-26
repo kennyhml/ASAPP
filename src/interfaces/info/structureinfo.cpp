@@ -1,5 +1,5 @@
 #include "asa/utility.h"
-#include "asa/interfaces/info/containerinfo.h"
+#include "asa/ui/info/containerinfo.h"
 
 namespace asa
 {

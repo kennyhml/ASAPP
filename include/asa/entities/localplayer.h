@@ -3,7 +3,7 @@
 #include "dinoentity.h"
 
 #include "asa/structures/structures.h"
-#include "asa/interfaces/inventories/localinventory.h"
+#include "asa/ui/storage/localinventory.h"
 
 enum AccessFlags_ : uint32_t
 {

@@ -1,6 +1,6 @@
 #pragma once
-#include "asa/interfaces/wheels/baseactionwheel.h"
-#include "asa/interfaces/inventories/baseinventory.h"
+#include "asa/ui/wheels/baseactionwheel.h"
+#include "asa/ui/storage/baseinventory.h"
 
 namespace asa
 {

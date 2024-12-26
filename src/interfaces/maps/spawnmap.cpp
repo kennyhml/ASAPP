@@ -1,9 +1,9 @@
-#include "asa/interfaces/maps/spawnmap.h"
+#include "asa/ui/maps/spawnmap.h"
 
 #include "asa/utility.h"
 #include "asa/core/state.h"
 #include "asa/entities/localplayer.h"
-#include "asa/interfaces/exceptions.h"
+#include "asa/ui/exceptions.h"
 
 namespace asa
 {

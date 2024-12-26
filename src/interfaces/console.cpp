@@ -1,4 +1,4 @@
-#include "asa/interfaces/console.h"
+#include "asa/ui/console.h"
 #include "asa/utility.h"
 
 namespace asa

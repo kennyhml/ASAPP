@@ -1,4 +1,4 @@
-#include "asa/interfaces/inventories/tribute_inventory.h"
+#include "asa/ui/storage/tribute_inventory.h"
 
 namespace asa
 {

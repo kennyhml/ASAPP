@@ -1,5 +1,5 @@
 #pragma once
-#include "asa/interfaces/wheels/baseactionwheel.h"
+#include "asa/ui/wheels/baseactionwheel.h"
 #include <string>
 
 namespace asa

@@ -1,7 +1,6 @@
 #pragma once
 #include "baseinventory.h"
 
-
 namespace asa
 {
     class crafting_inventory : public base_inventory

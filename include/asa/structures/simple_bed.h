@@ -1,6 +1,6 @@
 #pragma once
 #include "interactable.h"
-#include "asa/interfaces/maps/travelmap.h"
+#include "asa/ui/maps/travelmap.h"
 
 #include <utility>
 

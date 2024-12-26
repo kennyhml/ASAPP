@@ -1,4 +1,4 @@
-#include "asa/interfaces/info/playerinfo.h"
+#include "asa/ui/info/playerinfo.h"
 
 #include "asa/utility.h"
 

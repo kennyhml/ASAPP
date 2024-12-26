@@ -1,5 +1,5 @@
-#include "asa/interfaces/menu.h"
-#include "asa/interfaces/exceptions.h"
+#include "asa/ui/menu.h"
+#include "asa/ui/exceptions.h"
 #include "asa/game/window.h"
 #include "asa/utility.h"
 #include "asa/core/state.h"

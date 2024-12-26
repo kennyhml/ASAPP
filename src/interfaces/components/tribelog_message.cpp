@@ -1,4 +1,4 @@
-#include "asa/interfaces/components/tribelog_message.h"
+#include "asa/ui/components/tribelog_message.h"
 #include <regex>
 #include <iomanip>
 #include <iostream>

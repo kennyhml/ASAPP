@@ -1,5 +1,5 @@
-#include "asa/interfaces/maps/basetravelmap.h"
-#include "asa/interfaces/maps/exceptions.h"
+#include "asa/ui/maps/basetravelmap.h"
+#include "asa/ui/maps/exceptions.h"
 #include "asa/core/state.h"
 #include "asa/utility.h"
 

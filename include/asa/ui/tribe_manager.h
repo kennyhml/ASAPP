@@ -1,8 +1,8 @@
 #pragma once
 #include "asainterface.h"
-#include "asa/interfaces/components/button.h"
-#include "asa/interfaces/components/search_bar.h"
-#include "asa/interfaces/components/tribelog_message.h"
+#include "asa/ui/components/button.h"
+#include "asa/ui/components/search_bar.h"
+#include "asa/ui/components/tribelog_message.h"
 
 namespace asa
 {

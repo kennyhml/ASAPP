@@ -1,7 +1,7 @@
 #pragma once
-#include "asa/interfaces/asainterface.h"
-#include "asa/interfaces/components/button.h"
-#include "asa/interfaces/components/search_bar.h"
+#include "asa/ui/asainterface.h"
+#include "asa/ui/components/button.h"
+#include "asa/ui/components/search_bar.h"
 
 #include <array>
 #include <string>

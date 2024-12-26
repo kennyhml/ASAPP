@@ -93,7 +93,7 @@ namespace asa
          *
          * @return True if the given item is located in this slot, false otherwise.
          */
-        [[nodiscard]] bool has(item& item, float* accuracy_out = nullptr,
+        [[nodiscard]] bool has(const item& item, float* accuracy_out = nullptr,
                                bool cache_img = false) const;
 
         /**

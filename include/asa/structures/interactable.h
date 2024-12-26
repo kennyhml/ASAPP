@@ -1,7 +1,7 @@
 #pragma once
 #include "basestructure.h"
 #include "asa/game/settings.h"
-#include "asa/interfaces/asainterface.h"
+#include "asa/ui/asainterface.h"
 
 namespace asa
 {

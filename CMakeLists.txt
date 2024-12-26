@@ -55,36 +55,36 @@ add_library(asapp STATIC
         include/asa/game/controls.h
         include/asa/game/settings.h
         include/asa/game/window.h
-        include/asa/interfaces/wheels/baseactionwheel.h
-        include/asa/interfaces/info/baseentityinfo.h
-        include/asa/interfaces/info/baseinfo.h
-        include/asa/interfaces/inventories/baseinventory.h
-        include/asa/interfaces/maps/basetravelmap.h
-        include/asa/interfaces/components/button.h
-        include/asa/interfaces/components/combo_box.h
-        include/asa/interfaces/components/interface_component.h
-        include/asa/interfaces/components/search_bar.h
-        include/asa/interfaces/components/slot.h
-        include/asa/interfaces/components/tooltip.h
-        include/asa/interfaces/console.h
-        include/asa/interfaces/info/containerinfo.h
-        include/asa/interfaces/inventories/craftinginventory.h
-        include/asa/interfaces/info/dedicatedstorageinfo.h
-        include/asa/interfaces/info/dinoinfo.h
-        include/asa/interfaces/exceptions.h
-        include/asa/interfaces/hud.h
-        include/asa/interfaces/asainterface.h
-        include/asa/interfaces/interfaces.h
-        include/asa/interfaces/inventories/localinventory.h
-        include/asa/interfaces/main_menu.h
-        include/asa/interfaces/menu.h
-        include/asa/interfaces/mode_select.h
-        include/asa/interfaces/info/playerinfo.h
-        include/asa/interfaces/server_select.h
-        include/asa/interfaces/maps/spawnmap.h
-        include/asa/interfaces/maps/teleportmap.h
-        include/asa/interfaces/maps/travelmap.h
-        include/asa/interfaces/tribe_manager.h
+        include/asa/ui/wheels/baseactionwheel.h
+        include/asa/ui/info/baseentityinfo.h
+        include/asa/ui/info/baseinfo.h
+        include/asa/ui/storage/baseinventory.h
+        include/asa/ui/maps/basetravelmap.h
+        include/asa/ui/components/button.h
+        include/asa/ui/components/combo_box.h
+        include/asa/ui/components/interface_component.h
+        include/asa/ui/components/search_bar.h
+        include/asa/ui/components/slot.h
+        include/asa/ui/components/tooltip.h
+        include/asa/ui/console.h
+        include/asa/ui/info/containerinfo.h
+        include/asa/ui/storage/craftinginventory.h
+        include/asa/ui/info/dedicatedstorageinfo.h
+        include/asa/ui/info/dinoinfo.h
+        include/asa/ui/exceptions.h
+        include/asa/ui/hud.h
+        include/asa/ui/asainterface.h
+        include/asa/ui/interfaces.h
+        include/asa/ui/storage/localinventory.h
+        include/asa/ui/main_menu.h
+        include/asa/ui/menu.h
+        include/asa/ui/mode_select.h
+        include/asa/ui/info/playerinfo.h
+        include/asa/ui/server_select.h
+        include/asa/ui/maps/spawnmap.h
+        include/asa/ui/maps/teleportmap.h
+        include/asa/ui/maps/travelmap.h
+        include/asa/ui/tribe_manager.h
         include/asa/items/item.h
         include/asa/items/itemdata.h
         include/asa/structures/basestructure.h
@@ -97,7 +97,7 @@ add_library(asapp STATIC
         include/asa/structures/simple_bed.h
         include/asa/structures/teleporter.h
         include/asa/utility.h
-        include/asa/interfaces/components/tribelog_message.h
+        include/asa/ui/components/tribelog_message.h
         src/interfaces/components/tribelog_message.cpp
         include/asa/network/server.h
         include/asa/network/queries.h
@@ -105,19 +105,19 @@ add_library(asapp STATIC
         src/network/queries.cpp
         src/interfaces/components/tooltip.cpp
         src/interfaces/info/dinoinfo.cpp
-        include/asa/interfaces/inventories/dinoinventory.h
+        include/asa/ui/storage/dinoinventory.h
         src/interfaces/inventories/dinoinventory.cpp
         src/interfaces/menu.cpp
-        include/asa/interfaces/inventories/tribute_inventory.h
+        include/asa/ui/storage/tribute_inventory.h
         src/interfaces/inventories/tributeinventory.cpp
         include/asa/structures/tributeable.h
         src/structures/tributable.cpp
         include/asa/game/game.h
-        include/asa/interfaces/components/components.h
-        include/asa/interfaces/maps/exceptions.h
-        include/asa/interfaces/info/infos.h
-        include/asa/interfaces/inventories/inventories.h
-        include/asa/interfaces/maps/maps.h
+        include/asa/ui/components/components.h
+        include/asa/ui/maps/exceptions.h
+        include/asa/ui/info/infos.h
+        include/asa/ui/storage/inventories.h
+        include/asa/ui/maps/maps.h
         include/asa/core/managedthread.h
         src/core/managedthread.cpp
         include/asa/structures/structures.h

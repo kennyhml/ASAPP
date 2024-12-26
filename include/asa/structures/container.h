@@ -1,7 +1,7 @@
 #pragma once
 #include "interactable.h"
-#include "asa/interfaces/inventories/baseinventory.h"
-#include "asa/interfaces/info/containerinfo.h"
+#include "asa/ui/storage/baseinventory.h"
+#include "asa/ui/info/containerinfo.h"
 
 namespace asa
 {

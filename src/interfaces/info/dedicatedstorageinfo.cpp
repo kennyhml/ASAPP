@@ -1,4 +1,4 @@
-#include "asa/interfaces/info/dedicatedstorageinfo.h"
+#include "asa/ui/info/dedicatedstorageinfo.h"
 #include "asa/utility.h"
 
 namespace asa

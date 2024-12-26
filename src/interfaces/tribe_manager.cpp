@@ -1,5 +1,5 @@
-#include "asa/interfaces/tribe_manager.h"
-#include "asa/interfaces/exceptions.h"
+#include "asa/ui/tribe_manager.h"
+#include "asa/ui/exceptions.h"
 #include "asa/utility.h"
 #include "asa/core/state.h"
 #include "asa/network/queries.h"

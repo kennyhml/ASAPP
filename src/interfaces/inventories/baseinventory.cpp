@@ -1,6 +1,6 @@
 #include "asa/game/controls.h"
-#include "asa/interfaces/exceptions.h"
-#include "asa/interfaces/inventories/baseinventory.h"
+#include "asa/ui/exceptions.h"
+#include "asa/ui/storage/baseinventory.h"
 
 #include <iostream>
 
@@ -11,7 +11,7 @@ namespace asa
 {
     namespace
     {
-         constexpr int MAX_ITEMS_PER_PAGE = 36;
+        constexpr int MAX_ITEMS_PER_PAGE = 36;
     }
 
     base_inventory::base_inventory(const bool t_remote, std::unique_ptr<base_info> t_info)
@@ -38,19 +38,19 @@ namespace asa
 
     bool base_inventory::management_button::is_available() const
     {
-        static  cv::Vec3b base_color{0, 140, 171};
+        static cv::Vec3b base_color{0, 140, 171};
         return utility::count_matches(area, base_color, 10) > 20;
     }
 
     bool base_inventory::inv_tab_button::is_selected() const
     {
-        static  cv::Vec3b selected_color{188, 244, 255};
+        static cv::Vec3b selected_color{188, 244, 255};
         return utility::count_matches(area, selected_color, 10) > 100;
     }
 
     bool base_inventory::inv_tab_button::exists() const
     {
-        static  cv::Vec3b inactive_color{80, 141, 155};
+        static cv::Vec3b inactive_color{80, 141, 155};
         return utility::count_matches(area, inactive_color, 10) > 100 || is_selected();
     }
 
@@ -59,7 +59,7 @@ namespace asa
         assert_open(__func__);
         if (!is_remote_inventory_) { return false; }
 
-        static  cv::Vec3b text_color{191, 243, 255};
+        static cv::Vec3b text_color{191, 243, 255};
         return utility::count_matches(recv_remote_inv_area_, text_color, 25) > 100;
     }
 
@@ -79,7 +79,7 @@ namespace asa
         return window::match(embedded::interfaces::cb_arrowdown, item_filter.area, 0.8f);
     }
 
-    bool base_inventory::has(item& item, const bool search)
+    bool base_inventory::has(const item& item, const bool search)
     {
         assert_open(__func__);
 
@@ -96,7 +96,7 @@ namespace asa
                              item.get_inventory_icon_mask());
     }
 
-    bool base_inventory::count_stacks(item& item, int& count_out, const bool search)
+    bool base_inventory::count_stacks(const item& item, int& count_out, const bool search)
     {
         assert_open(__func__);
 
@@ -113,7 +113,7 @@ namespace asa
         return count_out != MAX_ITEMS_PER_PAGE;
     }
 
-    const item_slot* base_inventory::find_item(item& item, const bool is_searched,
+    const item_slot* base_inventory::find_item(const item& item, const bool is_searched,
                                                const bool search_for)
     {
         assert_open(__func__);
@@ -146,7 +146,8 @@ namespace asa
         }
     }
 
-    void base_inventory::popcorn(item& item, const int stacks, int* stacks_dropped)
+    base_inventory& base_inventory::popcorn(const item& item, const int stacks,
+                                            int* stacks_dropped)
     {
         assert_open(__func__);
         int dropped = 0;
@@ -166,20 +167,23 @@ namespace asa
 
         if (stacks_dropped) { *stacks_dropped = dropped; }
         if (searched) { search_bar.delete_search(); }
+        return *this;
     }
 
-    void base_inventory::popcorn(const int num_slots)
+    base_inventory& base_inventory::popcorn(const int num_slots)
     {
         assert_open(__func__);
 
         for (int slot = num_slots - 1; slot >= 0; slot--) {
             select_slot(slot);
             controls::press(get_action_mapping("DropItem"));
-            Sleep(100);
+            checked_sleep(100ms);
         }
+
+        return *this;
     }
 
-    void base_inventory::popcorn_all(const PopcornFlags flags)
+    base_inventory& base_inventory::popcorn_all(const PopcornFlags flags)
     {
         while (!slots[0].is_empty() && is_open()) {
             // for performance reason only check if the slot is empty if the
@@ -197,32 +201,36 @@ namespace asa
             }
         }
         window::post_up(get_action_mapping("DropItem"));
+        return *this;
     }
 
-    void base_inventory::take_slot(const item_slot& slot)
+    base_inventory& base_inventory::take_slot(const item_slot& slot)
     {
         if (!slot.is_hovered()) { select_slot(slot); }
         do {
             window::press(get_action_mapping("TransferItem"), 15ms);
         } while (!utility::await([&slot]() -> bool { return !slot.is_hovered(); }, 5s));
+        return *this;
     }
 
-    void base_inventory::close()
+    base_inventory& base_inventory::close()
     {
         const auto start = std::chrono::system_clock::now();
         while (is_open()) {
             close_button_.press();
             if (utility::await([this] { return !is_open(); }, 5s)) {
-                return;
+                break;
             }
 
             // Increased timeout to 60 seconds
             if (utility::timedout(start, 60s)) { throw failed_to_close(this); }
         }
+        return *this;
     }
 
-    void base_inventory::select_slot(const item_slot& slot, const bool hovered_check,
-                                     const bool tooltip_check) const
+    base_inventory& base_inventory::select_slot(const item_slot& slot,
+                                                const bool hovered_check,
+                                                const bool tooltip_check)
     {
         assert_open(__func__);
 
@@ -238,55 +246,62 @@ namespace asa
                 toggle_tooltips();
             }
             toggle_tooltips();
-            checked_sleep(std::chrono::milliseconds(100));
+            checked_sleep(100ms);
         }
+        return *this;
     }
 
-    void base_inventory::drop_all()
+    base_inventory& base_inventory::drop_all()
     {
         assert_open(__func__);
 
         drop_all_button_.press();
         search_bar.set_text_cleared();
-        Sleep(200);
-        // TODO: Wait for the items to be dropped
+        checked_sleep(200ms);
+        return *this;
     }
 
-    void base_inventory::drop_all(const item& item)
+    base_inventory& base_inventory::drop_all(const item& item)
     {
         search_bar.search_for(item.get_name());
         drop_all();
+        return *this;
     }
 
-    void base_inventory::drop_all(const std::string& term)
+    base_inventory& base_inventory::drop_all(const std::string& term)
     {
         search_bar.search_for(term);
         drop_all();
+        return *this;
     }
 
-    void base_inventory::transfer_all(base_inventory* receiver)
+    base_inventory& base_inventory::transfer_all(base_inventory* receiver)
     {
         transfer_all_button_.press();
         search_bar.set_text_cleared();
         // TODO: Wait for the items to be transferred in a smart way
         // Consider whether we have the receiver available or not.
+        return *this;
     }
 
-    void base_inventory::transfer_all(const item& item, base_inventory* receiver)
+    base_inventory& base_inventory::transfer_all(const item& item, base_inventory* receiver)
     {
         search_bar.search_for(item.get_name());
         checked_sleep(50ms);
         transfer_all();
+        return *this;
     }
 
-    void base_inventory::transfer_all(const std::string& term, base_inventory* receiver)
+    base_inventory& base_inventory::transfer_all(const std::string& term, base_inventory* receiver)
     {
         search_bar.search_for(term);
         checked_sleep(50ms);
         transfer_all(receiver);
+        return *this;
     }
 
-    void base_inventory::transfer(item& item, const int stacks, base_inventory* receiver,
+    base_inventory& base_inventory::transfer(const item& item, const int stacks,
+                                  base_inventory* receiver,
                                   const bool search)
     {
         assert_open(__func__);
@@ -301,9 +316,10 @@ namespace asa
             if (i++ > stacks && stacks != 0) { break; }
             take_slot(*slot);
         }
+        return *this;
     }
 
-    void base_inventory::transfer_rows(const item& item, const int rows)
+    base_inventory& base_inventory::transfer_rows(const item& item, const int rows)
     {
         search_bar.search_for(item.get_name());
 
@@ -317,9 +333,10 @@ namespace asa
             }
         }
         search_bar.delete_search();
+        return *this;
     }
 
-    void base_inventory::transfer_rows(const item& item,
+    base_inventory& base_inventory::transfer_rows(const item& item,
                                        const std::chrono::seconds duration)
     {
         search_bar.search_for(item.get_name());
@@ -335,26 +352,30 @@ namespace asa
             }
         }
         search_bar.delete_search();
+        return *this;
     }
 
-    void base_inventory::select_info_tab()
+    base_inventory& base_inventory::select_info_tab()
     {
         assert_open(__func__);
         if (is_remote_inventory_) { them_button_.press(); } else { you_button_.press(); }
+        return *this;
     }
 
-    void base_inventory::auto_stack()
+    base_inventory& base_inventory::auto_stack()
     {
         assert_open(__func__);
         auto_stack_button_.press();
+        return *this;
     }
 
-    void base_inventory::toggle_tooltips() const
+    base_inventory& base_inventory::toggle_tooltips()
     {
         window::press(get_action_mapping("TransferItem"));
+        return *this;
     }
 
-    void base_inventory::make_new_folder(const std::string& folder_name)
+    base_inventory& base_inventory::make_new_folder(const std::string& folder_name)
     {
         new_folder_button_.press();
         asa::checked_sleep(std::chrono::milliseconds(500));
@@ -363,6 +384,7 @@ namespace asa
         utility::set_clipboard(folder_name);
         controls::key_combination_press("ctrl", "v");
         controls::key_press("enter");
+        return *this;
     }
 
     void base_inventory::assert_open(std::string for_action) const

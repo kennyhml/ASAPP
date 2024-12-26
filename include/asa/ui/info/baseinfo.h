@@ -1,5 +1,5 @@
 #pragma once
-#include "asa/interfaces/asainterface.h"
+#include "asa/ui/asainterface.h"
 #include "asa/game/window.h"
 
 namespace asa
