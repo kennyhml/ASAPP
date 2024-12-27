@@ -125,12 +125,20 @@ add_library(asapp STATIC
         include/asa/items/exceptions.h
         include/asa/items/items.h
         src/items/items.cpp
+        include/asa/core/logging.h
+        src/core/logging.cpp
 )
 
 set_target_properties(asapp PROPERTIES
         CXX_STANDARD 23
         CXX_EXTENSIONS OFF
 )
+
+target_include_directories(asapp PUBLIC include)
+target_include_directories(asapp PRIVATE src)
+
+find_package(spdlog CONFIG REQUIRED)
+target_link_libraries(asapp PRIVATE spdlog::spdlog)
 
 find_package(Tesseract CONFIG REQUIRED)
 target_link_libraries(asapp PRIVATE Tesseract::libtesseract)
@@ -140,9 +148,6 @@ find_package(OpenCV REQUIRED)
 
 include_directories(${OpenCV_INCLUDE_DIRS})
 link_directories(${OpenCV_LIB_DIR})
-
-target_include_directories(asapp PUBLIC include)
-target_include_directories(asapp PRIVATE src)
 
 find_package(nlohmann_json CONFIG REQUIRED)
 target_link_libraries(asapp PRIVATE nlohmann_json::nlohmann_json)

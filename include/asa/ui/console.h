@@ -35,6 +35,7 @@ namespace asa
         void execute(const std::string& command);
 
     private:
+        std::string last_command_;
         cv::Rect bar_lower_{0, 1052, 1919, 20};
     };
 }

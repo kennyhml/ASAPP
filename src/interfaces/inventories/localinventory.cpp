@@ -1,5 +1,6 @@
 #include "asa/ui/storage/localinventory.h"
 #include "asa/utility.h"
+#include "asa/core/logging.h"
 #include "asa/game/settings.h"
 #include "asa/ui/exceptions.h"
 
@@ -8,6 +9,7 @@ namespace asa
     local_inventory& local_inventory::open()
     {
         const auto start = std::chrono::system_clock::now();
+        get_logger()->trace("Opening local player inventory..");
         while (!is_open()) {
             window::press(get_action_mapping("ShowMyInventory"));
             if (utility::await([this] { return is_open(); }, 5s)) { break; }

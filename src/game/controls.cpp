@@ -31,7 +31,7 @@ namespace asa::controls
             {"five", 0x35}, {"six", 0x36}, {"seven", 0x37}, {"eight", 0x38},
             {"nine", 0x39},
             {"backspace", VK_BACK}, {"leftshift", VK_LSHIFT}, {"tilde", VK_OEM_3},
-            {"comma", VK_OEM_COMMA}
+            {"comma", VK_OEM_COMMA}, {"up", VK_UP}
         };
 
         keyboard_mapping_t get_keyboard_mapping()
@@ -78,7 +78,8 @@ namespace asa::controls
     int get_virtual_keycode(std::string key)
     {
         // dirty fix for now
-        if (key == "Equals") { key = "="; } else if (key == "Backslash") { key = "\\"; }
+        if (key == "Equals") { key = "="; }
+        else if (key == "Backslash") { key = "\\"; }
 
         std::transform(key.begin(), key.end(), key.begin(), [](unsigned char c) {
             return std::tolower(c);
@@ -243,8 +244,8 @@ namespace asa::controls
 
     void key_combination_press(std::string holdKey, std::string pressKey)
     {
-        key_down(holdKey, std::chrono::milliseconds(20));
-        key_press(pressKey, std::chrono::milliseconds(20));
+        key_down(holdKey, 10ms);
+        key_press(pressKey, 10ms);
         key_up(holdKey);
     }
 }
