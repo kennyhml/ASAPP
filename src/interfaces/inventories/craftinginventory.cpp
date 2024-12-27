@@ -79,13 +79,13 @@ namespace asa
         if (!amount) { return; }
 
         while (amount >= 100) {
-            window::press("a");
+            post_press("a");
             amount -= 100;
             checked_sleep(50ms);
         }
 
         while (amount) {
-            window::press("e");
+            post_press("e");
             amount--;
             checked_sleep(50ms);
         }

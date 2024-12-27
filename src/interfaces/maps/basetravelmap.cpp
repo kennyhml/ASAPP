@@ -41,7 +41,7 @@ namespace asa
 
     bool base_travel_map::is_open() const
     {
-        return window::match(embedded::interfaces::day, day_time_);
+        return match(embedded::interfaces::day, day_time_);
     }
 
     bool base_travel_map::can_confirm_travel() const

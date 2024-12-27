@@ -1,7 +1,6 @@
 #include "asa/ui/components/button.h"
 
 #include "asa/utility.h"
-#include "asa/game/controls.h"
 
 namespace asa
 {
@@ -14,7 +13,7 @@ namespace asa
 
     void button::press()
     {
-        window::post_mouse_press_at(utility::center_of(area), controls::LEFT);
+        post_press(MouseButton::LEFT, utility::center_of(area));
 
         last_pressed = std::chrono::system_clock::now();
         last_button_press = last_pressed;

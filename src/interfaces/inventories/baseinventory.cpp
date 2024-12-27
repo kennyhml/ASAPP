@@ -1,4 +1,3 @@
-#include "asa/game/controls.h"
 #include "asa/ui/exceptions.h"
 #include "asa/ui/storage/baseinventory.h"
 
@@ -76,7 +75,7 @@ namespace asa
 
     bool base_inventory::is_open() const
     {
-        return window::match(embedded::interfaces::cb_arrowdown, item_filter.area, 0.8f);
+        return match(embedded::interfaces::cb_arrowdown, item_filter.area, 0.8f);
     }
 
     bool base_inventory::has(const item& item, const bool search)
@@ -92,7 +91,7 @@ namespace asa
         // ONLY the item can show up, just check the first slot for efficiency.
         if (search && !item.get_data().has_ambiguous_query) { return slots[0].has(item); }
 
-        return window::match(item.get_inventory_icon(), item_area, 0.7f, false,
+        return match(item.get_inventory_icon(), item_area, 0.7f, false,
                              item.get_inventory_icon_mask());
     }
 
@@ -100,7 +99,7 @@ namespace asa
     {
         assert_open(__func__);
 
-        const auto matches = window::locate_all(
+        const auto matches = locate_all(
             item.get_inventory_icon(), item_area, 0.9f, false,
             item.get_inventory_icon_mask());
 
@@ -160,7 +159,7 @@ namespace asa
         while (slots[0].has(item) && (dropped < stacks || stacks == -1)) {
             for (int i = 0; i < 4; i++) {
                 select_slot(slots[i]);
-                controls::press(get_action_mapping("DropItem"));
+                post_press(get_action_mapping("DropItem"));
                 dropped++;
             }
         }
@@ -176,7 +175,7 @@ namespace asa
 
         for (int slot = num_slots - 1; slot >= 0; slot--) {
             select_slot(slot);
-            controls::press(get_action_mapping("DropItem"));
+            post_press(get_action_mapping("DropItem"));
             checked_sleep(100ms);
         }
 
@@ -191,16 +190,16 @@ namespace asa
             const bool check_empty = !(flags & PopcornFlags_NoSlotChecks) && slots[slots.
                                          size() - 1].is_empty();
 
-            window::post_down(get_action_mapping("DropItem"));
+            post_down(get_action_mapping("DropItem"));
             for (int i = 0; i < MAX_ITEMS_PER_PAGE; i++) {
                 const bool reached_max = i > 5 && flags & PopcornFlags_UseSingleRow;
                 if (reached_max || (check_empty && slots[i].is_empty())) { break; }
 
-                window::set_mouse_pos(utility::center_of(slots[i].area));
-                window::post_down(get_action_mapping("DropItem"));
+                set_mouse_pos(utility::center_of(slots[i].area));
+                post_down(get_action_mapping("DropItem"));
             }
         }
-        window::post_up(get_action_mapping("DropItem"));
+        post_up(get_action_mapping("DropItem"));
         return *this;
     }
 
@@ -208,7 +207,7 @@ namespace asa
     {
         if (!slot.is_hovered()) { select_slot(slot); }
         do {
-            window::press(get_action_mapping("TransferItem"), 15ms);
+            post_press(get_action_mapping("TransferItem"), 15ms);
         } while (!utility::await([&slot]() -> bool { return !slot.is_hovered(); }, 5s));
         return *this;
     }
@@ -237,9 +236,9 @@ namespace asa
         if (hovered_check) {
             do {
                 const cv::Point location = utility::center_of(slot.area);
-                window::set_mouse_pos(location);
+                set_mouse_pos(location);
             } while (!utility::await([slot]() -> bool { return slot.is_hovered(); }, 2s));
-        } else { window::set_mouse_pos(utility::center_of(slot.area)); }
+        } else { set_mouse_pos(utility::center_of(slot.area)); }
 
         while (tooltip_check && !slot.get_tooltip()) {
             if (get_user_setting<bool>("bEnableInventoryItemTooltips")) {
@@ -323,12 +322,12 @@ namespace asa
     {
         search_bar.search_for(item.get_name());
 
-        window::post_mouse_press_at(utility::center_of(slots[0].area), controls::LEFT);
+        post_press(MouseButton::LEFT, utility::center_of(slots[0].area));
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < 6; j++) {
-                window::set_mouse_pos(utility::center_of(slots[j].area));
-                window::post_press(get_action_mapping("TransferItem"));
+                set_mouse_pos(utility::center_of(slots[j].area));
+                post_press(get_action_mapping("TransferItem"));
                 checked_sleep(250ms);
             }
         }
@@ -341,13 +340,13 @@ namespace asa
     {
         search_bar.search_for(item.get_name());
 
-        window::post_mouse_press_at(utility::center_of(slots[0].area), controls::LEFT);
+        post_press(MouseButton::LEFT, utility::center_of(slots[0].area));
         const auto start = std::chrono::system_clock::now();
 
         while (!utility::timedout(start, duration)) {
             for (int j = 0; j < 6; j++) {
-                window::set_mouse_pos(utility::center_of(slots[j].area));
-                window::post_press(get_action_mapping("TransferItem"));
+                set_mouse_pos(utility::center_of(slots[j].area));
+                post_press(get_action_mapping("TransferItem"));
                 checked_sleep(std::chrono::milliseconds(250));
             }
         }
@@ -371,7 +370,7 @@ namespace asa
 
     base_inventory& base_inventory::toggle_tooltips()
     {
-        window::press(get_action_mapping("TransferItem"));
+        post_press(get_action_mapping("TransferItem"));
         return *this;
     }
 
@@ -380,10 +379,10 @@ namespace asa
         new_folder_button_.press();
         asa::checked_sleep(std::chrono::milliseconds(500));
 
-        window::post_mouse_press_at({895, 499}, controls::LEFT);
+        post_press(MouseButton::LEFT, cv::Point{895, 499});
         utility::set_clipboard(folder_name);
-        controls::key_combination_press("ctrl", "v");
-        controls::key_press("enter");
+        post_combination("ctrl", "v");
+        post_press("enter");
         return *this;
     }
 

@@ -41,7 +41,7 @@ namespace asa
         }
 
         const auto mask = utility::mask(tooltip_area.value(), tooltip_white, 50);
-        const std::string res = window::ocr_threadsafe(
+        const std::string res = ocr_threadsafe(
             mask, tesseract::PSM_SINGLE_LINE, "");
 
         std::cout << "[+] OCR result: " << res << std::endl;
@@ -50,7 +50,7 @@ namespace asa
 
     std::optional<cv::Rect> cave_loot_crate::get_info_area()
     {
-        const auto loc = window::locate(embedded::text::lootcrate, cv::Rect(0, 0, 0, 0));
+        const auto loc = locate(embedded::text::lootcrate, cv::Rect(0, 0, 0, 0));
 
         if (!loc.has_value()) { return std::nullopt; }
         return cv::Rect(loc->x - 250, loc->y + loc->height + 2, 350, 30);

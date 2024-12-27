@@ -1,5 +1,7 @@
 #include "asa/ui/console.h"
 #include "asa/utility.h"
+#include "asa/core/exceptions.h"
+#include "asa/core/logging.h"
 
 namespace asa
 {
@@ -15,7 +17,7 @@ namespace asa
         if (is_open()) { return; }
 
         do {
-            window::press(get_action_mapping("ConsoleKeys"));
+            post_press(get_action_mapping("ConsoleKeys"));
         } while (!utility::await([this]() -> bool { return is_open(); }, 5s));
     }
 
@@ -23,26 +25,34 @@ namespace asa
     {
         if (!is_open()) { return; }
 
-        do { window::press("enter"); } while (!utility::await(
-            [this]() -> bool { return !is_open(); }, 5s));
+        do {
+            post_press("enter");
+        } while (!utility::await([this]() -> bool { return !is_open(); }, 5s));
     }
 
     void console::execute(const std::string& command)
     {
+        const utility::stopwatch sw;
+        get_logger()->info("Executing console command: '{}'..", command);
+
+        // The benefit to blindly pressing the key is marginal, so its worth just
+        // waiting for the console to have opened.
         open();
         if (last_command_ != command) {
             utility::set_clipboard(command);
-            controls::key_combination_press("ctrl", "v");
+            post_combination("ctrl", "v");
             last_command_ = command;
-        } else { controls::key_press("up", 5ms); }
+        } else {
+            get_logger()->debug("Command matches previous command, using 'arrow up'..");
+            post_press("up", 5ms);
+        }
 
-        // Keep trying to press enter until console closed
-        int counter = 0;
         do {
-            // Only try to close the console 12 times (aka 1min)
-            if (counter > 12) { break; }
-            window::press("enter");
-            counter++;
+            if (sw.timedout(10s)) {
+                throw asapp_error("Could not execute console command");
+            }
+            post_press("enter");
         } while (!utility::await([this] { return !is_open(); }, 5s));
+        get_logger()->info("Command was executed within {}ms.", sw.elapsed<>().count());
     }
 }

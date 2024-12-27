@@ -9,7 +9,7 @@ namespace asa
     {
         bool open()
         {
-            return window::match(embedded::text::beds, cv::Rect(283, 129, 91, 46));
+            return match(embedded::text::beds, cv::Rect(283, 129, 91, 46));
         }
     }
 
@@ -23,7 +23,7 @@ namespace asa
     {
         auto start = std::chrono::system_clock::now();
         while (is_open()) {
-            window::press("esc");
+            post_press("esc");
             if (utility::await([this]() { return !is_open(); },
                                std::chrono::seconds(5))) {
                 return;

@@ -28,7 +28,7 @@ namespace asa
         /**
          * @return Takes the image of the tooltip, it must be visible at this point.
          */
-        void take_image() { image_ = window::screenshot(area); }
+        void take_image() { image_ = screenshot(area); }
 
         [[nodiscard]] std::optional<cv::Rect> get_durability_area() const;
 

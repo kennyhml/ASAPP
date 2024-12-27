@@ -58,7 +58,7 @@ namespace asa
     {
         static cv::Rect roi(94, 69, 1751, 883);
 
-        cv::Mat image = window::screenshot(roi);
+        cv::Mat image = screenshot(roi);
         cv::Mat gray;
         cvtColor(image, gray, cv::COLOR_BGR2GRAY);
 
@@ -92,7 +92,7 @@ namespace asa
                 return get_hud()->can_default_teleport();
         }
 
-        cv::Mat screen = window::screenshot();
+        cv::Mat screen = screenshot();
         const auto narrowed = utility::find_multi_interactable_line(screen);
         if (!narrowed.has_value()) { return false; }
 
@@ -100,17 +100,17 @@ namespace asa
 
         switch (interaction) {
             case PlayerInteraction_Teleport:
-                return window::match(embedded::text::teleport_to, screen(roi));
+                return match(embedded::text::teleport_to, screen(roi));
             case PlayerInteraction_AccessBed:
-                return window::match(embedded::text::fast_travel, screen(roi));
+                return match(embedded::text::fast_travel, screen(roi));
             case PlayerInteraction_SitDown:
-                return window::match(embedded::text::sit_on, screen(roi));
+                return match(embedded::text::sit_on, screen(roi));
             case PlayerInteraction_Deposit:
-                return window::match(embedded::text::deposit, screen(roi));
+                return match(embedded::text::deposit, screen(roi));
             case PlayerInteraction_PickUp:
-                return window::match(embedded::text::pick_up, screen(roi));
+                return match(embedded::text::pick_up, screen(roi));
             case PlayerInteraction_AccessInventory:
-                return window::match(embedded::text::access_inventory, screen(roi));
+                return match(embedded::text::access_inventory, screen(roi));
         }
     }
 
@@ -126,7 +126,7 @@ namespace asa
             if (utility::timedout(start, 15s)) {
                 throw deposit_failed(item.get_name());
             }
-            window::press(get_action_mapping("Use"));
+            post_press(get_action_mapping("Use"));
         } while (!utility::await(deposited, 5s));
         return true;
     }
@@ -134,7 +134,7 @@ namespace asa
     bool local_player::turn_to_waypoint(const cv::Vec3b& color,
                                         const float variance)
     {
-        const cv::Mat screen = window::screenshot();
+        const cv::Mat screen = screenshot();
         const cv::Mat masked = utility::mask(screen, color, variance);
 
         std::vector<std::vector<cv::Point> > contours;
@@ -152,7 +152,7 @@ namespace asa
             return false;
         }
 
-        controls::turn_to(rect.x + rect.width / 2, rect.y + rect.height / 2);
+        turn_to(rect.x + rect.width / 2, rect.y + rect.height / 2);
         checked_sleep(100ms);
         return true;
     }
@@ -177,8 +177,8 @@ namespace asa
         do {
             if (utility::timedout(start, 30s)) { throw suicide_failed(); }
             // right click the implant to resolve the glitched implant
-            controls::mouse_press(controls::RIGHT);
-            window::press(get_action_mapping("Use"));
+            post_press(MouseButton::RIGHT);
+            post_press(get_action_mapping("Use"));
             checked_sleep(std::chrono::seconds(3));
         } while (get_hud()->is_extended_info_toggled());
         while (!get_spawn_map()->is_open()) {}
@@ -197,7 +197,7 @@ namespace asa
     //    menu->close();
     //
     //    console->execute("disconnect");
-    //    if (!utility::await([] { return window::is_playing_transition_movie(); }, 1min)) {
+    //    if (!utility::await([] { return is_playing_transition_movie(); }, 1min)) {
     //        throw std::exception("Failed to disconnect.");
     //    }
     //    utility::await([] { return main_menu->is_open(); }, 30s);
@@ -217,28 +217,28 @@ namespace asa
     void local_player::jump()
     {
         stand_up();
-        window::press(get_action_mapping("Jump"));
+        post_press(get_action_mapping("Jump"));
 
         last_jumped_ = std::chrono::system_clock::now();
     }
 
     void local_player::crouch()
     {
-        if (!is_crouched_) { window::press(get_action_mapping("Crouch")); }
+        if (!is_crouched_) { post_press(get_action_mapping("Crouch")); }
         is_crouched_ = true;
         is_proned_ = false;
     }
 
     void local_player::prone()
     {
-        if (!is_proned_) { window::press(get_action_mapping("Prone")); }
+        if (!is_proned_) { post_press(get_action_mapping("Prone")); }
         is_proned_ = true;
         is_crouched_ = false;
     }
 
     void local_player::stand_up()
     {
-        if (is_proned_ || is_crouched_) { window::press(get_action_mapping("Run")); }
+        if (is_proned_ || is_crouched_) { post_press(get_action_mapping("Run")); }
         is_proned_ = false;
         is_crouched_ = false;
     }
@@ -250,7 +250,7 @@ namespace asa
 
         const auto start = std::chrono::system_clock::now();
         do {
-            window::press(get_action_mapping("Access Inventory"));
+            post_press(get_action_mapping("Access Inventory"));
             if (utility::timedout(start, max)) {
                 throw entity_access_failed(&entity);
             }
@@ -270,7 +270,7 @@ namespace asa
         auto start = std::chrono::system_clock::now();
 
         do {
-            window::press(structure.get_interact_key());
+            post_press(structure.get_interact_key());
             if (utility::timedout(start, max)) {
                 // before we throw the error, lets try to reconnect and restore our
                 // state in order to handle the render bug
@@ -355,20 +355,20 @@ namespace asa
         handle_access_direction(flags);
         checked_sleep(1s);
 
-        controls::down(get_action_mapping("Use"));
+        post_down(get_action_mapping("Use"));
         checked_sleep(2s);
 
-        const auto location = window::locate(embedded::wheel_actions::lay_on,
+        const auto location = locate(embedded::wheel_actions::lay_on,
                                              cv::Rect{683, 253, 543, 556});
         if (!location.has_value()) {
             throw std::exception("Failed to locate lay_on position");
         }
 
         const auto pos = utility::center_of(*location);
-        window::set_mouse_pos({pos.x + 683, pos.y + 253});
+        set_mouse_pos({pos.x + 683, pos.y + 253});
 
         checked_sleep(1s);
-        controls::release(get_action_mapping("Use"));
+        post_up(get_action_mapping("Use"));
     }
 
     void local_player::mount(dino_entity& entity)
@@ -385,7 +385,7 @@ namespace asa
                 if (entity.get_inventory()->is_open()) {
                     entity.get_inventory()->close();
                 }
-                window::press(get_action_mapping("Use"));
+                post_press(get_action_mapping("Use"));
             } while (!utility::await([this] { return is_riding_mount(); }, 10s));
         }
         get_hud()->toggle_extended(false);
@@ -399,7 +399,7 @@ namespace asa
 
         if (is_riding_mount()) {
             do {
-                window::press(get_action_mapping("Use"));
+                post_press(get_action_mapping("Use"));
             } while (!utility::await([this] { return !is_riding_mount(); }, 5s));
         }
         get_hud()->toggle_extended(false);
@@ -447,7 +447,7 @@ namespace asa
             }
 
             do {
-                window::press(get_action_mapping("Reload"));
+                post_press(get_action_mapping("Reload"));
             } while (!utility::await([] { return !get_hud()->can_default_teleport(); },
                                      5s));
         } else {
@@ -467,7 +467,7 @@ namespace asa
 
     void local_player::get_off_bed()
     {
-        window::press(get_action_mapping("Reload"));
+        post_press(get_action_mapping("Reload"));
         checked_sleep(std::chrono::seconds(3));
         reset_view_angles();
     }
@@ -542,14 +542,14 @@ namespace asa
     void local_player::turn_right(const int degrees,
                                   const std::chrono::milliseconds delay)
     {
-        controls::turn_degrees_lr(degrees, 0);
+        turn(degrees, 0);
         current_yaw_ += degrees;
         checked_sleep(delay);
     }
 
     void local_player::turn_left(const int degrees, const std::chrono::milliseconds delay)
     {
-        controls::turn_degrees_lr(-degrees, 0);
+        turn(degrees, 0);
         current_yaw_ -= degrees;
         checked_sleep(delay);
     }
@@ -557,7 +557,7 @@ namespace asa
     void local_player::turn_down(const int degrees, const std::chrono::milliseconds delay)
     {
         const int allowed = std::min(90 - current_pitch_, degrees);
-        controls::turn_degrees_ud(0, allowed);
+        turn(0, allowed);
         current_pitch_ += allowed;
         checked_sleep(delay);
     }
@@ -565,7 +565,7 @@ namespace asa
     void local_player::turn_up(const int degrees, const std::chrono::milliseconds delay)
     {
         const int allowed = std::min(90 + current_pitch_, degrees);
-        controls::turn_degrees_ud(0, -allowed);
+        turn(0, -allowed);
         current_pitch_ -= allowed;
         checked_sleep(delay);
     }

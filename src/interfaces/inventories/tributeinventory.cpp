@@ -13,6 +13,6 @@ namespace asa
     {
         search_bar.search_for(boss_name);
         select_slot(0);
-        controls::press(get_action_mapping("Use"));
+        post_press(get_action_mapping("Use"));
     }
 }

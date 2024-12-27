@@ -2,7 +2,6 @@
 #include "asa/ui/components/search_bar.h"
 #include "../../../include/asa/utility.h"
 #include "asa/core/state.h"
-#include "asa/game/controls.h"
 
 namespace asa
 {
@@ -51,7 +50,7 @@ namespace asa
         searching = true;
 
         utility::set_clipboard(term);
-        controls::key_combination_press("ctrl", "v");
+        post_combination("ctrl", "v");
 
         if (!utility::await([this] { return has_text_entered(); }, 5s)) {
             std::cerr << "[!] Failed to search, trying again... searching for " << term <<
@@ -60,9 +59,9 @@ namespace asa
         }
 
         checked_sleep(50ms);
-        window::press("enter");
+        post_press("enter");
         checked_sleep(50ms);
-        window::post_mouse_press_at({955, 344}, controls::LEFT);
+        post_press(MouseButton::LEFT, cv::Point{955, 344});
 
         searching = false;
         last_searched_term = term;
@@ -74,7 +73,7 @@ namespace asa
         const auto start = std::chrono::system_clock::now();
 
         do {
-            window::post_mouse_press_at(utility::center_of(area), controls::LEFT);
+            post_press(MouseButton::LEFT, utility::center_of(area));
         } while (!utility::await([this] { return has_blinking_cursor(); }, 50ms)
                  && !utility::timedout(start, 10s));
     }
@@ -83,12 +82,12 @@ namespace asa
     {
         press();
 
-        controls::key_combination_press("Ctrl", "a");
+        post_combination("Ctrl", "a");
         checked_sleep(40ms);
-        controls::key_press("Delete");
+        post_press("Delete");
 
         checked_sleep(50ms);
-        window::press("enter");
+        post_press("enter");
 
         set_text_cleared();
     }

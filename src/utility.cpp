@@ -61,7 +61,7 @@ namespace asa::utility
 
     cv::Mat mask(const cv::Rect& roi, const cv::Vec3b& color, int variance)
     {
-        return mask(window::screenshot(roi), color, variance);
+        return mask(screenshot(roi), color, variance);
     }
 
     void get_ranges(const cv::Vec3b& src, cv::Vec3b& low, cv::Vec3b& high, const int v)
@@ -85,7 +85,7 @@ namespace asa::utility
 
     int count_matches(const cv::Rect& img, const cv::Vec3b& color, int variance)
     {
-        return count_matches(window::screenshot(img), color, variance);
+        return count_matches(screenshot(img), color, variance);
     }
 
     bool pixel_matches(const cv::Vec3b& c1, const cv::Vec3b& c2, const int tolerance)
@@ -197,5 +197,12 @@ namespace asa::utility
             }
         }
         return out;
+    }
+
+    void to_lower(std::string& str)
+    {
+        std::ranges::transform(str, str.begin(), [](const unsigned char c) {
+            return std::tolower(c);
+        });
     }
 }

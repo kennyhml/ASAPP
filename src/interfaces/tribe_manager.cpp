@@ -63,7 +63,7 @@ namespace asa
             static cv::Vec3b time_rgb{192, 192, 192};
 
             const cv::Mat mask = utility::mask(src, time_rgb, 120);
-            const std::string raw = window::ocr_threadsafe(
+            const std::string raw = ocr_threadsafe(
                 mask, tesseract::PSM_SINGLE_LINE, TIMESTAMP_OCR_WHITELIST);
 
             return tribelog_message::timestamp::parse(utility::fix(raw, OCR_FIXES));
@@ -82,7 +82,7 @@ namespace asa
                 mask |= utility::mask(src, turret_name_color, 120);
             }
 
-            return window::ocr_threadsafe(mask, tesseract::PSM_SINGLE_BLOCK,
+            return ocr_threadsafe(mask, tesseract::PSM_SINGLE_BLOCK,
                                           CONTENT_OCR_WHITELIST);
         }
 
@@ -115,7 +115,7 @@ namespace asa
 
     bool tribe_manager::is_open() const
     {
-        return window::match(embedded::interfaces::tribemanager,
+        return match(embedded::interfaces::tribemanager,
                              tribe_manager_button.area);
     }
 
@@ -123,7 +123,7 @@ namespace asa
     {
         const auto start = std::chrono::system_clock::now();
         while (!is_open()) {
-            window::press(get_action_mapping("ShowTribeManager"));
+            post_press(get_action_mapping("ShowTribeManager"));
             if (utility::await([this]() { return is_open(); }, 5s)) {
                 break;
             }
@@ -187,7 +187,7 @@ namespace asa
     {
         // we only care about the first 30 pixels on the x-axis
         const cv::Mat roi(src, cv::Rect(0, 0, 40, src.rows));
-        auto matches = window::locate_all(embedded::interfaces::day_log, roi, 0.81);
+        auto matches = locate_all(embedded::interfaces::day_log, roi, 0.81);
 
         // sort the matches by their y-position in descending order
         std::ranges::sort(matches, [](const auto& a, const auto& b) -> bool {
@@ -209,7 +209,7 @@ namespace asa
 
     cv::Mat tribe_manager::get_current_logs_image() const
     {
-        return window::screenshot(tribe_log_area);
+        return screenshot(tribe_log_area);
     }
 
     bool tribe_manager::is_new_message(const tribelog_message::timestamp time,

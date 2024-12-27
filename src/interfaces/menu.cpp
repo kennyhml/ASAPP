@@ -8,7 +8,7 @@ namespace asa
 {
     bool menu::is_open() const
     {
-        return window::match(embedded::text::resume, cv::Rect(894, 416, 143, 35));
+        return match(embedded::text::resume, cv::Rect(894, 416, 143, 35));
     }
 
     void menu::open()
@@ -16,7 +16,7 @@ namespace asa
         const auto start = std::chrono::system_clock::now();
 
         while (!is_open()) {
-            controls::key_press("esc");
+            post_press("esc");
 
             if (utility::await([this] { return is_open(); }, 3s)) {
                 break;
@@ -35,7 +35,7 @@ namespace asa
         const auto start = std::chrono::system_clock::now();
 
         while (is_open()) {
-            controls::key_press("esc");
+            post_press("esc");
 
             if (utility::await([this] { return !is_open(); }, 3s)) {
                 break;

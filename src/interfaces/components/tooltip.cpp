@@ -13,7 +13,7 @@ namespace asa
     {
         if (image_.empty()) { return std::nullopt; }
 
-        const auto res = window::locate(embedded::text::durability, image_);
+        const auto res = locate(embedded::text::durability, image_);
         if (!res.has_value()) { return std::nullopt; }
 
         return cv::Rect(res->x + res->width, res->y - 2, res->width * 1.2, res->height + 4);

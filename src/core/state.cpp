@@ -71,7 +71,7 @@ namespace asa
 
     bool is_playing_movie()
     {
-        return window::match(embedded::interfaces::server_transition,
+        return match(embedded::interfaces::server_transition,
                              cv::Rect{1569, 698, 342, 364});
     }
 }

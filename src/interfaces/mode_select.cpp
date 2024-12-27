@@ -5,7 +5,7 @@ namespace asa
 {
     bool mode_select::is_open() const
     {
-        return window::match(embedded::interfaces::back, back_button.area);
+        return match(embedded::interfaces::back, back_button.area);
     }
 
     void mode_select::join_game()
@@ -14,7 +14,7 @@ namespace asa
             return;
         }
         do {
-            window::post_mouse_press_at({614, 594}, controls::LEFT);
+            post_press(MouseButton::LEFT, cv::Point{614, 594});
         } while (!utility::await([this]() { return !is_open(); }, 5s));
     }
 }

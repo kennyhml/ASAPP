@@ -12,7 +12,6 @@ add_library(asapp STATIC
         src/entities/exceptions.cpp
         src/entities/localplayer.cpp
         src/interfaces/info/baseentitiyinfo.cpp
-        src/game/controls.cpp
         src/game/settings.cpp
         src/game/window.cpp
         src/interfaces/wheels/baseactionwheel.cpp
@@ -52,7 +51,6 @@ add_library(asapp STATIC
         include/asa/entities/entities.h
         include/asa/entities/exceptions.h
         include/asa/entities/localplayer.h
-        include/asa/game/controls.h
         include/asa/game/settings.h
         include/asa/game/window.h
         include/asa/ui/wheels/baseactionwheel.h
@@ -127,6 +125,7 @@ add_library(asapp STATIC
         src/items/items.cpp
         include/asa/core/logging.h
         src/core/logging.cpp
+        include/asa/game/exceptions.h
 )
 
 set_target_properties(asapp PROPERTIES

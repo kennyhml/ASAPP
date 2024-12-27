@@ -24,7 +24,7 @@ namespace asa
         }
 
         do {
-            window::press(get_action_mapping("Use"));
+            post_press(get_action_mapping("Use"));
         } while (!utility::await([this, &item, slot] {
             return get_info()->get_slot(slot).has(item);
         }, 5s));

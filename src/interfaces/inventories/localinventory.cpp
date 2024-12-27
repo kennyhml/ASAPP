@@ -11,7 +11,7 @@ namespace asa
         const auto start = std::chrono::system_clock::now();
         get_logger()->trace("Opening local player inventory..");
         while (!is_open()) {
-            window::press(get_action_mapping("ShowMyInventory"));
+            post_press(get_action_mapping("ShowMyInventory"));
             if (utility::await([this] { return is_open(); }, 5s)) { break; }
             if (utility::timedout(start, 30s)) { throw failed_to_open(this); }
         }
@@ -69,7 +69,7 @@ namespace asa
 
         select_info_tab();
         do {
-            window::press(get_action_mapping("Use"));
+            post_press(get_action_mapping("Use"));
         } while (!utility::await([this, &item, slot] {
             return get_info()->get_slot(slot).has(item);
         }, 5s));

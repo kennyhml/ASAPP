@@ -7,14 +7,14 @@ namespace asa
 {
     bool teleport_map::is_open() const
     {
-        return window::match(embedded::text::teleports, cv::Rect(239, 126, 176, 51));
+        return match(embedded::text::teleports, cv::Rect(239, 126, 176, 51));
     }
 
     void teleport_map::close()
     {
         const auto start = std::chrono::system_clock::now();
         while (is_open()) {
-            window::press("esc");
+            post_press("esc");
             if (utility::await([this]() { return !is_open(); }, 5s)) {
                 return;
             }

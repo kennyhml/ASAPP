@@ -10,7 +10,7 @@ namespace asa
         {
             static cv::Vec3b color{1, 156, 136};
 
-            const cv::Mat img = window::screenshot(bar);
+            const cv::Mat img = screenshot(bar);
             const int filled = utility::count_matches(img, color, 20);
             return static_cast<float>(filled) / static_cast<float>(bar.width);
         }
@@ -48,7 +48,7 @@ namespace asa
         while (!gear_slots_.empty()) {
             auto point = utility::center_of(gear_slot.area);
             checked_sleep(5ms);
-            window::click_at(point, controls::LEFT);
+            post_press(MouseButton::LEFT, point);
             checked_sleep(10ms);
         }
     }

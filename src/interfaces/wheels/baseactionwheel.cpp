@@ -14,15 +14,15 @@ namespace asa
 
     void base_action_wheel::select_lay_on() const
     {
-        const auto loc = window::locate(embedded::interfaces::lay_on, area, 0.9);
+        const auto loc = locate(embedded::interfaces::lay_on, area, 0.9);
         if (!loc.has_value()) {
             std::cerr << "[!] Lay on option not found! " << std::endl;
             return;
         }
 
         const cv::Point point = utility::center_of(*loc);
-        window::set_mouse_pos({area.x + point.x, area.y + point.y});
+        set_mouse_pos({area.x + point.x, area.y + point.y});
         checked_sleep(std::chrono::milliseconds(400));
-        controls::mouse_press(controls::LEFT);
+        post_press(MouseButton::LEFT);
     }
 }

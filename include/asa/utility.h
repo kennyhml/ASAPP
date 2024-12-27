@@ -6,6 +6,37 @@
 
 namespace asa::utility
 {
+    bool await(const std::function<bool()>& condition, std::chrono::milliseconds timeout);
+
+    template<typename Duration>
+    bool timedout(const std::chrono::system_clock::time_point& start, Duration timeout)
+    {
+        const auto now = std::chrono::system_clock::now();
+        return now - start >= timeout;
+    }
+
+    template<typename Cast>
+    Cast get_elapsed(const std::chrono::system_clock::time_point& start)
+    {
+        return std::chrono::duration_cast<Cast>(std::chrono::system_clock::now() - start);
+    }
+
+    struct stopwatch
+    {
+    public:
+        template<typename T = std::chrono::milliseconds>
+        [[nodiscard]] T elapsed() const { return get_elapsed<T>(start_); }
+
+        template<typename T>
+        [[nodiscard]] bool timedout(const T max) const
+        {
+            return utility::timedout(start_, max);
+        }
+
+    private:
+        std::chrono::system_clock::time_point start_ = std::chrono::system_clock::now();
+    };
+
     /**
      * @brief This function helps optimize the template match on all interactions
      * that are underlined by the cyan line which will appear when one or more options
@@ -13,7 +44,8 @@ namespace asa::utility
      *
      * @return The roi to look for the interaction text in if found, else std::nullopt.
      */
-    std::optional<cv::Rect> find_multi_interactable_line(const cv::Mat& src, bool* match_full = nullptr);
+    std::optional<cv::Rect> find_multi_interactable_line(
+        const cv::Mat& src, bool* match_full = nullptr);
 
 
     cv::Rect max_contour(const std::vector<std::vector<cv::Point> >& contours);
@@ -63,27 +95,11 @@ namespace asa::utility
 
     bool point_in_bounds(const cv::Point& point, const cv::Rect& bounds);
 
-
-    bool await(const std::function<bool()>& condition, std::chrono::milliseconds timeout);
-
-    template<typename Duration>
-    bool timedout(const std::chrono::system_clock::time_point& start, Duration timeout)
-    {
-        auto now = std::chrono::system_clock::now();
-        return now - start >= timeout;
-    }
-
     bool is_only_one_bit_set(int bitfield);
 
     void set_clipboard(const std::string& term);
 
     cv::Mat mask_alpha_channel(const cv::Mat& src);
-
-    template<typename Cast>
-    Cast get_elapsed(std::chrono::system_clock::time_point start)
-    {
-        return std::chrono::duration_cast<Cast>(std::chrono::system_clock::now() - start);
-    }
 
     bool iequal(const std::string& a, const std::string& b);
 
@@ -97,4 +113,6 @@ namespace asa::utility
      */
     std::string fix(const std::string& src,
                     const std::map<std::string, std::string>& fixes);
+
+    void to_lower(std::string& str);
 }

@@ -24,7 +24,7 @@ namespace asa
 
     bool server_select::is_open() const
     {
-        return window::match(embedded::interfaces::refresh, refresh_button_.area);
+        return match(embedded::interfaces::refresh, refresh_button_.area);
     }
 
     bool server_select::can_join() const
@@ -60,7 +60,7 @@ namespace asa
         searchbar_.press();
         checked_sleep(std::chrono::milliseconds(100));
         for (int i = 0; i < 10; ++i) {
-            controls::key_press("backspace", std::chrono::milliseconds(20));
+            post_press("backspace", std::chrono::milliseconds(20));
         }
         searchbar_.search_for(name);
         checked_sleep(std::chrono::seconds(3));

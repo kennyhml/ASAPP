@@ -5,14 +5,14 @@ namespace asa
 {
     bool main_menu::is_open() const
     {
-        return window::match(embedded::interfaces::join_last_session,
+        return match(embedded::interfaces::join_last_session,
                              join_last_session_button.area
         );
     }
 
     bool main_menu::got_connection_timeout() const
     {
-        return window::match(embedded::interfaces::accept, accept.area);
+        return match(embedded::interfaces::accept, accept.area);
     }
 
     void main_menu::accept_popup()

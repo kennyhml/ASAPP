@@ -1,25 +1,21 @@
 #include "asa/game/window.h"
 #include "asa/utility.h"
 #include "asa/core/state.h"
+#include "asa/core/logging.h"
+#include "asa/game/exceptions.h"
 
 #include <chrono>
 #include <fstream>
-#include <iostream>
 #include <random>
-#include <opencv2/highgui.hpp>
 #include <tesseract/baseapi.h>
 
-#include "asa/core/exceptions.h"
-
-namespace asa::window
+namespace asa
 {
     namespace
     {
-
-
+        using keyboard_mapping_t = std::unordered_map<std::string, int>;
 
         tesseract::TessBaseAPI* tesseract_engine = nullptr;
-
         HWND hwnd = nullptr;
 
         auto CRASH_WIN_TITLE = "The UE-ShooterGame Game has crashed and will close";
@@ -27,6 +23,103 @@ namespace asa::window
         // TODO: Paddings need to be tested on other resolutions
         constexpr auto WINDOWED_PADDING_TOP = 31;
         constexpr auto WINDOWED_PADDING = 8;
+
+        constexpr float PIX_PER_DEGREE_LR = 129.f / 90.f;
+        constexpr float PIX_PER_DEGREE_UD = 115.f / 90.f;
+
+        constexpr float MAX_LR_SENS = 3.2f;
+        constexpr float MAX_UD_SENS = 3.2f;
+        constexpr float MAX_FOV = 1.25f;
+
+        std::mutex ocr_mutex;
+
+        const keyboard_mapping_t base_keymap = {
+            {"tab", VK_TAB}, {"f1", VK_F1}, {"f2", VK_F2}, {"f3", VK_F3}, {"f4", VK_F4},
+            {"f5", VK_F5}, {"f6", VK_F6}, {"f7", VK_F7}, {"f8", VK_F8}, {"f9", VK_F9},
+            {"f10", VK_F10}, {"delete", VK_DELETE}, {"home", VK_HOME}, {"end", VK_END},
+            {"backspace", VK_BACK}, {"enter", VK_RETURN}, {"period", VK_OEM_PERIOD},
+            {"numpadzero", VK_NUMPAD0}, {"numpadone", VK_NUMPAD1}, {"shift", VK_SHIFT},
+            {"numpadtwo", VK_NUMPAD2}, {"numpadthree", VK_NUMPAD3},
+            {"numpadfour", VK_NUMPAD4}, {"numpadfive", VK_NUMPAD5},
+            {"numpadsix", VK_NUMPAD6}, {"numpadseven", VK_NUMPAD7},
+            {"numpadeight", VK_NUMPAD8}, {"NumPadnine", VK_NUMPAD9}, {"ctrl", VK_CONTROL},
+            {"esc", VK_ESCAPE}, {"space", VK_SPACE}, {"spacebar", VK_SPACE},
+            {"zero", 0x30}, {"one", 0x31}, {"two", 0x32}, {"three", 0x33}, {"four", 0x34},
+            {"five", 0x35}, {"six", 0x36}, {"seven", 0x37}, {"eight", 0x38},
+            {"nine", 0x39},
+            {"backspace", VK_BACK}, {"leftshift", VK_LSHIFT}, {"tilde", VK_OEM_3},
+            {"comma", VK_OEM_COMMA}, {"up", VK_UP}
+        };
+
+        const auto str_to_button = std::unordered_map<std::string, MouseButton>{
+            {"LeftMouseButton", MouseButton::LEFT},
+            {"RightMouseButton", MouseButton::RIGHT},
+            {"MiddleMouseButton", MouseButton::MIDDLE},
+            {"ThumbMouseButton", MouseButton::MOUSE4},
+            {"ThumbMouseButton2", MouseButton::MOUSE5},
+        };
+
+        keyboard_mapping_t get_keyboard_mapping()
+        {
+            keyboard_mapping_t mapping = base_keymap;
+
+            for (int i = 32; i < 128; i++) {
+                const char c = static_cast<char>(i);
+                mapping[std::string(1, c)] = VkKeyScanA(c);
+            }
+            return mapping;
+        }
+
+        [[nodiscard]] int get_virtual_keycode(std::string key)
+        {
+            // dirty fix for now
+            if (key == "Equals") {
+                key = "=";
+            } else if (key == "Backslash") {
+                key = "\\";
+            }
+
+            utility::to_lower(key);
+            static keyboard_mapping_t mapping = get_keyboard_mapping();
+            return mapping.at(key);
+        }
+
+        [[nodiscard]] bool is_mouse_input(const action_mapping& input)
+        {
+            return input.key.contains("Mouse");
+        }
+
+        [[nodiscard]] float get_left_right_factor()
+        {
+            return MAX_LR_SENS / get_user_setting<float>("LookLeftRightSensitivity");
+        }
+
+        [[nodiscard]] float get_up_down_factor()
+        {
+            return MAX_UD_SENS / get_user_setting<float>("LookUpDownSensitivity");
+        }
+
+        [[nodiscard]] float get_fov_factor()
+        {
+            return MAX_FOV / get_user_setting<float>("FOVMultiplier");
+        }
+
+        void raw_input_key_down(const std::string& key)
+        {
+            INPUT input{};
+            input.type = INPUT_KEYBOARD;
+            input.ki.wVk = get_virtual_keycode(key);
+            SendInput(1, &input, sizeof(INPUT));
+        }
+
+        void raw_input_key_up(const std::string& key)
+        {
+            INPUT input{};
+            input.type = INPUT_KEYBOARD;
+            input.ki.dwFlags = KEYEVENTF_KEYUP;
+            input.ki.wVk = get_virtual_keycode(key);
+            SendInput(1, &input, sizeof(INPUT));
+        }
 
         BITMAPINFOHEADER get_bitmap_info_header(const int width, const int height)
         {
@@ -44,25 +137,13 @@ namespace asa::window
             bi.biClrImportant = 4;
             return bi;
         }
-
-        BOOL CALLBACK enum_windows_proc(HWND hwnd, LPARAM lparam)
-        {
-            const auto windows = reinterpret_cast<std::map<std::string, HWND>*>(lparam);
-
-            constexpr int max = 1024;
-            char window_text[max];
-            GetWindowTextA(hwnd, window_text, max);
-
-            (*windows)[window_text] = hwnd;
-            return true;
-        }
     }
 
-    void tesseract_init()
+    void initialize_tesseract()
     {
         tesseract_engine = new tesseract::TessBaseAPI();
         if (tesseract_engine->Init("tessdata", "eng")) {
-            throw asapp_error("Could not initialize tesseract");
+            throw tesseract_not_initialized("tessdata");
         }
     }
 
@@ -130,15 +211,12 @@ namespace asa::window
         return {GetRValue(color), GetGValue(color), GetBValue(color)};
     }
 
-    void set_focus()
+    void set_window_focus()
     {
-        if (!hwnd) {
-            throw std::exception("set_focus called without a known window handle");
-        }
         SetForegroundWindow(hwnd);
     }
 
-    void close()
+    void quit()
     {
         auto crash = FindWindowExA(nullptr, nullptr, nullptr, CRASH_WIN_TITLE);
         if (!crash) { crash = FindWindowA(nullptr, "Crash!"); }
@@ -241,9 +319,6 @@ namespace asa::window
                std::nullopt;
     }
 
-
-    inline std::mutex ocr_mutex;
-
     std::string ocr_threadsafe(const cv::Mat& src, const tesseract::PageSegMode mode,
                                const char* whitelist)
     {
@@ -259,35 +334,23 @@ namespace asa::window
         return tesseract_engine->GetUTF8Text();
     }
 
-    void get_handle(std::chrono::seconds timeout)
+    HWND get_window_handle(std::optional<std::chrono::seconds> timeout)
     {
-        using seconds = std::chrono::seconds;
+        const utility::stopwatch sw;
+        get_logger()->info("Obtaining window handle..");
 
-        const auto start = std::chrono::system_clock::now();
-        auto interval_start = start;
-        bool info = false;
-
+        hwnd = nullptr;
         do {
-            auto now = std::chrono::system_clock::now();
-            auto time_passed = std::chrono::duration_cast<seconds>(now - start);
-            auto interval_passed = std::chrono::duration_cast<seconds>(
-                now - interval_start);
-
             hwnd = FindWindowA("UnrealWindow", "ArkAscended");
+            checked_sleep(1s);
+        } while (!hwnd && (timeout.has_value() && !sw.timedout(*timeout)));
+        if (!hwnd) { throw window_not_found(); }
 
-            if (time_passed> timeout) {
-                return;
-            }
-
-            if ((!hwnd && interval_passed.count() > 10) || !info) {
-                std::cout << "[+] Trying to find the window..." << std::endl;
-                interval_start = now;
-                info = true;
-            }
-        } while (!hwnd);
+        get_logger()->info("ArkAscended HWND acquired: 0x{:x}", reinterpret_cast<uintptr_t>(hwnd));
+        return hwnd;
     }
 
-    RECT get_window_rect()
+    cv::Rect get_window_boundaries()
     {
         RECT rect;
         GetWindowRect(hwnd, &rect);
@@ -299,7 +362,10 @@ namespace asa::window
             rect.bottom -= WINDOWED_PADDING;
         }
 
-        return rect;
+        return {
+            static_cast<int>(rect.left), static_cast<int>(rect.top),
+            static_cast<int>(rect.right), static_cast<int>(rect.bottom)
+        };
     }
 
     bool set_foreground()
@@ -307,102 +373,22 @@ namespace asa::window
         return SetForegroundWindow(hwnd) != NULL;
     }
 
-    bool has_crash_popup()
+    bool is_hwnd_valid()
     {
-        return FindWindowExA(nullptr, nullptr, nullptr, CRASH_WIN_TITLE)
-               || FindWindowA(nullptr, "Crash!");
+        return IsWindow(hwnd);
     }
 
-    void set_mouse_pos(const cv::Point& location)
+    void post_down(const action_mapping& action)
     {
-        auto r = get_window_rect();
-        SetCursorPos(location.x + r.left, location.y + r.top);
+        if (is_mouse_input(action)) {
+            post_down(str_to_button.at(action.key));
+        } else {
+            post_down(action.key);
+        }
     }
 
-
-    void click_at(const cv::Point& position, const controls::MouseButton button,
-                  const std::chrono::milliseconds delay)
+    void post_down(const MouseButton button)
     {
-        post_mouse_press_at(position, button);
-        checked_sleep(delay);
-    }
-
-    void down(const action_mapping& input, const std::chrono::milliseconds delay)
-    {
-        controls::down(input, delay);
-    }
-
-    void up(const action_mapping& input, const std::chrono::milliseconds delay)
-    {
-        controls::release(input, delay);
-    }
-
-    void press(const action_mapping& input, const std::chrono::milliseconds delay)
-    {
-        controls::press(input, delay);
-    }
-
-    void down(const std::string& key, const std::chrono::milliseconds delay)
-    {
-        controls::key_down(key, delay);
-    }
-
-    void up(const std::string& key, const std::chrono::milliseconds delay)
-    {
-        controls::key_up(key, delay);
-    }
-
-    void press(const std::string& key, const std::chrono::milliseconds delay)
-    {
-        controls::key_press(key, delay);
-    }
-
-    void post_down(const action_mapping& input, const std::chrono::milliseconds delay)
-    {
-        controls::is_mouse_input(input)
-            ? post_mouse_down(controls::str_to_button.at(input.key), delay)
-            : post_key_down(input.key, delay);
-    }
-
-    void post_up(const action_mapping& input, const std::chrono::milliseconds delay)
-    {
-        controls::is_mouse_input(input)
-            ? post_mouse_up(controls::str_to_button.at(input.key), delay)
-            : post_key_up(input.key, delay);
-    }
-
-    void post_press(const action_mapping& input, const std::chrono::milliseconds delay)
-    {
-        if (controls::is_mouse_input(input)) {
-            post_mouse_press(controls::str_to_button.at(input.key), delay);
-        } else { post_key_press(input.key, delay); }
-    }
-
-    void post_key_down(const std::string& key, std::chrono::milliseconds delay)
-    {
-        PostMessageW(hwnd, WM_KEYDOWN, controls::get_virtual_keycode(key), NULL);
-        checked_sleep(delay);
-    }
-
-    void post_key_up(const std::string& key, std::chrono::milliseconds delay)
-    {
-        PostMessageW(hwnd, WM_KEYUP, controls::get_virtual_keycode(key), NULL);
-        checked_sleep(delay);
-    }
-
-    void post_key_press(const std::string& key, const std::chrono::milliseconds delay)
-    {
-        post_key_down(key);
-        post_key_up(key);
-        checked_sleep(delay);
-    }
-
-    void post_char(const char c) { PostMessageW(hwnd, WM_CHAR, c, NULL); }
-
-    void post_mouse_down(const controls::MouseButton button,
-                         const std::chrono::milliseconds delay)
-    {
-        using controls::MouseButton;
         switch (button) {
             case MouseButton::LEFT:
                 PostMessageW(hwnd, WM_LBUTTONDOWN, MK_LBUTTON, NULL);
@@ -420,51 +406,131 @@ namespace asa::window
                 PostMessageW(hwnd, WM_XBUTTONDOWN, MK_XBUTTON2, NULL);
                 break;
         }
-        checked_sleep(delay);
+        checked_sleep(10ms); // Prevents some quirks from PostMessage
     }
 
-    void post_mouse_up(const controls::MouseButton button,
-                       const std::chrono::milliseconds delay)
+    void post_down(const std::string& key)
     {
-        using controls::MouseButton;
+        PostMessageW(hwnd, WM_KEYDOWN, get_virtual_keycode(key), NULL);
+        checked_sleep(10ms); // Prevents some quirks from PostMessage
+    }
+
+    void post_up(const action_mapping& action)
+    {
+        if (is_mouse_input(action)) {
+            post_up(str_to_button.at(action.key));
+        } else {
+            post_up(action.key);
+        }
+    }
+
+    void post_up(const MouseButton button)
+    {
         switch (button) {
-            case MouseButton::LEFT: PostMessageW(hwnd, WM_LBUTTONUP, MK_LBUTTON, NULL);
+            case MouseButton::LEFT:
+                PostMessageW(hwnd, WM_LBUTTONUP, MK_LBUTTON, NULL);
                 break;
-            case MouseButton::RIGHT: PostMessageW(hwnd, WM_RBUTTONUP, MK_RBUTTON, NULL);
+            case MouseButton::RIGHT:
+                PostMessageW(hwnd, WM_RBUTTONUP, MK_RBUTTON, NULL);
                 break;
-            case MouseButton::MIDDLE: PostMessageW(hwnd, WM_MBUTTONUP, MK_MBUTTON, NULL);
+            case MouseButton::MIDDLE:
+                PostMessageW(hwnd, WM_MBUTTONUP, MK_MBUTTON, NULL);
                 break;
-            case MouseButton::MOUSE4: PostMessageW(hwnd, WM_XBUTTONUP, MK_XBUTTON1, NULL);
+            case MouseButton::MOUSE4:
+                PostMessageW(hwnd, WM_XBUTTONUP, MK_XBUTTON1, NULL);
                 break;
-            case MouseButton::MOUSE5: PostMessageW(hwnd, WM_XBUTTONUP, MK_XBUTTON2, NULL);
+            case MouseButton::MOUSE5:
+                PostMessageW(hwnd, WM_XBUTTONUP, MK_XBUTTON2, NULL);
                 break;
         }
-        checked_sleep(delay);
+        checked_sleep(10ms); // Prevents some quirks from PostMessage
     }
 
-    void post_mouse_press(const controls::MouseButton button,
-                          const std::chrono::milliseconds delay)
+    void post_up(const std::string& key)
     {
-        post_mouse_down(button, delay);
-        post_mouse_up(button);
-        checked_sleep(delay);
+        PostMessageW(hwnd, WM_KEYUP, get_virtual_keycode(key), NULL);
+        checked_sleep(10ms); // Prevents some quirks from PostMessage
     }
 
-    void post_mouse_press_at(const cv::Point& position,
-                             const controls::MouseButton button)
+    void post_press(const action_mapping& action,
+                    const std::chrono::milliseconds duration)
     {
-        if (GetForegroundWindow() != hwnd) {
-            set_foreground();
-            checked_sleep(100ms);
+        post_down(action);
+        checked_sleep(duration);
+        post_up(action);
+    }
+
+    void post_press(const MouseButton button, const std::optional<cv::Point>& location,
+                    std::chrono::milliseconds duration)
+    {
+        if (location) {
+            set_mouse_pos(*location);
+            checked_sleep(duration);
         }
+        post_down(button);
+        post_up(button);
+    }
 
-        LPARAM lParam = MAKELPARAM(position.x, position.y);
-        if (button == controls::MouseButton::LEFT) {
-            PostMessageW(hwnd, WM_LBUTTONDOWN, MK_LBUTTON, lParam);
-        } else { PostMessageW(hwnd, WM_RBUTTONDOWN, MK_RBUTTON, lParam); }
+    void post_press(const std::string& key, const std::chrono::milliseconds duration)
+    {
+        post_down(key);
+        checked_sleep(duration);
+        post_up(key);
+    }
 
-        if (button == controls::MouseButton::LEFT) {
-            PostMessageW(hwnd, WM_LBUTTONUP, MK_LBUTTON, lParam);
-        } else { PostMessageW(hwnd, WM_RBUTTONUP, MK_RBUTTON, lParam); }
+    void post_character(const char c)
+    {
+        PostMessageW(hwnd, WM_CHAR, c, NULL);
+    }
+
+    void typewrite(const std::string& text)
+    {
+        for (const char c: text) { post_character(c); }
+    }
+
+    void post_combination(const std::string& down, const std::string& press)
+    {
+        raw_input_key_down(down);
+        raw_input_key_down(press);
+        raw_input_key_up(press);
+        raw_input_key_up(down);
+    }
+
+    void turn(const int x, const int y)
+    {
+        INPUT input{};
+        input.type = INPUT_MOUSE;
+
+        input.mi.dx = x * PIX_PER_DEGREE_LR * get_left_right_factor() * get_fov_factor();
+        input.mi.dy = y * PIX_PER_DEGREE_UD * get_up_down_factor() * get_fov_factor();
+        input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
+
+        SendInput(1, &input, sizeof(INPUT));
+    }
+
+    void turn_to(int x, int y)
+    {
+        INPUT input{0};
+        input.type = INPUT_MOUSE;
+        int moveX = (x - GetSystemMetrics(SM_CXSCREEN) / 2);
+        int moveY = (y - GetSystemMetrics(SM_CYSCREEN) / 2);
+
+        input.mi.dx = moveX;
+        input.mi.dy = moveY;
+        input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
+
+        SendInput(1, &input, sizeof(INPUT));
+    }
+
+    bool has_crash_popup()
+    {
+        return FindWindowExA(nullptr, nullptr, nullptr, CRASH_WIN_TITLE)
+               || FindWindowA(nullptr, "Crash!");
+    }
+
+    void set_mouse_pos(const cv::Point& location)
+    {
+        const auto rect = get_window_boundaries();
+        SetCursorPos(location.x + rect.x, location.y + rect.y);
     }
 }

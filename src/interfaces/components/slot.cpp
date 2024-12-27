@@ -141,7 +141,7 @@ namespace asa
                         const bool cache_img) const
     {
         const bool is_cached = cached_locs.contains(item.get_name());
-        if (!cache_img || last_img_.empty()) { last_img_ = window::screenshot(area); }
+        if (!cache_img || last_img_.empty()) { last_img_ = screenshot(area); }
 
         cv::Mat src;
         if (is_cached) {
@@ -163,7 +163,7 @@ namespace asa
         }
 
         float accuracy = 0.f;
-        const auto match = window::locate(templ, src, conf, false, mask, &accuracy);
+        const auto match = locate(templ, src, conf, false, mask, &accuracy);
         if (accuracy_out) { *accuracy_out = accuracy; }
         if (!match.has_value()) { return false; }
 
@@ -237,13 +237,13 @@ namespace asa
 
     bool item_slot::has_armor_value() const
     {
-        return window::match(embedded::interfaces::armor,
+        return match(embedded::interfaces::armor,
                              get_armor_or_damage_icon_area(), 0.8f);
     }
 
     bool item_slot::has_damage_value() const
     {
-        return window::match(embedded::interfaces::damage,
+        return match(embedded::interfaces::damage,
                              get_armor_or_damage_icon_area(), 0.8f);
     }
 
@@ -286,7 +286,7 @@ namespace asa
         if (data.has_durability) { return !has_durability(); }
 
         // Blueprints always have 0.1 weight
-        return window::match(embedded::text::bp_weight, get_weight_area(), 0.9f);
+        return match(embedded::text::bp_weight, get_weight_area(), 0.9f);
     }
 
     item_data::ItemQuality item_slot::get_quality() const

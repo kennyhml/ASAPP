@@ -9,27 +9,25 @@ namespace asa
 
     void base_entity::primary_attack()
     {
-        window::post_press(get_action_mapping("Fire"));
+        post_press(get_action_mapping("Fire"));
         last_primary_attack_ = std::chrono::system_clock::now();
     }
 
     void base_entity::secondary_attack()
     {
-        window::post_mouse_press(controls::RIGHT);
+        post_press(MouseButton::RIGHT);
         last_secondary_attack_ = std::chrono::system_clock::now();
     }
 
-    void base_entity::walk(const std::string& key, std::chrono::milliseconds duration)
+    void base_entity::walk(const std::string& key, const std::chrono::milliseconds duration)
     {
-        controls::key_down(key, duration);
-        controls::key_up(key);
-
+        post_press(key, duration);
         last_moved_ = std::chrono::system_clock::now();
     }
 
     void base_entity::jump()
     {
-        window::press(get_action_mapping("Jump"));
+        post_press(get_action_mapping("Jump"));
         last_jumped_ = std::chrono::system_clock::now();
     }
 }
