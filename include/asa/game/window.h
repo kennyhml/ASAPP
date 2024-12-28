@@ -34,7 +34,7 @@ namespace asa
      * @throws window_not_found If the window was not found within the time limit.
      */
     [[maybe_unused]] HWND get_window_handle(
-        std::optional<std::chrono::seconds> timeout = std::nullopt);
+        const std::optional<std::chrono::seconds>& timeout = std::nullopt);
 
     /**
      * @brief Gets the boundaries of the game window.

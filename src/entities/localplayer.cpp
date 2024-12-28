@@ -4,10 +4,23 @@
 #include "asa/ui/interfaces.h"
 #include "asa/game/game.h"
 #include "asa/utility.h"
+#include "asa/core/logging.h"
 #include "asa/core/state.h"
 
 namespace asa
 {
+    namespace
+    {
+        int normalize_yaw(int yaw)
+        {
+            // Normalize to [0, 360]
+            yaw = (yaw % 360 + 360) % 360;
+            if (yaw > 180) { yaw -= 360; } // Convert to [-180, 180]
+            return yaw;
+        }
+    }
+
+
     local_inventory* local_player::get_inventory() const
     {
         return dynamic_cast<local_inventory*>(inventory_.get());
@@ -534,7 +547,7 @@ namespace asa
 
     void local_player::set_pitch(const int pitch)
     {
-        const int diff = ((pitch - current_pitch_) + 90) % 360 - 90;
+        const int diff = pitch + current_pitch_;
         diff < 0 ? turn_up(-diff) : turn_down(diff);
         current_pitch_ = pitch;
     }
@@ -543,30 +556,41 @@ namespace asa
                                   const std::chrono::milliseconds delay)
     {
         turn(degrees, 0);
-        current_yaw_ += degrees;
+        current_yaw_ = normalize_yaw(current_yaw_ + degrees);
         checked_sleep(delay);
+        get_logger()->debug("Player turned right {} to {}.", degrees, current_yaw_);
     }
 
     void local_player::turn_left(const int degrees, const std::chrono::milliseconds delay)
     {
         turn(degrees, 0);
-        current_yaw_ -= degrees;
+        current_yaw_ = normalize_yaw(current_yaw_ - degrees);
         checked_sleep(delay);
+        get_logger()->debug("Player turned left {} to {}.", degrees, current_yaw_);
     }
 
     void local_player::turn_down(const int degrees, const std::chrono::milliseconds delay)
     {
-        const int allowed = std::min(90 - current_pitch_, degrees);
+        // Get the max amount of pitch that we can still turn down, otherwise we may
+        // "overturn" which causes the camera to flip up instead.
+        // For example, if our pitch is at -40 but the degrees to turn down is 70,
+        // then the max we can do is -90 + 40 = -50, which is bigger than -70.
+        // We need to think of bigger here instead of smaller because its always negative!
+        const int allowed = std::min(abs(PLAYER_PITCH_MIN - current_pitch_), degrees);
         turn(0, allowed);
-        current_pitch_ += allowed;
+        current_pitch_ -= allowed;
         checked_sleep(delay);
     }
 
     void local_player::turn_up(const int degrees, const std::chrono::milliseconds delay)
     {
-        const int allowed = std::min(90 + current_pitch_, degrees);
+        // Get the max amount of pitch that we can still turn up, otherwise we may
+        // "overturn" which causes the camera to flip down instead.
+        // For example, if our pitch is at 70 but the degrees to turn up is 70,
+        // then the max we can do is 87 - 70 = 17, which is smaller than 70.
+        const int allowed = std::min(PLAYER_PITCH_MAX - current_pitch_, degrees);
         turn(0, -allowed);
-        current_pitch_ -= allowed;
+        current_pitch_ += allowed;
         checked_sleep(delay);
     }
 

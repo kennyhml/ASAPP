@@ -51,6 +51,12 @@ using teleport_flags_t = int32_t;
 
 namespace asa
 {
+    inline constexpr int PLAYER_PITCH_MAX = 87;
+    inline constexpr int PLAYER_PITCH_MIN = -80;
+
+    inline constexpr int PLAYER_YAW_MAX = 180;
+    inline constexpr int PLAYER_YAW_MIN = -180;
+
     /**
      * @brief Represents the local player of the game and serves as a controller.
      *
@@ -308,6 +314,8 @@ namespace asa
          *
          * @param degrees The amount of degrees to turn.
          * @param delay The amount of time to wait after turning.
+         *
+         * @remark The yaw (left / right) reaches from -180 to 180, both being ringt behind.
          */
         void turn_right(int degrees = 90, std::chrono::milliseconds delay = 100ms);
 
@@ -316,6 +324,8 @@ namespace asa
          *
          * @param degrees The amount of degrees to turn.
          * @param delay The amount of time to wait after turning.
+         *
+         * @remark The yaw (left / right) reaches from -180 to 180, both being ringt behind.
          */
         void turn_left(int degrees = 90, std::chrono::milliseconds delay = 100ms);
 
@@ -325,9 +335,9 @@ namespace asa
          * @param degrees The amount of degrees to turn.
          * @param delay The amount of time to wait after turning.
          *
-         * @remark The pitch (up / down) reaches its limit at 90 or -90.
+         * @remark The pitch (up / down) reaches its limit at 87 (up) or -80 (down).
          */
-        void turn_up(int degrees = 90, std::chrono::milliseconds delay = 100ms);
+        void turn_up(int degrees = 87, std::chrono::milliseconds delay = 100ms);
 
         /**
          * @brief Turns the view of this entity to the down by the given amount.
@@ -335,7 +345,7 @@ namespace asa
          * @param degrees The amount of degrees to turn.
          * @param delay The amount of time to wait after turning.
          *
-         * @remark The pitch (up / down) reaches its limit at 90 or -90.
+         * @remark The pitch (up / down) reaches its limit at 87 (up) or -80 (down).
          */
         void turn_down(int degrees = 90, std::chrono::milliseconds delay = 100ms);
 

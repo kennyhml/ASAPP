@@ -38,8 +38,10 @@ namespace asa
         for (const auto& sink : additional_sinks) { sinks.push_back(sink); }
 
         spdlog::logger logger(logger_name, {create_console_sink(), create_file_sink()});
+        logger.set_level(spdlog::level::debug);
         logger.flush_on(spdlog::level::debug);
 
+        registered_logger = logger_name;
         register_logger(std::make_shared<spdlog::logger>(logger));
     }
 

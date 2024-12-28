@@ -24,8 +24,7 @@ namespace asa
         constexpr auto WINDOWED_PADDING_TOP = 31;
         constexpr auto WINDOWED_PADDING = 8;
 
-        constexpr float PIX_PER_DEGREE_LR = 129.f / 90.f;
-        constexpr float PIX_PER_DEGREE_UD = 115.f / 90.f;
+        constexpr float PIX_PER_DEGREE = 128.7f / 90.f;
 
         constexpr float MAX_LR_SENS = 3.2f;
         constexpr float MAX_UD_SENS = 3.2f;
@@ -334,7 +333,7 @@ namespace asa
         return tesseract_engine->GetUTF8Text();
     }
 
-    HWND get_window_handle(std::optional<std::chrono::seconds> timeout)
+    HWND get_window_handle(const std::optional<std::chrono::seconds>& timeout)
     {
         const utility::stopwatch sw;
         get_logger()->info("Obtaining window handle..");
@@ -346,7 +345,7 @@ namespace asa
         } while (!hwnd && (timeout.has_value() && !sw.timedout(*timeout)));
         if (!hwnd) { throw window_not_found(); }
 
-        get_logger()->info("ArkAscended HWND acquired: 0x{:x}", reinterpret_cast<uintptr_t>(hwnd));
+        get_logger()->info("Handle acquired: 0x{:x}.", reinterpret_cast<uintptr_t>(hwnd));
         return hwnd;
     }
 
@@ -501,8 +500,10 @@ namespace asa
         INPUT input{};
         input.type = INPUT_MOUSE;
 
-        input.mi.dx = x * PIX_PER_DEGREE_LR * get_left_right_factor() * get_fov_factor();
-        input.mi.dy = y * PIX_PER_DEGREE_UD * get_up_down_factor() * get_fov_factor();
+        input.mi.dx = static_cast<LONG>(std::round(
+            x * PIX_PER_DEGREE * get_left_right_factor() * get_fov_factor()));
+        input.mi.dy = static_cast<LONG>(std::round(
+            y * PIX_PER_DEGREE * get_up_down_factor() * get_fov_factor()));
         input.mi.dwFlags = MOUSEEVENTF_MOVE | MOUSEEVENTF_MOVE_NOCOALESCE;
 
         SendInput(1, &input, sizeof(INPUT));
