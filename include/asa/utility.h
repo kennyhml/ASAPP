@@ -8,11 +8,20 @@ namespace asa::utility
 {
     bool await(const std::function<bool()>& condition, std::chrono::milliseconds timeout);
 
+    std::chrono::system_clock::time_point from_t(time_t time);
+
     template<typename Duration>
     bool timedout(const std::chrono::system_clock::time_point& start, Duration timeout)
     {
         const auto now = std::chrono::system_clock::now();
         return now - start >= timeout;
+    }
+
+    template<typename Duration>
+    bool timedout(const int64_t start, const Duration& max)
+    {
+        const auto now = std::chrono::system_clock::now();
+        return (now - std::chrono::system_clock::from_time_t(start)) > max;
     }
 
     template<typename Cast>

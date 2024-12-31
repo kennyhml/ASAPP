@@ -125,6 +125,11 @@ namespace asa::utility
         return true;
     }
 
+    std::chrono::system_clock::time_point from_t(const time_t time)
+    {
+        return std::chrono::system_clock::from_time_t(time);
+    }
+
     bool timedout(const std::chrono::system_clock::time_point& start,
                   const std::chrono::milliseconds timeout)
     {

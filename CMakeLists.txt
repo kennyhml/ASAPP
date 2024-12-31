@@ -137,7 +137,7 @@ target_include_directories(asapp PUBLIC include)
 target_include_directories(asapp PRIVATE src)
 
 find_package(spdlog CONFIG REQUIRED)
-target_link_libraries(asapp PRIVATE spdlog::spdlog)
+target_link_libraries(asapp PUBLIC spdlog::spdlog)
 
 find_package(Tesseract CONFIG REQUIRED)
 target_link_libraries(asapp PRIVATE Tesseract::libtesseract)

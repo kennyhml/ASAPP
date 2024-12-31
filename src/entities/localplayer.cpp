@@ -401,6 +401,7 @@ namespace asa
                 post_press(get_action_mapping("Use"));
             } while (!utility::await([this] { return is_riding_mount(); }, 10s));
         }
+        checked_sleep(200ms);
         get_hud()->toggle_extended(false);
         is_riding_mount_ = true;
     }
