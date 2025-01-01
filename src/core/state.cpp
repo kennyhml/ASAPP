@@ -43,17 +43,20 @@ namespace asa
         pop_terminated_threads();
 
         const std::shared_ptr<managed_thread> thread = get_this_thread();
-        if (thread) {
-            const auto start = std::chrono::system_clock::now();
-            while (!utility::timedout(start, duration)) {
-                while (thread->get_state() == managed_thread::PAUSED) {
-                    std::this_thread::sleep_for(10ms);
-                }
-                if (thread->get_state() == managed_thread::TERMINATED) {
-                    throw thread_interruped(thread->get_id(), "TERMINATED");
-                }
+        if (!thread) {
+            std::this_thread::sleep_for(duration);
+            return;
+        }
+
+        const auto start = std::chrono::system_clock::now();
+        while (!utility::timedout(start, duration)) {
+            while (thread->get_state() == managed_thread::PAUSED) {
                 std::this_thread::sleep_for(10ms);
             }
+            if (thread->get_state() == managed_thread::TERMINATED) {
+                throw thread_interruped(thread->get_id(), "TERMINATED");
+            }
+            std::this_thread::sleep_for(10ms);
         }
 
         for (auto& [id, callback]: state_check_callbacks) {
@@ -61,7 +64,6 @@ namespace asa
                 throw thread_interruped(thread->get_id(), id);
             }
         }
-        std::this_thread::sleep_for(duration);
     }
 
     void register_state_callback(std::string id, state_check_callback_t callback)
@@ -72,6 +74,6 @@ namespace asa
     bool is_playing_movie()
     {
         return match(embedded::interfaces::server_transition,
-                             cv::Rect{1569, 698, 342, 364});
+                     cv::Rect{1569, 698, 342, 364});
     }
 }

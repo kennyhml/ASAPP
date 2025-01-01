@@ -1,8 +1,10 @@
 #include "asa/core/managedthread.h"
 #include <format>
+#include <magic_enum.hpp>
 #include <ranges>
 
 #include "asa/core/exceptions.h"
+#include "asa/core/logging.h"
 
 namespace asa
 {
@@ -17,6 +19,7 @@ namespace asa
 
     void managed_thread::start()
     {
+        get_logger()->info("Thread '{}' started.", id_);
         thread_ = std::make_unique<boost::thread>(target_);
         set_state(RUNNING);
     }
@@ -49,12 +52,13 @@ namespace asa
 
     void managed_thread::set_state(const ThreadState state)
     {
+        get_logger()->info("Thread '{}' set to '{}'", id_, magic_enum::enum_name(state));
         state_ = state;
     }
 
     thread_interruped::thread_interruped(std::string t_thread_id, std::string t_why)
         : id(std::move(t_thread_id)), why(std::move(t_why)),
-          what_(std::format("Thread '{}' was interrupted by '{}'!", id, why)) {}
+          what_(std::format("Thread '{}' was interrupted ({})!", id, why)) {}
 
     char const* thread_interruped::what() const
     {
