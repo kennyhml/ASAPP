@@ -113,7 +113,7 @@ namespace asa
     {
         std::lock_guard lock(registry_mutex);
         for (const auto& [id, thread]: registry) {
-            if (std::ranges::find(exclude, id) != exclude.end()) {
+            if (std::ranges::find(exclude, id) == exclude.end()) {
                 thread->set_state(state);
             }
         }
