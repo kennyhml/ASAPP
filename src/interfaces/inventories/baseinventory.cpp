@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "asa/utility.h"
+#include "asa/core/logging.h"
 #include "asa/core/state.h"
 
 namespace asa
@@ -92,7 +93,7 @@ namespace asa
         if (search && !item.get_data().has_ambiguous_query) { return slots[0].has(item); }
 
         return match(item.get_inventory_icon(), item_area, 0.7f, false,
-                             item.get_inventory_icon_mask());
+                     item.get_inventory_icon_mask());
     }
 
     bool base_inventory::count_stacks(const item& item, int& count_out, const bool search)
@@ -276,6 +277,7 @@ namespace asa
 
     base_inventory& base_inventory::transfer_all(base_inventory* receiver)
     {
+        get_logger()->debug("Transferring all items...");
         transfer_all_button_.press();
         search_bar.set_text_cleared();
         // TODO: Wait for the items to be transferred in a smart way
@@ -283,25 +285,27 @@ namespace asa
         return *this;
     }
 
-    base_inventory& base_inventory::transfer_all(const item& item, base_inventory* receiver)
+    base_inventory& base_inventory::transfer_all(const item& item,
+                                                 base_inventory* receiver)
     {
-        search_bar.search_for(item.get_name());
+        search_bar.search_for(item.get_name(), false);
         checked_sleep(50ms);
         transfer_all();
         return *this;
     }
 
-    base_inventory& base_inventory::transfer_all(const std::string& term, base_inventory* receiver)
+    base_inventory& base_inventory::transfer_all(const std::string& term,
+                                                 base_inventory* receiver)
     {
-        search_bar.search_for(term);
-        checked_sleep(50ms);
+        search_bar.search_for(term, false);
+        // checked_sleep(50ms);
         transfer_all(receiver);
         return *this;
     }
 
     base_inventory& base_inventory::transfer(const item& item, const int stacks,
-                                  base_inventory* receiver,
-                                  const bool search)
+                                             base_inventory* receiver,
+                                             const bool search)
     {
         assert_open(__func__);
 
@@ -317,6 +321,14 @@ namespace asa
         }
         return *this;
     }
+
+    base_inventory& base_inventory::transfer(const int32_t slot, base_inventory* receiver)
+    {
+        assert_open(__func__);
+
+        return take_slot(slots[slot]);
+    }
+
 
     base_inventory& base_inventory::transfer_rows(const item& item, const int rows)
     {
@@ -336,7 +348,7 @@ namespace asa
     }
 
     base_inventory& base_inventory::transfer_rows(const item& item,
-                                       const std::chrono::seconds duration)
+                                                  const std::chrono::seconds duration)
     {
         search_bar.search_for(item.get_name());
 

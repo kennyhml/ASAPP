@@ -386,26 +386,28 @@ namespace asa
         }
     }
 
-    void post_down(const MouseButton button)
+    void post_down(const MouseButton button, LPARAM params, const bool sleep)
     {
         switch (button) {
             case MouseButton::LEFT:
-                PostMessageW(hwnd, WM_LBUTTONDOWN, MK_LBUTTON, NULL);
+                PostMessageW(hwnd, WM_LBUTTONDOWN, MK_LBUTTON, params);
                 break;
             case MouseButton::RIGHT:
-                PostMessageW(hwnd, WM_RBUTTONDOWN, MK_RBUTTON, NULL);
+                PostMessageW(hwnd, WM_RBUTTONDOWN, MK_RBUTTON, params);
                 break;
             case MouseButton::MIDDLE:
-                PostMessageW(hwnd, WM_MBUTTONDOWN, MK_MBUTTON, NULL);
+                PostMessageW(hwnd, WM_MBUTTONDOWN, MK_MBUTTON, params);
                 break;
             case MouseButton::MOUSE4:
-                PostMessageW(hwnd, WM_XBUTTONDOWN, MK_XBUTTON1, NULL);
+                PostMessageW(hwnd, WM_XBUTTONDOWN, MK_XBUTTON1, params);
                 break;
             case MouseButton::MOUSE5:
-                PostMessageW(hwnd, WM_XBUTTONDOWN, MK_XBUTTON2, NULL);
+                PostMessageW(hwnd, WM_XBUTTONDOWN, MK_XBUTTON2, params);
                 break;
         }
-        checked_sleep(10ms); // Prevents some quirks from PostMessage
+        if (sleep) {
+            checked_sleep(10ms); // Prevents some quirks from PostMessage
+        }
     }
 
     void post_down(const std::string& key)
@@ -423,26 +425,28 @@ namespace asa
         }
     }
 
-    void post_up(const MouseButton button)
+    void post_up(const MouseButton button, LPARAM params, const bool sleep)
     {
         switch (button) {
             case MouseButton::LEFT:
-                PostMessageW(hwnd, WM_LBUTTONUP, MK_LBUTTON, NULL);
+                PostMessageW(hwnd, WM_LBUTTONUP, MK_LBUTTON, params);
                 break;
             case MouseButton::RIGHT:
-                PostMessageW(hwnd, WM_RBUTTONUP, MK_RBUTTON, NULL);
+                PostMessageW(hwnd, WM_RBUTTONUP, MK_RBUTTON, params);
                 break;
             case MouseButton::MIDDLE:
-                PostMessageW(hwnd, WM_MBUTTONUP, MK_MBUTTON, NULL);
+                PostMessageW(hwnd, WM_MBUTTONUP, MK_MBUTTON, params);
                 break;
             case MouseButton::MOUSE4:
-                PostMessageW(hwnd, WM_XBUTTONUP, MK_XBUTTON1, NULL);
+                PostMessageW(hwnd, WM_XBUTTONUP, MK_XBUTTON1, params);
                 break;
             case MouseButton::MOUSE5:
-                PostMessageW(hwnd, WM_XBUTTONUP, MK_XBUTTON2, NULL);
+                PostMessageW(hwnd, WM_XBUTTONUP, MK_XBUTTON2, params);
                 break;
         }
-        checked_sleep(10ms); // Prevents some quirks from PostMessage
+        if (sleep) {
+            checked_sleep(10ms); // Prevents some quirks from PostMessage
+        }
     }
 
     void post_up(const std::string& key)
@@ -462,12 +466,12 @@ namespace asa
     void post_press(const MouseButton button, const std::optional<cv::Point>& location,
                     std::chrono::milliseconds duration)
     {
+        LPARAM params = NULL;
         if (location) {
-            set_mouse_pos(*location);
-            checked_sleep(duration);
+            params = MAKELPARAM(location->x, location->y);
         }
-        post_down(button);
-        post_up(button);
+        post_down(button, params, !location.has_value());
+        post_up(button, params, !location.has_value());
     }
 
     void post_press(const std::string& key, const std::chrono::milliseconds duration)
@@ -525,8 +529,7 @@ namespace asa
 
     bool has_crash_popup()
     {
-        return FindWindowExA(nullptr, nullptr, nullptr, CRASH_WIN_TITLE)
-               || FindWindowA(nullptr, "Crash!");
+        return FindWindowA(nullptr, CRASH_WIN_TITLE) || FindWindowA(nullptr, "Crash!");
     }
 
     void set_mouse_pos(const cv::Point& location)

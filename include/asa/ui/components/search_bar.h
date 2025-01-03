@@ -11,7 +11,7 @@ namespace asa
 
         virtual void press() const;
 
-        virtual void search_for(std::string term);
+        virtual void search_for(const std::string& term, bool tab_out = true);
 
         void delete_search();
 

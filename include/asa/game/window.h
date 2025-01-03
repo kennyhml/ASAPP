@@ -94,7 +94,7 @@ namespace asa
     /**
     * @brief Posts a "down" event for the provided mouse button.
     */
-    void post_down(MouseButton);
+    void post_down(MouseButton, LPARAM params = NULL, bool sleep = true);
 
     /**
      * @brief Posts a "down" event for the provided key.
@@ -113,7 +113,7 @@ namespace asa
     /**
      * @brief Posts an "up" event for the provided mouse button.
      */
-    void post_up(MouseButton);
+    void post_up(MouseButton, LPARAM params = NULL, bool sleep = true);
 
     /**
      * @brief Posts an "up" event for the provided key.

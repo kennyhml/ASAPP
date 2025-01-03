@@ -1,6 +1,7 @@
 #include <iostream>
 #include "asa/ui/components/search_bar.h"
 #include "../../../include/asa/utility.h"
+#include "asa/core/logging.h"
 #include "asa/core/state.h"
 
 namespace asa
@@ -40,32 +41,36 @@ namespace asa
         return utility::count_matches(area, text_color, 30) > 10;
     }
 
-    void search_bar::search_for(const std::string term)
+    void search_bar::search_for(const std::string& term, const bool tab_out)
     {
-        if (has_text_entered()) { delete_search(); }
-        checked_sleep(50ms);
-
+        get_logger()->info("Searching for '{}'...", term);
+        const utility::stopwatch sw;
+        if (has_text_entered()) {
+            get_logger()->debug("Text is entered, must delete first..");
+            delete_search();
+        }
         press();
-        checked_sleep(20ms);
         searching = true;
 
         utility::set_clipboard(term);
         post_combination("ctrl", "v");
 
         if (!utility::await([this] { return has_text_entered(); }, 5s)) {
-            std::cerr << "[!] Failed to search, trying again... searching for " << term <<
-                    std::endl;
+            get_logger()->warn("Failed to search, trying again..");
             return search_for(term);
         }
 
-        checked_sleep(50ms);
-        post_press("enter");
-        checked_sleep(50ms);
-        post_press(MouseButton::LEFT, cv::Point{955, 344});
+        if (tab_out) {
+            checked_sleep(50ms);
+            post_press("enter");
+            checked_sleep(50ms);
+            post_press(MouseButton::LEFT, cv::Point{955, 344});
+        }
 
         searching = false;
         last_searched_term = term;
         text_entered = true;
+        get_logger()->debug("Search took {}ms to complete.", sw.elapsed().count());
     }
 
     void search_bar::press() const

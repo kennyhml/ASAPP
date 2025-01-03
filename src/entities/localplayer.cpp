@@ -261,9 +261,11 @@ namespace asa
         // Make sure it's not already open, otherwise we would be closing it.
         if (entity.get_inventory()->is_open()) { return; }
 
+        const utility::stopwatch sw;
+        get_logger()->info("Accessing '{}'..", entity.get_name());
         const auto start = std::chrono::system_clock::now();
         do {
-            post_press(get_action_mapping("Access Inventory"));
+            post_press(get_action_mapping("AccessInventory"));
             if (utility::timedout(start, max)) {
                 throw entity_access_failed(&entity);
             }
@@ -273,12 +275,16 @@ namespace asa
 
         // Wait to receive the remote inventory
         entity.get_inventory()->receive_remote_inventory(30s);
+        get_logger()->debug("Accessed '{}' ({}ms elapsed).", entity.get_name(), sw.elapsed().count());
     }
 
     void local_player::access(const interactable& structure,
                               const std::chrono::seconds max)
     {
         if (structure.get_interface()->is_open()) { return; }
+
+        const utility::stopwatch sw;
+        get_logger()->info("Accessing '{}'..", structure.get_name());
         bool has_reconnected = false;
         auto start = std::chrono::system_clock::now();
 
@@ -298,6 +304,7 @@ namespace asa
         } while (!utility::await([&structure] {
             return structure.get_interface()->is_open();
         }, 10s));
+        get_logger()->debug("Accessed '{}' ({}ms elapsed).", structure.get_name(), sw.elapsed().count());
     }
 
 

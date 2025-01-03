@@ -236,6 +236,9 @@ namespace asa
                                                   base_inventory* receiver = nullptr,
                                                   bool search = true);
 
+        [[maybe_unused]] base_inventory& transfer(int32_t slot,
+                                                  base_inventory* receiver = nullptr);
+
         /**
          * @brief Transfers a given amount of rows of a given item.
          *
